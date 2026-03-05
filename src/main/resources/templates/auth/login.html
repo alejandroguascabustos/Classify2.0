@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Classify - Inicio</title>
+    <link rel="stylesheet" href="<?= base_url('css/style.css?v=' . time()) ?>">
+    <link rel="stylesheet" href="<?= base_url('css/chatbot.css?v=' . time()) ?>">
+    <link rel="shortcut icon" href="<?= base_url('favicon.ico') ?>" type="image/x-icon">
+</head>
+
+<body class="inicioimg">
+
+    <header class="brandinicio">
+        <div class="brand">
+            <a href="<?= base_url('inicio') ?>"><img src="<?= base_url('img/icons/logo.png') ?>" alt="logo"
+                    class="logo"> </a>
+            <a href="<?= base_url('inicio') ?>">Classify</a>
+        </div>
+
+
+        <div class="brand2">
+            <a href="<?= base_url('inicio') ?>" class="info-btn" alt="Información">Inicio</a>
+            <a href="<?= base_url('nosotros') ?>" class="info-btn" alt="Información">Nosotros</a>
+            <a href="<?= base_url('contacto') ?>" class="info-btn" alt="Información">Contacto</a>
+            <div class="auth">
+                <a href="<?= base_url('login') ?>" class="info-btnini2" alt="Información">Inicio Sesión</a>
+                <a href="<?= base_url('registro') ?>" class="info-btnini" alt="Información">Registro</a>
+            </div>
+        </div>
+        <div>
+            <a href="#info" class="info-btn">
+                <img src="<?= base_url('img/icons/informacion.png') ?>" alt="Información" class="info-icon">
+            </a>
+            <div id="info" class="info-panel">
+                <div class="info-content">
+                    <a href="#" class="close">&times;</a>
+                    <img src="<?= base_url('img/icons/agenda.png') ?>" width='80px'>
+                    <h4>¿Porque agendas tus clases?</h4>
+                    <p class="textoinfo">La implementación de una página web para agendar clases en el colegio Moralba
+                        Sur Oriental representa una herramienta fundamental para optimizar la organización académica y
+                        fortalecer la comunicación entre estudiantes, docentes y la institución.
+                        En primer lugar, la plataforma permite a los estudiantes y padres de familia consultar de manera
+                        rápida y sencilla la disponibilidad de horarios, evitando confusiones o cruces en las
+                        actividades escolares. <br> <br>Esto garantiza una mejor planificación del tiempo, tanto dentro
+                        como fuera del aula.
+                        Por otro lado, los docentes pueden gestionar sus clases de forma más eficiente, teniendo acceso
+                        a un calendario actualizado que facilita la asignación de sesiones, el control de grupos y la
+                        preparación de materiales según la programación establecida. <br><br>
+                        Asimismo, para la institución educativa, la página constituye una herramienta de gestión que
+                        contribuye a la transparencia y al orden administrativo, ya que centraliza la información en un
+                        solo espacio digital accesible desde cualquier dispositivo con conexión a internet. <br> <br>
+                        En conclusión, contar con una página para agendar clases no solo mejora la organización interna
+                        del colegio Moralba Sur Oriental, sino que también fortalece la participación de la comunidad
+                        educativa, fomenta la puntualidad, evita pérdidas de tiempo y favorece un proceso de
+                        enseñanza-aprendizaje más planificado y efectivo.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="contentindex">
+        <div class="login-wrapper">
+            <div class="login-container">
+                <div class="imagenlogin">
+                    <img src=<?= base_url('img/icons/lapizlogin.gif') ?> alt="Imagen de login">
+                </div>
+                <h2 class="login-title">Iniciar sesión</h2>
+
+                <?php if (session()->has('mensaje')): ?>
+                    <div class="alert alert-danger" style="color: red; padding: 10px; margin: 10px 0; border: 1px solid red; border-radius: 5px; background-color: #ffe6e6;">
+                        <?= session('mensaje') ?>
+                    </div>
+                <?php endif; ?>
+
+                <form action="<?= base_url('login/auth') ?>" method="post" class="login-form">
+                    <div class="mb-3">
+                        <label for="" class="labellogin">Ingresa tu usuario</label>
+                        <input type="text" name="usuario" required placeholder="Juan123">
+                    </div>
+                    <div class="mb-3">
+                        <label for="" class="labellogin">Ingresa tu contraseña</label>
+                        <input type="password" name="password" required placeholder="••••••">
+                    </div>
+                    <div class="text-center">
+                        <button type="submit">Ingresar</button>
+                    </div>
+                </form>
+
+                <div class="login-links">
+                    <a href="<?= base_url('recuperar-password') ?>" class="forgot-password">¿Olvidaste tu contraseña?</a>
+                    <p class="registro-link">¿No tienes cuenta? <a href="<?= base_url('registro') ?>">Regístrate aquí</a></p>
+                </div>
+
+                <p class="error-message"></p>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-col">
+                <h4>Sobre nosotros</h4>
+                <p>
+                    Classify es una plataforma para la gestión de clases y servicios,
+                    diseñada para mejorar la experiencia academica y administrativa en los colegios.
+                </p>
+            </div>
+            <div class="footer-col">
+                <h4>Enlaces útiles</h4>
+                <ul>
+                    <li><a href="<?= base_url('politicas') ?>">Política de privacidad</a></li>
+                    <li><a href="<?= base_url('terminos') ?>">Términos y condiciones</a></li>
+                    <li><a href="<?= base_url('contacto') ?>">Contacto Colegio</a></li>
+                    <li><a href="<?= base_url('soporte') ?>">Soporte App</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p class="footer-text">© 2025 Classify - Todos los derechos reservados</p>
+        </div>
+    </footer>
+
+
+    <script src="<?= base_url('js/chatbot.js') ?>"></script>
+</body>
+
+</html>

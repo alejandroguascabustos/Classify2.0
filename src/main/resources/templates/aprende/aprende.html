@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Classify - Aprende</title>
+    <link rel="stylesheet" href="<?= base_url('css/style.css?v=' . filemtime(FCPATH . 'css/style.css')) ?>">
+    <link rel="stylesheet" href="<?= base_url('css/chatbot.css') ?>">
+    <link rel="shortcut icon" href="<?= base_url('favicon.ico') ?>" type="image/x-icon">
+    <style>
+        /* Estilos para el spinner */
+        .spinner-container {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 400px;
+            padding: 40px;
+        }
+
+        .spinner-container.active {
+            display: flex;
+        }
+
+        .spinner-grow {
+            display: inline-block;
+            width: 2rem;
+            height: 2rem;
+            vertical-align: text-bottom;
+            background-color: currentColor;
+            border-radius: 50%;
+            opacity: 0;
+            animation: spinner-grow 0.75s linear infinite;
+        }
+
+        .spinner-grow-sm {
+            width: 1rem;
+            height: 1rem;
+        }
+
+        @keyframes spinner-grow {
+            0% {
+                transform: scale(0);
+                opacity: 0;
+            }
+
+            50% {
+                opacity: 1;
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 0;
+            }
+        }
+
+        .loading-text {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #4a5568;
+            font-weight: 500;
+        }
+
+        /* Ocultar formulario cuando se muestra respuesta */
+        .form-column.hidden {
+            display: none;
+        }
+
+        .response-column.fullwidth {
+            width: 100%;
+            max-width: 100%;
+        }
+
+        /* Extender contentWrap a ancho completo */
+        #contentWrap {
+            width: 100%;
+            max-width: 100%;
+        }
+
+        #contentWrap .site-container {
+            max-width: 100%;
+            padding: 20px;
+        }
+
+        #contentWrap .result-card {
+            max-width: 100%;
+        }
+
+        /* Estilos para los botones de sugerencias */
+        .suggestions-section {
+            margin-top: 30px;
+            padding: 25px;
+            background: linear-gradient(135deg, #008000 0%, #35b50b 100%);
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 128, 0, 0.3);
+        }
+
+        .suggestions-title {
+            background: linear-gradient(135deg, #ffffff 0%, #e8f5e9 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .suggestions-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .suggestion-btn {
+            flex: 1;
+            min-width: 200px;
+            max-width: 280px;
+            padding: 15px 25px;
+            background: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            color: #5b21b6;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .suggestion-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            color: white;
+        }
+
+        .suggestion-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .suggestion-btn::before {
+            content: '🎯';
+            margin-right: 8px;
+            font-size: 18px;
+        }
+
+        /* Estilos para referencias y links */
+        .reference-section {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 8px;
+            border-left: 4px solid #3b82f6;
+        }
+
+        .reference-link {
+            display: block;
+            margin: 10px 0;
+            padding: 10px;
+            background: white;
+            border-radius: 4px;
+            text-decoration: none;
+            color: #2563eb;
+            transition: all 0.2s;
+        }
+
+        .reference-link:hover {
+            background: #dbeafe;
+            transform: translateX(5px);
+        }
+
+        .resource-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            margin: 5px;
+            background: #e0e7ff;
+            color: #4338ca;
+            border-radius: 12px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="brand">
+            <a href="<?= base_url('login') ?>"><img src="<?= base_url('img/icons/logo.png') ?>" alt="logo" class="logo">
+            </a>
+            <a href="<?= base_url('login') ?>">Classify</a>
+        </div>
+        <div>
+            <div class="right">
+                <a href="<?= base_url('noticias') ?>" alt="Noticias">
+                    <img src="<?= base_url('img/icons/noticias.png') ?>" class="iconostop">
+                </a>
+                <a><img src="<?= base_url('img/icons/separador.png') ?>" class="separador">
+                </a>
+                <a href="<?= base_url('login') ?>" alt="Cerrar sesión">
+                    <img src="<?= base_url('img/icons/salida.png') ?>" class="salida">
+                </a>
+            </div>
+        </div>
+    </header>
+
+
+    <aside class="sidebar">
+        <!-- botón comun para todos-->
+        <a href="<?= base_url('menu') ?>" class="inicioprincipal">
+            <img src="<?= base_url('img/icons/home.png') ?>" width="25px" class="imgmenu"> Inicio
+        </a>
+
+        <!-- Programación (Perfil 1 administrador)  -->
+        <?php if (session()->get('perfil') == 1): ?>
+            <a href="<?= base_url('agenda') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/agenda.png') ?>" width="25px" class="imgmenu">Agendar clase
+            </a>
+            <a href="<?= base_url('programacion') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/programacion.png') ?>" width="25px" class="imgmenu">Programación
+            </a>
+            <a href="<?= base_url('aprende') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/aprende.png') ?>" width="25px" class="imgmenu">Aprende
+            </a>
+            <a href="<?= base_url('contacta') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/gmail.png') ?>" width="25px" class="imgmenu">Contacta a un profe
+            </a>
+            <a href="<?= base_url('mismateriales') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/descargamaterial.png') ?>" width="25px" class="imgmenu">Mis Materiales
+            </a>
+            <a href="<?= base_url('materiales') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/upload.png') ?>" width="25px" class="imgmenu">Carga Materiales
+            </a>
+            <a href="<?= base_url('califica') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/califica.png') ?>" width="25px" class="imgmenu">Califica un profe
+            </a>
+            <a href="<?= base_url('izada') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/estrella.png') ?>" width="25px" class="imgmenu"">Izada de bandera
+            </a>
+            <a href=" <?= base_url('notas') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/notas.png') ?>" width="25px" class="imgmenu">Notas
+            </a>
+        <?php endif; ?>
+
+        <!-- Programación (Perfil 2 coordinador) -->
+        <?php if (session()->get('perfil') == 2): ?>
+            <a href="<?= base_url('agenda') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/agenda.png') ?>" width="25px" class="imgmenu">Agendar clase
+            </a>
+            <a href="<?= base_url('programacion') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/programacion.png') ?>" width="25px" class="imgmenu">Programación
+            </a>
+            <a href="<?= base_url('aprende') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/aprende.png') ?>" width="25px" class="imgmenu">Aprende
+            </a>
+            <a href="<?= base_url('contacta') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/gmail.png') ?>" width="25px" class="imgmenu">Contacta a un profe
+            </a>
+            <a href="<?= base_url('materiales') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/upload.png') ?>" width="25px" class="imgmenu">Carga Materiales
+            </a>
+            <a href="<?= base_url('califica') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/califica.png') ?>" width="25px" class="imgmenu">Califica un profe
+            </a>
+            <a href="<?= base_url('izada') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/estrella.png') ?>" width="25px" class="imgmenu">Izada de bandera
+            </a>
+            <a href="<?= base_url('notas') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/notas.png') ?>" width="25px" class="imgmenu">Notas
+            </a>
+        <?php endif; ?>
+
+        <!-- Programación (Perfil 3 docente) -->
+        <?php if (session()->get('perfil') == 3): ?>
+            <a href="<?= base_url('programacion') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/programacion.png') ?>" width="25px" class="imgmenu">Programación
+            </a>
+            <a href="<?= base_url('aprende') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/aprende.png') ?>" width="25px" class="imgmenu">Aprende
+            </a>
+            <a href="<?= base_url('materiales') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/upload.png') ?>" width="25px" class="imgmenu">Carga Materiales
+            </a>
+            <a href="<?= base_url('izada') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/estrella.png') ?>" width="25px" class="imgmenu">Izada de bandera
+            </a>
+        <?php endif; ?>
+
+        <!-- Programación (Perfil 4 acudiente) -->
+        <?php if (session()->get('perfil') == 4): ?>
+            <a href="<?= base_url('programacion') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/programacion.png') ?>" width="25px" class="imgmenu">Programación
+            </a>
+            <a href="<?= base_url('aprende') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/aprende.png') ?>" width="25px" class="imgmenu">Aprende
+            </a>
+            <a href="<?= base_url('contacta') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/gmail.png') ?>" width="25px" class="imgmenu">Contacta a un profe
+            </a>
+            <a href="<?= base_url('mismateriales') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/upload.png') ?>" width="25px" class="imgmenu">Mis Materiales
+            </a>
+            <a href="<?= base_url('izada') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/estrella.png') ?>" width="25px" class="imgmenu">Izada de bandera
+            </a>
+        <?php endif; ?>
+
+        <!-- Programación (Perfil 5 estudiante) -->
+        <?php if (session()->get('perfil') == 5): ?>
+            <a href="<?= base_url('programacion') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/programacion.png') ?>" width="25px" class="imgmenu">Programación
+            </a>
+            <a href="<?= base_url('aprende') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/aprende.png') ?>" width="25px" class="imgmenu">Aprende
+            </a>
+            <a href="<?= base_url('contacta') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/gmail.png') ?>" width="25px" class="imgmenu">Contacta a un profe
+            </a>
+            <a href="<?= base_url('mismateriales') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/upload.png') ?>" width="25px" class="imgmenu">Mis Materiales
+            </a>
+            <a href="<?= base_url('califica') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/califica.png') ?>" width="25px" class="imgmenu">Califica un profe
+            </a>
+            <a href="<?= base_url('izada') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/estrella.png') ?>" width="25px" class="imgmenu">Izada de bandera
+            </a>
+        <?php endif; ?>
+
+
+
+    </aside>
+
+
+    <main class="contentaprende">
+        <!-- Bloque izquierdo: Formulario -->
+        <section class="column form-column" id="formColumn">
+            <div class="login-wrapper2">
+                <div class="login-container">
+                    <div class="imagenlogin">
+                        <img src="<?= base_url('img/icons/cerebro.gif') ?>" width="150px" alt="Cerebro animado">
+                    </div>
+                    <h2 class="titleaprende">Aprendamos algo nuevo</h2>
+                    <div class="help-muted">
+                        Selecciona un tema en verde para ver la clase completa.
+                    </div>
+
+                    <div class="mensajeerror" id="mensaje" style="display:none;"></div>
+
+                    <form id="agendaForm" action="agenda" method="post" class="login-form">
+                        <label for="" class="labelaprende">Escribe la materia</label>
+                        <input type="text" name="materia" id="materia" placeholder="Materia" required>
+                        <label for="" class="labelaprende">Escribe el tema</label>
+                        <input type="text" name="tema" id="tema" placeholder="Tema (ej: Guerra Fría, Fracciones…)"
+                            required>
+                        <label for="" class="labelaprende">Escribe un comentario</label>
+                        <textarea name="observaciones" id="observaciones"
+                            placeholder="Quiero aprender de..."></textarea>
+                        <button type="submit" id="submitBtn" class="guardaraprende">Guardar</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bloque derecho: Respuestas -->
+        <section class="column response-column" id="responseColumn">
+            <!-- Spinner de carga -->
+            <div class="spinner-container" id="spinnerContainer">
+                <span class="spinner-grow" style="color: #3b82f6;" role="status" aria-hidden="true"></span>
+                <span class="spinner-grow" style="color: #8b5cf6; animation-delay: 0.15s;" role="status"
+                    aria-hidden="true"></span>
+                <span class="spinner-grow" style="color: #ec4899; animation-delay: 0.3s;" role="status"
+                    aria-hidden="true"></span>
+                <div class="loading-text">Classify está pensando qué responderte...</div>
+            </div>
+
+            <div class="site-container">
+                <!-- Respuesta -->
+                <div id="contentWrap" style="display:none;">
+                    <!-- Sección de sugerencias de temas -->
+                    <div class="suggestions-section" id="suggestionsSection" style="display:none;">
+                        <div class="suggestions-title">
+                            ¿Quieres profundizar en alguno de estos otros temas? 🚀
+                        </div>
+                        <div class="suggestions-buttons" id="suggestionsButtons"></div>
+                    </div>
+
+                    <div class="result-card">
+                        <div class="breadcrumb" id="crumb"></div>
+                        <h3 id="title"></h3>
+                        <p class="muted" id="synopsis"></p>
+
+                        <div class="two-col" style="margin-top:8px;">
+                            <div>
+                                <h4>Vocabulario clave</h4>
+                                <div id="vocab"></div>
+                            </div>
+                            <div>
+                                <h4>Ideas visuales</h4>
+                                <div id="visualIdeas"></div>
+                            </div>
+                        </div>
+
+                        <h4>Puntos clave</h4>
+                        <ul id="keypoints"></ul>
+
+                        <h4>Objetivos</h4>
+                        <ul id="objectives"></ul>
+
+                        <h4>Mini línea de tiempo</h4>
+                        <div id="timeline" class="muted"></div>
+
+                        <h4 id="actTitle"></h4>
+                        <ul id="actSteps"></ul>
+                        <div id="actMeta" class="muted"></div>
+
+                        <h4>Chequeo rápido (3 preguntas)</h4>
+                        <ul id="checks"></ul>
+
+                        <!-- Nueva sección de Referencias -->
+                        <div class="reference-section" id="referencesSection">
+                            <h4>📚 Referencias y Recursos de Apoyo</h4>
+                            <div id="references"></div>
+                            <div id="resources" style="margin-top: 15px;"></div>
+                        </div>
+                    </div>
+
+                    <div id="apiNotice" class="notice"></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+
+    <script>
+        /* ===== Parser robusto ===== */
+        function parseLLMJson(t) {
+            if (!t) throw new Error("Respuesta vacía");
+            t = t.trim().replace(/^```json\s*/i, "").replace(/^```\s*/i, "").replace(/```$/i, "").trim();
+            const a = t.indexOf("{"), b = t.lastIndexOf("}");
+            if (a !== -1 && b !== -1 && b > a) { const c = t.slice(a, b + 1); try { return JSON.parse(c); } catch (_) { } }
+            return JSON.parse(t);
+        }
+
+        /* ===== Helpers ===== */
+        const $ = s => document.querySelector(s);
+        const msgEl = $('#mensaje'), ayuda = $('#ayuda'), content = $('#contentWrap');
+        const spinner = $('#spinnerContainer'), formColumn = $('#formColumn'), responseColumn = $('#responseColumn');
+        const suggestionsSection = $('#suggestionsSection'), suggestionsButtons = $('#suggestionsButtons');
+
+        function showMsg(text, type = "info") { msgEl.style.display = 'block'; msgEl.textContent = text; msgEl.style.color = (type === 'error') ? '#b91c1c' : '#0f172a'; }
+        function clearMsg() { msgEl.style.display = 'none'; msgEl.textContent = ''; }
+        function safeArr(v) { return Array.isArray(v) ? v : []; }
+        function safeStr(v, f = "") { return (typeof v === 'string') ? v : f; }
+
+        function showSpinner() {
+            spinner.classList.add('active');
+            formColumn.classList.add('hidden');
+            responseColumn.classList.add('fullwidth');
+        }
+
+        function hideSpinner() {
+            spinner.classList.remove('active');
+        }
+
+        /* ===== OpenAI client ===== */
+        async function callOpenAI(messages) {
+            const res = await fetch('<?= base_url('aprende/chat') ?>', {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ model: "gpt-4o-mini", temperature: 0.4, messages })
+            });
+            const data = await res.json().catch(() => null);
+            if (!res.ok) {
+                const rawError = String(data?.error || data?.message || `API ${res.status}`);
+                const normalized = rawError.toLowerCase();
+                if (normalized.includes('quota') || normalized.includes('billing') || normalized.includes('insufficient_quota')) {
+                    throw new Error('La cuenta de IA no tiene saldo disponible. Configura una API key con facturación activa para continuar.');
+                }
+                throw new Error(rawError);
+            }
+            return data?.content || "";
+        }
+
+        /* ===== Prompts actualizados con referencias ===== */
+        function promptSubtopics(subject, topic) {
+            return [
+                { role: "system", content: "Eres Classify, asistente pedagógico para 6°. Devuelve SOLO JSON válido." },
+                {
+                    role: "user", content: `
+Materia: ${subject}
+Tema general: ${topic}
+Devuelve EXACTAMENTE este JSON:
+{"subject":"${subject}","topic":"${topic}","grade":"6",
+ "subtopics":[
+  {"title":"Título descriptivo del subtema 1","why_relevant":"Explicación de 2-3 oraciones sobre por qué este subtema es importante y cómo se relaciona con la vida diaria de estudiantes de 6°.","one_sentence":"Descripción completa y clara en una oración que explique el concepto principal del subtema.","keywords":["palabra1","palabra2","palabra3","palabra4"]},
+  {"title":"Título descriptivo del subtema 2","why_relevant":"Explicación de 2-3 oraciones sobre por qué este subtema es importante y cómo se relaciona con la vida diaria de estudiantes de 6°.","one_sentence":"Descripción completa y clara en una oración que explique el concepto principal del subtema.","keywords":["palabra1","palabra2","palabra3","palabra4"]},
+  {"title":"Título descriptivo del subtema 3","why_relevant":"Explicación de 2-3 oraciones sobre por qué este subtema es importante y cómo se relaciona con la vida diaria de estudiantes de 6°.","one_sentence":"Descripción completa y clara en una oración que explique el concepto principal del subtema.","keywords":["palabra1","palabra2","palabra3","palabra4"]}
+  {"title":"Título descriptivo del subtema 4","why_relevant":"Explicación de 2-3 oraciones sobre por qué este subtema es importante y cómo se relaciona con la vida diaria de estudiantes de 6°.","one_sentence":"Descripción completa y clara en una oración que explique el concepto principal del subtema.","keywords":["palabra1","palabra2","palabra3","palabra4"]}
+  {"title":"Título descriptivo del subtema 5","why_relevant":"Explicación de 2-3 oraciones sobre por qué este subtema es importante y cómo se relaciona con la vida diaria de estudiantes de 6°.","one_sentence":"Descripción completa y clara en una oración que explique el concepto principal del subtema.","keywords":["palabra1","palabra2","palabra3","palabra4"]}
+
+ ]}
+Reglas: 3 subtemas distintos pero complementarios, comprensibles para 6°, textos extensos y detallados, sin texto fuera del JSON.
+`}];
+        }
+
+        function promptContent(subject, topic, subtopic, observations = "") {
+            return [
+                { role: "system", content: "Eres Classify, asistente pedagógico para 6°. Crea contenido extenso, detallado y educativo. Devuelve SOLO JSON válido." },
+                {
+                    role: "user", content: `
+Genera contenido de clase COMPLETO Y DETALLADO:
+Materia: ${subject}
+Tema: ${topic}
+Subtema: ${subtopic}
+${observations ? `Observaciones especiales: ${observations}` : ''}
+
+Devuelve EXACTAMENTE este JSON con contenido EXTENSO:
+{
+ "breadcrumb":"${subject} > ${topic} > ${subtopic}",
+ "title":"${subtopic}",
+ "synopsis":"Escribe un párrafo completo de 8-12 líneas que introduzca el tema de forma clara y atractiva para estudiantes de 6°. Debe explicar qué es el tema, por qué es importante, y cómo se relaciona con su vida diaria. Usa un lenguaje cercano pero educativo.",
+ "key_points":[
+   "Punto clave 1: Explicación detallada de 2-3 oraciones sobre este aspecto fundamental del tema. Incluye ejemplos específicos y claros.",
+   "Punto clave 2: Explicación detallada de 2-3 oraciones sobre este aspecto fundamental del tema. Incluye ejemplos específicos y claros.",
+   "Punto clave 3: Explicación detallada de 2-3 oraciones sobre este aspecto fundamental del tema. Incluye ejemplos específicos y claros.",
+   "Punto clave 4: Explicación detallada de 2-3 oraciones sobre este aspecto fundamental del tema. Incluye ejemplos específicos y claros.",
+   "Punto clave 5: Explicación detallada de 2-3 oraciones sobre este aspecto fundamental del tema. Incluye ejemplos específicos y claros."
+ ],
+ "objectives":[
+   "Objetivo de aprendizaje 1: Descripción completa en 1-2 oraciones de lo que el estudiante logrará comprender o hacer.",
+   "Objetivo de aprendizaje 2: Descripción completa en 1-2 oraciones de lo que el estudiante logrará comprender o hacer.",
+   "Objetivo de aprendizaje 3: Descripción completa en 1-2 oraciones de lo que el estudiante logrará comprender o hacer.",
+   "Objetivo de aprendizaje 4: Descripción completa en 1-2 oraciones de lo que el estudiante logrará comprender o hacer."
+ ],
+ "vocabulary":[
+   {"term":"Término 1","meaning":"Definición completa y clara del término en 2-3 oraciones, con ejemplo de uso si es relevante."},
+   {"term":"Término 2","meaning":"Definición completa y clara del término en 2-3 oraciones, con ejemplo de uso si es relevante."},
+   {"term":"Término 3","meaning":"Definición completa y clara del término en 2-3 oraciones, con ejemplo de uso si es relevante."},
+   {"term":"Término 4","meaning":"Definición completa y clara del término en 2-3 oraciones, con ejemplo de uso si es relevante."},
+   {"term":"Término 5","meaning":"Definición completa y clara del término en 2-3 oraciones, con ejemplo de uso si es relevante."}
+ ],
+ "visual_ideas":[
+   "Idea visual 1: Descripción detallada de cómo crear o usar este recurso visual (mapa mental, diagrama, etc.)",
+   "Idea visual 2: Descripción detallada de cómo crear o usar este recurso visual",
+   "Idea visual 3: Descripción detallada de cómo crear o usar este recurso visual",
+   "Idea visual 4: Descripción detallada de cómo crear o usar este recurso visual"
+ ],
+ "mini_timeline":[
+   {"year":"Fecha/periodo 1","event":"Descripción completa del evento o hecho importante en 1-2 oraciones."},
+   {"year":"Fecha/periodo 2","event":"Descripción completa del evento o hecho importante en 1-2 oraciones."},
+   {"year":"Fecha/periodo 3","event":"Descripción completa del evento o hecho importante en 1-2 oraciones."},
+   {"year":"Fecha/periodo 4","event":"Descripción completa del evento o hecho importante en 1-2 oraciones."}
+ ],
+ "quick_activity":{
+   "title":"Título atractivo de actividad práctica de 15-20 minutos",
+   "time_min":18,
+   "steps":[
+     "Paso 1: Instrucción detallada y clara de qué hacer en este paso, con ejemplos si es necesario.",
+     "Paso 2: Instrucción detallada y clara de qué hacer en este paso, con ejemplos si es necesario.",
+     "Paso 3: Instrucción detallada y clara de qué hacer en este paso, con ejemplos si es necesario.",
+     "Paso 4: Instrucción detallada y clara de qué hacer en este paso, con ejemplos si es necesario.",
+     "Paso 5: Instrucción detallada y clara de qué hacer en este paso, con ejemplos si es necesario."
+   ],
+   "materials":["Material 1 con descripción","Material 2 con descripción","Material 3 con descripción"]
+ },
+ "check_questions":[
+   {"type":"open","question":"Pregunta abierta completa y bien formulada que invite a la reflexión profunda sobre el tema.","answer":"Respuesta guía de 3-4 oraciones que explique los puntos clave que el estudiante debería mencionar."},
+   {"type":"option","question":"Pregunta de opción múltiple bien formulada y clara.","options":["Opción A con descripción completa","Opción B con descripción completa","Opción C con descripción completa","Opción D con descripción completa"],"correct":"A"},
+   {"type":"true_false","question":"Afirmación completa y bien estructurada que pueda ser verdadera o falsa, con suficiente contexto.","answer":"Verdadero","explanation":"Explicación de 2-3 oraciones de por qué esta respuesta es correcta y qué conceptos importantes ilustra."}
+ ],
+ "references":[
+   {"title":"Nombre completo del libro, artículo o recurso académico relevante","url":"https://ejemplo.com/recurso1","type":"libro","description":"Breve descripción de 1-2 oraciones sobre qué información útil contiene este recurso."},
+   {"title":"Nombre del video educativo o documental","url":"https://youtube.com/watch?v=ejemplo","type":"video","description":"Breve descripción de 1-2 oraciones sobre qué información útil contiene este recurso."},
+   {"title":"Nombre del sitio web educativo o artículo online","url":"https://sitio-educativo.com/articulo","type":"web","description":"Breve descripción de 1-2 oraciones sobre qué información útil contiene este recurso."}
+ ],
+ "additional_resources":[
+   "Recurso adicional 1: Descripción de juego, app, experimento o actividad complementaria",
+   "Recurso adicional 2: Descripción de juego, app, experimento o actividad complementaria",
+   "Recurso adicional 3: Descripción de juego, app, experimento o actividad complementaria",
+   "Recurso adicional 4: Descripción de juego, app, experimento o actividad complementaria"
+ ]
+}
+
+IMPORTANTE:
+- Todos los textos deben ser EXTENSOS y DETALLADOS
+- Las explicaciones deben tener mínimo 2-3 oraciones
+- Usa lenguaje claro pero completo
+- Incluye ejemplos concretos cuando sea posible
+- Las preguntas deben ser solo 3 pero muy bien elaboradas
+- Referencias deben ser recursos REALES y verificables cuando sea posible
+- Sin texto fuera del JSON
+`}];
+        }
+
+        /* ===== Barra TEMAS y contenido ===== */
+        let contentCache = new Map();
+        let currentObservations = "";
+        let allSubtopics = [];
+        let currentSubject = "";
+        let currentTopic = "";
+
+        function renderSuggestionButtons(list, subject, topic, currentSubtopic) {
+            suggestionsButtons.innerHTML = "";
+            const items = safeArr(list).slice(0, 3).filter(s => s.title !== currentSubtopic);
+
+            if (items.length === 0) { suggestionsSection.style.display = 'none'; return; }
+
+            items.forEach(s => {
+                const title = safeStr(s.title, "Tema");
+                const btn = document.createElement('button');
+                btn.className = 'suggestion-btn';
+                btn.textContent = title;
+                btn.title = safeStr(s.one_sentence || s.why_relevant || title);
+                btn.onclick = () => selectSubtopic(subject, topic, title);
+                suggestionsButtons.appendChild(btn);
+            });
+
+            suggestionsSection.style.display = 'block';
+        }
+
+        function renderContent(d, subject, topic, subtopic) {
+            $('#crumb').textContent = safeStr(d.breadcrumb, `${subject} > ${topic} > ${subtopic}`);
+            $('#title').textContent = safeStr(d.title, subtopic);
+            $('#synopsis').textContent = safeStr(d.synopsis);
+            $('#vocab').innerHTML = safeArr(d.vocabulary).map(v => `<span class="badge" title="${safeStr(v.meaning)}">${safeStr(v.term)}</span>`).join('') || '<span class="muted">—</span>';
+            $('#visualIdeas').innerHTML = safeArr(d.visual_ideas).map(x => `<span class="pill">${x}</span>`).join('') || '<span class="muted">—</span>';
+            $('#keypoints').innerHTML = safeArr(d.key_points).map(i => `<li style="margin-bottom:10px;">${i}</li>`).join('');
+            $('#objectives').innerHTML = safeArr(d.objectives).map(i => `<li style="margin-bottom:8px;">${i}</li>`).join('');
+            const tl = safeArr(d.mini_timeline); $('#timeline').innerHTML = tl.length ? tl.map(e => `${safeStr(e.year)}: ${safeStr(e.event)}`).join(' · ') : '—';
+            const act = d.quick_activity || {}, t = (typeof act.time_min === 'number') ? ` · ~${act.time_min} min` : '';
+            $('#actTitle').textContent = (act.title || 'Actividad') + t;
+            $('#actSteps').innerHTML = safeArr(act.steps).map(s => `<li style="margin-bottom:8px;">${s}</li>`).join('');
+            $('#actMeta').innerHTML = act.materials ? `Materiales: ${safeArr(act.materials).join(', ')}` : '';
+
+            // Renderizar preguntas de chequeo (solo 3)
+            const checks = safeArr(d.check_questions).slice(0, 3);
+            $('#checks').innerHTML = checks.map((q, idx) => {
+                let html = `<li style="margin-bottom:15px;"><strong>Pregunta ${idx + 1}:</strong> ${safeStr(q.question)}<br>`;
+
+                if (q.type === 'option') {
+                    html += '<ul style="list-style-type: none; padding-left: 20px; margin-top: 8px;">';
+                    safeArr(q.options).forEach((opt, i) => {
+                        const isCorrect = q.correct === String.fromCharCode(65 + i);
+                        html += `<li style="margin: 5px 0;">${String.fromCharCode(65 + i)}) ${opt}${isCorrect ? ' ✓' : ''}</li>`;
+                    });
+                    html += '</ul>';
+                } else if (q.type === 'true_false') {
+                    html += `<em style="color: #059669; margin-top: 5px; display: block;">Respuesta: ${safeStr(q.answer)}</em>`;
+                    if (q.explanation) {
+                        html += `<span style="color: #64748b; font-size: 14px; display: block; margin-top: 5px;">${safeStr(q.explanation)}</span>`;
+                    }
+                } else if (q.type === 'open') {
+                    html += `<em style="color: #059669; margin-top: 5px; display: block;">Guía de respuesta: ${safeStr(q.answer)}</em>`;
+                }
+
+                html += '</li>';
+                return html;
+            }).join('');
+
+            // Renderizar referencias con descripción
+            const refs = safeArr(d.references);
+            const refIcons = { 'libro': '📖', 'video': '🎥', 'web': '🌐', 'default': '🔗' };
+            $('#references').innerHTML = refs.length ? refs.map(r => `
+    <a href="${safeStr(r.url)}" target="_blank" class="reference-link">
+      ${refIcons[r.type] || refIcons.default} <strong>${safeStr(r.title)}</strong>
+      ${r.description ? `<br><span style="font-size:14px;color:#64748b;">${safeStr(r.description)}</span>` : ''}
+    </a>
+  `).join('') : '<p class="muted">No hay referencias disponibles.</p>';
+
+            // Renderizar recursos adicionales
+            const resources = safeArr(d.additional_resources);
+            $('#resources').innerHTML = resources.length ? '<strong>Otros recursos:</strong><br>' + resources.map(r => `<span class="resource-badge">${r}</span>`).join('') : '';
+
+            // Renderizar botones de sugerencias
+            renderSuggestionButtons(allSubtopics, subject, topic, subtopic);
+
+            content.style.display = 'block';
+            document.getElementById('suggestionsSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        async function selectSubtopic(subject, topic, title) {
+            try {
+                showSpinner();
+                if (contentCache.has(title)) {
+                    hideSpinner();
+                    renderContent(contentCache.get(title), subject, topic, title);
+                    return;
+                }
+                const raw = await callOpenAI(promptContent(subject, topic, title, currentObservations));
+                const data = parseLLMJson(raw);
+                contentCache.set(title, data);
+                hideSpinner();
+                renderContent(data, subject, topic, title);
+            } catch (err) {
+                hideSpinner();
+                showMsg('Error al cargar contenido: ' + err.message, 'error');
+            }
+        }
+
+        /* ===== Submit ===== */
+        $('#agendaForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            clearMsg();
+            content.style.display = 'none';
+            suggestionsSection.style.display = 'none';
+            contentCache = new Map();
+
+            const materia = $('#materia').value.trim();
+            const tema = $('#tema').value.trim();
+            currentObservations = $('#observaciones').value.trim();
+
+            if (!materia || !tema) {
+                showMsg('Completa "Materia" y "Tema" antes de guardar.', 'error');
+                return;
+            }
+
+            currentSubject = materia;
+            currentTopic = tema;
+            showSpinner();
+
+            try {
+                // Primero guardar en la base de datos
+                const saveResponse = await fetch('<?= base_url('aprende/guardarClase') ?>', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: new URLSearchParams({
+                        materia: materia,
+                        tema: tema,
+                        observaciones: currentObservations
+                    })
+                });
+
+                const saveResult = await saveResponse.json();
+
+                if (!saveResult.success) {
+                    hideSpinner();
+                    formColumn.classList.remove('hidden');
+                    responseColumn.classList.remove('fullwidth');
+                    showMsg('Error al guardar: ' + saveResult.message, 'error');
+                    return;
+                }
+
+                // Si se guardó correctamente, generar el contenido con OpenAI
+                const raw = await callOpenAI(promptSubtopics(materia, tema));
+                const json = parseLLMJson(raw);
+                allSubtopics = json.subtopics || [];
+
+                // Cargar automáticamente el primer tema
+                if (allSubtopics.length > 0) {
+                    const firstTopic = allSubtopics[0].title;
+                    await selectSubtopic(materia, tema, firstTopic);
+                } else {
+                    hideSpinner();
+                    showMsg('No se pudieron generar subtemas. Intenta de nuevo.', 'error');
+                }
+            } catch (err) {
+                hideSpinner();
+                formColumn.classList.remove('hidden');
+                responseColumn.classList.remove('fullwidth');
+                showMsg('Error al generar subtemas: ' + err.message, 'error');
+            }
+        });
+    </script>
+    <script src="<?= base_url('js/active.js') ?>"></script>
+    <script src="<?= base_url('js/chatbot.js?v=' . filemtime(FCPATH . 'js/chatbot.js')) ?>"></script>
+</body>
+
+</html>
