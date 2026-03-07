@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@200;300;400;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=ABeeZee:ital@0;1&family=Lalezar&display=swap');
 
 :root {
     --green: #008000;
@@ -19,17 +19,22 @@
 
 * {
     margin: 0;
-    font-family: 'Nunito Sans', sans-serif;
+    font-family: "ABeeZee", sans-serif;
 }
 
 html, body {
-    height: 100%;
     margin: 0;
     padding: 0;
 }
 
 body {
     margin: 0;
+}
+
+body.inicioimg {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
 main {
@@ -95,14 +100,12 @@ ul {
     list-style-type: none;
 }
 
-main.contentinicio,
+
 .contentinicio {
-    flex: 1 0 auto;
+    flex: 1;
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 90%;
-    margin-bottom: 0;
 }
 
 header {
@@ -168,7 +171,8 @@ header.brandinicio .brand .logo {
 header.brandinicio .brand a {
     text-decoration: none;
     color: var(--green);
-    font-weight: 800;
+    font-family: "Lalezar", sans-serif;
+    font-weight: 200;
     font-size: 20px;
     letter-spacing: -0.5px;
 }
@@ -342,6 +346,13 @@ header.brandinicio .info-icon:hover {
 
 .info-panel:target {
     display: flex !important;
+}
+
+.tituloinicio{
+    font-family: "Lalezar", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    text-align: center;
 }
 
 .info-content {
@@ -530,80 +541,75 @@ header.brandinicio .info-icon:hover {
     background: rgba(255, 255, 255, 0.8);
 }
 
-.footer {
-    background-color: #036103;
-    color: #fff;
-    font-family: 'Nunito Sans', sans-serif;
-    font-size: 15px;
-    text-align: center;
-    padding: 20px 14px 0px 20px;
-    position: relative;
-    width: auto;
+.f4 {
+  background: #f8faf8;
+  border-top: 1px solid #d4e8d4;
+  padding: 48px 40px 32px;
+  text-align: center;
 }
 
-.footer a {
-    color: white;
-    text-decoration: none;
+.f4-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
 }
 
-.footer ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+.f4-icon {
+  width: 40px; height: 40px;
+  background: linear-gradient(135deg, var(--green), var(--green-mid));
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 900; font-size: 16px; color: #fff;
 }
 
-.footer-container {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    gap: 80px;
-    flex-wrap: wrap;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
+.f4-logo-name {
+  font-weight: 900;
+  font-size: 22px;
+  color: var(--green);
 }
 
-div.footer-container {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    gap: 80px;
-    flex-wrap: wrap;
-    text-align: left;
-    padding-bottom: 15px;
+.f4-desc {
+  max-width: 460px;
+  margin: 0 auto 28px;
+  color: var(--gris);
+  font-size: 14px;
+  line-height: 1.7;
 }
 
-.footer-col {
-    text-align: center;
+.f4-links {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 6px 0;
+  margin-bottom: 28px;
 }
 
-.footer-col h4 {
-    margin-bottom: 10px;
-    font-weight: 700;
+.f4-links a {
+  color: var(--gris);
+  font-size: 13.5px;
+  padding: 0 18px;
+  border-right: 1px solid var(--border);
+  transition: color .2s;
+  line-height: 1;
 }
 
-.footer-col p,
-.footer-col a {
-    color: #fff;
-    font-size: 14px;
-    line-height: 1.6;
-    text-decoration: none;
+.f4-links a:last-child { border-right: none; }
+.f4-links a:hover { color: var(--green); }
+
+.f4-divider {
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--green), var(--orange));
+  border-radius: 2px;
+  margin: 0 auto 20px;
 }
 
-.footer-col a:hover {
-    color: var(--orangered);
+.f4-copy {
+  font-size: 12px;
+  color: #b0bec5;
 }
 
-.footer-bottom {
-    border-top: 1px solid rgba(255, 255, 255, 0.2);
-    padding-top: 13px;
-    font-size: 13px;
-    text-align: center;
-}
-
-.footer-text {
-    text-align: center;
-}
 
 #preloader {
     position: fixed;
