@@ -8,13 +8,12 @@
     --orangered:#F38F02;
     --amarillodorado: #F5B027;
     --rojointenso: #f80000;
-    --orangelight: #cbaa9e;
     --azulceleste: #58f1ff;
-    --muted:#64748b;
+    --gris:#64748b;
     --border:#e5e7eb;
     --soft:#f9fafc;
-    --card:#ffffff;
-    --black: #000000;
+    --blanco:#ffffff;
+    --negro: #000000;
     --max:1200px;
 }
 
@@ -165,7 +164,7 @@ a.botoninicio{
 /* Inicio.php */
 
 .hero-section {
-    background: #e9f9e4;
+    background: var(--card);
     padding: 80px 20px;
     min-height: 600px;
     display: flex;
