@@ -16,7 +16,7 @@ class ClassifyChat {
         const chatHTML = `
             <!-- Botón flotante del chat -->
             <div class="chat-bubble" id="chatBubble">
-                <img src="${this.getBaseUrl()}img/icons/btnchat.png" alt="Ayuda">
+                <img src="${this.getBaseUrl()}img/btnchat.png" alt="Ayuda">
                 <span class="chat-badge">?</span>
             </div>
 
