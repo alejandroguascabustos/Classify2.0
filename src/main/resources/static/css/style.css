@@ -101,12 +101,7 @@ ul {
 }
 
 
-.contentinicio {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+
 
 header {
     display: flex;
@@ -490,6 +485,52 @@ header.brandinicio .info-icon:hover {
         transform: translateX(0);
     }
 }
+
+/*contenidoinicio*/
+.contentinicio {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.contenidoinicio{
+    height: 85vh;
+    width: 100%;
+    padding: 15px;
+    padding-left: 0px;
+    gap: 70px;
+    display: flex;
+}
+
+.registro{
+    margin-left: 0px;
+    height: 85vh;
+    width: 42%;
+    background-color: rgb(190, 188, 188);
+}
+
+.socialmedia{
+    margin-left: 0px;
+    margin-top: 25%;
+    height: 30%;
+    width: 60px;
+    background-color: var(--green);
+    border-radius: 0px 15px 15px 0px;
+
+}
+
+img.socialmedia{
+    width: 50%;
+    height: 13%;
+    padding: 14px;
+    background: transparent;
+
+}
+
+
+
+/*contenidoinicio*/
 
 .carousel-container {
     position: relative;
