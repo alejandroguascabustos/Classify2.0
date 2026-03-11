@@ -211,7 +211,7 @@ header.brandinicio .brand2 a.info-btn {
 }
 
 header.brandinicio .brand2 a.info-btn:hover {
-    background-color: var(--green);
+    background-color: var(--green-dark);
     color: #ffffff;
 }
 
@@ -230,7 +230,7 @@ header.brandinicio .auth {
 
 a.info-btnini2 {
     text-decoration: none;
-    background-color: var(--green);
+    background-color: var(--green-dark);
     color: var(--gris);
     font-weight: bolder;
     font-size: 17px;
@@ -249,10 +249,10 @@ a.info-btnini2:hover {
 header.brandinicio a.info-btnini2 {
     text-decoration: none;
     background-color: transparent;
-    color: var(--green);
+    color: var(--green-dark);
     font-weight: 700;
     font-size: 15px;
-    border: 2px solid var(--green);
+    border: 2px solid var(--green-dark);
     border-radius: 25px;
     padding: 8px 18px;
     transition: all 0.3s ease;
@@ -260,7 +260,7 @@ header.brandinicio a.info-btnini2 {
 
 header.brandinicio a.info-btnini2:hover {
 
-    background-color: var(--green);
+    background-color: var(--green-dark);
     color: #ffffff;
    
 }
@@ -358,13 +358,6 @@ header.brandinicio .info-icon:hover {
 
 .info-panel:target {
     display: flex !important;
-}
-
-.tituloinicio{
-    font-family: "Lalezar", sans-serif;
-    font-weight: 400;
-    font-style: normal;
-    text-align: center;
 }
 
 .info-content {
@@ -503,34 +496,186 @@ header.brandinicio .info-icon:hover {
     display: flex;
 }
 
-.registro{
-    margin-left: 0px;
-    height: 85vh;
-    width: 42%;
-    background-color: rgb(190, 188, 188);
-}
-
-.socialmedia{
-    margin-left: 0px;
-    margin-top: 25%;
-    height: 30%;
-    width: 60px;
-    background-color: var(--green);
-    border-radius: 0px 15px 15px 0px;
-
-}
-
-img.socialmedia{
-    width: 50%;
-    height: 13%;
-    padding: 14px;
-    background: transparent;
-
+.registro {
+  margin-left: 0px;
+  height: 85vh;
+  width: 39%;
+  padding: 0px 35px;
+  background: var(--blanco);
+  position: relative;
+  overflow: hidden;
 }
 
 
 
-/*contenidoinicio*/
+
+.registroiniciobotones {
+  display: flex;
+  padding: 5px;
+  margin-top: 60px;
+  justify-content: center;
+  background: var(--border);
+  border-radius: 35px;
+  gap: 4px;
+}
+
+.botonesregistroinicioprofesor,
+.botonesregistroinicioalumno {
+  font-size: 34px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 30px;
+  padding: 5px 85px;
+  cursor: pointer;
+  border: none;
+  font-family: "ABeeZee";
+  transition: all 0.25s ease;
+  letter-spacing: -0.3px;
+}
+
+.botonesregistroinicioprofesor {
+  background-color: var(--green-dark);
+  color: var(--blanco);
+  box-shadow: 0 4px 16px rgba(0, 128, 0, 0.25);
+}
+
+.botonesregistroinicioprofesor:hover {
+  background-color: var(--green-light2);
+  box-shadow: 0 6px 20px rgba(0, 128, 0, 0.35);
+  transform: translateY(-1px);
+}
+
+.botonesregistroinicioalumno {
+  background-color: transparent;
+  color: var(--gris);
+}
+
+.botonesregistroinicioalumno:hover {
+  background-color: var(--blanco);
+  color: var(--negro);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+
+.titulo {
+  font-family: "ABeeZee";
+  font-size: 50px;
+  text-align: center;
+  padding-top: 74px;
+  color: var(--negro);
+  line-height: 1.15;
+  letter-spacing: -1px;
+}
+
+
+.parrafotitulo {
+  color: var(--gris);
+  padding-top: 20px;
+  font-size: 14px;
+  line-height: 1.7;
+  padding-left: 14px;
+  margin-left: 2px;
+}
+
+
+.tituloiniciocontenido input[type="email"] {
+  width: 100%;
+  padding: 13px 18px;
+  margin-top: 55px;
+  border: 1.5px solid var(--border);
+  border-radius: 50px;
+  font-size: 14px;
+  font-family: "ABeeZee";
+  background: var(--blanco);
+  color: var(--negro);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-sizing: border-box;
+}
+
+.tituloiniciocontenido input[type="email"]:focus {
+  border-color: var(--green);
+  box-shadow: 0 0 0 3px rgba(0, 128, 0, 0.1);
+}
+
+.tituloiniciocontenido input[type="email"]::placeholder {
+  color: var(--green-light);
+  font-size: 18px;
+}
+
+.tituloiniciocontenido input[type="submit"] {
+  width: 100%;
+  padding: 13px;
+  margin-top: 10px;
+  background: var(--green-dark);
+  color: var(--blanco);
+  border: none;
+  border-radius: 50px;
+  font-size: 20px;
+  font-family: "ABeeZee";
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.2s, box-shadow 0.2s;
+}
+
+.tituloiniciocontenido input[type="submit"]:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(0, 128, 0, 0.3);
+}
+
+
+.socialmedia {
+  margin-left: 0px;
+  margin-top: 25%;
+  height: 30%;
+  width: 60px;
+  background-color: var(--green-dark);
+  border-radius: 0px 20px 20px 0px;
+}
+
+img.socialmedia {
+  width: 50%;
+  height: 13%;
+  padding: 14px;
+  background: transparent;
+  filter: drop-shadow(0 2px 6px rgba(0, 128, 0, 0.2));
+  transition: filter 0.2s, transform 0.2s;
+}
+img.check {
+  width: 50px;
+  height: 13%;
+  padding: 14px;
+  background: transparent;
+  filter: drop-shadow(0 2px 6px rgba(0, 128, 0, 0.2));
+  transition: filter 0.2s, transform 0.2s;
+}
+
+img.socialmedia:hover {
+  filter: drop-shadow(0 4px 12px rgba(0, 128, 0, 0.4));
+  transform: scale(1.05);
+}
+
+
+.tituloiniciocontenido > div {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  margin-top: 30px;
+  padding: 14px 16px;
+  background: var(--blanco);
+  border-radius: 12px;
+}
+
+.tituloiniciocontenido > div p {
+  font-size: 12px;
+  color: var(--gris);
+  line-height: 1.6;
+  margin: 0;
+}
+
+
+/*fin contenidoinicio*/
 
 .carousel-container {
     position: relative;
