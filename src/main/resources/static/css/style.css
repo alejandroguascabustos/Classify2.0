@@ -202,6 +202,7 @@ header.brandinicio .brand2 {
     gap: 88px;
     flex: 1;
     justify-content: center;
+    margin-left: 15%;
 }
 
 header.brandinicio .brand2 a.info-btn {
@@ -263,9 +264,22 @@ header.brandinicio a.info-btnini2 {
 }
 
 header.brandinicio a.info-btnini2:hover {
+
     background-color: var(--green);
     color: #ffffff;
+   
 }
+
+img.perfilinicio{
+    vertical-align: -1px;
+    width: 15px;
+    margin-right: 5px;
+    padding-top: 2px;
+}
+header.brandinicio a.info-btnini2:hover img.perfilinicio {
+    filter: contrast(0%) brightness(2);
+}
+
 
 a.info-btnini {
     text-decoration: none;
@@ -294,6 +308,9 @@ a.info-btnini:hover {
     background-color: var(--gris);
     transition: 0.5s;
 }
+
+
+
 
 header.brandinicio a.info-btnini {
     text-decoration: none;
