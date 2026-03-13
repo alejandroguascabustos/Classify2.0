@@ -2,7 +2,7 @@
 
 :root {
     --green: #008000;
-    --green-dark: #22cc22;
+    --green-dark: #008000;
     --green-light2: #35b50b;
     --green-light: #aec9a5;
     --orangered: #F38F02;
@@ -174,7 +174,7 @@ header.brandinicio .brand a {
 
 .brand2 {
     gap: 60px;
-    display: contents;
+    display: contents;  
     align-items: center;
     margin-right: 50px;
 }
@@ -566,6 +566,7 @@ header.brandinicio .info-icon:hover {
   color: var(--negro);
   line-height: 1.15;
   letter-spacing: -1px;
+  margin-top: 50px;
 }
 
 
@@ -643,7 +644,7 @@ img.socialmedia {
   transition: filter 0.2s, transform 0.2s;
 }
 img.check {
-  width: 50px;
+  width: 37px;
   height: 13%;
   padding: 14px;
   background: transparent;
@@ -672,6 +673,12 @@ img.socialmedia:hover {
   color: var(--gris);
   line-height: 1.6;
   margin: 0;
+}
+
+.parrafotitulo p {
+    margin-top: 18px;
+    display: flex;
+    align-items: center; 
 }
 
 
