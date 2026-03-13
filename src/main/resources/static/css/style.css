@@ -153,11 +153,13 @@ header.brandinicio {
 header.brandinicio .brand {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 0px;
     flex-shrink: 0;
 }
 
 header.brandinicio .brand .logo {
+    display: flex;
+    align-items: center;
     width: 38px;
     height: 38px;
     object-fit: contain;
@@ -167,7 +169,7 @@ header.brandinicio .brand a {
     text-decoration: none;
     color: var(--green);
     font-family: "Lalezar", sans-serif;
-    font-weight: 200;
+    font-weight: lighter;
     font-size: 20px;
     letter-spacing: -0.5px;
 }
