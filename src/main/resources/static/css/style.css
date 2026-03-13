@@ -124,7 +124,7 @@ header.brandinicio {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 12px 10px;
+    padding: 5px 10px;
     background-color: #ffffff;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
     position: sticky;
@@ -140,7 +140,7 @@ header.brandinicio {
 
 .brand .logo {
     width: 40px;
-    margin-right: 10px;
+    margin-right: 5px;
 }
 
 .brand a {
@@ -160,7 +160,7 @@ header.brandinicio .brand {
 header.brandinicio .brand .logo {
     display: flex;
     align-items: center;
-    width: 38px;
+    width: 50px;
     height: 38px;
     object-fit: contain;
 }
