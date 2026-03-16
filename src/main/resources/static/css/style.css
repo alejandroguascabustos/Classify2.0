@@ -39,7 +39,13 @@ body.inicioimg {
 
 main {
     flex: 1;
+<<<<<<< HEAD
 
+=======
+    background-image: none;
+    background-repeat: no-repeat;
+    background-size: cover;
+>>>>>>> a5a7922e0bf2f30477ff481aee3c778357081219
 }
 
 p {
