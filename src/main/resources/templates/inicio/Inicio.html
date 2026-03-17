@@ -75,8 +75,11 @@
                 <div class="tituloiniciocontenido">
                     <h1 class="titulo">Agenda tus clases ahora</h1>
                     <p class="parrafotitulo">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Illum officia quos dolores numquam vitae ipsa odio ratione earum quisquam labore voluptatum eum libero eligendi, ut veritatis, veniam quasi! Maiores, dolore.</p>
-                    <input type="email" name="" id="" placeholder="Ingresa tu correo electronico">
-                    <input type="submit" value="Inicia Sesión"> 
+                    <form id="welcomeForm" class="welcome-form" novalidate>
+                        <input type="email" name="email" id="welcomeEmail" placeholder="Ingresa tu correo electronico" required>
+                        <input type="submit" id="welcomeSubmit" value="Inicia Sesión">
+                        <p id="welcomeStatus" class="welcome-status" aria-live="polite"></p>
+                    </form>
                     <div>
                         <img th:src="@{/img/check.png}" alt="tiktok" class="check">
                         <p class="parrafoinicio">Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis ab architecto, hic tenetur sequi laudantium iste iure eveniet dolorem in aut nam eligendi, sint unde sit animi deleniti? Optio, laudantium.</p>
@@ -127,6 +130,7 @@
     <script th:src="@{/js/chatbot.js}"></script>
     <script th:src="@{/js/carousel.js}"></script>
     <script th:src="@{/js/botonesinicio.js}"></script>
+    <script th:src="@{/js/welcome-webhook.js}"></script>
 
 
 </body>
