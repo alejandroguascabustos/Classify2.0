@@ -1,0 +1,41 @@
+{
+  "name": "inicia sesión - home",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "a54058de-22a2-488b-956c-21bc5520d6a0",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "714b6162-1e28-443b-acf2-712c6abcb291",
+      "name": "Webhook",
+      "webhookId": "a54058de-22a2-488b-956c-21bc5520d6a0"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "versionId": "73c503e3-9ac5-43bc-b046-c7212cdc7ae8",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "aac64d815c0cc8700e5c2f7728fe76208c3386736ec3f2c16218a3ba9aa24a0c"
+  },
+  "id": "AtiJ2vMgDqKyoyTioROcI",
+  "tags": []
+}

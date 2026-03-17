@@ -8,6 +8,11 @@ public class VistasController {
     
     @GetMapping("/inicio")
     public String mostrarHome(){
-        return "inicio/inicio"; 
+        return "inicio/Inicio";
+    }
+
+    @GetMapping("/")
+    public String mostrarRoot(){
+        return "redirect:/inicio";
     }
 }
