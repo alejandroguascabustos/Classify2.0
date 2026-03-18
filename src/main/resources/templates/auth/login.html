@@ -1,41 +1,40 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
     <title>Classify - Inicio</title>
-    <link rel="stylesheet" href="<?= base_url('css/style.css?v=' . time()) ?>">
-    <link rel="stylesheet" href="<?= base_url('css/chatbot.css?v=' . time()) ?>">
-    <link rel="shortcut icon" href="<?= base_url('favicon.ico') ?>" type="image/x-icon">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/chatbot.css}">
+    <link rel="shortcut icon" th:href="@{img/favicon.ico}" type="image/x-icon">
 </head>
 
 <body class="inicioimg">
 
     <header class="brandinicio">
         <div class="brand">
-            <a href="<?= base_url('inicio') ?>"><img src="<?= base_url('img/icons/logo.png') ?>" alt="logo"
-                    class="logo"> </a>
-            <a href="<?= base_url('inicio') ?>">Classify</a>
+            <a th:href="@{/inicio}"><img th:src="@{/img/logo.png}" alt="logo" class="logo"></a>
+            <a th:href="@{/inicio}">Classify</a>
         </div>
 
-
         <div class="brand2">
-            <a href="<?= base_url('inicio') ?>" class="info-btn" alt="Información">Inicio</a>
-            <a href="<?= base_url('nosotros') ?>" class="info-btn" alt="Información">Nosotros</a>
-            <a href="<?= base_url('contacto') ?>" class="info-btn" alt="Información">Contacto</a>
-            <div class="auth">
-                <a href="<?= base_url('login') ?>" class="info-btnini2" alt="Información">Inicio Sesión</a>
-                <a href="<?= base_url('registro') ?>" class="info-btnini" alt="Información">Registro</a>
-            </div>
+            <a th:href="@{/inicio}" class="info-btn" alt="Información">Inicio</a>
+            <a th:href="@{/nosotros}" class="info-btn" alt="Información">Nosotros</a>
+            <a th:href="@{/contacto}" class="info-btn" alt="Información">Contacto</a>
+            
+        </div>
+
+        <div class="auth">
+            <a th:href="@{/registro}" class="info-btnini" alt="Información">Registro</a>
         </div>
         <div>
             <a href="#info" class="info-btn">
-                <img src="<?= base_url('img/icons/informacion.png') ?>" alt="Información" class="info-icon">
+                <img th:src="@{/img/informacion.png}" alt="Información" class="info-icon">
             </a>
             <div id="info" class="info-panel">
                 <div class="info-content">
                     <a href="#" class="close">&times;</a>
-                    <img src="<?= base_url('img/icons/agenda.png') ?>" width='80px'>
+                    <img th:src="@{/img/icons/agenda.png}" width='80px'>
                     <h4>¿Porque agendas tus clases?</h4>
                     <p class="textoinfo">La implementación de una página web para agendar clases en el colegio Moralba
                         Sur Oriental representa una herramienta fundamental para optimizar la organización académica y
@@ -64,23 +63,23 @@
         <div class="login-wrapper">
             <div class="login-container">
                 <div class="imagenlogin">
-                    <img src=<?= base_url('img/icons/lapizlogin.gif') ?> alt="Imagen de login">
+                    <img th:src="@{/img/lapizlogin.gif}" alt="Imagen de login">
                 </div>
                 <h2 class="login-title">Iniciar sesión</h2>
 
-                <?php if (session()->has('mensaje')): ?>
-                    <div class="alert alert-danger" style="color: red; padding: 10px; margin: 10px 0; border: 1px solid red; border-radius: 5px; background-color: #ffe6e6;">
-                        <?= session('mensaje') ?>
-                    </div>
-                <?php endif; ?>
+                <div th:if="${mensaje}"
+                     class="alert alert-danger"
+                     style="color: red; padding: 10px; margin: 10px 0; border: 1px solid red; border-radius: 5px; background-color: #ffe6e6;">
+                    <span th:text="${mensaje}"></span>
+                </div>
 
-                <form action="<?= base_url('login/auth') ?>" method="post" class="login-form">
+                <form th:action="@{/login/auth}" method="post" class="login-form">
                     <div class="mb-3">
-                        <label for="" class="labellogin">Ingresa tu usuario</label>
+                        <label class="labellogin">Ingresa tu usuario</label>
                         <input type="text" name="usuario" required placeholder="Juan123">
                     </div>
                     <div class="mb-3">
-                        <label for="" class="labellogin">Ingresa tu contraseña</label>
+                        <label class="labellogin">Ingresa tu contraseña</label>
                         <input type="password" name="password" required placeholder="••••••">
                     </div>
                     <div class="text-center">
@@ -89,8 +88,8 @@
                 </form>
 
                 <div class="login-links">
-                    <a href="<?= base_url('recuperar-password') ?>" class="forgot-password">¿Olvidaste tu contraseña?</a>
-                    <p class="registro-link">¿No tienes cuenta? <a href="<?= base_url('registro') ?>">Regístrate aquí</a></p>
+                    <a th:href="@{/recuperar-password}" class="forgot-password">¿Olvidaste tu contraseña?</a>
+                    <p class="registro-link">¿No tienes cuenta? <a th:href="@{/registro}">Regístrate aquí</a></p>
                 </div>
 
                 <p class="error-message"></p>
@@ -98,32 +97,30 @@
         </div>
     </main>
 
-    <footer class="footer">
-        <div class="footer-container">
-            <div class="footer-col">
-                <h4>Sobre nosotros</h4>
-                <p>
-                    Classify es una plataforma para la gestión de clases y servicios,
-                    diseñada para mejorar la experiencia academica y administrativa en los colegios.
-                </p>
-            </div>
-            <div class="footer-col">
-                <h4>Enlaces útiles</h4>
-                <ul>
-                    <li><a href="<?= base_url('politicas') ?>">Política de privacidad</a></li>
-                    <li><a href="<?= base_url('terminos') ?>">Términos y condiciones</a></li>
-                    <li><a href="<?= base_url('contacto') ?>">Contacto Colegio</a></li>
-                    <li><a href="<?= base_url('soporte') ?>">Soporte App</a></li>
-                </ul>
-            </div>
+    <footer class="f4">
+        <div class="f4-logo">
+            <div class="f4-icon">C</div>
+            <span class="f4-logo-name">Classify</span>
         </div>
-        <div class="footer-bottom">
-            <p class="footer-text">© 2025 Classify - Todos los derechos reservados</p>
-        </div>
-    </footer>
+        <p class="f4-desc">
+            Plataforma educativa para agendar clases, gestionar materiales y conectar a toda la comunidad del Colegio Moralba Sur Oriental.
+        </p>
+        <nav class="f4-links">
+            <a href="#">Inicio</a>
+            <a href="#">Nosotros</a>
+            <a href="#">Agenda</a>
+            <a href="#">Materiales</a>
+            <a href="#">Noticias</a>
+            <a href="#">Soporte</a>
+            <a href="#">Contacto</a>
+            <a href="#">Privacidad</a>
+            <a href="#">Términos</a>
+        </nav>
+        <div class="f4-divider"></div>
+        <p class="f4-copy">© 2026 Classify — Todos los derechos reservados · Bogotá, Colombia</p>
+        </footer>
 
-
-    <script src="<?= base_url('js/chatbot.js') ?>"></script>
+    <script th:src="@{/js/chatbot.js}"></script>
 </body>
 
 </html>

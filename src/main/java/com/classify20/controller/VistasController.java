@@ -6,6 +6,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller 
 public class VistasController {
     
+    @GetMapping("/login")
+    public String mostrarLogin(){
+        return "auth/login";
+    }
     @GetMapping("/inicio")
     public String mostrarHome(){
         return "inicio/Inicio";
