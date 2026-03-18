@@ -2,7 +2,7 @@
 
 :root {
     --green: #008000;
-    --green-dark: #015001;
+    --green-dark: #013501;
     --green-light2: #35b50b;
     --verde-btn: #AFD786;
     --green-light: #aec9a5;
@@ -1420,7 +1420,7 @@ form .login-form { width: 295px; }
 }
 
 .forgot-password:hover {
-    color: #006400;
+    color: var(--green-dark);
     text-decoration: underline;
 }
 
