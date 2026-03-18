@@ -2,7 +2,7 @@
 
 :root {
     --green: #008000;
-    --green-dark: #008000;
+    --green-dark: #015001;
     --green-light2: #35b50b;
     --verde-btn: #AFD786;
     --green-light: #aec9a5;
@@ -489,8 +489,13 @@ header.brandinicio .info-icon:hover {
     display: flex;
     justify-content: center;
     align-items: center;
-  
 }
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
 
 .contenidoinicio {
     height: 85vh;
@@ -503,6 +508,8 @@ header.brandinicio .info-icon:hover {
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
+
+    animation: fadeIn 1s ease-in ;
 }
 
 .registro {
@@ -1311,7 +1318,7 @@ img.socialmedia:hover {
 }
 
 .contentindex {
-    background: url("../img/icons/background.png") no-repeat center center;
+    background: url("/img/backgroundlogin.png") no-repeat center center;
     background-size: cover;
     display: flex;
     justify-content: center;
@@ -1381,7 +1388,7 @@ form .login-form { width: 295px; }
 .login-form button {
     width: 130%;
     padding: 6px;
-    background: #fd5828;
+    background: var(--green);
     border: none;
     border-radius: 6px;
     color: white;
@@ -1390,7 +1397,10 @@ form .login-form { width: 295px; }
     cursor: pointer;
 }
 
-.login-form button:hover { background: #008000; }
+.login-form button:hover {
+    background: var(--green-light);
+    color: var(--negro);
+}
 
 .login-links {
     text-align: center;
@@ -1422,14 +1432,14 @@ form .login-form { width: 295px; }
 }
 
 .registro-link a {
-    color: var(--orangered);
+    color: var(--green);
     text-decoration: none;
     font-weight: 600;
     transition: all 0.3s ease;
 }
 
 .registro-link a:hover {
-    color: #d63031;
+    color: var(--green-dark);
     text-decoration: underline;
 }
 
