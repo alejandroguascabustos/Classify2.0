@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classify - Notas Académicas</title>
+    <link rel="stylesheet" href="<?= base_url('css/style.css') ?>">
+    <link rel="stylesheet" href="<?= base_url('css/notas-styles.css') ?>">
+    <link rel="stylesheet" href="<?= base_url('css/chatbot.css') ?>">
+    <link rel="shortcut icon" href="<?= base_url('favicon.ico') ?>" type="image/x-icon">
+</head>
+
+<body>
+    <header>
+        <div class="brand">
+            <a href="<?= base_url('login') ?>"><img src="<?= base_url('img/icons/logo.png') ?>" alt="Logo"
+                    class="logo"></a>
+            <a href="<?= base_url('login') ?>">Classify</a>
+        </div>
+        <div class="right">
+            <a href="<?= base_url('noticias') ?>" title="Noticias"><img src="<?= base_url('img/icons/noticias.png') ?>"
+                    class="iconostop" alt="Noticias"></a>
+            <img src="<?= base_url('img/icons/separador.png') ?>" class="separador" alt="">
+            <a href="<?= base_url('login') ?>" title="Cerrar sesión"><img src="<?= base_url('img/icons/salida.png') ?>"
+                    class="salida" alt="Salida"></a>
+        </div>
+    </header>
+
+    <aside class="sidebar">
+        <a href="<?= base_url('menu') ?>" class="inicioprincipal"><img src="<?= base_url('img/icons/home.png') ?>"
+                width="25" alt="Inicio" class="imgmenu"> Inicio</a>
+
+        <?php $perfil = session()->get('perfil');
+        $menuItems = [
+            1 => [
+                ['agendar', 'agenda.png', 'Agendar clase'],
+                ['programacion', 'programacion.png', 'Programación'],
+                ['aprende', 'aprende.png', 'Aprende'],
+                ['contacta', 'gmail.png', 'Contacta a un profe'],
+                ['mismateriales', 'descargamaterial.png', 'Mis Materiales'],
+                ['materiales', 'upload.png', 'Carga Materiales'],
+                ['califica', 'califica.png', 'Califica un profe'],
+                ['izada', 'estrella.png', 'Izada de bandera'],
+                ['notas', 'notas.png', 'Notas']
+            ],
+            2 => [
+                ['agendar', 'agenda.png', 'Agendar clase'],
+                ['notas', 'notas.png', 'Notas']
+            ],
+            3 => [['programacion', 'programacion.png', 'Programación'], ['notas', 'notas.png', 'Notas']],
+            4 => [['programacion', 'programacion.png', 'Programación']],
+            5 => [['programacion', 'programacion.png', 'Programación']]
+        ];
+
+        if (isset($menuItems[$perfil])):
+            foreach ($menuItems[$perfil] as $item):
+                echo '<a href="' . base_url($item[0]) . '" class="inicioprincipal2" ><img src="' . base_url('img/icons/' . $item[1]) . '" width="25" alt="' . $item[2] . '" class="imgmenu"> ' . $item[2] . '</a>';
+            endforeach;
+        endif; ?>
+    </aside>
+
+    <main class="contentmenu">
+        <?php if (in_array(session()->get('perfil'), [1, 2, 3])): ?>
+            <div class="notas-container">
+                <!-- HEADER CON CONTROLES -->
+                <div class="notas-header">
+                    <div class="header-left">
+                        <h1 class="notas-title">Rendimiento Académico</h1>
+                        <p class="notas-subtitle">Periodo actual: Segundo Periodo 2025</p>
+                    </div>
+                    <div class="header-actions">
+                        <div class="view-switcher">
+                            <button class="view-btn active" data-view="cards" title="Vista Tarjetas">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                    <rect x="3" y="3" width="7" height="7" rx="1"></rect>
+                                    <rect x="14" y="3" width="7" height="7" rx="1"></rect>
+                                    <rect x="3" y="14" width="7" height="7" rx="1"></rect>
+                                    <rect x="14" y="14" width="7" height="7" rx="1"></rect>
+                                </svg>
+                            </button>
+                            <button class="view-btn" data-view="table" title="Vista Tabla">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                                    <line x1="3" y1="12" x2="21" y2="12"></line>
+                                    <line x1="3" y1="18" x2="21" y2="18"></line>
+                                </svg>
+                            </button>
+                            <button class="view-btn" data-view="graph" title="Vista Gráficos">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                    <line x1="18" y1="20" x2="18" y2="10"></line>
+                                    <line x1="12" y1="20" x2="12" y2="4"></line>
+                                    <line x1="6" y1="20" x2="6" y2="14"></line>
+                                </svg>
+                            </button>
+                        </div>
+                        <button class="btn-download" onclick="descargarReporte()">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="7 10 12 15 17 10"></polyline>
+                                <line x1="12" y1="15" x2="12" y2="3"></line>
+                            </svg>
+                            Exportar
+                        </button>
+                    </div>
+                </div>
+
+                <!-- ESTADÍSTICAS GENERALES -->
+                <div class="stats-grid">
+                    <div class="stat-card stat-primary">
+                        <div class="stat-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+                            </svg>
+                        </div>
+                        <div class="stat-content">
+                            <p class="stat-label">Promedio General</p>
+                            <h3 class="stat-value">4.35</h3>
+                            <span class="stat-badge stat-success">+0.15 vs anterior</span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card stat-success">
+                        <div class="stat-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                        </div>
+                        <div class="stat-content">
+                            <p class="stat-label">Materias Aprobadas</p>
+                            <h3 class="stat-value">8/10</h3>
+                            <span class="stat-badge stat-info">80% completado</span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card stat-warning">
+                        <div class="stat-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                                <line x1="12" y1="9" x2="12" y2="13"></line>
+                                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                            </svg>
+                        </div>
+                        <div class="stat-content">
+                            <p class="stat-label">En Riesgo</p>
+                            <h3 class="stat-value">2</h3>
+                            <span class="stat-badge stat-danger">Requiere atención</span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card stat-info">
+                        <div class="stat-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                                <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+                            </svg>
+                        </div>
+                        <div class="stat-content">
+                            <p class="stat-label">Asistencia</p>
+                            <h3 class="stat-value">95%</h3>
+                            <span class="stat-badge stat-success">Excelente</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FILTROS Y BÚSQUEDA -->
+                <?php if (in_array($perfil, [2, 3])): ?>
+                <div class="filters-container">
+                    <div class="search-box">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <path d="m21 21-4.35-4.35"></path>
+                        </svg>
+                        <input type="text" id="searchInput" placeholder="Buscar estudiante o materia...">
+                    </div>
+                    <select id="filterGrado" class="filter-select">
+                        <option value="">Todos los grados</option>
+                        <option value="9">9° Grado</option>
+                        <option value="10">10° Grado</option>
+                        <option value="11">11° Grado</option>
+                    </select>
+                    <select id="filterMateria" class="filter-select">
+                        <option value="">Todas las materias</option>
+                        <option value="1">Matemáticas</option>
+                        <option value="2">Español</option>
+                        <option value="3">Inglés</option>
+                        <option value="7">Informática</option>
+                    </select>
+                    <select id="filterEstado" class="filter-select">
+                        <option value="">Todos los estados</option>
+                        <option value="aprobado">Aprobados</option>
+                        <option value="riesgo">En riesgo</option>
+                        <option value="proceso">En proceso</option>
+                    </select>
+                </div>
+                <?php endif; ?>
+
+                <!-- VISTA DE TARJETAS -->
+                <div id="viewCards" class="view-content active">
+                    <div class="materias-grid">
+                        <!-- Tarjeta Matemáticas -->
+                        <div class="materia-card" data-materia="matematicas">
+                            <div class="card-header" style="background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);">
+                                <div class="card-header-top">
+                                    <h3>Matemáticas</h3>
+                                    <span class="materia-badge">MAT-01</span>
+                                </div>
+                                <div class="nota-principal">4.5</div>
+                            </div>
+                            <div class="card-body">
+                                <div class="progress-section">
+                                    <div class="progress-label">
+                                        <span>Progreso del periodo</span>
+                                        <span class="progress-percent">90%</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 90%; background: #2196F3;"></div>
+                                    </div>
+                                </div>
+                                <div class="periodos-notas">
+                                    <div class="periodo-item">
+                                        <span class="periodo-label">P1</span>
+                                        <span class="periodo-nota excelente">4.5</span>
+                                    </div>
+                                    <div class="periodo-item">
+                                        <span class="periodo-label">P2</span>
+                                        <span class="periodo-nota bueno">4.2</span>
+                                    </div>
+                                    <div class="periodo-item">
+                                        <span class="periodo-label">P3</span>
+                                        <span class="periodo-nota pendiente">--</span>
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="footer-item">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                            <circle cx="12" cy="7" r="4"></circle>
+                                        </svg>
+                                        <span>Prof. García</span>
+                                    </div>
+                                    <div class="footer-item">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                            <line x1="16" y1="2" x2="16" y2="6"></line>
+                                            <line x1="8" y1="2" x2="8" y2="6"></line>
+                                        </svg>
+                                        <span>2 faltas</span>
+                                    </div>
+                                </div>
+                                <button class="btn-detalle" onclick="verDetalle('matematicas')">Ver detalles</button>
+                            </div>
+                        </div>
+
+                        <!-- Tarjeta Español -->
+                        <div class="materia-card" data-materia="espanol">
+                            <div class="card-header" style="background: linear-gradient(135deg, #FF5722 0%, #E64A19 100%);">
+                                <div class="card-header-top">
+                                    <h3>Español</h3>
+                                    <span class="materia-badge">ESP-01</span>
+                                </div>
+                                <div class="nota-principal">4.7</div>
+                            </div>
+                            <div class="card-body">
+                                <div class="progress-section">
+                                    <div class="progress-label">
+                                        <span>Progreso del periodo</span>
+                                        <span class="progress-percent">94%</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 94%; background: #FF5722;"></div>
+                                    </div>
+                                </div>
+                                <div class="periodos-notas">
+                                    <div class="periodo-item">
+                                        <span class="periodo-label">P1</span>
+                                        <span class="periodo-nota excelente">4.8</span>
+                                    </div>
+                                    <div class="periodo-item">
+                                        <span class="periodo-label">P2</span>
+                                        <span class="periodo-nota excelente">4.6</span>
+                                    </div>
+                                    <div class="periodo-item">
+                                        <span class="periodo-label">P3</span>
+                                        <span class="periodo-nota pendiente">--</span>
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="footer-item">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                            <circle cx="12" cy="7" r="4"></circle>
+                                        </svg>
+                                        <span>Prof. Rodríguez</span>
+                                    </div>
+                                    <div class="footer-item">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                            <line x1="16" y1="2" x2="16" y2="6"></line>
+                                            <line x1="8" y1="2" x2="8" y2="6"></line>
+                                        </svg>
+                                        <span>0 faltas</span>
+                                    </div>
+                                </div>
+                                <button class="btn-detalle" onclick="verDetalle('espanol')">Ver detalles</button>
+                            </div>
+                        </div>
+
+                        <!-- Tarjeta Inglés -->
+                        <div class="materia-card" data-materia="ingles">
+                            <div class="card-header" style="background: linear-gradient(135deg, #9C27B0 0%, #7B1FA2 100%);">
+                                <div class="card-header-top">
+                                    <h3>Inglés</h3>
+                                    <span class="materia-badge">ING-01</span>
+                                </div>
+                                <div class="nota-principal">4.0</div>
+                            </div>
+                            <div class="card-body">
+                                <div class="progress-section">
+                                    <div class="progress-label">
+                                        <span>Progreso del periodo</span>
+                                        <span class="progress-percent">80%</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 80%; background: #9C27B0;"></div>
+                                    </div>
+                                </div>
+                                <div class="periodos-notas">
+                                    <div class="periodo-item">
+                                        <span class="periodo-label">P1</span>
+                                        <span class="periodo-nota bueno">3.9</span>
+                                    </div>
+                                    <div class="periodo-item">
+                                        <span class="periodo-label">P2</span>
+                                        <span class="periodo-nota bueno">4.1</span>
+                                    </div>
+                                    <div class="periodo-item">
+                                        <span class="periodo-label">P3</span>
+                                        <span class="periodo-nota pendiente">--</span>
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="footer-item">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                            <circle cx="12" cy="7" r="4"></circle>
+                                        </svg>
+                                        <span>Prof. Smith</span>
+                                    </div>
+                                    <div class="footer-item">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                            <line x1="16" y1="2" x2="16" y2="6"></line>
+                                            <line x1="8" y1="2" x2="8" y2="6"></line>
+                                        </svg>
+                                        <span>1 falta</span>
+                                    </div>
+                                </div>
+                                <button class="btn-detalle" onclick="verDetalle('ingles')">Ver detalles</button>
+                            </div>
+                        </div>
+
+                        <!-- Tarjeta Ciencias -->
+                        <div class="materia-card" data-materia="ciencias">
+                            <div class="card-header" style="background: linear-gradient(135deg, #4CAF50 0%, #388E3C 100%);">
+                                <div class="card-header-top">
+                                    <h3>Ciencias Naturales</h3>
+                                    <span class="materia-badge">CN-01</span>
+                                </div>
+                                <div class="nota-principal">4.3</div>
+                            </div>
+                            <div class="card-body">
+                                <div class="progress-section">
+                                    <div class="progress-label">
+                                        <span>Progreso del periodo</span>
+                                        <span class="progress-percent">86%</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 86%; background: #4CAF50;"></div>
+                                    </div>
+                                </div>
+                                <div class="periodos-notas">
+                                    <div class="periodo-item">
+                                        <span class="periodo-label">P1</span>
+                                        <span class="periodo-nota excelente">4.4</span>
+                                    </div>
+                                    <div class="periodo-item">
+                                        <span class="periodo-label">P2</span>
+                                        <span class="periodo-nota bueno">4.2</span>
+                                    </div>
+                                    <div class="periodo-item">
+                                        <span class="periodo-label">P3</span>
+                                        <span class="periodo-nota pendiente">--</span>
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="footer-item">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                            <circle cx="12" cy="7" r="4"></circle>
+                                        </svg>
+                                        <span>Prof. Jiménez</span>
+                                    </div>
+                                    <div class="footer-item">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                            <line x1="16" y1="2" x2="16" y2="6"></line>
+                                            <line x1="8" y1="2" x2="8" y2="6"></line>
+                                        </svg>
+                                        <span>1 falta</span>
+                                    </div>
+                                </div>
+                                <button class="btn-detalle" onclick="verDetalle('ciencias')">Ver detalles</button>
+                            </div>
+                        </div>
+
+                        <!-- Tarjeta Informática -->
+                        <div class="materia-card" data-materia="informatica">
+                            <div class="card-header" style="background: linear-gradient(135deg, #607D8B 0%, #455A64 100%);">
+                                <div class="card-header-top">
+                                    <h3>Informática</h3>
+                                    <span class="materia-badge">INF-01</span>
+                                </div>
+                                <div class="nota-principal">4.8</div>
+                            </div>
+                            <div class="card-body">
+                                <div class="progress-section">
+                                    <div class="progress-label">
+                                        <span>Progreso del periodo</span>
+                                        <span class="progress-percent">96%</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 96%; background: #607D8B;"></div>
+                                    </div>
+                                </div>
+                                <div class="periodos-notas">
+                                    <div class="periodo-item">
+                                        <span class="periodo-label">P1</span>
+                                        <span class="periodo-nota excelente">4.7</span>
+                                    </div>
+                                    <div class="periodo-item">
+                                        <span class="periodo-label">P2</span>
+                                        <span class="periodo-nota excelente">4.9</span>
+                                    </div>
+                                    <div class="periodo-item">
+                                        <span class="periodo-label">P3</span>
+                                        <span class="periodo-nota pendiente">--</span>
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="footer-item">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                            <circle cx="12" cy="7" r="4"></circle>
+                                        </svg>
+                                        <span>Prof. Torres</span>
+                                    </div>
+                                    <div class="footer-item">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                            <line x1="16" y1="2" x2="16" y2="6"></line>
+                                            <line x1="8" y1="2" x2="8" y2="6"></line>
+                                        </svg>
+                                        <span>0 faltas</span>
+                                    </div>
+                                </div>
+                                <button class="btn-detalle" onclick="verDetalle('informatica')">Ver detalles</button>
+                            </div>
+                        </div>
+
+                        <!-- Tarjeta Sociales - EN RIESGO -->
+                        <div class="materia-card card-riesgo" data-materia="sociales">
+                            <div class="card-header" style="background: linear-gradient(135deg, #FF9800 0%, #F57C00 100%);">
+                                <div class="card-header-top">
+                                    <h3>Ciencias Sociales</h3>
+                                    <span class="materia-badge">CS-01</span>
+                                </div>
+                                <div class="nota-principal">2.8</div>
+                                <span class="alerta-badge">⚠ En riesgo</span>
+                            </div>
+                            <div class="card-body">
+                                <div class="progress-section">
+                                    <div class="progress-label">
+                                        <span>Progreso del periodo</span>
+                                        <span class="progress-percent">56%</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 56%; background: #FF9800;"></div>
+                                    </div>
+                                </div>
+                                <div class="periodos-notas">
+                                    <div class="periodo-item">
+                                        <span class="periodo-label">P1</span>
+                                        <span class="periodo-nota bajo">2.5</span>
+                                    </div>
+                                    <div class="periodo-item">
+                                        <span class="periodo-label">P2</span>
+                                        <span class="periodo-nota bajo">3.1</span>
+                                    </div>
+                                    <div class="periodo-item">
+                                        <span class="periodo-label">P3</span>
+                                        <span class="periodo-nota pendiente">--</span>
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="footer-item">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                            <circle cx="12" cy="7" r="4"></circle>
+                                        </svg>
+                                        <span>Prof. Vargas</span>
+                                    </div>
+                                    <div class="footer-item">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                            <line x1="16" y1="2" x2="16" y2="6"></line>
+                                            <line x1="8" y1="2" x2="8" y2="6"></line>
+                                        </svg>
+                                        <span>5 faltas</span>
+                                    </div>
+                                </div>
+                                <button class="btn-detalle btn-riesgo" onclick="verDetalle('sociales')">Mejorar nota</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VISTA DE TABLA -->
+                <div id="viewTable" class="view-content">
+                    <div class="table-wrapper">
+                        <table class="notas-table">
+                            <thead>
+                                <tr>
+                                    <th>Materia</th>
+                                    <th>Código</th>
+                                    <th>Periodo 1</th>
+                                    <th>Periodo 2</th>
+                                    <th>Periodo 3</th>
+                                    <th>Definitiva</th>
+                                    <th>Faltas</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="table-row-success">
+                                    <td><strong>Matemáticas</strong></td>
+                                    <td><span class="code-badge">MAT-01</span></td>
+                                    <td><span class="nota-cell excelente">4.5</span></td>
+                                    <td><span class="nota-cell bueno">4.2</span></td>
+                                    <td><span class="nota-cell pendiente">--</span></td>
+                                    <td><strong class="nota-final">4.35</strong></td>
+                                    <td>2</td>
+                                    <td><span class="badge-success">Aprobado</span></td>
+                                    <td><button class="btn-icon" onclick="verDetalle('matematicas')">👁️</button></td>
+                                </tr>
+                                <tr class="table-row-success">
+                                    <td><strong>Español</strong></td>
+                                    <td><span class="code-badge">ESP-01</span></td>
+                                    <td><span class="nota-cell excelente">4.8</span></td>
+                                    <td><span class="nota-cell excelente">4.6</span></td>
+                                    <td><span class="nota-cell pendiente">--</span></td>
+                                    <td><strong class="nota-final">4.70</strong></td>
+                                    <td>0</td>
+                                    <td><span class="badge-success">Aprobado</span></td>
+                                    <td><button class="btn-icon" onclick="verDetalle('espanol')">👁️</button></td>
+                                </tr>
+                                <tr class="table-row-success">
+                                    <td><strong>Inglés</strong></td>
+                                    <td><span class="code-badge">ING-01</span></td>
+                                    <td><span class="nota-cell bueno">3.9</span></td>
+                                    <td><span class="nota-cell bueno">4.1</span></td>
+                                    <td><span class="nota-cell pendiente">--</span></td>
+                                    <td><strong class="nota-final">4.00</strong></td>
+                                    <td>1</td>
+                                    <td><span class="badge-success">Aprobado</span></td>
+                                    <td><button class="btn-icon" onclick="verDetalle('ingles')">👁️</button></td>
+                                </tr>
+                                <tr class="table-row-success">
+                                    <td><strong>Ciencias Naturales</strong></td>
+                                    <td><span class="code-badge">CN-01</span></td>
+                                    <td><span class="nota-cell excelente">4.4</span></td>
+                                    <td><span class="nota-cell bueno">4.2</span></td>
+                                    <td><span class="nota-cell pendiente">--</span></td>
+                                    <td><strong class="nota-final">4.30</strong></td>
+                                    <td>1</td>
+                                    <td><span class="badge-success">Aprobado</span></td>
+                                    <td><button class="btn-icon" onclick="verDetalle('ciencias')">👁️</button></td>
+                                </tr>
+                                <tr class="table-row-danger">
+                                    <td><strong>Ciencias Sociales</strong></td>
+                                    <td><span class="code-badge">CS-01</span></td>
+                                    <td><span class="nota-cell bajo">2.5</span></td>
+                                    <td><span class="nota-cell bajo">3.1</span></td>
+                                    <td><span class="nota-cell pendiente">--</span></td>
+                                    <td><strong class="nota-final-danger">2.80</strong></td>
+                                    <td>5</td>
+                                    <td><span class="badge-danger">En riesgo</span></td>
+                                    <td><button class="btn-icon" onclick="verDetalle('sociales')">👁️</button></td>
+                                </tr>
+                                <tr class="table-row-success">
+                                    <td><strong>Informática</strong></td>
+                                    <td><span class="code-badge">INF-01</span></td>
+                                    <td><span class="nota-cell excelente">4.7</span></td>
+                                    <td><span class="nota-cell excelente">4.9</span></td>
+                                    <td><span class="nota-cell pendiente">--</span></td>
+                                    <td><strong class="nota-final">4.80</strong></td>
+                                    <td>0</td>
+                                    <td><span class="badge-success">Aprobado</span></td>
+                                    <td><button class="btn-icon" onclick="verDetalle('informatica')">👁️</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- VISTA DE GRÁFICOS -->
+                <div id="viewGraph" class="view-content">
+                    <div class="graphs-container">
+                        <div class="graph-card">
+                            <h3>Evolución de Notas por Periodo</h3>
+                            <div class="chart-placeholder">
+                                <canvas id="chartEvolucion" width="400" height="200"></canvas>
+                            </div>
+                        </div>
+                        <div class="graph-card">
+                            <h3>Distribución por Materias</h3>
+                            <div class="chart-placeholder">
+                                <canvas id="chartRadar" width="400" height="200"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                // CAMBIO DE VISTAS
+                document.querySelectorAll('.view-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const viewType = this.dataset.view;
+
+                        // Actualizar botones activos
+                        document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+                        this.classList.add('active');
+
+                        // Mostrar vista correspondiente
+                        document.querySelectorAll('.view-content').forEach(v => v.classList.remove('active'));
+                        document.getElementById('view' + viewType.charAt(0).toUpperCase() + viewType.slice(1)).classList.add('active');
+
+                        // Inicializar gráficos si es necesario
+                        if (viewType === 'graph' && !window.chartsInitialized) {
+                            initCharts();
+                            window.chartsInitialized = true;
+                        }
+                    });
+                });
+
+                // FILTROS (solo para docentes y coordinadores)
+                const searchInput = document.getElementById('searchInput');
+                const filterGrado = document.getElementById('filterGrado');
+                const filterMateria = document.getElementById('filterMateria');
+                const filterEstado = document.getElementById('filterEstado');
+
+                function aplicarFiltros() {
+                    const searchTerm = searchInput?.value.toLowerCase() || '';
+                    const grado = filterGrado?.value || '';
+                    const materia = filterMateria?.value || '';
+                    const estado = filterEstado?.value || '';
+
+                    // Filtrar tarjetas
+                    document.querySelectorAll('.materia-card').forEach(card => {
+                        const materiaName = card.querySelector('h3').textContent.toLowerCase();
+                        let visible = materiaName.includes(searchTerm);
+
+                        if (estado === 'riesgo') {
+                            visible = visible && card.classList.contains('card-riesgo');
+                        } else if (estado === 'aprobado') {
+                            visible = visible && !card.classList.contains('card-riesgo');
+                        }
+
+                        card.style.display = visible ? 'block' : 'none';
+                    });
+
+                    // Filtrar tabla
+                    document.querySelectorAll('.notas-table tbody tr').forEach(row => {
+                        const materiaName = row.querySelector('strong').textContent.toLowerCase();
+                        let visible = materiaName.includes(searchTerm);
+
+                        if (estado === 'riesgo') {
+                            visible = visible && row.classList.contains('table-row-danger');
+                        } else if (estado === 'aprobado') {
+                            visible = visible && row.classList.contains('table-row-success');
+                        }
+
+                        row.style.display = visible ? '' : 'none';
+                    });
+                }
+
+                if (searchInput) searchInput.addEventListener('input', aplicarFiltros);
+                if (filterGrado) filterGrado.addEventListener('change', aplicarFiltros);
+                if (filterMateria) filterMateria.addEventListener('change', aplicarFiltros);
+                if (filterEstado) filterEstado.addEventListener('change', aplicarFiltros);
+
+                // FUNCIONES DE INTERACCIÓN
+                function verDetalle(materia) {
+                    alert('Mostrando detalles de ' + materia + '\n\nAquí se mostraría:\n- Actividades evaluadas\n- Logros alcanzados\n- Retroalimentación del docente\n- Recomendaciones');
+                }
+
+                function descargarReporte() {
+                    alert('Generando reporte en PDF...\n\nEl reporte incluirá:\n- Todas las calificaciones del periodo\n- Gráficos de rendimiento\n- Observaciones de docentes\n- Plan de mejoramiento (si aplica)');
+                }
+
+                // GRÁFICOS CON CANVAS (simulación simple)
+                function initCharts() {
+                    const chartEvolucion = document.getElementById('chartEvolucion');
+                    const chartRadar = document.getElementById('chartRadar');
+
+                    if (chartEvolucion) {
+                        const ctx = chartEvolucion.getContext('2d');
+                        // Simulación de gráfico de líneas
+                        ctx.fillStyle = '#008000';
+                        ctx.font = '16px Arial';
+                        ctx.fillText('Gráfico de evolución de notas', 50, 100);
+                        ctx.fillText('(Requiere librería de gráficos como Chart.js)', 30, 130);
+                    }
+
+                    if (chartRadar) {
+                        const ctx = chartRadar.getContext('2d');
+                        ctx.fillStyle = '#008000';
+                        ctx.font = '16px Arial';
+                        ctx.fillText('Gráfico radar de materias', 80, 100);
+                        ctx.fillText('(Requiere librería de gráficos como Chart.js)', 30, 130);
+                    }
+                }
+
+                // Animación de entrada para tarjetas
+                document.addEventListener('DOMContentLoaded', function() {
+                    const cards = document.querySelectorAll('.materia-card');
+                    cards.forEach((card, index) => {
+                        setTimeout(() => {
+                            card.style.opacity = '0';
+                            card.style.transform = 'translateY(20px)';
+                            card.style.transition = 'all 0.5s ease';
+                            setTimeout(() => {
+                                card.style.opacity = '1';
+                                card.style.transform = 'translateY(0)';
+                            }, 50);
+                        }, index * 100);
+                    });
+                });
+            </script>
+
+        <?php else: ?>
+            <div class="denied">
+                <h2>Acceso denegado</h2>
+                <p>Esta vista está en construcción para tu perfil</p>
+            </div>
+        <?php endif; ?>
+    </main>
+
+    <script src="<?= base_url('js/active.js') ?>"></script>
+    <script src="<?= base_url('js/chatbot.js') ?>"></script>
+</body>
+
+</html>

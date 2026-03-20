@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Classify - Inicio</title>
+    <link rel="stylesheet" href="<?= base_url('css/style.css?v=' . time()) ?>">
+    <link rel="stylesheet" href="<?= base_url('css/chatbot.css?v=' . time()) ?>">
+    <link rel="shortcut icon" href="<?= base_url('favicon.ico') ?>" type="image/x-icon">
+</head>
+
+<body class="inicioimg">
+    <header class="brandinicio">
+        <div class="brand">
+            <a href="<?= base_url('inicio') ?>"><img src="<?= base_url('img/icons/logo.png') ?>" alt="logo"
+                    class="logo"> </a>
+            <a href="<?= base_url('inicio') ?>">Classify</a>
+        </div>
+
+
+        <div class="brand2">
+            <a href="<?= base_url('inicio') ?>" class="info-btn" alt="Información">Inicio</a>
+            <a href="<?= base_url('nosotros') ?>" class="info-btn" alt="Información">Nosotros</a>
+            <a href="<?= base_url('contacto') ?>" class="info-btn" alt="Información">Contacto</a>
+            <div class="auth">
+                <a href="<?= base_url('login') ?>" class="info-btnini2" alt="Información">Inicio Sesión</a>
+                <a href="<?= base_url('registro') ?>" class="info-btnini" alt="Información">Registro</a>
+            </div>
+        </div>
+        <div>
+            <a href="#info" class="info-btn">
+                <img src="<?= base_url('img/icons/informacion.png') ?>" alt="Información" class="info-icon">
+            </a>
+            <div id="info" class="info-panel">
+                <div class="info-content">
+                    <a href="#" class="close">&times;</a>
+                    <img src="<?= base_url('img/icons/agenda.png') ?>" width='80px'>
+                    <h4>¿Porque agendas tus clases?</h4>
+                    <p class="textoinfo">La implementación de una página web para agendar clases en el colegio Moralba
+                        Sur Oriental representa una herramienta fundamental para optimizar la organización académica y
+                        fortalecer la comunicación entre estudiantes, docentes y la institución.
+                        En primer lugar, la plataforma permite a los estudiantes y padres de familia consultar de manera
+                        rápida y sencilla la disponibilidad de horarios, evitando confusiones o cruces en las
+                        actividades escolares. <br> <br>Esto garantiza una mejor planificación del tiempo, tanto dentro
+                        como fuera del aula.
+                        Por otro lado, los docentes pueden gestionar sus clases de forma más eficiente, teniendo acceso
+                        a un calendario actualizado que facilita la asignación de sesiones, el control de grupos y la
+                        preparación de materiales según la programación establecida. <br><br>
+                        Asimismo, para la institución educativa, la página constituye una herramienta de gestión que
+                        contribuye a la transparencia y al orden administrativo, ya que centraliza la información en un
+                        solo espacio digital accesible desde cualquier dispositivo con conexión a internet. <br> <br>
+                        En conclusión, contar con una página para agendar clases no solo mejora la organización interna
+                        del colegio Moralba Sur Oriental, sino que también fortalece la participación de la comunidad
+                        educativa, fomenta la puntualidad, evita pérdidas de tiempo y favorece un proceso de
+                        enseñanza-aprendizaje más planificado y efectivo.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="contentindex">
+        <div class="login-wrapper">
+            <div class="registro-form-container">
+                <div class="imagenregistro">
+                    <img src="<?= base_url('img/icons/registro.gif') ?>" width="120px">
+                </div>
+                <h2 class="login-title">Registrate</h2>
+
+
+                <?php
+                // Confirmamos inicio de sesión o algun error
+                if (session()->has('success')): ?>
+                    <div class="alert alert-success">
+                        <?= session('success') ?>
+                    </div>
+                <?php endif; ?>
+
+                <?php if (session()->has('error')): ?>
+                    <div class="alert alert-danger">
+                        <?= session('error') ?>
+                    </div>
+                <?php endif; ?>
+
+
+                <form action="<?= site_url('registro/procesarRegistro') ?>" method="POST" class="form-registro">
+                    <label for="" class="labelregistro">Nombre</label>
+                    <input type="text" name="nombre" placeholder="Jose" required>
+                    <label for="" class="labelregistro">Apellidos</label>
+                    <input type="text" name="apellido" placeholder="Arteaga" required>
+                    <label for="" class="labelregistro">Correo</label>
+                    <input type="email" name="correo" placeholder="Jose@colegio.com" required>
+                    <label for="" class="labelregistro">Número de Documento</label>
+                    <input type="number" name="documento" placeholder="1234567890" required>
+                    <label for="" class="labelregistro">Telefono</label>
+                    <input type="number" name="telefono" placeholder="322222222" required>
+                    <label for="" class="labelregistro">Usuario</label required>
+                    <input type="text" name="nombre_usu" placeholder="Jose123" required>
+                    <label for="" class="labelregistro">Contraseña</label>
+                    <input type="password" name="pass_usuario" placeholder="(Mínimo 6 caracteres)" required>
+
+                    <label for="tipo_usuario" class="labelregistro">Tipo de Usuario</label>
+                    <select  name="tipo_usuario" id="tipo_usuario" required onchange="mostrarCampos()">
+                        <option value="">Selecciona una opción</option>
+                        <option value="estudiante">Estudiante</option>
+                        <option value="docente">Docente</option>
+                        <option value="acudiente">Acudiente</option>
+                    </select>
+
+                    <div id="campo_curso" style="display: none;">
+                        <label for="curso" class="labelregistro">Curso</label>
+                        <input type="text" name="curso" id="curso" placeholder="Ej: 10A, 11B">
+                    </div>
+
+                    <div id="campo_materia" style="display: none;">
+                        <label for="materia" class="labelregistro">Materia que enseña</label>
+                        <input type="text" name="materia" id="materia" placeholder="Ej: Matemáticas, Español">
+                    </div>
+
+                    <div id="campo_estudiante_acudiente" style="display: none;">
+                        <label for="nombre_estudiante" class="labelregistro">Nombre del Estudiante</label>
+                        <input type="text" name="nombre_estudiante" id="nombre_estudiante" placeholder="Nombre completo del estudiante">
+                    </div>
+
+                    <div class="containerbutton">
+                        <button class="buttonregistro" type="submit">Registrarse</button>
+                    </div>
+
+
+                    <div class="textoregistro">
+                        <h5>¿Ya tienes cuenta?</h5>
+                        <a href="<?= base_url('login') ?>">Ingresa</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function mostrarCampos() {
+            const tipoUsuario = document.getElementById('tipo_usuario').value;
+            const campoCurso = document.getElementById('campo_curso');
+            const campoMateria = document.getElementById('campo_materia');
+            const campoEstudianteAcudiente = document.getElementById('campo_estudiante_acudiente');
+            const inputCurso = document.getElementById('curso');
+            const inputMateria = document.getElementById('materia');
+            const inputNombreEstudiante = document.getElementById('nombre_estudiante');
+
+            if (tipoUsuario === 'estudiante') {
+                campoCurso.style.display = 'block';
+                campoMateria.style.display = 'none';
+                campoEstudianteAcudiente.style.display = 'none';
+                inputCurso.required = true;
+                inputMateria.required = false;
+                inputNombreEstudiante.required = false;
+                inputMateria.value = '';
+                inputNombreEstudiante.value = '';
+            } else if (tipoUsuario === 'docente') {
+                campoCurso.style.display = 'none';
+                campoMateria.style.display = 'block';
+                campoEstudianteAcudiente.style.display = 'none';
+                inputCurso.required = false;
+                inputMateria.required = true;
+                inputNombreEstudiante.required = false;
+                inputCurso.value = '';
+                inputNombreEstudiante.value = '';
+            } else if (tipoUsuario === 'acudiente') {
+                campoCurso.style.display = 'none';
+                campoMateria.style.display = 'none';
+                campoEstudianteAcudiente.style.display = 'block';
+                inputCurso.required = false;
+                inputMateria.required = false;
+                inputNombreEstudiante.required = true;
+                inputCurso.value = '';
+                inputMateria.value = '';
+            } else {
+                campoCurso.style.display = 'none';
+                campoMateria.style.display = 'none';
+                campoEstudianteAcudiente.style.display = 'none';
+                inputCurso.required = false;
+                inputMateria.required = false;
+                inputNombreEstudiante.required = false;
+            }
+        }
+    </script>
+    <script src="<?= base_url('js/chatbot.js') ?>"></script>
+</body>
+
+<footer class="footer">
+    <div class="footer-container">
+        <div class="footer-col">
+            <h4>Sobre nosotros</h4>
+            <p>
+                Classify es una plataforma para la gestión de clases y servicios,
+                diseñada para mejorar la experiencia de los usuarios.
+            </p>
+        </div>
+        <div class="footer-col">
+            <h4>Enlaces útiles</h4>
+            <ul>
+                <li><a href="<?= base_url('politicas') ?>">Política de privacidad</a></li>
+                <li><a href="<?= base_url('terminos') ?>">Términos y condiciones</a></li>
+                <li><a href="<?= base_url('contacto') ?>">Contacto Colegio</a></li>
+                <li><a href="<?= base_url('soporte') ?>">Soporte App</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p class="footer-text">© 2025 Classify - Todos los derechos reservados</p>
+    </div>
+</footer>
+ <script src="<?= base_url('js/chatbot.js') ?>"></script>
+
+</html>
