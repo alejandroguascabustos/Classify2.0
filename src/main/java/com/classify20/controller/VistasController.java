@@ -20,6 +20,10 @@ public class VistasController {
     public String mostrarRegisto(){
         return "auth/registro";
     }
+    @GetMapping("/contacto")
+    public String mostrarContacto(){
+        return "contacto/contacto";
+    }
 
     @GetMapping("/")
     public String mostrarRoot(){
