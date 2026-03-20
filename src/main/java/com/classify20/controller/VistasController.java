@@ -25,7 +25,6 @@ public class VistasController {
         return "menu/menu";
     }
 
-    }
     @GetMapping("/contacto")
     public String mostrarContacto(){
         return "contacto/contacto";
