@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Classify - Noticias</title>
+    <link rel="stylesheet" href="<?= base_url('css/style.css') ?>">
+    <link rel="stylesheet" href="<?= base_url('css/chatbot.css') ?>">
+    <link rel="shortcut icon" href="<?= base_url('favicon.ico') ?>" type="image/x-icon">
+</head>
+
+<body>
+    <header>
+        <div class="brand">
+            <a href="<?= base_url('login') ?>"><img src="<?= base_url('img/icons/logo.png') ?>" alt="logo" class="logo">
+            </a>
+            <a href="<?= base_url('login') ?>">Classify</a>
+        </div>
+        <!-- Saludo personalizado en el header -->
+        <?php if (session()->get('nombre') && session()->get('nombre') !== 'Usuario'): ?>
+            <div class="saludo-header.opciones">
+                Hola, <?= esc(ucfirst(strtolower(session()->get('nombre')))) ?>!
+            </div>
+        <?php endif; ?>
+        <div>
+            <div class="right">
+                <a href="<?= base_url('noticias') ?>" alt="Noticias">
+                    <img src="<?= base_url('img/icons/noticias.png') ?>" class="iconostop">
+                </a>
+                <a><img src="<?= base_url('img/icons/separador.png') ?>" class="separador">
+                </a>
+                <a href="<?= base_url('login') ?>" alt="Cerrar sesión">
+                    <img src="<?= base_url('img/icons/salida.png') ?>" class="salida">
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <aside class="sidebar">
+        <!-- botón comun para todos-->
+        <a href="<?= base_url('menu') ?>" class="inicioprincipal">
+            <img src="<?= base_url('img/icons/home.png') ?>" width="25px" class="imgmenu"> Inicio
+        </a>
+
+        <!-- Programación (Perfil 1 administrador)  -->
+        <?php if (session()->get('perfil') == 1): ?>
+            <a href="<?= base_url('agenda') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/agenda.png') ?>" width="25px" class="imgmenu">Agendar clase
+            </a>
+            <a href="<?= base_url('programacion') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/programacion.png') ?>" width="25px" class="imgmenu">Programación
+            </a>
+            <a href="<?= base_url('aprende') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/aprende.png') ?>" width="25px" class="imgmenu">Aprende
+            </a>
+            <a href="<?= base_url('contacta') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/gmail.png') ?>" width="25px" class="imgmenu">Contacta a un profe
+            </a>
+            <a href="<?= base_url('mismateriales') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/descargamaterial.png') ?>" width="25px" class="imgmenu">Mis Materiales
+            </a>
+            <a href="<?= base_url('materiales') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/upload.png') ?>" width="25px" class="imgmenu">Carga Materiales
+            </a>
+            <a href="<?= base_url('califica') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/califica.png') ?>" width="25px" class="imgmenu">Califica un profe
+            </a>
+            <a href="<?= base_url('izada') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/estrella.png') ?>" width="25px" class="imgmenu"">Izada de bandera
+            </a>
+            <a href=" <?= base_url('notas') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/notas.png') ?>" width="25px" class="imgmenu">Notas
+            </a>
+        <?php endif; ?>
+
+        <!-- Programación (Perfil 2 coordinador) -->
+        <?php if (session()->get('perfil') == 2): ?>
+            <a href="<?= base_url('agenda') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/agenda.png') ?>" width="25px" class="imgmenu">Agendar clase
+            </a>
+            <a href="<?= base_url('programacion') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/programacion.png') ?>" width="25px" class="imgmenu">Programación
+            </a>
+            <a href="<?= base_url('aprende') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/aprende.png') ?>" width="25px" class="imgmenu">Aprende
+            </a>
+            <a href="<?= base_url('contacta') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/gmail.png') ?>" width="25px" class="imgmenu">Contacta a un profe
+            </a>
+            <a href="<?= base_url('materiales') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/upload.png') ?>" width="25px" class="imgmenu">Carga Materiales
+            </a>
+            <a href="<?= base_url('califica') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/califica.png') ?>" width="25px" class="imgmenu">Califica un profe
+            </a>
+            <a href="<?= base_url('izada') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/estrella.png') ?>" width="25px" class="imgmenu">Izada de bandera
+            </a>
+            <a href="<?= base_url('notas') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/notas.png') ?>" width="25px" class="imgmenu">Notas
+            </a>
+        <?php endif; ?>
+
+        <!-- Programación (Perfil 3 docente) -->
+        <?php if (session()->get('perfil') == 3): ?>
+            <a href="<?= base_url('programacion') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/programacion.png') ?>" width="25px" class="imgmenu">Programación
+            </a>
+            <a href="<?= base_url('aprende') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/aprende.png') ?>" width="25px" class="imgmenu">Aprende
+            </a>
+            <a href="<?= base_url('materiales') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/upload.png') ?>" width="25px" class="imgmenu">Carga Materiales
+            </a>
+            <a href="<?= base_url('izada') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/estrella.png') ?>" width="25px" class="imgmenu">Izada de bandera
+            </a>
+        <?php endif; ?>
+
+        <!-- Programación (Perfil 4 acudiente) -->
+        <?php if (session()->get('perfil') == 4): ?>
+            <a href="<?= base_url('programacion') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/programacion.png') ?>" width="25px" class="imgmenu">Programación
+            </a>
+            <a href="<?= base_url('aprende') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/aprende.png') ?>" width="25px" class="imgmenu">Aprende
+            </a>
+            <a href="<?= base_url('contacta') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/gmail.png') ?>" width="25px" class="imgmenu">Contacta a un profe
+            </a>
+            <a href="<?= base_url('mismateriales') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/upload.png') ?>" width="25px" class="imgmenu">Mis Materiales
+            </a>
+            <a href="<?= base_url('izada') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/estrella.png') ?>" width="25px" class="imgmenu">Izada de bandera
+            </a>
+        <?php endif; ?>
+
+        <!-- Programación (Perfil 5 estudiante) -->
+        <?php if (session()->get('perfil') == 5): ?>
+            <a href="<?= base_url('programacion') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/programacion.png') ?>" width="25px" class="imgmenu">Programación
+            </a>
+            <a href="<?= base_url('aprende') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/aprende.png') ?>" width="25px" class="imgmenu">Aprende
+            </a>
+            <a href="<?= base_url('contacta') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/gmail.png') ?>" width="25px" class="imgmenu">Contacta a un profe
+            </a>
+            <a href="<?= base_url('mismateriales') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/upload.png') ?>" width="25px" class="imgmenu">Mis Materiales
+            </a>
+            <a href="<?= base_url('califica') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/califica.png') ?>" width="25px" class="imgmenu">Califica un profe
+            </a>
+            <a href="<?= base_url('izada') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/estrella.png') ?>" width="25px" class="imgmenu">Izada de bandera
+            </a>
+        <?php endif; ?>
+
+
+
+    </aside>
+
+    <main class="contentcalifica">
+        <div class="card">
+            <div class="imagencalifica">
+                <img src="<?= base_url('img/icons/califica.png') ?>" width="100" height="100" alt="Califica un profe">
+            </div>
+
+            <h1 class="titulocalifica">Califica a un profesor</h1>
+            <p class="parrafocalifica">Evalúa a tu profesor en los siguientes aspectos:</p>
+
+            <!-- Mensaje flash mostrado en la misma vista -->
+            <?php if (session()->getFlashdata('success')): ?>
+                 <div id="flash-msg" style="background:#e6ffed; color:#0b6b2e; padding:10px; border-radius:6px; margin-bottom:12px; text-align:center;">
+                     <?= session()->getFlashdata('success') ?>
+                  </div>
+
+                <script>
+                 setTimeout(() => { 
+                     document.getElementById('flash-msg').style.display = 'none'; 
+                 }, 3000);
+                </script>
+            <?php endif; ?>
+
+
+            <form action="<?= base_url('califica/guardar') ?>" method="post" id="formCalifica">
+
+                <label for="profesor">Selecciona un profesor:</label>
+                <select id="profesor" name="profesor" required>
+                    <option value="">Seleccione un profesor</option>
+                    <option value="1">Ana Gómez</option>
+                    <option value="2">Juan Pérez</option>
+                    <option value="3">María Torres</option>
+                </select>
+
+                <!-- Criterios con estrellas -->
+                <div class="criterio">
+                    <label>Claridad al explicar:</label>
+                    <div class="rating" data-name="claridad">
+                        <span class="star" data-value="1">&#9733;</span>
+                        <span class="star" data-value="2">&#9733;</span>
+                        <span class="star" data-value="3">&#9733;</span>
+                        <span class="star" data-value="4">&#9733;</span>
+                        <span class="star" data-value="5">&#9733;</span>
+                    </div>
+                    <input type="hidden" name="claridad" class="rating-value" required>
+                </div>
+
+                <div class="criterio">
+                    <label>Trato y respeto hacia los estudiantes:</label>
+                    <div class="rating" data-name="respeto">
+                        <span class="star" data-value="1">&#9733;</span>
+                        <span class="star" data-value="2">&#9733;</span>
+                        <span class="star" data-value="3">&#9733;</span>
+                        <span class="star" data-value="4">&#9733;</span>
+                        <span class="star" data-value="5">&#9733;</span>
+                    </div>
+                    <input type="hidden" name="respeto" class="rating-value" required>
+                </div>
+
+                <div class="criterio">
+                    <label>Cumplimiento y puntualidad:</label>
+                    <div class="rating" data-name="puntualidad">
+                        <span class="star" data-value="1">&#9733;</span>
+                        <span class="star" data-value="2">&#9733;</span>
+                        <span class="star" data-value="3">&#9733;</span>
+                        <span class="star" data-value="4">&#9733;</span>
+                        <span class="star" data-value="5">&#9733;</span>
+                    </div>
+                    <input type="hidden" name="puntualidad" class="rating-value" required>
+                </div>
+
+                <div class="criterio">
+                    <label>Dominio del tema:</label>
+                    <div class="rating" data-name="dominio">
+                        <span class="star" data-value="1">&#9733;</span>
+                        <span class="star" data-value="2">&#9733;</span>
+                        <span class="star" data-value="3">&#9733;</span>
+                        <span class="star" data-value="4">&#9733;</span>
+                        <span class="star" data-value="5">&#9733;</span>
+                    </div>
+                    <input type="hidden" name="dominio" class="rating-value" required>
+                </div>
+
+                <div class="criterio">
+                    <label>Motivación y apoyo al aprendizaje:</label>
+                    <div class="rating" data-name="motivacion">
+                        <span class="star" data-value="1">&#9733;</span>
+                        <span class="star" data-value="2">&#9733;</span>
+                        <span class="star" data-value="3">&#9733;</span>
+                        <span class="star" data-value="4">&#9733;</span>
+                        <span class="star" data-value="5">&#9733;</span>
+                    </div>
+                    <input type="hidden" name="motivacion" class="rating-value" required>
+                </div>
+
+                <label for="comentario">Comentario adicional (opcional):</label>
+                <textarea id="comentario" name="comentario" rows="3" placeholder="Escribe tus observaciones..."></textarea>
+
+                <button type="submit" class="btncontacta">Enviar Calificación</button>
+            </form>
+
+            <p id="msg"></p>
+        </div>
+    </main>
+
+    <script src="<?= base_url('js/califica.js') ?>"></script>
+    <script src="<?= base_url('js/active.js') ?>"></script>
+    <script src="<?= base_url('js/chatbot.js') ?>"></script>
+</body>
+
+</html>
