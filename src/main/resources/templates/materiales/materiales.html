@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Classify - Menu</title>
+    <link rel="stylesheet" href="<?= base_url('css/style.css') ?>">
+    <link rel="stylesheet" href="<?= base_url('css/chatbot.css') ?>">
+    <link rel="shortcut icon" href="<?= base_url('favicon.ico') ?>" type="image/x-icon">
+</head>
+
+<body>
+    <header>
+        <div class="brand">
+            <a href="<?= base_url('login') ?>"><img src="<?= base_url('img/icons/logo.png') ?>" alt="logo" class="logo">
+            </a>
+            <a href="<?= base_url('login') ?>">Classify</a>
+        </div>
+        <!-- Saludo personalizado en el header -->
+        <?php if (session()->get('nombre') && session()->get('nombre') !== 'Usuario'): ?>
+            <div class="saludo-header.opciones">
+                Hola, <?= esc(ucfirst(strtolower(session()->get('nombre')))) ?>!
+            </div>
+        <?php endif; ?>
+        <div>
+            <div class="right">
+                <a href="<?= base_url('noticias') ?>" alt="Noticias">
+                    <img src="<?= base_url('img/icons/noticias.png') ?>" class="iconostop">
+                </a>
+                <a><img src="<?= base_url('img/icons/separador.png') ?>" class="separador">
+                </a>
+                <a href="<?= base_url('login') ?>" alt="Cerrar sesión">
+                    <img src="<?= base_url('img/icons/salida.png') ?>" class="salida">
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <aside class="sidebar">
+        <!-- botón comun para todos-->
+        <a href="<?= base_url('menu') ?>" class="inicioprincipal">
+            <img src="<?= base_url('img/icons/home.png') ?>" width="25px" class="imgmenu"> Inicio
+        </a>
+
+        <!-- Programación (Perfil 1 administrador)  -->
+        <?php if (session()->get('perfil') == 1): ?>
+            <a href="<?= base_url('agenda') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/agenda.png') ?>" width="25px" class="imgmenu">Agendar clase
+            </a>
+            <a href="<?= base_url('programacion') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/programacion.png') ?>" width="25px" class="imgmenu">Programación
+            </a>
+            <a href="<?= base_url('aprende') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/aprende.png') ?>" width="25px" class="imgmenu">Aprende
+            </a>
+            <a href="<?= base_url('contacta') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/gmail.png') ?>" width="25px" class="imgmenu">Contacta a un profe
+            </a>
+            <a href="<?= base_url('mismateriales') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/descargamaterial.png') ?>" width="25px" class="imgmenu">Mis Materiales
+            </a>
+            <a href="<?= base_url('materiales') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/upload.png') ?>" width="25px" class="imgmenu">Carga Materiales
+            </a>
+            <a href="<?= base_url('califica') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/califica.png') ?>" width="25px" class="imgmenu">Califica un profe
+            </a>
+            <a href="<?= base_url('izada') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/estrella.png') ?>" width="25px" class="imgmenu"">Izada de bandera
+            </a>
+            <a href=" <?= base_url('notas') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/notas.png') ?>" width="25px" class="imgmenu">Notas
+            </a>
+        <?php endif; ?>
+
+        <!-- Programación (Perfil 2 coordinador) -->
+        <?php if (session()->get('perfil') == 2): ?>
+            <a href="<?= base_url('agenda') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/agenda.png') ?>" width="25px" class="imgmenu">Agendar clase
+            </a>
+            <a href="<?= base_url('programacion') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/programacion.png') ?>" width="25px" class="imgmenu">Programación
+            </a>
+            <a href="<?= base_url('aprende') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/aprende.png') ?>" width="25px" class="imgmenu">Aprende
+            </a>
+            <a href="<?= base_url('contacta') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/gmail.png') ?>" width="25px" class="imgmenu">Contacta a un profe
+            </a>
+            <a href="<?= base_url('materiales') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/upload.png') ?>" width="25px" class="imgmenu">Carga Materiales
+            </a>
+            <a href="<?= base_url('califica') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/califica.png') ?>" width="25px" class="imgmenu">Califica un profe
+            </a>
+            <a href="<?= base_url('izada') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/estrella.png') ?>" width="25px" class="imgmenu">Izada de bandera
+            </a>
+            <a href="<?= base_url('notas') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/notas.png') ?>" width="25px" class="imgmenu">Notas
+            </a>
+        <?php endif; ?>
+
+        <!-- Programación (Perfil 3 docente) -->
+        <?php if (session()->get('perfil') == 3): ?>
+            <a href="<?= base_url('programacion') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/programacion.png') ?>" width="25px" class="imgmenu">Programación
+            </a>
+            <a href="<?= base_url('aprende') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/aprende.png') ?>" width="25px" class="imgmenu">Aprende
+            </a>
+            <a href="<?= base_url('materiales') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/upload.png') ?>" width="25px" class="imgmenu">Carga Materiales
+            </a>
+            <a href="<?= base_url('izada') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/estrella.png') ?>" width="25px" class="imgmenu">Izada de bandera
+            </a>
+        <?php endif; ?>
+
+        <!-- Programación (Perfil 4 acudiente) -->
+        <?php if (session()->get('perfil') == 4): ?>
+            <a href="<?= base_url('programacion') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/programacion.png') ?>" width="25px" class="imgmenu">Programación
+            </a>
+            <a href="<?= base_url('aprende') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/aprende.png') ?>" width="25px" class="imgmenu">Aprende
+            </a>
+            <a href="<?= base_url('contacta') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/gmail.png') ?>" width="25px" class="imgmenu">Contacta a un profe
+            </a>
+            <a href="<?= base_url('mismateriales') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/upload.png') ?>" width="25px" class="imgmenu">Mis Materiales
+            </a>
+            <a href="<?= base_url('izada') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/estrella.png') ?>" width="25px" class="imgmenu">Izada de bandera
+            </a>
+        <?php endif; ?>
+
+        <!-- Programación (Perfil 5 estudiante) -->
+        <?php if (session()->get('perfil') == 5): ?>
+            <a href="<?= base_url('programacion') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/programacion.png') ?>" width="25px" class="imgmenu">Programación
+            </a>
+            <a href="<?= base_url('aprende') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/aprende.png') ?>" width="25px" class="imgmenu">Aprende
+            </a>
+            <a href="<?= base_url('contacta') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/gmail.png') ?>" width="25px" class="imgmenu">Contacta a un profe
+            </a>
+            <a href="<?= base_url('mismateriales') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/upload.png') ?>" width="25px" class="imgmenu">Mis Materiales
+            </a>
+            <a href="<?= base_url('califica') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/califica.png') ?>" width="25px" class="imgmenu">Califica un profe
+            </a>
+            <a href="<?= base_url('izada') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/estrella.png') ?>" width="25px" class="imgmenu">Izada de bandera
+            </a>
+        <?php endif; ?>
+
+
+
+    </aside>
+
+    <main class="contentmateriales">
+
+
+        <form action="<?= base_url('materiales/subir') ?>" method="post" enctype="multipart/form-data">
+
+            <div class="container">
+                <h1 class="titulocargamateriales">Modulo carga materiales</h1>
+                <h1 class="subtitulocargamateriales">Carga tu archivo</h1>
+                <p class="parrafocargamateriales">Aquí puedes cargar los archivos de tus clases y tus alumnos las podran
+                    descargar y aprender</p>
+                <!-- AGREGAR CLASE AL DIV -->
+                <div class="image-container">
+                    <img src="<?= base_url('img/icons/upload.gif') ?>" width="25px" class="imgmateriales">
+                </div>
+
+                <input type="file" id="file-input" name="archivo[]" multiple style="display: none;" />
+
+                <label class="labelmateriales" for="file-input">
+                    <i class="fa-solid fa-arrow-up-from-bracket"></i>
+                    &nbsp; Selecciona tu archivo
+                </label>
+
+                <div id="num-of-files">No hay archivos seleccionados</div>
+                <ul id="files-list"></ul>
+
+                <form action="<?= base_url('mismateriales/subirArchivo') ?>" method="post"
+                    enctype="multipart/form-data">
+
+                    <input type="file" name="archivo[]" multiple>
+
+                    <div style="text-align: center; margin-top: 20px;">
+                        <button type="submit" class="btn-subir">Subir archivos</button>
+                    </div>
+
+                </form>
+
+
+                <h1 class="subtitulocargamateriales">Tus cargas</h1>
+                <p class="parrafovermateriales">Edita y elimina fácilmente tus archivos, o simplemente cambia el nombre
+                    de una manera rapida</p>
+                <table class="programacion-tabla-materiales" id="agendaTable">
+                    <thead>
+                        <tr>
+                            <th class="titletablematerial">Archivo</th>
+                            <th class="titletablematerial">Fecha de carga</th>
+                            <th class="titletablematerial">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php if (isset($materiales) && !empty($materiales)): ?>
+                            <?php foreach ($materiales as $mat): ?>
+                                <tr>
+                                    <td><?= esc($mat['nombre_archivo']) ?></td>
+                                    <td><?= esc($mat['fecha_subida']) ?></td>
+                                    <td>
+
+                                        <div class="containermaterialesbtn">
+                                            <div class="btnmaterialesedit">
+                                                <a href="#" class="btn-editar"
+                                                    onclick="abrirModalEditar('<?= $mat['id_material'] ?>', '<?= esc($mat['nombre_archivo']) ?>')">Editar</a>
+                                            </div>
+                                            <div class="btnmaterialesdelete">
+                                                <a href="<?= base_url('materiales/eliminar/' . $mat['id_material']) ?>"
+                                                    class="btn-eliminar"
+                                                    onclick="return confirm('¿Seguro que deseas eliminar este archivo?');">Eliminar</a>
+                                            </div>
+                                        </div>
+
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                    </tbody>
+
+                </table>
+
+                <!-- Modal -->
+                <div id="modalEditar" class="modaleditar" style="display:none;">
+                    <div class="modaleditar-contenido">
+                        <h2>Edita el archivo</h2>
+
+                        <form action="<?= base_url('materiales/actualizar') ?>" method="POST"
+                            enctype="multipart/form-data" id="form-editar-material"
+                            onsubmit="actualizarMaterial(event)">
+                            <input type="hidden" id="edit-id" name="id_material">
+
+                            <label>Nombre del archivo:</label>
+                            <input type="text" id="edit-nombre" name="nombre_archivo" required>
+
+                            <label>Selecciona un nuevo archivo:</label>
+                            <input type="file" name="archivo" id="edit-archivo">
+
+                            <div class="modaleditar-botones">
+                                <button type="submit">Guardar cambios</button>
+                                <button type="button" onclick="cerrarModalEditar()">Cancelar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+
+
+            </div>
+        </form>
+
+    </main>
+
+
+    <script src="<?= base_url('js/active.js') ?>"></script>
+    <script src="<?= base_url('js/materiales.js') ?>"></script>
+    <script src="<?= base_url('js/chatbot.js') ?>"></script>
+    <script src="<?= base_url('js/modaleditarmateriales.js') ?>"></script>
+
+</body>
+
+</html>

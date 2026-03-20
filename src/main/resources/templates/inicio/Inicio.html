@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Classify - Inicio</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="shortcut icon" th:href="@{img/favicon.ico}" type="image/x-icon">
+</head>
+
+<body class="inicioimg">
+    <!-- <div id="preloader">
+        <div class="spinner"></div>
+    </div> -->
+    <header class="brandinicio">
+        <div class="brand">
+            <a th:href="@{/inicio}"><img th:src="@{/img/logo.png}" alt="logo" class="logo"></a>
+            <a th:href="@{/inicio}">Classify</a>
+        </div>
+
+        <div class="brand2">
+            <a th:href="@{/inicio}" class="info-btn" alt="Información">Inicio</a>
+            <a th:href="@{/nosotros}" class="info-btn" alt="Información">Nosotros</a>
+            <a th:href="@{/contacto}" class="info-btn" alt="Información">Contacto</a>
+            
+        </div>
+
+        <div class="auth">
+            <a th:href="@{/login}" class="info-btnini2" alt="Información"><img th:src="@{/img/perfilinicio.png}" alt="perfilinicio" class="perfilinicio">Inicio Sesión</a>
+            <a th:href="@{/registro}" class="info-btnini" alt="Información">Registro</a>
+        </div>
+        <div>
+            <a href="#info" class="info-btn">
+                <img th:src="@{/img/informacion.png}" alt="Información" class="info-icon">
+            </a>
+            <div id="info" class="info-panel">
+                <div class="info-content">
+                    <a href="#" class="close">&times;</a>
+                    <img th:src="@{/img/icons/agenda.png}" width='80px'>
+                    <h4>¿Porque agendas tus clases?</h4>
+                    <p class="textoinfo">La implementación de una página web para agendar clases en el colegio Moralba
+                        Sur Oriental representa una herramienta fundamental para optimizar la organización académica y
+                        fortalecer la comunicación entre estudiantes, docentes y la institución.
+                        En primer lugar, la plataforma permite a los estudiantes y padres de familia consultar de manera
+                        rápida y sencilla la disponibilidad de horarios, evitando confusiones o cruces en las
+                        actividades escolares. <br> <br>Esto garantiza una mejor planificación del tiempo, tanto dentro
+                        como fuera del aula.
+                        Por otro lado, los docentes pueden gestionar sus clases de forma más eficiente, teniendo acceso
+                        a un calendario actualizado que facilita la asignación de sesiones, el control de grupos y la
+                        preparación de materiales según la programación establecida. <br><br>
+                        Asimismo, para la institución educativa, la página constituye una herramienta de gestión que
+                        contribuye a la transparencia y al orden administrativo, ya que centraliza la información en un
+                        solo espacio digital accesible desde cualquier dispositivo con conexión a internet. <br> <br>
+                        En conclusión, contar con una página para agendar clases no solo mejora la organización interna
+                        del colegio Moralba Sur Oriental, sino que también fortalece la participación de la comunidad
+                        educativa, fomenta la puntualidad, evita pérdidas de tiempo y favorece un proceso de
+                        enseñanza-aprendizaje más planificado y efectivo.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Sección social y registro-->
+    <section class="contentinicio">
+        <div class="contenidoinicio">
+            <div class="socialmedia">
+                <a th:href="@{/#}" alt="youtube"><img th:src="@{/img/youtube.png}" alt="youtube" class="socialmedia"></a>
+                <a th:href="@{/#}" alt="tiktok"><img th:src="@{/img/tiktok.png}" alt="tiktok" class="socialmedia"></a>
+                <a th:href="@{/#}" alt="x"><img th:src="@{/img/x.png}" alt="x" class="socialmedia"></a>
+            </div>
+
+            <div class="registro">
+
+                <div class="tituloiniciocontenido">
+                    <h1 class="titulo">Agenda tus clases ahora</h1>
+                    <p class="parrafotitulo">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Illum officia quos dolores numquam vitae ipsa odio ratione earum quisquam labore voluptatum eum libero eligendi, ut veritatis, veniam quasi! Maiores, dolore.</p>
+                    <form id="welcomeForm" class="welcome-form" novalidate>
+                        <input type="email" name="email" id="welcomeEmail" placeholder="Ingresa tu correo electronico" required>
+                        <input type="submit" id="welcomeSubmit" value="Inicia Sesión">
+                        <p id="welcomeStatus" class="welcome-status" aria-live="polite"></p>
+                    </form>
+                    <div>
+                        <img th:src="@{/img/check.png}" alt="tiktok" class="check">
+                        <p class="parrafoinicio">Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis ab architecto, hic tenetur sequi laudantium iste iure eveniet dolorem in aut nam eligendi, sint unde sit animi deleniti? Optio, laudantium.</p>
+                    </div>
+                </div>
+                
+
+
+            </div>
+
+        
+
+
+
+
+        </div>
+
+
+
+        
+    </section>
+
+    
+    <footer class="f4">
+    <div class="f4-logo">
+        <div class="f4-icon">C</div>
+        <span class="f4-logo-name">Classify</span>
+    </div>
+    <p class="f4-desc">
+        Plataforma educativa para agendar clases, gestionar materiales y conectar a toda la comunidad del Colegio Moralba Sur Oriental.
+    </p>
+    <nav class="f4-links">
+        <a href="#">Inicio</a>
+        <a href="#">Nosotros</a>
+        <a href="#">Agenda</a>
+        <a href="#">Materiales</a>
+        <a href="#">Noticias</a>
+        <a href="#">Soporte</a>
+        <a href="#">Contacto</a>
+        <a href="#">Privacidad</a>
+        <a href="#">Términos</a>
+    </nav>
+    <div class="f4-divider"></div>
+    <p class="f4-copy">© 2026 Classify — Todos los derechos reservados · Bogotá, Colombia</p>
+    </footer>
+
+    <script th:src="@{/js/preloader.js}"></script>
+    <script th:src="@{/js/chatbot.js}"></script>
+    <script th:src="@{/js/carousel.js}"></script>
+    <script th:src="@{/js/botonesinicio.js}"></script>
+    <script th:src="@{/js/welcome-webhook.js}"></script>
+
+
+</body>
+
+
+
+</html>

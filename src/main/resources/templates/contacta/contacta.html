@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Classify - Contacta un Profe</title>
+    <link rel="stylesheet" href="<?= base_url('css/style.css?v=2') ?>">
+    <link rel="stylesheet" href="<?= base_url('css/chatbot.css') ?>">
+    <link rel="shortcut icon" href="<?= base_url('favicon.ico') ?>" type="image/x-icon">
+</head>
+
+<body>
+    <header>
+        <div class="brand">
+            <a href="<?= base_url('login') ?>">
+                <img src="<?= base_url('img/icons/logo.png') ?>" alt="logo" class="logo">
+            </a>
+            <a href="<?= base_url('login') ?>">Classify</a>
+        </div>
+        <!-- Saludo personalizado en el header -->
+        <?php if (session()->get('nombre') && session()->get('nombre') !== 'Usuario'): ?>
+            <div class="saludo-header.opciones">
+                Hola, <?= esc(ucfirst(strtolower(session()->get('nombre')))) ?>!
+            </div>
+        <?php endif; ?>
+        <div>
+            <div class="right">
+                <a href="<?= base_url('noticias') ?>" alt="Noticias">
+                    <img src="<?= base_url('img/icons/noticias.png') ?>" class="iconostop">
+                </a>
+                <a><img src="<?= base_url('img/icons/separador.png') ?>" class="separador">
+                </a>
+                <a href="<?= base_url('login') ?>" alt="Cerrar sesión">
+                    <img src="<?= base_url('img/icons/salida.png') ?>" class="salida">
+                </a>
+            </div>
+        </div>
+    </header>
+
+
+    <aside class="sidebar">
+        <!-- botón comun para todos-->
+        <a href="<?= base_url('menu') ?>" class="inicioprincipal">
+            <img src="<?= base_url('img/icons/home.png') ?>" width="25px" class="imgmenu"> Inicio
+        </a>
+
+        <!-- Programación (Perfil 1 administrador)  -->
+        <?php if (session()->get('perfil') == 1): ?>
+            <a href="<?= base_url('agenda') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/agenda.png') ?>" width="25px" class="imgmenu">Agendar clase
+            </a>
+            <a href="<?= base_url('programacion') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/programacion.png') ?>" width="25px" class="imgmenu">Programación
+            </a>
+            <a href="<?= base_url('aprende') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/aprende.png') ?>" width="25px" class="imgmenu">Aprende
+            </a>
+            <a href="<?= base_url('contacta') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/gmail.png') ?>" width="25px" class="imgmenu">Contacta a un profe
+            </a>
+            <a href="<?= base_url('mismateriales') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/descargamaterial.png') ?>" width="25px" class="imgmenu">Mis Materiales
+            </a>
+            <a href="<?= base_url('materiales') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/upload.png') ?>" width="25px" class="imgmenu">Carga Materiales
+            </a>
+            <a href="<?= base_url('califica') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/califica.png') ?>" width="25px" class="imgmenu">Califica un profe
+            </a>
+            <a href="<?= base_url('izada') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/estrella.png') ?>" width="25px" class="imgmenu"">Izada de bandera
+            </a>
+            <a href=" <?= base_url('notas') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/notas.png') ?>" width="25px" class="imgmenu">Notas
+            </a>
+        <?php endif; ?>
+
+        <!-- Programación (Perfil 2 coordinador) -->
+        <?php if (session()->get('perfil') == 2): ?>
+            <a href="<?= base_url('agenda') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/agenda.png') ?>" width="25px" class="imgmenu">Agendar clase
+            </a>
+            <a href="<?= base_url('programacion') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/programacion.png') ?>" width="25px" class="imgmenu">Programación
+            </a>
+            <a href="<?= base_url('aprende') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/aprende.png') ?>" width="25px" class="imgmenu">Aprende
+            </a>
+            <a href="<?= base_url('contacta') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/gmail.png') ?>" width="25px" class="imgmenu">Contacta a un profe
+            </a>
+            <a href="<?= base_url('materiales') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/upload.png') ?>" width="25px" class="imgmenu">Carga Materiales
+            </a>
+            <a href="<?= base_url('califica') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/califica.png') ?>" width="25px" class="imgmenu">Califica un profe
+            </a>
+            <a href="<?= base_url('izada') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/estrella.png') ?>" width="25px" class="imgmenu">Izada de bandera
+            </a>
+            <a href="<?= base_url('notas') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/notas.png') ?>" width="25px" class="imgmenu">Notas
+            </a>
+        <?php endif; ?>
+
+        <!-- Programación (Perfil 3 docente) -->
+        <?php if (session()->get('perfil') == 3): ?>
+            <a href="<?= base_url('programacion') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/programacion.png') ?>" width="25px" class="imgmenu">Programación
+            </a>
+            <a href="<?= base_url('aprende') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/aprende.png') ?>" width="25px" class="imgmenu">Aprende
+            </a>
+            <a href="<?= base_url('materiales') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/upload.png') ?>" width="25px" class="imgmenu">Carga Materiales
+            </a>
+            <a href="<?= base_url('izada') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/estrella.png') ?>" width="25px" class="imgmenu">Izada de bandera
+            </a>
+        <?php endif; ?>
+
+        <!-- Programación (Perfil 4 acudiente) -->
+        <?php if (session()->get('perfil') == 4): ?>
+            <a href="<?= base_url('programacion') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/programacion.png') ?>" width="25px" class="imgmenu">Programación
+            </a>
+            <a href="<?= base_url('aprende') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/aprende.png') ?>" width="25px" class="imgmenu">Aprende
+            </a>
+            <a href="<?= base_url('contacta') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/gmail.png') ?>" width="25px" class="imgmenu">Contacta a un profe
+            </a>
+            <a href="<?= base_url('mismateriales') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/upload.png') ?>" width="25px" class="imgmenu">Mis Materiales
+            </a>
+            <a href="<?= base_url('izada') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/estrella.png') ?>" width="25px" class="imgmenu">Izada de bandera
+            </a>
+        <?php endif; ?>
+
+        <!-- Programación (Perfil 5 estudiante) -->
+        <?php if (session()->get('perfil') == 5): ?>
+            <a href="<?= base_url('programacion') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/programacion.png') ?>" width="25px" class="imgmenu">Programación
+            </a>
+            <a href="<?= base_url('aprende') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/aprende.png') ?>" width="25px" class="imgmenu">Aprende
+            </a>
+            <a href="<?= base_url('contacta') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/gmail.png') ?>" width="25px" class="imgmenu">Contacta a un profe
+            </a>
+            <a href="<?= base_url('mismateriales') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/upload.png') ?>" width="25px" class="imgmenu">Mis Materiales
+            </a>
+            <a href="<?= base_url('califica') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/califica.png') ?>" width="25px" class="imgmenu">Califica un profe
+            </a>
+            <a href="<?= base_url('izada') ?>" class="inicioprincipal2">
+                <img src="<?= base_url('img/icons/estrella.png') ?>" width="25px" class="imgmenu">Izada de bandera
+            </a>
+        <?php endif; ?>
+
+
+
+    </aside>
+    <main class="contentcontacta">
+        <div class="card">
+            <div class="imagencontacta">
+                <img src="<?= base_url('img/icons/gmailanima.gif') ?>" width="100" height="100">
+            </div>
+
+            <h1 class="titulocontacta">Contacta un Profe</h1>
+            <p class="parrafoccontacta">
+                Completa este breve formulario y nos pondremos en contacto contigo lo más pronto posible.
+                A través de él podrás acceder al progreso académico, calificaciones y toda la información relevante que
+                necesites.
+            </p>
+
+            <form id="contactaForm" method="post" action="https://hook.us2.make.com/mloc7eobxmfi48sq0rzvy41cstg8teky">
+
+
+
+                <label class="labelcontacta" for="nombre">¿Cuál es tu nombre?</label>
+                <input class="inputcontacta" id="nombre" name="nombre" type="text" placeholder="Ej. Camila Días."
+                    required>
+
+                <label class="labelcontacta" for="rol">¿Eres Estudiante o Acudiente?</label>
+                <select id="rol" name="rol" required onchange="toggleCampos(this.value)">
+                    <option value=""> Selecciona un rol</option>
+                    <option value="Estudiante">Estudiante</option>
+                    <option value="Acudiente">Acudiente</option>
+                </select>
+
+                <!-- Campos dinámicos -->
+                <div id="extraCampos"></div>
+
+                <!-- SOLO para Estudiante -->
+                <div id="campoEstudiante" hidden style="margin-top:8px;">
+                    <label class="labelcontacta" for="tema_estudiante">¿Qué tema quieres hablar?</label>
+                    <select class="inputcontacta" id="tema_estudiante" name="tema_estudiante">
+                        <option value="">Selecciona un tema</option>
+                        <option value="disciplina">Disciplina</option>
+                        <option value="estado_del_estudiante">Estado del estudiante</option>
+                        <option value="calificaciones">Calificaciones</option>
+                        <option value="asistencia">Asistencia</option>
+                        <option value="observaciones_generales">Observaciones generales</option>
+                    </select>
+                </div>
+
+                <!-- SOLO para Acudiente -->
+                <div id="campoAcudiente" hidden style="margin-top:8px;">
+                    <label class="labelcontacta" for="nombre_estudiante">Nombre del estudiante</label>
+                    <input class="inputcontacta" id="nombre_estudiante" name="nombre_estudiante" type="text"
+                        placeholder="Ej. Jose Arteaga">
+                    <label class="labelcontacta" for="tema_acudiente">¿Qué tema quieres hablar?</label>
+                    <select class="inputcontacta" id="tema_acudiente" name="tema_acudiente">
+                        <option value="">Selecciona un tema</option>
+                        <option value="disciplina">Disciplina</option>
+                        <option value="estado_del_estudiante">Estado del estudiante</option>
+                        <option value="calificaciones">Calificaciones</option>
+                        <option value="asistencia">Asistencia</option>
+                        <option value="observaciones_generales">Observaciones generales</option>
+                    </select>
+                </div>
+
+                <label class="labelcontacta" for="email">¿Cuál es tu correo?</label>
+                <input class="inputcontacta" id="email" name="email" type="email" placeholder="correo@colegio.edu"
+                    required>
+
+                <input type="hidden" name="fuente" value="contacta_form">
+
+                <p class="parrafoccontacta2">
+                    Podrás realizar tus peticiones de manera anónima y con total confianza.
+                    En el <span class="negrillaparrafocontact">Colegio Moralba Sur Oriental</span>
+                    estamos para escucharte, porque el bienestar de nuestros estudiantes es nuestra prioridad.
+                </p>
+
+                <button class="btncontacta" type="submit">Enviar</button>
+            </form>
+
+            <p id="msg"></p>
+        </div>
+    </main>
+
+    <!-- Script dinámico -->
+    <script>
+        function actualizarCampos() {
+            const rolSel = document.getElementById('rol');
+            const v = (rolSel.value || '').trim().toLowerCase();
+
+            const campoEst = document.getElementById('campoEstudiante');
+            const campoAcu = document.getElementById('campoAcudiente');
+
+            const esEstudiante = v === 'estudiante';
+            const esAcudiente = v === 'acudiente';
+
+            campoEst.hidden = !esEstudiante;
+            campoAcu.hidden = !esAcudiente;
+
+            // requerir campos según el rol
+            document.getElementById('tema_estudiante').required = esEstudiante;
+            document.getElementById('tema_acudiente').required = esAcudiente;
+            document.getElementById('nombre_estudiante').required = esAcudiente;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const rolSel = document.getElementById('rol');
+            rolSel.addEventListener('change', actualizarCampos);
+            actualizarCampos();
+        });
+    </script>
+
+    <!-- Script general -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const form = document.getElementById("contactaForm");
+            form.addEventListener("submit", function (e) {
+                e.preventDefault(); // evita que cargue la página del webhook
+
+                fetch(form.action, {
+                    method: "POST",
+                    body: new FormData(form)
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            // ✅ Redirige a principal.php tras el envío
+                            window.location.href = "<?= base_url('menu') ?>";
+                        } else {
+                            alert("Hubo un problema al enviar el formulario. Intenta nuevamente.");
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error:", error);
+                        alert("Error de conexión. Intenta nuevamente.");
+                    });
+            });
+        });
+    </script>
+
+    <script src="<?= base_url('js/active.js') ?>"></script>
+    <script src="<?= base_url('js/chatbot.js') ?>"></script>
+</body>
+
+</html>
