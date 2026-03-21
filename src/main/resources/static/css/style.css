@@ -1328,6 +1328,15 @@ img.socialmedia:hover {
     transition: 0.4s;
     margin-bottom: 0;
 }
+.contentregistro {
+    background: url("/img/backgroundregistro.png") no-repeat center center;
+    background-size: 80% 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.4s;
+    margin-bottom: 0;
+}
 
 div.imagenlogin {
     display: flex;
@@ -1450,10 +1459,10 @@ form .login-form { width: 295px; }
     background: white;
     padding: 24px;
     border-radius: 10px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
     width: 500px;
-    margin-top: 10px;
+    margin-top: 3px;
     margin-bottom: 30px;
+    font-size: 16px;
 }
 
 div.imagenregistro {
@@ -1497,7 +1506,7 @@ div.imagenregistro {
 .buttonregistro {
     width: 99%;
     padding: 6px;
-    background: #fd5828;
+    background: var(--green);
     border: none;
     border-radius: 6px;
     color: white;
@@ -1507,7 +1516,11 @@ div.imagenregistro {
     margin-top: 15px;
 }
 
-.buttonregistro:hover { background: #008000; }
+.buttonregistro:hover { 
+    background: var(--green-light); 
+    color: var(--negro);
+    transition: 0.3s;
+}
 
 .textoregistro {
     text-align: center;
