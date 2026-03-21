@@ -1321,7 +1321,7 @@ img.socialmedia:hover {
 
 .contentindex {
     background: url("/img/backgroundlogin.png") no-repeat center center;
-    background-size: cover;
+    background-size: 70% 100%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -1364,13 +1364,14 @@ form .login-form { width: 295px; }
 }
 
 .login-container {
-    background: white;
+    background: transparent;
     padding: 24px;
     border-radius: 10px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
     width: 385px;
     margin-top: 10px;
     margin-bottom: 30px;
+    display: colum;
+
 }
 
 .login-container div#mensaje.mensajeerror h2 {
