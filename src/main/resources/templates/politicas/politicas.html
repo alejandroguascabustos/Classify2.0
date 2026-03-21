@@ -1,44 +1,58 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
-    <title>Classify - Inicio</title>
-    <link rel="stylesheet" href="<?= base_url('css/style.css') ?>">
-    <link rel="stylesheet" href="<?= base_url('css/chatbot.css') ?>">
-    <link rel="shortcut icon" href="<?= base_url('favicon.ico') ?>" type="image/x-icon">
+    <title>Classify - Politicas</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/chatbot.css}">
+    <link rel="shortcut icon" th:href="@{/favicon.ico}" type="image/x-icon">
 </head>
+
 <body class="iniciopoliticsimg">
 
 <header class="brandinicio">
     <div class="brand">
-        <a href="<?= base_url('inicio') ?>"><img src="<?= base_url('img/icons/logo.png') ?>" alt="logo" class="logo"> </a>
-        <a href="<?= base_url('inicio') ?>">Classify</a>
+        <a th:href="@{/inicio}"><img th:src="@{/img/logo.png}" alt="logo" class="logo"></a>
+        <a th:href="@{/inicio}">Classify</a>
     </div>
 
-    
     <div class="brand2">
-        <a href="<?= base_url('inicio') ?>" class="info-btn"  alt="Información">Inicio</a>
-        <a href="<?= base_url('nosotros') ?>" class="info-btn"  alt="Información">Nosotros</a>
-        <a href="<?= base_url('contacto') ?>" class="info-btn"  alt="Información">Contacto</a>
+        <a th:href="@{/inicio}" class="info-btn" alt="Información">Inicio</a>
+        <a th:href="@{/nosotros}" class="info-btn" alt="Información">Nosotros</a>
+        <a th:href="@{/contacto}" class="info-btn" alt="Información">Contacto</a>
         <div class="auth">
-            <a href="<?= base_url('login') ?>" class="info-btnini2"  alt="Información">Inicio Sesión</a>
-            <a href="<?= base_url('registro') ?>" class="info-btnini"  alt="Información">Registro</a>
+            <a th:href="@{/login}" class="info-btnini2" alt="Información">Inicio Sesión</a>
+            <a th:href="@{/registro}" class="info-btnini" alt="Información">Registro</a>
         </div>
     </div>
+
     <div>
         <a href="#info" class="info-btn">
-            <img src="<?= base_url('img/icons/informacion.png') ?>" alt="Información" class="info-icon">
+            <img th:src="@{/img/informacion.png}" alt="Información" class="info-icon">
         </a>
         <div id="info" class="info-panel">
             <div class="info-content">
                 <a href="#" class="close">&times;</a>
-                <img src="<?= base_url('img/icons/agenda.png') ?>" width='80px'>
+                <img th:src="@{/img/agenda.png}" width="80px">
                 <h4>¿Porque agendas tus clases?</h4>
-                <p class="textoinfo">La implementación de una página web para agendar clases en el colegio Moralba Sur Oriental representa una herramienta fundamental para optimizar la organización académica y fortalecer la comunicación entre estudiantes, docentes y la institución.
-                    En primer lugar, la plataforma permite a los estudiantes y padres de familia consultar de manera rápida y sencilla la disponibilidad de horarios, evitando confusiones o cruces en las actividades escolares. <br> <br>Esto garantiza una mejor planificación del tiempo, tanto dentro como fuera del aula.
-                    Por otro lado, los docentes pueden gestionar sus clases de forma más eficiente, teniendo acceso a un calendario actualizado que facilita la asignación de sesiones, el control de grupos y la preparación de materiales según la programación establecida. <br><br>
-                    Asimismo, para la institución educativa, la página constituye una herramienta de gestión que contribuye a la transparencia y al orden administrativo, ya que centraliza la información en un solo espacio digital accesible desde cualquier dispositivo con conexión a internet. <br> <br>
-                    En conclusión, contar con una página para agendar clases no solo mejora la organización interna del colegio Moralba Sur Oriental, sino que también fortalece la participación de la comunidad educativa, fomenta la puntualidad, evita pérdidas de tiempo y favorece un proceso de enseñanza-aprendizaje más planificado y efectivo.
+                <p class="textoinfo">La implementación de una página web para agendar clases en el colegio Moralba Sur
+                    Oriental representa una herramienta fundamental para optimizar la organización académica y fortalecer
+                    la comunicación entre estudiantes, docentes y la institución.
+                    En primer lugar, la plataforma permite a los estudiantes y padres de familia consultar de manera
+                    rápida y sencilla la disponibilidad de horarios, evitando confusiones o cruces en las actividades
+                    escolares. <br><br>Esto garantiza una mejor planificación del tiempo, tanto dentro como fuera del
+                    aula.
+                    Por otro lado, los docentes pueden gestionar sus clases de forma más eficiente, teniendo acceso a un
+                    calendario actualizado que facilita la asignación de sesiones, el control de grupos y la preparación
+                    de materiales según la programación establecida. <br><br>
+                    Asimismo, para la institución educativa, la página constituye una herramienta de gestión que
+                    contribuye a la transparencia y al orden administrativo, ya que centraliza la información en un solo
+                    espacio digital accesible desde cualquier dispositivo con conexión a internet. <br><br>
+                    En conclusión, contar con una página para agendar clases no solo mejora la organización interna del
+                    colegio Moralba Sur Oriental, sino que también fortalece la participación de la comunidad educativa,
+                    fomenta la puntualidad, evita pérdidas de tiempo y favorece un proceso de enseñanza-aprendizaje más
+                    planificado y efectivo.
                 </p>
             </div>
         </div>
@@ -47,8 +61,8 @@
 
 <div class="politics">
     <div class="politica-container">
-        <div class="imagenpoliticas" >
-            <img  src="<?= base_url('img/icons/politicas.gif') ?>" width="150px" >
+        <div class="imagenpoliticas">
+            <img th:src="@{/img/politicas.gif}" width="150px">
         </div>
         <h1 class="politica-titulo">Políticas de Privacidad</h1>
         <p class="politica-subtitulo">
@@ -146,8 +160,7 @@
             </p>
         </section>
     </div>
-<script src="<?= base_url('js/chatbot.js') ?>"></script>
-</body>
+</div>
 
 <footer class="footer">
     <div class="footer-container">
@@ -161,10 +174,10 @@
         <div class="footer-col">
             <h4>Enlaces útiles</h4>
             <ul>
-                <li><a href="<?= base_url('politicas') ?>">Política de privacidad</a></li>
-                <li><a href="<?= base_url('terminos') ?>">Términos y condiciones</a></li>
-                <li><a href="<?= base_url('contacto') ?>">Contacto Colegio</a></li>
-                <li><a href="<?= base_url('soporte') ?>">Soporte App</a></li>
+                <li><a th:href="@{/politicas}">Política de privacidad</a></li>
+                <li><a th:href="@{/terminos}">Términos y condiciones</a></li>
+                <li><a th:href="@{/contacto}">Contacto Colegio</a></li>
+                <li><a th:href="@{/soporte}">Soporte App</a></li>
             </ul>
         </div>
     </div>
@@ -173,6 +186,8 @@
     </div>
 </footer>
 
-    <script src="<?= base_url('js/chatbot.js') ?>"></script>
+<script th:src="@{/js/chatbot.js}"></script>
+
+</body>
 
 </html>
