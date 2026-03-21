@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
     <title>Classify - Aprende</title>
-    <link rel="stylesheet" href="<?= base_url('css/style.css?v=' . filemtime(FCPATH . 'css/style.css')) ?>">
-    <link rel="stylesheet" href="<?= base_url('css/chatbot.css') ?>">
-    <link rel="shortcut icon" href="<?= base_url('favicon.ico') ?>" type="image/x-icon">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/chatbot.css}">
+    <link rel="shortcut icon" th:href="@{/favicon.ico}" type="image/x-icon">
     <style>
         /* Estilos para el spinner */
         .spinner-container {
@@ -189,151 +189,144 @@
 <body>
     <header>
         <div class="brand">
-            <a href="<?= base_url('login') ?>"><img src="<?= base_url('img/icons/logo.png') ?>" alt="logo" class="logo">
-            </a>
-            <a href="<?= base_url('login') ?>">Classify</a>
+            <a th:href="@{/login}"><img th:src="@{/img/logo.png}" alt="logo" class="logo"></a>
+            <a th:href="@{/login}">Classify</a>
         </div>
         <div>
             <div class="right">
-                <a href="<?= base_url('noticias') ?>" alt="Noticias">
-                    <img src="<?= base_url('img/icons/noticias.png') ?>" class="iconostop">
+                <a th:href="@{/noticias}" alt="Noticias">
+                    <img th:src="@{/img/noticias.png}" class="iconostop">
                 </a>
-                <a><img src="<?= base_url('img/icons/separador.png') ?>" class="separador">
-                </a>
-                <a href="<?= base_url('login') ?>" alt="Cerrar sesión">
-                    <img src="<?= base_url('img/icons/salida.png') ?>" class="salida">
+                <a><img th:src="@{/img/separador.png}" class="separador"></a>
+                <a th:href="@{/login}" alt="Cerrar sesión">
+                    <img th:src="@{/img/salida.png}" class="salida">
                 </a>
             </div>
         </div>
     </header>
 
-
     <aside class="sidebar">
-        <!-- botón comun para todos-->
-        <a href="<?= base_url('menu') ?>" class="inicioprincipal">
-            <img src="<?= base_url('img/icons/home.png') ?>" width="25px" class="imgmenu"> Inicio
+        <!-- botón común para todos -->
+        <a th:href="@{/menu}" class="inicioprincipal">
+            <img th:src="@{/img/home.png}" width="25px" class="imgmenu"> Inicio
         </a>
 
-        <!-- Programación (Perfil 1 administrador)  -->
-        <?php if (session()->get('perfil') == 1): ?>
-            <a href="<?= base_url('agenda') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/agenda.png') ?>" width="25px" class="imgmenu">Agendar clase
+        <!-- Perfil 1: Administrador -->
+        <th:block th:if="${session.perfil == 1}">
+            <a th:href="@{/agenda}" class="inicioprincipal2">
+                <img th:src="@{/img/agenda.png}" width="25px" class="imgmenu">Agendar clase
             </a>
-            <a href="<?= base_url('programacion') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/programacion.png') ?>" width="25px" class="imgmenu">Programación
+            <a th:href="@{/programacion}" class="inicioprincipal2">
+                <img th:src="@{/img/programacion.png}" width="25px" class="imgmenu">Programación
             </a>
-            <a href="<?= base_url('aprende') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/aprende.png') ?>" width="25px" class="imgmenu">Aprende
+            <a th:href="@{/aprende}" class="inicioprincipal2">
+                <img th:src="@{/img/aprende.png}" width="25px" class="imgmenu">Aprende
             </a>
-            <a href="<?= base_url('contacta') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/gmail.png') ?>" width="25px" class="imgmenu">Contacta a un profe
+            <a th:href="@{/contacta}" class="inicioprincipal2">
+                <img th:src="@{/img/gmail.png}" width="25px" class="imgmenu">Contacta a un profe
             </a>
-            <a href="<?= base_url('mismateriales') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/descargamaterial.png') ?>" width="25px" class="imgmenu">Mis Materiales
+            <a th:href="@{/mismateriales}" class="inicioprincipal2">
+                <img th:src="@{/img/descargamaterial.png}" width="25px" class="imgmenu">Mis Materiales
             </a>
-            <a href="<?= base_url('materiales') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/upload.png') ?>" width="25px" class="imgmenu">Carga Materiales
+            <a th:href="@{/materiales}" class="inicioprincipal2">
+                <img th:src="@{/img/upload.png}" width="25px" class="imgmenu">Carga Materiales
             </a>
-            <a href="<?= base_url('califica') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/califica.png') ?>" width="25px" class="imgmenu">Califica un profe
+            <a th:href="@{/califica}" class="inicioprincipal2">
+                <img th:src="@{/img/califica.png}" width="25px" class="imgmenu">Califica un profe
             </a>
-            <a href="<?= base_url('izada') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/estrella.png') ?>" width="25px" class="imgmenu"">Izada de bandera
+            <a th:href="@{/izada}" class="inicioprincipal2">
+                <img th:src="@{/img/estrella.png}" width="25px" class="imgmenu">Izada de bandera
             </a>
-            <a href=" <?= base_url('notas') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/notas.png') ?>" width="25px" class="imgmenu">Notas
+            <a th:href="@{/notas}" class="inicioprincipal2">
+                <img th:src="@{/img/notas.png}" width="25px" class="imgmenu">Notas
             </a>
-        <?php endif; ?>
+        </th:block>
 
-        <!-- Programación (Perfil 2 coordinador) -->
-        <?php if (session()->get('perfil') == 2): ?>
-            <a href="<?= base_url('agenda') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/agenda.png') ?>" width="25px" class="imgmenu">Agendar clase
+        <!-- Perfil 2: Coordinador -->
+        <th:block th:if="${session.perfil == 2}">
+            <a th:href="@{/agenda}" class="inicioprincipal2">
+                <img th:src="@{/img/agenda.png}" width="25px" class="imgmenu">Agendar clase
             </a>
-            <a href="<?= base_url('programacion') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/programacion.png') ?>" width="25px" class="imgmenu">Programación
+            <a th:href="@{/programacion}" class="inicioprincipal2">
+                <img th:src="@{/img/programacion.png}" width="25px" class="imgmenu">Programación
             </a>
-            <a href="<?= base_url('aprende') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/aprende.png') ?>" width="25px" class="imgmenu">Aprende
+            <a th:href="@{/aprende}" class="inicioprincipal2">
+                <img th:src="@{/img/aprende.png}" width="25px" class="imgmenu">Aprende
             </a>
-            <a href="<?= base_url('contacta') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/gmail.png') ?>" width="25px" class="imgmenu">Contacta a un profe
+            <a th:href="@{/contacta}" class="inicioprincipal2">
+                <img th:src="@{/img/gmail.png}" width="25px" class="imgmenu">Contacta a un profe
             </a>
-            <a href="<?= base_url('materiales') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/upload.png') ?>" width="25px" class="imgmenu">Carga Materiales
+            <a th:href="@{/materiales}" class="inicioprincipal2">
+                <img th:src="@{/img/upload.png}" width="25px" class="imgmenu">Carga Materiales
             </a>
-            <a href="<?= base_url('califica') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/califica.png') ?>" width="25px" class="imgmenu">Califica un profe
+            <a th:href="@{/califica}" class="inicioprincipal2">
+                <img th:src="@{/img/califica.png}" width="25px" class="imgmenu">Califica un profe
             </a>
-            <a href="<?= base_url('izada') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/estrella.png') ?>" width="25px" class="imgmenu">Izada de bandera
+            <a th:href="@{/izada}" class="inicioprincipal2">
+                <img th:src="@{/img/estrella.png}" width="25px" class="imgmenu">Izada de bandera
             </a>
-            <a href="<?= base_url('notas') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/notas.png') ?>" width="25px" class="imgmenu">Notas
+            <a th:href="@{/notas}" class="inicioprincipal2">
+                <img th:src="@{/img/notas.png}" width="25px" class="imgmenu">Notas
             </a>
-        <?php endif; ?>
+        </th:block>
 
-        <!-- Programación (Perfil 3 docente) -->
-        <?php if (session()->get('perfil') == 3): ?>
-            <a href="<?= base_url('programacion') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/programacion.png') ?>" width="25px" class="imgmenu">Programación
+        <!-- Perfil 3: Docente -->
+        <th:block th:if="${session.perfil == 3}">
+            <a th:href="@{/programacion}" class="inicioprincipal2">
+                <img th:src="@{/img/programacion.png}" width="25px" class="imgmenu">Programación
             </a>
-            <a href="<?= base_url('aprende') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/aprende.png') ?>" width="25px" class="imgmenu">Aprende
+            <a th:href="@{/aprende}" class="inicioprincipal2">
+                <img th:src="@{/img/aprende.png}" width="25px" class="imgmenu">Aprende
             </a>
-            <a href="<?= base_url('materiales') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/upload.png') ?>" width="25px" class="imgmenu">Carga Materiales
+            <a th:href="@{/materiales}" class="inicioprincipal2">
+                <img th:src="@{/img/upload.png}" width="25px" class="imgmenu">Carga Materiales
             </a>
-            <a href="<?= base_url('izada') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/estrella.png') ?>" width="25px" class="imgmenu">Izada de bandera
+            <a th:href="@{/izada}" class="inicioprincipal2">
+                <img th:src="@{/img/estrella.png}" width="25px" class="imgmenu">Izada de bandera
             </a>
-        <?php endif; ?>
+        </th:block>
 
-        <!-- Programación (Perfil 4 acudiente) -->
-        <?php if (session()->get('perfil') == 4): ?>
-            <a href="<?= base_url('programacion') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/programacion.png') ?>" width="25px" class="imgmenu">Programación
+        <!-- Perfil 4: Acudiente -->
+        <th:block th:if="${session.perfil == 4}">
+            <a th:href="@{/programacion}" class="inicioprincipal2">
+                <img th:src="@{/img/programacion.png}" width="25px" class="imgmenu">Programación
             </a>
-            <a href="<?= base_url('aprende') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/aprende.png') ?>" width="25px" class="imgmenu">Aprende
+            <a th:href="@{/aprende}" class="inicioprincipal2">
+                <img th:src="@{/img/aprende.png}" width="25px" class="imgmenu">Aprende
             </a>
-            <a href="<?= base_url('contacta') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/gmail.png') ?>" width="25px" class="imgmenu">Contacta a un profe
+            <a th:href="@{/contacta}" class="inicioprincipal2">
+                <img th:src="@{/img/gmail.png}" width="25px" class="imgmenu">Contacta a un profe
             </a>
-            <a href="<?= base_url('mismateriales') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/upload.png') ?>" width="25px" class="imgmenu">Mis Materiales
+            <a th:href="@{/mismateriales}" class="inicioprincipal2">
+                <img th:src="@{/img/upload.png}" width="25px" class="imgmenu">Mis Materiales
             </a>
-            <a href="<?= base_url('izada') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/estrella.png') ?>" width="25px" class="imgmenu">Izada de bandera
+            <a th:href="@{/izada}" class="inicioprincipal2">
+                <img th:src="@{/img/estrella.png}" width="25px" class="imgmenu">Izada de bandera
             </a>
-        <?php endif; ?>
+        </th:block>
 
-        <!-- Programación (Perfil 5 estudiante) -->
-        <?php if (session()->get('perfil') == 5): ?>
-            <a href="<?= base_url('programacion') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/programacion.png') ?>" width="25px" class="imgmenu">Programación
+        <!-- Perfil 5: Estudiante -->
+        <th:block th:if="${session.perfil == 5}">
+            <a th:href="@{/programacion}" class="inicioprincipal2">
+                <img th:src="@{/img/programacion.png}" width="25px" class="imgmenu">Programación
             </a>
-            <a href="<?= base_url('aprende') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/aprende.png') ?>" width="25px" class="imgmenu">Aprende
+            <a th:href="@{/aprende}" class="inicioprincipal2">
+                <img th:src="@{/img/aprende.png}" width="25px" class="imgmenu">Aprende
             </a>
-            <a href="<?= base_url('contacta') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/gmail.png') ?>" width="25px" class="imgmenu">Contacta a un profe
+            <a th:href="@{/contacta}" class="inicioprincipal2">
+                <img th:src="@{/img/gmail.png}" width="25px" class="imgmenu">Contacta a un profe
             </a>
-            <a href="<?= base_url('mismateriales') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/upload.png') ?>" width="25px" class="imgmenu">Mis Materiales
+            <a th:href="@{/mismateriales}" class="inicioprincipal2">
+                <img th:src="@{/img/upload.png}" width="25px" class="imgmenu">Mis Materiales
             </a>
-            <a href="<?= base_url('califica') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/califica.png') ?>" width="25px" class="imgmenu">Califica un profe
+            <a th:href="@{/califica}" class="inicioprincipal2">
+                <img th:src="@{/img/califica.png}" width="25px" class="imgmenu">Califica un profe
             </a>
-            <a href="<?= base_url('izada') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/estrella.png') ?>" width="25px" class="imgmenu">Izada de bandera
+            <a th:href="@{/izada}" class="inicioprincipal2">
+                <img th:src="@{/img/estrella.png}" width="25px" class="imgmenu">Izada de bandera
             </a>
-        <?php endif; ?>
-
-
-
+        </th:block>
     </aside>
-
 
     <main class="contentaprende">
         <!-- Bloque izquierdo: Formulario -->
@@ -341,7 +334,7 @@
             <div class="login-wrapper2">
                 <div class="login-container">
                     <div class="imagenlogin">
-                        <img src="<?= base_url('img/icons/cerebro.gif') ?>" width="150px" alt="Cerebro animado">
+                        <img th:src="@{/img/cerebro.gif}" width="150px" alt="Cerebro animado">
                     </div>
                     <h2 class="titleaprende">Aprendamos algo nuevo</h2>
                     <div class="help-muted">
@@ -350,15 +343,13 @@
 
                     <div class="mensajeerror" id="mensaje" style="display:none;"></div>
 
-                    <form id="agendaForm" action="agenda" method="post" class="login-form">
-                        <label for="" class="labelaprende">Escribe la materia</label>
+                    <form id="agendaForm" th:action="@{/agenda}" method="post" class="login-form">
+                        <label class="labelaprende">Escribe la materia</label>
                         <input type="text" name="materia" id="materia" placeholder="Materia" required>
-                        <label for="" class="labelaprende">Escribe el tema</label>
-                        <input type="text" name="tema" id="tema" placeholder="Tema (ej: Guerra Fría, Fracciones…)"
-                            required>
-                        <label for="" class="labelaprende">Escribe un comentario</label>
-                        <textarea name="observaciones" id="observaciones"
-                            placeholder="Quiero aprender de..."></textarea>
+                        <label class="labelaprende">Escribe el tema</label>
+                        <input type="text" name="tema" id="tema" placeholder="Tema (ej: Guerra Fría, Fracciones…)" required>
+                        <label class="labelaprende">Escribe un comentario</label>
+                        <textarea name="observaciones" id="observaciones" placeholder="Quiero aprender de..."></textarea>
                         <button type="submit" id="submitBtn" class="guardaraprende">Guardar</button>
                     </form>
                 </div>
@@ -370,10 +361,8 @@
             <!-- Spinner de carga -->
             <div class="spinner-container" id="spinnerContainer">
                 <span class="spinner-grow" style="color: #3b82f6;" role="status" aria-hidden="true"></span>
-                <span class="spinner-grow" style="color: #8b5cf6; animation-delay: 0.15s;" role="status"
-                    aria-hidden="true"></span>
-                <span class="spinner-grow" style="color: #ec4899; animation-delay: 0.3s;" role="status"
-                    aria-hidden="true"></span>
+                <span class="spinner-grow" style="color: #8b5cf6; animation-delay: 0.15s;" role="status" aria-hidden="true"></span>
+                <span class="spinner-grow" style="color: #ec4899; animation-delay: 0.3s;" role="status" aria-hidden="true"></span>
                 <div class="loading-text">Classify está pensando qué responderte...</div>
             </div>
 
@@ -434,8 +423,9 @@
         </section>
     </main>
 
+    <script th:inline="javascript">
+        const baseUrl = /*[[@{/}]]*/ '/';
 
-    <script>
         /* ===== Parser robusto ===== */
         function parseLLMJson(t) {
             if (!t) throw new Error("Respuesta vacía");
@@ -447,7 +437,7 @@
 
         /* ===== Helpers ===== */
         const $ = s => document.querySelector(s);
-        const msgEl = $('#mensaje'), ayuda = $('#ayuda'), content = $('#contentWrap');
+        const msgEl = $('#mensaje'), content = $('#contentWrap');
         const spinner = $('#spinnerContainer'), formColumn = $('#formColumn'), responseColumn = $('#responseColumn');
         const suggestionsSection = $('#suggestionsSection'), suggestionsButtons = $('#suggestionsButtons');
 
@@ -466,9 +456,9 @@
             spinner.classList.remove('active');
         }
 
-        /* ===== OpenAI client ===== */
+        /* ===== Cliente API ===== */
         async function callOpenAI(messages) {
-            const res = await fetch('<?= base_url('aprende/chat') ?>', {
+            const res = await fetch(baseUrl + 'aprende/chat', {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ model: "gpt-4o-mini", temperature: 0.4, messages })
@@ -498,10 +488,9 @@ Devuelve EXACTAMENTE este JSON:
  "subtopics":[
   {"title":"Título descriptivo del subtema 1","why_relevant":"Explicación de 2-3 oraciones sobre por qué este subtema es importante y cómo se relaciona con la vida diaria de estudiantes de 6°.","one_sentence":"Descripción completa y clara en una oración que explique el concepto principal del subtema.","keywords":["palabra1","palabra2","palabra3","palabra4"]},
   {"title":"Título descriptivo del subtema 2","why_relevant":"Explicación de 2-3 oraciones sobre por qué este subtema es importante y cómo se relaciona con la vida diaria de estudiantes de 6°.","one_sentence":"Descripción completa y clara en una oración que explique el concepto principal del subtema.","keywords":["palabra1","palabra2","palabra3","palabra4"]},
-  {"title":"Título descriptivo del subtema 3","why_relevant":"Explicación de 2-3 oraciones sobre por qué este subtema es importante y cómo se relaciona con la vida diaria de estudiantes de 6°.","one_sentence":"Descripción completa y clara en una oración que explique el concepto principal del subtema.","keywords":["palabra1","palabra2","palabra3","palabra4"]}
-  {"title":"Título descriptivo del subtema 4","why_relevant":"Explicación de 2-3 oraciones sobre por qué este subtema es importante y cómo se relaciona con la vida diaria de estudiantes de 6°.","one_sentence":"Descripción completa y clara en una oración que explique el concepto principal del subtema.","keywords":["palabra1","palabra2","palabra3","palabra4"]}
+  {"title":"Título descriptivo del subtema 3","why_relevant":"Explicación de 2-3 oraciones sobre por qué este subtema es importante y cómo se relaciona con la vida diaria de estudiantes de 6°.","one_sentence":"Descripción completa y clara en una oración que explique el concepto principal del subtema.","keywords":["palabra1","palabra2","palabra3","palabra4"]},
+  {"title":"Título descriptivo del subtema 4","why_relevant":"Explicación de 2-3 oraciones sobre por qué este subtema es importante y cómo se relaciona con la vida diaria de estudiantes de 6°.","one_sentence":"Descripción completa y clara en una oración que explique el concepto principal del subtema.","keywords":["palabra1","palabra2","palabra3","palabra4"]},
   {"title":"Título descriptivo del subtema 5","why_relevant":"Explicación de 2-3 oraciones sobre por qué este subtema es importante y cómo se relaciona con la vida diaria de estudiantes de 6°.","one_sentence":"Descripción completa y clara en una oración que explique el concepto principal del subtema.","keywords":["palabra1","palabra2","palabra3","palabra4"]}
-
  ]}
 Reglas: 3 subtemas distintos pero complementarios, comprensibles para 6°, textos extensos y detallados, sin texto fuera del JSON.
 `}];
@@ -522,77 +511,18 @@ Devuelve EXACTAMENTE este JSON con contenido EXTENSO:
 {
  "breadcrumb":"${subject} > ${topic} > ${subtopic}",
  "title":"${subtopic}",
- "synopsis":"Escribe un párrafo completo de 8-12 líneas que introduzca el tema de forma clara y atractiva para estudiantes de 6°. Debe explicar qué es el tema, por qué es importante, y cómo se relaciona con su vida diaria. Usa un lenguaje cercano pero educativo.",
- "key_points":[
-   "Punto clave 1: Explicación detallada de 2-3 oraciones sobre este aspecto fundamental del tema. Incluye ejemplos específicos y claros.",
-   "Punto clave 2: Explicación detallada de 2-3 oraciones sobre este aspecto fundamental del tema. Incluye ejemplos específicos y claros.",
-   "Punto clave 3: Explicación detallada de 2-3 oraciones sobre este aspecto fundamental del tema. Incluye ejemplos específicos y claros.",
-   "Punto clave 4: Explicación detallada de 2-3 oraciones sobre este aspecto fundamental del tema. Incluye ejemplos específicos y claros.",
-   "Punto clave 5: Explicación detallada de 2-3 oraciones sobre este aspecto fundamental del tema. Incluye ejemplos específicos y claros."
- ],
- "objectives":[
-   "Objetivo de aprendizaje 1: Descripción completa en 1-2 oraciones de lo que el estudiante logrará comprender o hacer.",
-   "Objetivo de aprendizaje 2: Descripción completa en 1-2 oraciones de lo que el estudiante logrará comprender o hacer.",
-   "Objetivo de aprendizaje 3: Descripción completa en 1-2 oraciones de lo que el estudiante logrará comprender o hacer.",
-   "Objetivo de aprendizaje 4: Descripción completa en 1-2 oraciones de lo que el estudiante logrará comprender o hacer."
- ],
- "vocabulary":[
-   {"term":"Término 1","meaning":"Definición completa y clara del término en 2-3 oraciones, con ejemplo de uso si es relevante."},
-   {"term":"Término 2","meaning":"Definición completa y clara del término en 2-3 oraciones, con ejemplo de uso si es relevante."},
-   {"term":"Término 3","meaning":"Definición completa y clara del término en 2-3 oraciones, con ejemplo de uso si es relevante."},
-   {"term":"Término 4","meaning":"Definición completa y clara del término en 2-3 oraciones, con ejemplo de uso si es relevante."},
-   {"term":"Término 5","meaning":"Definición completa y clara del término en 2-3 oraciones, con ejemplo de uso si es relevante."}
- ],
- "visual_ideas":[
-   "Idea visual 1: Descripción detallada de cómo crear o usar este recurso visual (mapa mental, diagrama, etc.)",
-   "Idea visual 2: Descripción detallada de cómo crear o usar este recurso visual",
-   "Idea visual 3: Descripción detallada de cómo crear o usar este recurso visual",
-   "Idea visual 4: Descripción detallada de cómo crear o usar este recurso visual"
- ],
- "mini_timeline":[
-   {"year":"Fecha/periodo 1","event":"Descripción completa del evento o hecho importante en 1-2 oraciones."},
-   {"year":"Fecha/periodo 2","event":"Descripción completa del evento o hecho importante en 1-2 oraciones."},
-   {"year":"Fecha/periodo 3","event":"Descripción completa del evento o hecho importante en 1-2 oraciones."},
-   {"year":"Fecha/periodo 4","event":"Descripción completa del evento o hecho importante en 1-2 oraciones."}
- ],
- "quick_activity":{
-   "title":"Título atractivo de actividad práctica de 15-20 minutos",
-   "time_min":18,
-   "steps":[
-     "Paso 1: Instrucción detallada y clara de qué hacer en este paso, con ejemplos si es necesario.",
-     "Paso 2: Instrucción detallada y clara de qué hacer en este paso, con ejemplos si es necesario.",
-     "Paso 3: Instrucción detallada y clara de qué hacer en este paso, con ejemplos si es necesario.",
-     "Paso 4: Instrucción detallada y clara de qué hacer en este paso, con ejemplos si es necesario.",
-     "Paso 5: Instrucción detallada y clara de qué hacer en este paso, con ejemplos si es necesario."
-   ],
-   "materials":["Material 1 con descripción","Material 2 con descripción","Material 3 con descripción"]
- },
- "check_questions":[
-   {"type":"open","question":"Pregunta abierta completa y bien formulada que invite a la reflexión profunda sobre el tema.","answer":"Respuesta guía de 3-4 oraciones que explique los puntos clave que el estudiante debería mencionar."},
-   {"type":"option","question":"Pregunta de opción múltiple bien formulada y clara.","options":["Opción A con descripción completa","Opción B con descripción completa","Opción C con descripción completa","Opción D con descripción completa"],"correct":"A"},
-   {"type":"true_false","question":"Afirmación completa y bien estructurada que pueda ser verdadera o falsa, con suficiente contexto.","answer":"Verdadero","explanation":"Explicación de 2-3 oraciones de por qué esta respuesta es correcta y qué conceptos importantes ilustra."}
- ],
- "references":[
-   {"title":"Nombre completo del libro, artículo o recurso académico relevante","url":"https://ejemplo.com/recurso1","type":"libro","description":"Breve descripción de 1-2 oraciones sobre qué información útil contiene este recurso."},
-   {"title":"Nombre del video educativo o documental","url":"https://youtube.com/watch?v=ejemplo","type":"video","description":"Breve descripción de 1-2 oraciones sobre qué información útil contiene este recurso."},
-   {"title":"Nombre del sitio web educativo o artículo online","url":"https://sitio-educativo.com/articulo","type":"web","description":"Breve descripción de 1-2 oraciones sobre qué información útil contiene este recurso."}
- ],
- "additional_resources":[
-   "Recurso adicional 1: Descripción de juego, app, experimento o actividad complementaria",
-   "Recurso adicional 2: Descripción de juego, app, experimento o actividad complementaria",
-   "Recurso adicional 3: Descripción de juego, app, experimento o actividad complementaria",
-   "Recurso adicional 4: Descripción de juego, app, experimento o actividad complementaria"
- ]
+ "synopsis":"Escribe un párrafo completo de 8-12 líneas que introduzca el tema de forma clara y atractiva para estudiantes de 6°.",
+ "key_points":["Punto 1","Punto 2","Punto 3","Punto 4","Punto 5"],
+ "objectives":["Objetivo 1","Objetivo 2","Objetivo 3","Objetivo 4"],
+ "vocabulary":[{"term":"Término","meaning":"Definición"}],
+ "visual_ideas":["Idea 1","Idea 2","Idea 3","Idea 4"],
+ "mini_timeline":[{"year":"Fecha","event":"Evento"}],
+ "quick_activity":{"title":"Título","time_min":18,"steps":["Paso 1","Paso 2","Paso 3","Paso 4","Paso 5"],"materials":["Material 1","Material 2","Material 3"]},
+ "check_questions":[{"type":"open","question":"Pregunta","answer":"Respuesta"},{"type":"option","question":"Pregunta","options":["A","B","C","D"],"correct":"A"},{"type":"true_false","question":"Afirmación","answer":"Verdadero","explanation":"Explicación"}],
+ "references":[{"title":"Recurso","url":"https://ejemplo.com","type":"libro","description":"Descripción"}],
+ "additional_resources":["Recurso 1","Recurso 2","Recurso 3","Recurso 4"]
 }
-
-IMPORTANTE:
-- Todos los textos deben ser EXTENSOS y DETALLADOS
-- Las explicaciones deben tener mínimo 2-3 oraciones
-- Usa lenguaje claro pero completo
-- Incluye ejemplos concretos cuando sea posible
-- Las preguntas deben ser solo 3 pero muy bien elaboradas
-- Referencias deben ser recursos REALES y verificables cuando sea posible
-- Sin texto fuera del JSON
+Sin texto fuera del JSON.
 `}];
         }
 
@@ -636,11 +566,9 @@ IMPORTANTE:
             $('#actSteps').innerHTML = safeArr(act.steps).map(s => `<li style="margin-bottom:8px;">${s}</li>`).join('');
             $('#actMeta').innerHTML = act.materials ? `Materiales: ${safeArr(act.materials).join(', ')}` : '';
 
-            // Renderizar preguntas de chequeo (solo 3)
             const checks = safeArr(d.check_questions).slice(0, 3);
             $('#checks').innerHTML = checks.map((q, idx) => {
                 let html = `<li style="margin-bottom:15px;"><strong>Pregunta ${idx + 1}:</strong> ${safeStr(q.question)}<br>`;
-
                 if (q.type === 'option') {
                     html += '<ul style="list-style-type: none; padding-left: 20px; margin-top: 8px;">';
                     safeArr(q.options).forEach((opt, i) => {
@@ -656,12 +584,10 @@ IMPORTANTE:
                 } else if (q.type === 'open') {
                     html += `<em style="color: #059669; margin-top: 5px; display: block;">Guía de respuesta: ${safeStr(q.answer)}</em>`;
                 }
-
                 html += '</li>';
                 return html;
             }).join('');
 
-            // Renderizar referencias con descripción
             const refs = safeArr(d.references);
             const refIcons = { 'libro': '📖', 'video': '🎥', 'web': '🌐', 'default': '🔗' };
             $('#references').innerHTML = refs.length ? refs.map(r => `
@@ -671,11 +597,9 @@ IMPORTANTE:
     </a>
   `).join('') : '<p class="muted">No hay referencias disponibles.</p>';
 
-            // Renderizar recursos adicionales
             const resources = safeArr(d.additional_resources);
             $('#resources').innerHTML = resources.length ? '<strong>Otros recursos:</strong><br>' + resources.map(r => `<span class="resource-badge">${r}</span>`).join('') : '';
 
-            // Renderizar botones de sugerencias
             renderSuggestionButtons(allSubtopics, subject, topic, subtopic);
 
             content.style.display = 'block';
@@ -723,12 +647,9 @@ IMPORTANTE:
             showSpinner();
 
             try {
-                // Primero guardar en la base de datos
-                const saveResponse = await fetch('<?= base_url('aprende/guardarClase') ?>', {
+                const saveResponse = await fetch(baseUrl + 'aprende/guardarClase', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                    },
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                     body: new URLSearchParams({
                         materia: materia,
                         tema: tema,
@@ -746,12 +667,10 @@ IMPORTANTE:
                     return;
                 }
 
-                // Si se guardó correctamente, generar el contenido con OpenAI
                 const raw = await callOpenAI(promptSubtopics(materia, tema));
                 const json = parseLLMJson(raw);
                 allSubtopics = json.subtopics || [];
 
-                // Cargar automáticamente el primer tema
                 if (allSubtopics.length > 0) {
                     const firstTopic = allSubtopics[0].title;
                     await selectSubtopic(materia, tema, firstTopic);
@@ -767,8 +686,8 @@ IMPORTANTE:
             }
         });
     </script>
-    <script src="<?= base_url('js/active.js') ?>"></script>
-    <script src="<?= base_url('js/chatbot.js?v=' . filemtime(FCPATH . 'js/chatbot.js')) ?>"></script>
+    <script th:src="@{/js/active.js}"></script>
+    <script th:src="@{/js/chatbot.js}"></script>
 </body>
 
 </html>

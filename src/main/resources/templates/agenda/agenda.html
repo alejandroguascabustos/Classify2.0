@@ -1,199 +1,174 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
     <title>Classify - Agendar</title>
-    <link rel="stylesheet" href="<?= base_url('css/style.css?v=' . time()) ?>">
-    <link rel="shortcut icon" href="<?= base_url('favicon.ico') ?>" type="image/x-icon">
-
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="shortcut icon" th:href="@{/favicon.ico}" type="image/x-icon">
 </head>
 
 <body>
     <header>
         <div class="brand">
-            <a href="<?= base_url('menu') ?>"><img src="<?= base_url('img/icons/logo.png') ?>" alt="logo" class="logo">
-            </a>
-            <a href="<?= base_url('menu') ?>">Classify</a>
+            <a th:href="@{/menu}"><img th:src="@{/img/logo.png}" alt="logo" class="logo"></a>
+            <a th:href="@{/menu}">Classify</a>
         </div>
         <div>
             <div class="right">
-                <a href="<?= base_url('noticias') ?>" alt="Noticias">
-                    <img src="<?= base_url('img/icons/noticias.png') ?>" class="iconostop">
+                <a th:href="@{/noticias}" alt="Noticias">
+                    <img th:src="@{/img/noticias.png}" class="iconostop">
                 </a>
-                <a><img src="<?= base_url('img/icons/separador.png') ?>" class="separador">
-                </a>
-                <a href="<?= base_url('login') ?>" alt="Cerrar sesión">
-                    <img src="<?= base_url('img/icons/salida.png') ?>" class="salida">
+                <a><img th:src="@{/img/separador.png}" class="separador"></a>
+                <a th:href="@{/login}" alt="Cerrar sesión">
+                    <img th:src="@{/img/salida.png}" class="salida">
                 </a>
             </div>
         </div>
     </header>
 
-
     <aside class="sidebar">
-        <!-- botón comun para todos-->
-        <a href="<?= base_url('menu') ?>" class="inicioprincipal">
-            <img src="<?= base_url('img/icons/home.png') ?>" width="25px" class="imgmenu"> Inicio
+        <a th:href="@{/menu}" class="inicioprincipal">
+            <img th:src="@{/img/home.png}" width="25px" class="imgmenu"> Inicio
         </a>
 
-        <!-- Programación (Perfil 1 administrador)  -->
-        <?php if (session()->get('perfil') == 1): ?>
-            <a href="<?= base_url('agenda') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/agenda.png') ?>" width="25px" class="imgmenu">Agendar clase
+        <th:block th:if="${session.perfil == 1}">
+            <a th:href="@{/agenda}" class="inicioprincipal2">
+                <img th:src="@{/img/agenda.png}" width="25px" class="imgmenu">Agendar clase
             </a>
-            <a href="<?= base_url('programacion') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/programacion.png') ?>" width="25px" class="imgmenu">Programación
+            <a th:href="@{/programacion}" class="inicioprincipal2">
+                <img th:src="@{/img/programacion.png}" width="25px" class="imgmenu">Programación
             </a>
-            <a href="<?= base_url('aprende') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/aprende.png') ?>" width="25px" class="imgmenu">Aprende
+            <a th:href="@{/aprende}" class="inicioprincipal2">
+                <img th:src="@{/img/aprende.png}" width="25px" class="imgmenu">Aprende
             </a>
-            <a href="<?= base_url('contacta') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/gmail.png') ?>" width="25px" class="imgmenu">Contacta a un profe
+            <a th:href="@{/contacta}" class="inicioprincipal2">
+                <img th:src="@{/img/gmail.png}" width="25px" class="imgmenu">Contacta a un profe
             </a>
-            <a href="<?= base_url('mismateriales') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/descargamaterial.png') ?>" width="25px" class="imgmenu">Mis Materiales
+            <a th:href="@{/mismateriales}" class="inicioprincipal2">
+                <img th:src="@{/img/descargamaterial.png}" width="25px" class="imgmenu">Mis Materiales
             </a>
-            <a href="<?= base_url('materiales') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/upload.png') ?>" width="25px" class="imgmenu">Carga Materiales
+            <a th:href="@{/materiales}" class="inicioprincipal2">
+                <img th:src="@{/img/upload.png}" width="25px" class="imgmenu">Carga Materiales
             </a>
-            <a href="<?= base_url('califica') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/califica.png') ?>" width="25px" class="imgmenu">Califica un profe
+            <a th:href="@{/califica}" class="inicioprincipal2">
+                <img th:src="@{/img/califica.png}" width="25px" class="imgmenu">Califica un profe
             </a>
-            <a href="<?= base_url('izada') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/estrella.png') ?>" width="25px" class="imgmenu"">Izada de bandera
+            <a th:href="@{/izada}" class="inicioprincipal2">
+                <img th:src="@{/img/estrella.png}" width="25px" class="imgmenu">Izada de bandera
             </a>
-            <a href=" <?= base_url('notas') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/notas.png') ?>" width="25px" class="imgmenu">Notas
+            <a th:href="@{/notas}" class="inicioprincipal2">
+                <img th:src="@{/img/notas.png}" width="25px" class="imgmenu">Notas
             </a>
-        <?php endif; ?>
+        </th:block>
 
-        <!-- Programación (Perfil 2 coordinador) -->
-        <?php if (session()->get('perfil') == 2): ?>
-            <a href="<?= base_url('agenda') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/agenda.png') ?>" width="25px" class="imgmenu">Agendar clase
+        <th:block th:if="${session.perfil == 2}">
+            <a th:href="@{/agenda}" class="inicioprincipal2">
+                <img th:src="@{/img/agenda.png}" width="25px" class="imgmenu">Agendar clase
             </a>
-            <a href="<?= base_url('programacion') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/programacion.png') ?>" width="25px" class="imgmenu">Programación
+            <a th:href="@{/programacion}" class="inicioprincipal2">
+                <img th:src="@{/img/programacion.png}" width="25px" class="imgmenu">Programación
             </a>
-            <a href="<?= base_url('aprende') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/aprende.png') ?>" width="25px" class="imgmenu">Aprende
+            <a th:href="@{/aprende}" class="inicioprincipal2">
+                <img th:src="@{/img/aprende.png}" width="25px" class="imgmenu">Aprende
             </a>
-            <a href="<?= base_url('contacta') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/gmail.png') ?>" width="25px" class="imgmenu">Contacta a un profe
+            <a th:href="@{/contacta}" class="inicioprincipal2">
+                <img th:src="@{/img/gmail.png}" width="25px" class="imgmenu">Contacta a un profe
             </a>
-            <a href="<?= base_url('materiales') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/upload.png') ?>" width="25px" class="imgmenu">Carga Materiales
+            <a th:href="@{/materiales}" class="inicioprincipal2">
+                <img th:src="@{/img/upload.png}" width="25px" class="imgmenu">Carga Materiales
             </a>
-            <a href="<?= base_url('califica') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/califica.png') ?>" width="25px" class="imgmenu">Califica un profe
+            <a th:href="@{/califica}" class="inicioprincipal2">
+                <img th:src="@{/img/califica.png}" width="25px" class="imgmenu">Califica un profe
             </a>
-            <a href="<?= base_url('izada') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/estrella.png') ?>" width="25px" class="imgmenu">Izada de bandera
+            <a th:href="@{/izada}" class="inicioprincipal2">
+                <img th:src="@{/img/estrella.png}" width="25px" class="imgmenu">Izada de bandera
             </a>
-            <a href="<?= base_url('notas') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/notas.png') ?>" width="25px" class="imgmenu">Notas
+            <a th:href="@{/notas}" class="inicioprincipal2">
+                <img th:src="@{/img/notas.png}" width="25px" class="imgmenu">Notas
             </a>
-        <?php endif; ?>
+        </th:block>
 
-        <!-- Programación (Perfil 3 docente) -->
-        <?php if (session()->get('perfil') == 3): ?>
-            <a href="<?= base_url('programacion') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/programacion.png') ?>" width="25px" class="imgmenu">Programación
+        <th:block th:if="${session.perfil == 3}">
+            <a th:href="@{/programacion}" class="inicioprincipal2">
+                <img th:src="@{/img/programacion.png}" width="25px" class="imgmenu">Programación
             </a>
-            <a href="<?= base_url('aprende') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/aprende.png') ?>" width="25px" class="imgmenu">Aprende
+            <a th:href="@{/aprende}" class="inicioprincipal2">
+                <img th:src="@{/img/aprende.png}" width="25px" class="imgmenu">Aprende
             </a>
-            <a href="<?= base_url('materiales') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/upload.png') ?>" width="25px" class="imgmenu">Carga Materiales
+            <a th:href="@{/materiales}" class="inicioprincipal2">
+                <img th:src="@{/img/upload.png}" width="25px" class="imgmenu">Carga Materiales
             </a>
-            <a href="<?= base_url('izada') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/estrella.png') ?>" width="25px" class="imgmenu">Izada de bandera
+            <a th:href="@{/izada}" class="inicioprincipal2">
+                <img th:src="@{/img/estrella.png}" width="25px" class="imgmenu">Izada de bandera
             </a>
-        <?php endif; ?>
+        </th:block>
 
-        <!-- Programación (Perfil 4 acudiente) -->
-        <?php if (session()->get('perfil') == 4): ?>
-            <a href="<?= base_url('programacion') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/programacion.png') ?>" width="25px" class="imgmenu">Programación
+        <th:block th:if="${session.perfil == 4}">
+            <a th:href="@{/programacion}" class="inicioprincipal2">
+                <img th:src="@{/img/programacion.png}" width="25px" class="imgmenu">Programación
             </a>
-            <a href="<?= base_url('aprende') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/aprende.png') ?>" width="25px" class="imgmenu">Aprende
+            <a th:href="@{/aprende}" class="inicioprincipal2">
+                <img th:src="@{/img/aprende.png}" width="25px" class="imgmenu">Aprende
             </a>
-            <a href="<?= base_url('contacta') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/gmail.png') ?>" width="25px" class="imgmenu">Contacta a un profe
+            <a th:href="@{/contacta}" class="inicioprincipal2">
+                <img th:src="@{/img/gmail.png}" width="25px" class="imgmenu">Contacta a un profe
             </a>
-            <a href="<?= base_url('mismateriales') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/upload.png') ?>" width="25px" class="imgmenu">Mis Materiales
+            <a th:href="@{/mismateriales}" class="inicioprincipal2">
+                <img th:src="@{/img/upload.png}" width="25px" class="imgmenu">Mis Materiales
             </a>
-            <a href="<?= base_url('izada') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/estrella.png') ?>" width="25px" class="imgmenu">Izada de bandera
+            <a th:href="@{/izada}" class="inicioprincipal2">
+                <img th:src="@{/img/estrella.png}" width="25px" class="imgmenu">Izada de bandera
             </a>
-        <?php endif; ?>
+        </th:block>
 
-        <!-- Programación (Perfil 5 estudiante) -->
-        <?php if (session()->get('perfil') == 5): ?>
-            <a href="<?= base_url('programacion') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/programacion.png') ?>" width="25px" class="imgmenu">Programación
+        <th:block th:if="${session.perfil == 5}">
+            <a th:href="@{/programacion}" class="inicioprincipal2">
+                <img th:src="@{/img/programacion.png}" width="25px" class="imgmenu">Programación
             </a>
-            <a href="<?= base_url('aprende') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/aprende.png') ?>" width="25px" class="imgmenu">Aprende
+            <a th:href="@{/aprende}" class="inicioprincipal2">
+                <img th:src="@{/img/aprende.png}" width="25px" class="imgmenu">Aprende
             </a>
-            <a href="<?= base_url('contacta') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/gmail.png') ?>" width="25px" class="imgmenu">Contacta a un profe
+            <a th:href="@{/contacta}" class="inicioprincipal2">
+                <img th:src="@{/img/gmail.png}" width="25px" class="imgmenu">Contacta a un profe
             </a>
-            <a href="<?= base_url('mismateriales') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/upload.png') ?>" width="25px" class="imgmenu">Mis Materiales
+            <a th:href="@{/mismateriales}" class="inicioprincipal2">
+                <img th:src="@{/img/upload.png}" width="25px" class="imgmenu">Mis Materiales
             </a>
-            <a href="<?= base_url('califica') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/califica.png') ?>" width="25px" class="imgmenu">Califica un profe
+            <a th:href="@{/califica}" class="inicioprincipal2">
+                <img th:src="@{/img/califica.png}" width="25px" class="imgmenu">Califica un profe
             </a>
-            <a href="<?= base_url('izada') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/estrella.png') ?>" width="25px" class="imgmenu">Izada de bandera
+            <a th:href="@{/izada}" class="inicioprincipal2">
+                <img th:src="@{/img/estrella.png}" width="25px" class="imgmenu">Izada de bandera
             </a>
-        <?php endif; ?>
-
-
-
-
+        </th:block>
     </aside>
-
 
     <main class="contentagenda">
         <div class="login-wrapper">
             <div class="login-container">
                 <div class="titleagenda">
                     <div class="imagenagenda">
-                        <img src="<?= base_url('img/icons/agenda.gif') ?>" width="100px">
+                        <img th:src="@{/img/agenda.gif}" width="100px">
                     </div>
                     <h2>Agendar nueva clase</h2>
                 </div>
-                <!-- Mensaje alerta exito errir-->
-                <?php if (session()->has('success')): ?>
-                    <div class="alert alert-success">
-                        <?= session('success') ?>
-                    </div>
-                <?php endif; ?>
 
-                <?php if (session()->has('error')): ?>
-                    <div class="alert alert-danger">
-                        <?= session('error') ?>
-                    </div>
-                <?php endif; ?>
+                <div class="alert alert-success" th:if="${successMessage}" th:text="${successMessage}"></div>
 
-                <?php if (session()->has('errors')): ?>
-                    <div class="alert alert-danger">
-                        <ul>
-                            <?php foreach (session('errors') as $error): ?>
-                                <li><?= $error ?></li>
-                            <?php endforeach; ?>
-                        </ul>
-                    </div>
-                <?php endif; ?>
-                <form action="<?= base_url('agenda') ?>" method="post" class="login-form" id="agendaForm">
+                <div class="alert alert-danger" th:if="${errorMessage}" th:text="${errorMessage}"></div>
+
+                <div class="alert alert-danger" th:if="${errors != null and !errors.isEmpty()}">
+                    <ul>
+                        <li th:each="error : ${errors}" th:text="${error}"></li>
+                    </ul>
+                </div>
+
+                <form th:action="@{/agenda}" method="post" class="login-form" id="agendaForm">
                     <input type="hidden" name="usuario_id" value="1">
+
                     <div class="custom-select">
-                        <label for="" class="labelagend">Materias</label>
+                        <label class="labelagend">Materias</label>
                         <select name="materia" class="custom-agenda" required>
                             <option value="">Selecciona una materia</option>
                             <option class="custom-options" value="Matemáticas">Matemáticas</option>
@@ -203,47 +178,43 @@
                             <option class="custom-options" value="Física">Física</option>
                             <option class="custom-options" value="Historia">Historia</option>
                             <option class="custom-options" value="Geografía">Geografía</option>
-                            <option class="custom-options" value="Constitución y Democracia">Constitución y Democracia
-                            </option>
+                            <option class="custom-options" value="Constitución y Democracia">Constitución y Democracia</option>
                             <option class="custom-options" value="Inglés">Inglés</option>
-                            <option class="custom-options" value="Tecnología e Informática">Tecnología e Informática
-                            </option>
+                            <option class="custom-options" value="Tecnología e Informática">Tecnología e Informática</option>
                             <option class="custom-options" value="Educación Artística">Educación Artística</option>
                             <option class="custom-options" value="Educación Física">Educación Física</option>
                             <option class="custom-options" value="Religión">Religión</option>
                             <option class="custom-options" value="Ética y Valores">Ética y Valores</option>
                         </select>
                     </div>
+
                     <div class="custom-select">
-                        <label for="" class="labelagend">Profesor</label>
+                        <label class="labelagend">Profesor</label>
                         <select name="profesor" class="custom-agenda" required>
                             <option value="">Selecciona un profesor</option>
                             <option class="custom-options" value="Camilo Rodriguez">Camilo Rodriguez</option>
                             <option class="custom-options" value="Luis Hernandez">Luis Hernandez</option>
                             <option class="custom-options" value="Bruno Fernandez">Bruno Fernandez</option>
-                            <option class="custom-options" value="Bruno Fernandez">Juan Perez</option>
-                            <option class="custom-options" value="Bruno Fernandez">Andres Hernandez</option>
-                            <option class="custom-options" value="Bruno Fernandez">Camilo Rodriguez</option>
-                            <option class="custom-options" value="Bruno Fernandez">Tomas Díaz</option>
-                            <option class="custom-options" value="Bruno Fernandez">Jorge Castillo</option>
+                            <option class="custom-options" value="Juan Perez">Juan Perez</option>
+                            <option class="custom-options" value="Andres Hernandez">Andres Hernandez</option>
+                            <option class="custom-options" value="Tomas Díaz">Tomas Díaz</option>
+                            <option class="custom-options" value="Jorge Castillo">Jorge Castillo</option>
                         </select>
                     </div>
+
                     <div class="custom-select">
-                        <label for="" class="labelagend">Horario</label>
+                        <label class="labelagend">Horario</label>
                         <select name="hora" class="custom-agenda" required>
                             <option value="">Selecciona una hora</option>
-                            <option class="custom-options" value="07:00 a.m. a 09:00 a.m.">07:00 a.m. a 09:00 a.m.
-                            </option>
-                            <option class="custom-options" value="09:00 a.m. a 11:00 a.m.">09:00 a.m. a 11:00 a.m.
-                            </option>
-                            <option class="custom-options" value="11:00 a.m. a 01:00 p.m.">11:00 a.m. a 01:00 p.m.
-                            </option>
-                            <option class="custom-options" value="01:00 p.m. a 03:00 p.m.">01:00 p.m. a 03:00 p.m.
-                            </option>
+                            <option class="custom-options" value="07:00 a.m. a 09:00 a.m.">07:00 a.m. a 09:00 a.m.</option>
+                            <option class="custom-options" value="09:00 a.m. a 11:00 a.m.">09:00 a.m. a 11:00 a.m.</option>
+                            <option class="custom-options" value="11:00 a.m. a 01:00 p.m.">11:00 a.m. a 01:00 p.m.</option>
+                            <option class="custom-options" value="01:00 p.m. a 03:00 p.m.">01:00 p.m. a 03:00 p.m.</option>
                         </select>
                     </div>
+
                     <div class="custom-select">
-                        <label for="" class="labelagend">Curso</label>
+                        <label class="labelagend">Curso</label>
                         <select name="curso" class="custom-agenda" required>
                             <option value="">Selecciona un curso</option>
                             <option class="custom-options" value="501">501</option>
@@ -256,39 +227,37 @@
                             <option class="custom-options" value="604">604</option>
                         </select>
                     </div>
-                    <label for="" class="labelagend">Observaciones</label>
-                    <textarea name="observaciones" class="custom-options-observ" placeholder="Observaciones"
-                        required></textarea>
+
+                    <label class="labelagend">Observaciones</label>
+                    <textarea name="observaciones" class="custom-options-observ" placeholder="Observaciones" required></textarea>
+
                     <button type="submit">Guardar</button>
                 </form>
 
-
-                <!-- Modal de confirmación de agendamiento -->
                 <div id="agendaConfirmModal" class="agenda-modal">
                     <div class="agenda-modal-content">
                         <div class="agenda-modal-icon">
-                            <img src="<?= base_url('img/icons/ok.gif') ?>" width="80" alt="¡Genial!">
+                            <img th:src="@{/img/ok.gif}" width="80" alt="¡Genial!">
                         </div>
                         <h3 class="agenda-modal-title">¡Clase Guardada!</h3>
-                        <h4 class="agenda-modal-text">La clase ha sido agendada exitosamente<h4>
-                                <h5 class="agenda-modal-text2">Revisa la tabla programacion<h5>
-                                        <div class="agenda-modal-progress">
-                                            <div class="agenda-progress-bar"></div>
-                                        </div>
+                        <h4 class="agenda-modal-text">La clase ha sido agendada exitosamente</h4>
+                        <h5 class="agenda-modal-text2">Revisa la tabla programacion</h5>
+                        <div class="agenda-modal-progress">
+                            <div class="agenda-progress-bar"></div>
+                        </div>
                     </div>
                 </div>
-
 
             </div>
         </div>
     </main>
-    <script>
-        // Definir base_url para JavaScript
-        const baseUrl = '<?= base_url() ?>';
+
+    <script th:inline="javascript">
+        const baseUrl = /*[[@{/}]]*/ '/';
     </script>
-    <script src="<?= base_url('js/active.js') ?>"></script>
-    <script src="<?= base_url('js/modalagenda.js') ?>"></script>
-    <script src="<?= base_url('js/chatbot.js') ?>"></script>
+    <script th:src="@{/js/active.js}"></script>
+    <script th:src="@{/js/modalagenda.js}"></script>
+    <script th:src="@{/js/chatbot.js}"></script>
 
 </body>
 

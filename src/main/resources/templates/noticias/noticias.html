@@ -1,227 +1,232 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
     <title>Classify - Noticias</title>
-    <link rel="stylesheet" href="<?= base_url('css/style.css') ?>">
-    <link rel="stylesheet" href="<?= base_url('css/chatbot.css') ?>">
-    <link rel="shortcut icon" href="<?= base_url('favicon.ico') ?>" type="image/x-icon">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/chatbot.css}">
+    <link rel="shortcut icon" th:href="@{/favicon.ico}" type="image/x-icon">
 </head>
 
 <body>
     <header>
         <div class="brand">
-            <a href="<?= base_url('login') ?>"><img src="<?= base_url('img/icons/logo.png') ?>" alt="logo" class="logo">
-            </a>
-            <a href="<?= base_url('login') ?>">Classify</a>
+            <a th:href="@{/login}"><img th:src="@{/img/logo.png}" alt="logo" class="logo"></a>
+            <a th:href="@{/login}">Classify</a>
         </div>
+
         <!-- Saludo personalizado en el header -->
-        <?php if (session()->get('nombre') && session()->get('nombre') !== 'Usuario'): ?>
-            <div class="saludo-header.opciones">
-                Hola, <?= esc(ucfirst(strtolower(session()->get('nombre')))) ?>!
-            </div>
-        <?php endif; ?>
+        <div class="saludo-header.opciones"
+             th:if="${session.nombre != null and session.nombre != 'Usuario'}"
+             th:text="'Hola, ' + ${#strings.capitalize(#strings.toLowerCase(session.nombre))} + '!'">
+        </div>
+
         <div>
             <div class="right">
-                <a href="<?= base_url('noticias') ?>" alt="Noticias">
-                    <img src="<?= base_url('img/icons/noticias.png') ?>" class="iconostop">
+                <a th:href="@{/noticias}" alt="Noticias">
+                    <img th:src="@{/img/noticias.png}" class="iconostop">
                 </a>
-                <a><img src="<?= base_url('img/icons/separador.png') ?>" class="separador">
-                </a>
-                <a href="<?= base_url('login') ?>" alt="Cerrar sesión">
-                    <img src="<?= base_url('img/icons/salida.png') ?>" class="salida">
+                <a><img th:src="@{/img/separador.png}" class="separador"></a>
+                <a th:href="@{/login}" alt="Cerrar sesión">
+                    <img th:src="@{/img/salida.png}" class="salida">
                 </a>
             </div>
         </div>
     </header>
 
     <aside class="sidebar">
-        <!-- botón comun para todos-->
-        <a href="<?= base_url('menu') ?>" class="inicioprincipal">
-            <img src="<?= base_url('img/icons/home.png') ?>" width="25px" class="imgmenu"> Inicio
+        <!-- botón común para todos -->
+        <a th:href="@{/menu}" class="inicioprincipal">
+            <img th:src="@{/img/home.png}" width="25px" class="imgmenu"> Inicio
         </a>
 
-        <!-- Programación (Perfil 1 administrador)  -->
-        <?php if (session()->get('perfil') == 1): ?>
-            <a href="<?= base_url('agenda') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/agenda.png') ?>" width="25px" class="imgmenu">Agendar clase
+        <!-- Perfil 1: Administrador -->
+        <th:block th:if="${session.perfil == 1}">
+            <a th:href="@{/agenda}" class="inicioprincipal2">
+                <img th:src="@{/img/agenda.png}" width="25px" class="imgmenu">Agendar clase
             </a>
-            <a href="<?= base_url('programacion') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/programacion.png') ?>" width="25px" class="imgmenu">Programación
+            <a th:href="@{/programacion}" class="inicioprincipal2">
+                <img th:src="@{/img/programacion.png}" width="25px" class="imgmenu">Programación
             </a>
-            <a href="<?= base_url('aprende') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/aprende.png') ?>" width="25px" class="imgmenu">Aprende
+            <a th:href="@{/aprende}" class="inicioprincipal2">
+                <img th:src="@{/img/aprende.png}" width="25px" class="imgmenu">Aprende
             </a>
-            <a href="<?= base_url('contacta') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/gmail.png') ?>" width="25px" class="imgmenu">Contacta a un profe
+            <a th:href="@{/contacta}" class="inicioprincipal2">
+                <img th:src="@{/img/gmail.png}" width="25px" class="imgmenu">Contacta a un profe
             </a>
-            <a href="<?= base_url('mismateriales') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/descargamaterial.png') ?>" width="25px" class="imgmenu">Mis Materiales
+            <a th:href="@{/mismateriales}" class="inicioprincipal2">
+                <img th:src="@{/img/descargamaterial.png}" width="25px" class="imgmenu">Mis Materiales
             </a>
-            <a href="<?= base_url('materiales') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/upload.png') ?>" width="25px" class="imgmenu">Carga Materiales
+            <a th:href="@{/materiales}" class="inicioprincipal2">
+                <img th:src="@{/img/upload.png}" width="25px" class="imgmenu">Carga Materiales
             </a>
-            <a href="<?= base_url('califica') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/califica.png') ?>" width="25px" class="imgmenu">Califica un profe
+            <a th:href="@{/califica}" class="inicioprincipal2">
+                <img th:src="@{/img/califica.png}" width="25px" class="imgmenu">Califica un profe
             </a>
-            <a href="<?= base_url('izada') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/estrella.png') ?>" width="25px" class="imgmenu"">Izada de bandera
+            <a th:href="@{/izada}" class="inicioprincipal2">
+                <img th:src="@{/img/estrella.png}" width="25px" class="imgmenu">Izada de bandera
             </a>
-            <a href=" <?= base_url('notas') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/notas.png') ?>" width="25px" class="imgmenu">Notas
+            <a th:href="@{/notas}" class="inicioprincipal2">
+                <img th:src="@{/img/notas.png}" width="25px" class="imgmenu">Notas
             </a>
-        <?php endif; ?>
+        </th:block>
 
-        <!-- Programación (Perfil 2 coordinador) -->
-        <?php if (session()->get('perfil') == 2): ?>
-            <a href="<?= base_url('agenda') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/agenda.png') ?>" width="25px" class="imgmenu">Agendar clase
+        <!-- Perfil 2: Coordinador -->
+        <th:block th:if="${session.perfil == 2}">
+            <a th:href="@{/agenda}" class="inicioprincipal2">
+                <img th:src="@{/img/agenda.png}" width="25px" class="imgmenu">Agendar clase
             </a>
-            <a href="<?= base_url('programacion') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/programacion.png') ?>" width="25px" class="imgmenu">Programación
+            <a th:href="@{/programacion}" class="inicioprincipal2">
+                <img th:src="@{/img/programacion.png}" width="25px" class="imgmenu">Programación
             </a>
-            <a href="<?= base_url('aprende') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/aprende.png') ?>" width="25px" class="imgmenu">Aprende
+            <a th:href="@{/aprende}" class="inicioprincipal2">
+                <img th:src="@{/img/aprende.png}" width="25px" class="imgmenu">Aprende
             </a>
-            <a href="<?= base_url('contacta') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/gmail.png') ?>" width="25px" class="imgmenu">Contacta a un profe
+            <a th:href="@{/contacta}" class="inicioprincipal2">
+                <img th:src="@{/img/gmail.png}" width="25px" class="imgmenu">Contacta a un profe
             </a>
-            <a href="<?= base_url('materiales') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/upload.png') ?>" width="25px" class="imgmenu">Carga Materiales
+            <a th:href="@{/materiales}" class="inicioprincipal2">
+                <img th:src="@{/img/upload.png}" width="25px" class="imgmenu">Carga Materiales
             </a>
-            <a href="<?= base_url('califica') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/califica.png') ?>" width="25px" class="imgmenu">Califica un profe
+            <a th:href="@{/califica}" class="inicioprincipal2">
+                <img th:src="@{/img/califica.png}" width="25px" class="imgmenu">Califica un profe
             </a>
-            <a href="<?= base_url('izada') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/estrella.png') ?>" width="25px" class="imgmenu">Izada de bandera
+            <a th:href="@{/izada}" class="inicioprincipal2">
+                <img th:src="@{/img/estrella.png}" width="25px" class="imgmenu">Izada de bandera
             </a>
-            <a href="<?= base_url('notas') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/notas.png') ?>" width="25px" class="imgmenu">Notas
+            <a th:href="@{/notas}" class="inicioprincipal2">
+                <img th:src="@{/img/notas.png}" width="25px" class="imgmenu">Notas
             </a>
-        <?php endif; ?>
+        </th:block>
 
-        <!-- Programación (Perfil 3 docente) -->
-        <?php if (session()->get('perfil') == 3): ?>
-            <a href="<?= base_url('programacion') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/programacion.png') ?>" width="25px" class="imgmenu">Programación
+        <!-- Perfil 3: Docente -->
+        <th:block th:if="${session.perfil == 3}">
+            <a th:href="@{/programacion}" class="inicioprincipal2">
+                <img th:src="@{/img/programacion.png}" width="25px" class="imgmenu">Programación
             </a>
-            <a href="<?= base_url('aprende') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/aprende.png') ?>" width="25px" class="imgmenu">Aprende
+            <a th:href="@{/aprende}" class="inicioprincipal2">
+                <img th:src="@{/img/aprende.png}" width="25px" class="imgmenu">Aprende
             </a>
-            <a href="<?= base_url('materiales') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/upload.png') ?>" width="25px" class="imgmenu">Carga Materiales
+            <a th:href="@{/materiales}" class="inicioprincipal2">
+                <img th:src="@{/img/upload.png}" width="25px" class="imgmenu">Carga Materiales
             </a>
-            <a href="<?= base_url('izada') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/estrella.png') ?>" width="25px" class="imgmenu">Izada de bandera
+            <a th:href="@{/izada}" class="inicioprincipal2">
+                <img th:src="@{/img/estrella.png}" width="25px" class="imgmenu">Izada de bandera
             </a>
-        <?php endif; ?>
+        </th:block>
 
-        <!-- Programación (Perfil 4 acudiente) -->
-        <?php if (session()->get('perfil') == 4): ?>
-            <a href="<?= base_url('programacion') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/programacion.png') ?>" width="25px" class="imgmenu">Programación
+        <!-- Perfil 4: Acudiente -->
+        <th:block th:if="${session.perfil == 4}">
+            <a th:href="@{/programacion}" class="inicioprincipal2">
+                <img th:src="@{/img/programacion.png}" width="25px" class="imgmenu">Programación
             </a>
-            <a href="<?= base_url('aprende') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/aprende.png') ?>" width="25px" class="imgmenu">Aprende
+            <a th:href="@{/aprende}" class="inicioprincipal2">
+                <img th:src="@{/img/aprende.png}" width="25px" class="imgmenu">Aprende
             </a>
-            <a href="<?= base_url('contacta') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/gmail.png') ?>" width="25px" class="imgmenu">Contacta a un profe
+            <a th:href="@{/contacta}" class="inicioprincipal2">
+                <img th:src="@{/img/gmail.png}" width="25px" class="imgmenu">Contacta a un profe
             </a>
-            <a href="<?= base_url('mismateriales') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/upload.png') ?>" width="25px" class="imgmenu">Mis Materiales
+            <a th:href="@{/mismateriales}" class="inicioprincipal2">
+                <img th:src="@{/img/upload.png}" width="25px" class="imgmenu">Mis Materiales
             </a>
-            <a href="<?= base_url('izada') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/estrella.png') ?>" width="25px" class="imgmenu">Izada de bandera
+            <a th:href="@{/izada}" class="inicioprincipal2">
+                <img th:src="@{/img/estrella.png}" width="25px" class="imgmenu">Izada de bandera
             </a>
-        <?php endif; ?>
+        </th:block>
 
-        <!-- Programación (Perfil 5 estudiante) -->
-        <?php if (session()->get('perfil') == 5): ?>
-            <a href="<?= base_url('programacion') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/programacion.png') ?>" width="25px" class="imgmenu">Programación
+        <!-- Perfil 5: Estudiante -->
+        <th:block th:if="${session.perfil == 5}">
+            <a th:href="@{/programacion}" class="inicioprincipal2">
+                <img th:src="@{/img/programacion.png}" width="25px" class="imgmenu">Programación
             </a>
-            <a href="<?= base_url('aprende') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/aprende.png') ?>" width="25px" class="imgmenu">Aprende
+            <a th:href="@{/aprende}" class="inicioprincipal2">
+                <img th:src="@{/img/aprende.png}" width="25px" class="imgmenu">Aprende
             </a>
-            <a href="<?= base_url('contacta') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/gmail.png') ?>" width="25px" class="imgmenu">Contacta a un profe
+            <a th:href="@{/contacta}" class="inicioprincipal2">
+                <img th:src="@{/img/gmail.png}" width="25px" class="imgmenu">Contacta a un profe
             </a>
-            <a href="<?= base_url('mismateriales') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/upload.png') ?>" width="25px" class="imgmenu">Mis Materiales
+            <a th:href="@{/mismateriales}" class="inicioprincipal2">
+                <img th:src="@{/img/upload.png}" width="25px" class="imgmenu">Mis Materiales
             </a>
-            <a href="<?= base_url('califica') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/califica.png') ?>" width="25px" class="imgmenu">Califica un profe
+            <a th:href="@{/califica}" class="inicioprincipal2">
+                <img th:src="@{/img/califica.png}" width="25px" class="imgmenu">Califica un profe
             </a>
-            <a href="<?= base_url('izada') ?>" class="inicioprincipal2">
-                <img src="<?= base_url('img/icons/estrella.png') ?>" width="25px" class="imgmenu">Izada de bandera
+            <a th:href="@{/izada}" class="inicioprincipal2">
+                <img th:src="@{/img/estrella.png}" width="25px" class="imgmenu">Izada de bandera
             </a>
-        <?php endif; ?>
-
-
-
+        </th:block>
     </aside>
+
     <main class="contentnoticias">
         <div class="content-noticias">
             <div class="noticias-container">
                 <div class="titlenoticias">
-                    <div class="imagennoticias">
-
-                    </div>
+                    <div class="imagennoticias"></div>
                     <h2 class="titleprincipalnoticias">Cartelera Informativa</h2>
                 </div>
                 <br>
                 <div>
                     <ul class="noticias-menu">
-                        <li class="btnnoticias"><a href="<?= base_url('noticias') ?>" class="titlesnoticias"><img
-                                    src="<?= base_url('img/icons/periodico.png') ?>" alt="Ver noticias" width="25"
-                                    class="imgtitlenoticias">
-                                Noticias</a></li>
-                        <li class="btnnoticias"><a href="<?= base_url('noticias/crear') ?>" class="titlesnoticias"><img
-                                    src="<?= base_url('img/icons/agregar.png') ?>" alt="Crear noticia" width="25"
-                                    class="imgtitlenoticias"> Crear
-                                Noticia</a></li>
-                        <li class="btnnoticias"><a href="<?= base_url('noticias/historial') ?>"
-                                class="titlesnoticias"><img src="<?= base_url('img/icons/historial.png') ?>"
-                                    alt="Historial noticias" width="25" class="imgtitlenoticias"> Historial Noticias</a>
+                        <li class="btnnoticias">
+                            <a th:href="@{/noticias}" class="titlesnoticias">
+                                <img th:src="@{/img/periodico.png}" alt="Ver noticias" width="25" class="imgtitlenoticias">
+                                Noticias
+                            </a>
+                        </li>
+                        <li class="btnnoticias">
+                            <a th:href="@{/noticias/crear}" class="titlesnoticias">
+                                <img th:src="@{/img/agregar.png}" alt="Crear noticia" width="25" class="imgtitlenoticias">
+                                Crear Noticia
+                            </a>
+                        </li>
+                        <li class="btnnoticias">
+                            <a th:href="@{/noticias/historial}" class="titlesnoticias">
+                                <img th:src="@{/img/historial.png}" alt="Historial noticias" width="25" class="imgtitlenoticias">
+                                Historial Noticias
+                            </a>
                         </li>
                     </ul>
                 </div>
+
                 <div>
                     <div class="listanoticicas">
-                        <?php if (!empty($noticias) && is_array($noticias)): ?>
-                            <?php foreach ($noticias as $noticia): ?>
-                                <div class="noticia">
-                                    <div class="encabezadonoticias">
-                                        <h3 class="titlecontentnoticia"><?= esc($noticia['titulo_noticia']) ?></h3>
-                                        <p><em>Por <?= esc($noticia['autor_noticia']) ?></em></p>
-                                        <div>
 
-                                            <p><?= esc($noticia['contenido_noticia']) ?></p>
-                                            <p><strong>Fecha:
-                                                </strong><?php $fecha = new DateTime($noticia['fecha_noticia']);
-                                                echo $fecha->format('d/m/Y'); ?>
-                                            </p>
-                                            <?php if (!empty($noticia['tipo_noticia'])): ?>
-                                                <span class="badge-tipo"><?= esc($noticia['tipo_noticia']) ?></span>
-
-                                            <?php endif; ?>
-                                            <hr class="separadornoticias">
-                                        </div>
-                                    <?php endforeach; ?>
-                                <?php else: ?>
-                                    <p class="parrafonoticias">No hay noticias disponibles.</p>
-                                <?php endif; ?>
+                        <!-- Lista de noticias -->
+                        <th:block th:if="${noticias != null and !noticias.isEmpty()}">
+                            <div class="noticia" th:each="noticia : ${noticias}">
+                                <div class="encabezadonoticias">
+                                    <h3 class="titlecontentnoticia" th:text="${noticia.tituloNoticia}"></h3>
+                                    <p><em th:text="'Por ' + ${noticia.autorNoticia}"></em></p>
+                                    <div>
+                                        <p th:text="${noticia.contenidoNoticia}"></p>
+                                        <p>
+                                            <strong>Fecha: </strong>
+                                            <span th:text="${#temporals.format(noticia.fechaNoticia, 'dd/MM/yyyy')}"></span>
+                                        </p>
+                                        <span class="badge-tipo"
+                                              th:if="${noticia.tipoNoticia != null and !#strings.isEmpty(noticia.tipoNoticia)}"
+                                              th:text="${noticia.tipoNoticia}">
+                                        </span>
+                                        <hr class="separadornoticias">
+                                    </div>
+                                </div>
                             </div>
-                        </div>
+                        </th:block>
+
+                        <!-- Mensaje si no hay noticias -->
+                        <th:block th:if="${noticias == null or noticias.isEmpty()}">
+                            <p class="parrafonoticias">No hay noticias disponibles.</p>
+                        </th:block>
+
                     </div>
                 </div>
             </div>
+        </div>
     </main>
 
-
-    <script src="<?= base_url('js/active.js') ?>"></script>
-    <script src="<?= base_url('js/chatbot.js') ?>"></script>
+    <script th:src="@{/js/active.js}"></script>
+    <script th:src="@{/js/chatbot.js}"></script>
 </body>
 
 </html>

@@ -43,10 +43,6 @@ public class VistasController {
     public String mostrarInicio(){
         return "inicio/inicio";
     }
-    @GetMapping("/izada")
-    public String mostrarIzada(){
-        return "izada/izada";
-    }
     @GetMapping("/materiales")
     public String mostrarMateriales(){
         return "materiales/materiales";
@@ -55,7 +51,7 @@ public class VistasController {
     public String mostrarMenu(){
         return "menu/menu";
     }
-    @GetMapping("/materiales")
+    @GetMapping("/mismateriales")
     public String mostrarMismateriales(){
         return "mismateriales/mismateriales";
     }

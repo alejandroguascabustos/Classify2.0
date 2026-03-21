@@ -1,43 +1,58 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <title>Classify - Nosotros</title>
-    <link rel="stylesheet" href="<?= base_url('css/style.css') ?>">
-    <link rel="stylesheet" href="<?= base_url('css/chatbot.css') ?>">
-    <link rel="shortcut icon" href="<?= base_url('favicon.ico') ?>" type="image/x-icon">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/chatbot.css}">
+    <link rel="shortcut icon" th:href="@{/favicon.ico}" type="image/x-icon">
 </head>
+
 <body class="inicioimg">
 
 <header class="brandinicio">
     <div class="brand">
-        <a href="<?= base_url('inicio') ?>"><img src="<?= base_url('img/icons/logo.png') ?>" alt="logo" class="logo"> </a>
-        <a href="<?= base_url('inicio') ?>">Classify</a>
+        <a th:href="@{/inicio}"><img th:src="@{/img/logo.png}" alt="logo" class="logo"></a>
+        <a th:href="@{/inicio}">Classify</a>
     </div>
 
     <div class="brand2">
-        <a href="<?= base_url('inicio') ?>" class="info-btn"  alt="Información">Inicio</a>
-        <a href="<?= base_url('nosotros') ?>" class="info-btn"  alt="Información">Nosotros</a>
-        <a href="<?= base_url('contacto') ?>" class="info-btn"  alt="Información">Contacto</a>
+        <a th:href="@{/inicio}" class="info-btn" alt="Información">Inicio</a>
+        <a th:href="@{/nosotros}" class="info-btn" alt="Información">Nosotros</a>
+        <a th:href="@{/contacto}" class="info-btn" alt="Información">Contacto</a>
         <div class="auth">
-            <a href="<?= base_url('login') ?>" class="info-btnini2"  alt="Información">Inicio Sesión</a>
-            <a href="<?= base_url('registro') ?>" class="info-btnini"  alt="Información">Registro</a>
+            <a th:href="@{/login}" class="info-btnini2" alt="Información">Inicio Sesión</a>
+            <a th:href="@{/registro}" class="info-btnini" alt="Información">Registro</a>
         </div>
     </div>
+
     <div>
         <a href="#info" class="info-btn">
-            <img src="<?= base_url('img/icons/informacion.png') ?>" alt="Información" class="info-icon">
+            <img th:src="@{/img/informacion.png}" alt="Información" class="info-icon">
         </a>
         <div id="info" class="info-panel">
             <div class="info-content">
                 <a href="#" class="close">&times;</a>
-                <img src="<?= base_url('img/icons/agenda.png') ?>" width='80px'>
+                <img th:src="@{/img/agenda.png}" width="80px">
                 <h4>¿Porque agendas tus clases?</h4>
-                <p class="textoinfo">La implementación de una página web para agendar clases en el colegio Moralba Sur Oriental representa una herramienta fundamental para optimizar la organización académica y fortalecer la comunicación entre estudiantes, docentes y la institución.
-                    En primer lugar, la plataforma permite a los estudiantes y padres de familia consultar de manera rápida y sencilla la disponibilidad de horarios, evitando confusiones o cruces en las actividades escolares. <br> <br>Esto garantiza una mejor planificación del tiempo, tanto dentro como fuera del aula.
-                    Por otro lado, los docentes pueden gestionar sus clases de forma más eficiente, teniendo acceso a un calendario actualizado que facilita la asignación de sesiones, el control de grupos y la preparación de materiales según la programación establecida. <br><br>
-                    Asimismo, para la institución educativa, la página constituye una herramienta de gestión que contribuye a la transparencia y al orden administrativo, ya que centraliza la información en un solo espacio digital accesible desde cualquier dispositivo con conexión a internet. <br> <br>
-                    En conclusión, contar con una página para agendar clases no solo mejora la organización interna del colegio Moralba Sur Oriental, sino que también fortalece la participación de la comunidad educativa, fomenta la puntualidad, evita pérdidas de tiempo y favorece un proceso de enseñanza-aprendizaje más planificado y efectivo.
+                <p class="textoinfo">La implementación de una página web para agendar clases en el colegio Moralba Sur
+                    Oriental representa una herramienta fundamental para optimizar la organización académica y fortalecer
+                    la comunicación entre estudiantes, docentes y la institución.
+                    En primer lugar, la plataforma permite a los estudiantes y padres de familia consultar de manera
+                    rápida y sencilla la disponibilidad de horarios, evitando confusiones o cruces en las actividades
+                    escolares. <br><br>Esto garantiza una mejor planificación del tiempo, tanto dentro como fuera del
+                    aula.
+                    Por otro lado, los docentes pueden gestionar sus clases de forma más eficiente, teniendo acceso a un
+                    calendario actualizado que facilita la asignación de sesiones, el control de grupos y la preparación
+                    de materiales según la programación establecida. <br><br>
+                    Asimismo, para la institución educativa, la página constituye una herramienta de gestión que
+                    contribuye a la transparencia y al orden administrativo, ya que centraliza la información en un solo
+                    espacio digital accesible desde cualquier dispositivo con conexión a internet. <br><br>
+                    En conclusión, contar con una página para agendar clases no solo mejora la organización interna del
+                    colegio Moralba Sur Oriental, sino que también fortalece la participación de la comunidad educativa,
+                    fomenta la puntualidad, evita pérdidas de tiempo y favorece un proceso de enseñanza-aprendizaje más
+                    planificado y efectivo.
                 </p>
             </div>
         </div>
@@ -45,47 +60,41 @@
 </header>
 
 <main class="contentnosotros">
-  <section class="nosotros-wrapper">
-    <h1 class="titlenosotros">CLASSIFY</h1>
-    <h3>Gestión y aprendizaje para colegios de Bogotá</h3>
-    <p>Plataforma integral de agendamiento, seguimiento pedagógico y administración</p>
-    <p>
-        Classify centraliza la programación de clases, la gestión de estudiantes y los recursos administrativos en un
-        único lugar. Nuestra solución permite a directores, coordinadores y profesores reducir tiempo en tareas
-        operativas y enfocarse en lo más importante: la calidad educativa.
-      </p>
+    <section class="nosotros-wrapper">
+        <h1 class="titlenosotros">CLASSIFY</h1>
+        <h3>Gestión y aprendizaje para colegios de Bogotá</h3>
+        <p>Plataforma integral de agendamiento, seguimiento pedagógico y administración</p>
+        <p>
+            Classify centraliza la programación de clases, la gestión de estudiantes y los recursos administrativos en
+            un único lugar. Nuestra solución permite a directores, coordinadores y profesores reducir tiempo en tareas
+            operativas y enfocarse en lo más importante: la calidad educativa.
+        </p>
+        <p>
+            Con herramientas intuitivas para agendar clases, asignar espacios y materiales, llevar asistencia y generar
+            reportes, Classify facilita la toma de decisiones basada en datos reales y mejora la coordinación entre
+            todas las áreas del colegio.
+        </p>
+        <p>Plataforma integral de agendamiento, seguimiento pedagógico y administración</p>
 
-      <p>
-        Con herramientas intuitivas para agendar clases, asignar espacios y materiales, llevar asistencia y generar
-        reportes, Classify facilita la toma de decisiones basada en datos reales y mejora la coordinación entre todas
-        las áreas del colegio.
-      </p>
-    <p>Plataforma integral de agendamiento, seguimiento pedagógico y administración</p>
-
-    <ul class="beneficios">
-        <li><strong>Agendamiento inteligente:</strong> calendario centralizado con control de disponibilidad y notificaciones.</li>
-        <li><strong>Optimización de recursos:</strong> uso eficiente de salones, equipos y personal docente.</li>
-        <li><strong>Seguimiento académico:</strong> historial de clases, progreso de estudiantes y reportes automáticos.</li>
-        <li><strong>Administración simplificada:</strong> automatización de tareas administrativas y generación de informes.</li>
-        <li><strong>Local y seguro:</strong> pensado para las necesidades y normativas de colegios en Bogotá.</li>
-    </ul>
-    <br>
-    <a href="#" class="cta-button" aria-label="Solicitar demostración de Classify">Solicitar demostración</a>
-    <br>
-    <a href="#" class="cta-link">Conocer el plan por colegios</a>
-    <br>
-    <br>
-    <p class="small">
-      ¿Quieres que adaptemos Classify a las necesidades específicas de tu institución en Bogotá? 
-      <br>
-      Escríbenos y haremos una
-      propuesta personalizada.
-    </p>
-
-  </section>
-
+        <ul class="beneficios">
+            <li><strong>Agendamiento inteligente:</strong> calendario centralizado con control de disponibilidad y notificaciones.</li>
+            <li><strong>Optimización de recursos:</strong> uso eficiente de salones, equipos y personal docente.</li>
+            <li><strong>Seguimiento académico:</strong> historial de clases, progreso de estudiantes y reportes automáticos.</li>
+            <li><strong>Administración simplificada:</strong> automatización de tareas administrativas y generación de informes.</li>
+            <li><strong>Local y seguro:</strong> pensado para las necesidades y normativas de colegios en Bogotá.</li>
+        </ul>
+        <br>
+        <a href="#" class="cta-button" aria-label="Solicitar demostración de Classify">Solicitar demostración</a>
+        <br>
+        <a href="#" class="cta-link">Conocer el plan por colegios</a>
+        <br><br>
+        <p class="small">
+            ¿Quieres que adaptemos Classify a las necesidades específicas de tu institución en Bogotá?
+            <br>
+            Escríbenos y haremos una propuesta personalizada.
+        </p>
+    </section>
 </main>
-
 
 <footer class="footer">
     <div class="footer-container">
@@ -99,10 +108,10 @@
         <div class="footer-col">
             <h4>Enlaces útiles</h4>
             <ul>
-                <li><a href="<?= base_url('politicas') ?>">Política de privacidad</a></li>
-                <li><a href="<?= base_url('terminos') ?>">Términos y condiciones</a></li>
-                <li><a href="<?= base_url('contacto') ?>">Contacto Colegio</a></li>
-                <li><a href="<?= base_url('soporte') ?>">Soporte App</a></li>
+                <li><a th:href="@{/politicas}">Política de privacidad</a></li>
+                <li><a th:href="@{/terminos}">Términos y condiciones</a></li>
+                <li><a th:href="@{/contacto}">Contacto Colegio</a></li>
+                <li><a th:href="@{/soporte}">Soporte App</a></li>
             </ul>
         </div>
     </div>
@@ -111,9 +120,9 @@
     </div>
 </footer>
 
+<script th:src="@{/js/chatbot.js}"></script>
+<script th:src="@{/js/script.js}"></script>
 
-    <script src="<?= base_url('js/chatbot.js') ?>"></script>
-    <script src="js/script.js"></script>
 </body>
-   
+
 </html>

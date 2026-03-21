@@ -1,68 +1,110 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Classify - Notas Académicas</title>
-    <link rel="stylesheet" href="<?= base_url('css/style.css') ?>">
-    <link rel="stylesheet" href="<?= base_url('css/notas-styles.css') ?>">
-    <link rel="stylesheet" href="<?= base_url('css/chatbot.css') ?>">
-    <link rel="shortcut icon" href="<?= base_url('favicon.ico') ?>" type="image/x-icon">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/notas-styles.css}">
+    <link rel="stylesheet" th:href="@{/css/chatbot.css}">
+    <link rel="shortcut icon" th:href="@{/favicon.ico}" type="image/x-icon">
 </head>
 
 <body>
     <header>
         <div class="brand">
-            <a href="<?= base_url('login') ?>"><img src="<?= base_url('img/icons/logo.png') ?>" alt="Logo"
-                    class="logo"></a>
-            <a href="<?= base_url('login') ?>">Classify</a>
+            <a th:href="@{/login}"><img th:src="@{/img/logo.png}" alt="Logo" class="logo"></a>
+            <a th:href="@{/login}">Classify</a>
         </div>
         <div class="right">
-            <a href="<?= base_url('noticias') ?>" title="Noticias"><img src="<?= base_url('img/icons/noticias.png') ?>"
-                    class="iconostop" alt="Noticias"></a>
-            <img src="<?= base_url('img/icons/separador.png') ?>" class="separador" alt="">
-            <a href="<?= base_url('login') ?>" title="Cerrar sesión"><img src="<?= base_url('img/icons/salida.png') ?>"
-                    class="salida" alt="Salida"></a>
+            <a th:href="@{/noticias}" title="Noticias">
+                <img th:src="@{/img/noticias.png}" class="iconostop" alt="Noticias">
+            </a>
+            <img th:src="@{/img/separador.png}" class="separador" alt="">
+            <a th:href="@{/login}" title="Cerrar sesión">
+                <img th:src="@{/img/salida.png}" class="salida" alt="Salida">
+            </a>
         </div>
     </header>
 
     <aside class="sidebar">
-        <a href="<?= base_url('menu') ?>" class="inicioprincipal"><img src="<?= base_url('img/icons/home.png') ?>"
-                width="25" alt="Inicio" class="imgmenu"> Inicio</a>
+        <a th:href="@{/menu}" class="inicioprincipal">
+            <img th:src="@{/img/home.png}" width="25" alt="Inicio" class="imgmenu"> Inicio
+        </a>
 
-        <?php $perfil = session()->get('perfil');
-        $menuItems = [
-            1 => [
-                ['agendar', 'agenda.png', 'Agendar clase'],
-                ['programacion', 'programacion.png', 'Programación'],
-                ['aprende', 'aprende.png', 'Aprende'],
-                ['contacta', 'gmail.png', 'Contacta a un profe'],
-                ['mismateriales', 'descargamaterial.png', 'Mis Materiales'],
-                ['materiales', 'upload.png', 'Carga Materiales'],
-                ['califica', 'califica.png', 'Califica un profe'],
-                ['izada', 'estrella.png', 'Izada de bandera'],
-                ['notas', 'notas.png', 'Notas']
-            ],
-            2 => [
-                ['agendar', 'agenda.png', 'Agendar clase'],
-                ['notas', 'notas.png', 'Notas']
-            ],
-            3 => [['programacion', 'programacion.png', 'Programación'], ['notas', 'notas.png', 'Notas']],
-            4 => [['programacion', 'programacion.png', 'Programación']],
-            5 => [['programacion', 'programacion.png', 'Programación']]
-        ];
+        <!-- Perfil 1: Administrador -->
+        <th:block th:if="${session.perfil == 1}">
+            <a th:href="@{/agendar}" class="inicioprincipal2">
+                <img th:src="@{/img/agenda.png}" width="25" class="imgmenu">Agendar clase
+            </a>
+            <a th:href="@{/programacion}" class="inicioprincipal2">
+                <img th:src="@{/img/programacion.png}" width="25" class="imgmenu">Programación
+            </a>
+            <a th:href="@{/aprende}" class="inicioprincipal2">
+                <img th:src="@{/img/aprende.png}" width="25" class="imgmenu">Aprende
+            </a>
+            <a th:href="@{/contacta}" class="inicioprincipal2">
+                <img th:src="@{/img/gmail.png}" width="25" class="imgmenu">Contacta a un profe
+            </a>
+            <a th:href="@{/mismateriales}" class="inicioprincipal2">
+                <img th:src="@{/img/descargamaterial.png}" width="25" class="imgmenu">Mis Materiales
+            </a>
+            <a th:href="@{/materiales}" class="inicioprincipal2">
+                <img th:src="@{/img/upload.png}" width="25" class="imgmenu">Carga Materiales
+            </a>
+            <a th:href="@{/califica}" class="inicioprincipal2">
+                <img th:src="@{/img/califica.png}" width="25" class="imgmenu">Califica un profe
+            </a>
+            <a th:href="@{/izada}" class="inicioprincipal2">
+                <img th:src="@{/img/estrella.png}" width="25" class="imgmenu">Izada de bandera
+            </a>
+            <a th:href="@{/notas}" class="inicioprincipal2">
+                <img th:src="@{/img/notas.png}" width="25" class="imgmenu">Notas
+            </a>
+        </th:block>
 
-        if (isset($menuItems[$perfil])):
-            foreach ($menuItems[$perfil] as $item):
-                echo '<a href="' . base_url($item[0]) . '" class="inicioprincipal2" ><img src="' . base_url('img/icons/' . $item[1]) . '" width="25" alt="' . $item[2] . '" class="imgmenu"> ' . $item[2] . '</a>';
-            endforeach;
-        endif; ?>
+        <!-- Perfil 2: Coordinador -->
+        <th:block th:if="${session.perfil == 2}">
+            <a th:href="@{/agendar}" class="inicioprincipal2">
+                <img th:src="@{/img/agenda.png}" width="25" class="imgmenu">Agendar clase
+            </a>
+            <a th:href="@{/notas}" class="inicioprincipal2">
+                <img th:src="@{/img/notas.png}" width="25" class="imgmenu">Notas
+            </a>
+        </th:block>
+
+        <!-- Perfil 3: Docente -->
+        <th:block th:if="${session.perfil == 3}">
+            <a th:href="@{/programacion}" class="inicioprincipal2">
+                <img th:src="@{/img/programacion.png}" width="25" class="imgmenu">Programación
+            </a>
+            <a th:href="@{/notas}" class="inicioprincipal2">
+                <img th:src="@{/img/notas.png}" width="25" class="imgmenu">Notas
+            </a>
+        </th:block>
+
+        <!-- Perfil 4: Acudiente -->
+        <th:block th:if="${session.perfil == 4}">
+            <a th:href="@{/programacion}" class="inicioprincipal2">
+                <img th:src="@{/img/programacion.png}" width="25" class="imgmenu">Programación
+            </a>
+        </th:block>
+
+        <!-- Perfil 5: Estudiante -->
+        <th:block th:if="${session.perfil == 5}">
+            <a th:href="@{/programacion}" class="inicioprincipal2">
+                <img th:src="@{/img/programacion.png}" width="25" class="imgmenu">Programación
+            </a>
+        </th:block>
     </aside>
 
     <main class="contentmenu">
-        <?php if (in_array(session()->get('perfil'), [1, 2, 3])): ?>
+
+        <!-- Contenido para perfiles 1, 2 y 3 -->
+        <th:block th:if="${session.perfil == 1 or session.perfil == 2 or session.perfil == 3}">
             <div class="notas-container">
+
                 <!-- HEADER CON CONTROLES -->
                 <div class="notas-header">
                     <div class="header-left">
@@ -119,7 +161,6 @@
                             <span class="stat-badge stat-success">+0.15 vs anterior</span>
                         </div>
                     </div>
-
                     <div class="stat-card stat-success">
                         <div class="stat-icon">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
@@ -132,7 +173,6 @@
                             <span class="stat-badge stat-info">80% completado</span>
                         </div>
                     </div>
-
                     <div class="stat-card stat-warning">
                         <div class="stat-icon">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
@@ -147,7 +187,6 @@
                             <span class="stat-badge stat-danger">Requiere atención</span>
                         </div>
                     </div>
-
                     <div class="stat-card stat-info">
                         <div class="stat-icon">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
@@ -163,41 +202,42 @@
                     </div>
                 </div>
 
-                <!-- FILTROS Y BÚSQUEDA -->
-                <?php if (in_array($perfil, [2, 3])): ?>
-                <div class="filters-container">
-                    <div class="search-box">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                            <circle cx="11" cy="11" r="8"></circle>
-                            <path d="m21 21-4.35-4.35"></path>
-                        </svg>
-                        <input type="text" id="searchInput" placeholder="Buscar estudiante o materia...">
+                <!-- FILTROS (solo para perfiles 2 y 3) -->
+                <th:block th:if="${session.perfil == 2 or session.perfil == 3}">
+                    <div class="filters-container">
+                        <div class="search-box">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <path d="m21 21-4.35-4.35"></path>
+                            </svg>
+                            <input type="text" id="searchInput" placeholder="Buscar estudiante o materia...">
+                        </div>
+                        <select id="filterGrado" class="filter-select">
+                            <option value="">Todos los grados</option>
+                            <option value="9">9° Grado</option>
+                            <option value="10">10° Grado</option>
+                            <option value="11">11° Grado</option>
+                        </select>
+                        <select id="filterMateria" class="filter-select">
+                            <option value="">Todas las materias</option>
+                            <option value="1">Matemáticas</option>
+                            <option value="2">Español</option>
+                            <option value="3">Inglés</option>
+                            <option value="7">Informática</option>
+                        </select>
+                        <select id="filterEstado" class="filter-select">
+                            <option value="">Todos los estados</option>
+                            <option value="aprobado">Aprobados</option>
+                            <option value="riesgo">En riesgo</option>
+                            <option value="proceso">En proceso</option>
+                        </select>
                     </div>
-                    <select id="filterGrado" class="filter-select">
-                        <option value="">Todos los grados</option>
-                        <option value="9">9° Grado</option>
-                        <option value="10">10° Grado</option>
-                        <option value="11">11° Grado</option>
-                    </select>
-                    <select id="filterMateria" class="filter-select">
-                        <option value="">Todas las materias</option>
-                        <option value="1">Matemáticas</option>
-                        <option value="2">Español</option>
-                        <option value="3">Inglés</option>
-                        <option value="7">Informática</option>
-                    </select>
-                    <select id="filterEstado" class="filter-select">
-                        <option value="">Todos los estados</option>
-                        <option value="aprobado">Aprobados</option>
-                        <option value="riesgo">En riesgo</option>
-                        <option value="proceso">En proceso</option>
-                    </select>
-                </div>
-                <?php endif; ?>
+                </th:block>
 
                 <!-- VISTA DE TARJETAS -->
                 <div id="viewCards" class="view-content active">
                     <div class="materias-grid">
+
                         <!-- Tarjeta Matemáticas -->
                         <div class="materia-card" data-materia="matematicas">
                             <div class="card-header" style="background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);">
@@ -218,33 +258,17 @@
                                     </div>
                                 </div>
                                 <div class="periodos-notas">
-                                    <div class="periodo-item">
-                                        <span class="periodo-label">P1</span>
-                                        <span class="periodo-nota excelente">4.5</span>
-                                    </div>
-                                    <div class="periodo-item">
-                                        <span class="periodo-label">P2</span>
-                                        <span class="periodo-nota bueno">4.2</span>
-                                    </div>
-                                    <div class="periodo-item">
-                                        <span class="periodo-label">P3</span>
-                                        <span class="periodo-nota pendiente">--</span>
-                                    </div>
+                                    <div class="periodo-item"><span class="periodo-label">P1</span><span class="periodo-nota excelente">4.5</span></div>
+                                    <div class="periodo-item"><span class="periodo-label">P2</span><span class="periodo-nota bueno">4.2</span></div>
+                                    <div class="periodo-item"><span class="periodo-label">P3</span><span class="periodo-nota pendiente">--</span></div>
                                 </div>
                                 <div class="card-footer">
                                     <div class="footer-item">
-                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                                            <circle cx="12" cy="7" r="4"></circle>
-                                        </svg>
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
                                         <span>Prof. García</span>
                                     </div>
                                     <div class="footer-item">
-                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                                            <line x1="16" y1="2" x2="16" y2="6"></line>
-                                            <line x1="8" y1="2" x2="8" y2="6"></line>
-                                        </svg>
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line></svg>
                                         <span>2 faltas</span>
                                     </div>
                                 </div>
@@ -272,33 +296,17 @@
                                     </div>
                                 </div>
                                 <div class="periodos-notas">
-                                    <div class="periodo-item">
-                                        <span class="periodo-label">P1</span>
-                                        <span class="periodo-nota excelente">4.8</span>
-                                    </div>
-                                    <div class="periodo-item">
-                                        <span class="periodo-label">P2</span>
-                                        <span class="periodo-nota excelente">4.6</span>
-                                    </div>
-                                    <div class="periodo-item">
-                                        <span class="periodo-label">P3</span>
-                                        <span class="periodo-nota pendiente">--</span>
-                                    </div>
+                                    <div class="periodo-item"><span class="periodo-label">P1</span><span class="periodo-nota excelente">4.8</span></div>
+                                    <div class="periodo-item"><span class="periodo-label">P2</span><span class="periodo-nota excelente">4.6</span></div>
+                                    <div class="periodo-item"><span class="periodo-label">P3</span><span class="periodo-nota pendiente">--</span></div>
                                 </div>
                                 <div class="card-footer">
                                     <div class="footer-item">
-                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                                            <circle cx="12" cy="7" r="4"></circle>
-                                        </svg>
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
                                         <span>Prof. Rodríguez</span>
                                     </div>
                                     <div class="footer-item">
-                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                                            <line x1="16" y1="2" x2="16" y2="6"></line>
-                                            <line x1="8" y1="2" x2="8" y2="6"></line>
-                                        </svg>
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line></svg>
                                         <span>0 faltas</span>
                                     </div>
                                 </div>
@@ -326,33 +334,17 @@
                                     </div>
                                 </div>
                                 <div class="periodos-notas">
-                                    <div class="periodo-item">
-                                        <span class="periodo-label">P1</span>
-                                        <span class="periodo-nota bueno">3.9</span>
-                                    </div>
-                                    <div class="periodo-item">
-                                        <span class="periodo-label">P2</span>
-                                        <span class="periodo-nota bueno">4.1</span>
-                                    </div>
-                                    <div class="periodo-item">
-                                        <span class="periodo-label">P3</span>
-                                        <span class="periodo-nota pendiente">--</span>
-                                    </div>
+                                    <div class="periodo-item"><span class="periodo-label">P1</span><span class="periodo-nota bueno">3.9</span></div>
+                                    <div class="periodo-item"><span class="periodo-label">P2</span><span class="periodo-nota bueno">4.1</span></div>
+                                    <div class="periodo-item"><span class="periodo-label">P3</span><span class="periodo-nota pendiente">--</span></div>
                                 </div>
                                 <div class="card-footer">
                                     <div class="footer-item">
-                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                                            <circle cx="12" cy="7" r="4"></circle>
-                                        </svg>
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
                                         <span>Prof. Smith</span>
                                     </div>
                                     <div class="footer-item">
-                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                                            <line x1="16" y1="2" x2="16" y2="6"></line>
-                                            <line x1="8" y1="2" x2="8" y2="6"></line>
-                                        </svg>
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line></svg>
                                         <span>1 falta</span>
                                     </div>
                                 </div>
@@ -360,7 +352,7 @@
                             </div>
                         </div>
 
-                        <!-- Tarjeta Ciencias -->
+                        <!-- Tarjeta Ciencias Naturales -->
                         <div class="materia-card" data-materia="ciencias">
                             <div class="card-header" style="background: linear-gradient(135deg, #4CAF50 0%, #388E3C 100%);">
                                 <div class="card-header-top">
@@ -380,33 +372,17 @@
                                     </div>
                                 </div>
                                 <div class="periodos-notas">
-                                    <div class="periodo-item">
-                                        <span class="periodo-label">P1</span>
-                                        <span class="periodo-nota excelente">4.4</span>
-                                    </div>
-                                    <div class="periodo-item">
-                                        <span class="periodo-label">P2</span>
-                                        <span class="periodo-nota bueno">4.2</span>
-                                    </div>
-                                    <div class="periodo-item">
-                                        <span class="periodo-label">P3</span>
-                                        <span class="periodo-nota pendiente">--</span>
-                                    </div>
+                                    <div class="periodo-item"><span class="periodo-label">P1</span><span class="periodo-nota excelente">4.4</span></div>
+                                    <div class="periodo-item"><span class="periodo-label">P2</span><span class="periodo-nota bueno">4.2</span></div>
+                                    <div class="periodo-item"><span class="periodo-label">P3</span><span class="periodo-nota pendiente">--</span></div>
                                 </div>
                                 <div class="card-footer">
                                     <div class="footer-item">
-                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                                            <circle cx="12" cy="7" r="4"></circle>
-                                        </svg>
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
                                         <span>Prof. Jiménez</span>
                                     </div>
                                     <div class="footer-item">
-                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                                            <line x1="16" y1="2" x2="16" y2="6"></line>
-                                            <line x1="8" y1="2" x2="8" y2="6"></line>
-                                        </svg>
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line></svg>
                                         <span>1 falta</span>
                                     </div>
                                 </div>
@@ -434,33 +410,17 @@
                                     </div>
                                 </div>
                                 <div class="periodos-notas">
-                                    <div class="periodo-item">
-                                        <span class="periodo-label">P1</span>
-                                        <span class="periodo-nota excelente">4.7</span>
-                                    </div>
-                                    <div class="periodo-item">
-                                        <span class="periodo-label">P2</span>
-                                        <span class="periodo-nota excelente">4.9</span>
-                                    </div>
-                                    <div class="periodo-item">
-                                        <span class="periodo-label">P3</span>
-                                        <span class="periodo-nota pendiente">--</span>
-                                    </div>
+                                    <div class="periodo-item"><span class="periodo-label">P1</span><span class="periodo-nota excelente">4.7</span></div>
+                                    <div class="periodo-item"><span class="periodo-label">P2</span><span class="periodo-nota excelente">4.9</span></div>
+                                    <div class="periodo-item"><span class="periodo-label">P3</span><span class="periodo-nota pendiente">--</span></div>
                                 </div>
                                 <div class="card-footer">
                                     <div class="footer-item">
-                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                                            <circle cx="12" cy="7" r="4"></circle>
-                                        </svg>
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
                                         <span>Prof. Torres</span>
                                     </div>
                                     <div class="footer-item">
-                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                                            <line x1="16" y1="2" x2="16" y2="6"></line>
-                                            <line x1="8" y1="2" x2="8" y2="6"></line>
-                                        </svg>
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line></svg>
                                         <span>0 faltas</span>
                                     </div>
                                 </div>
@@ -468,7 +428,7 @@
                             </div>
                         </div>
 
-                        <!-- Tarjeta Sociales - EN RIESGO -->
+                        <!-- Tarjeta Ciencias Sociales - EN RIESGO -->
                         <div class="materia-card card-riesgo" data-materia="sociales">
                             <div class="card-header" style="background: linear-gradient(135deg, #FF9800 0%, #F57C00 100%);">
                                 <div class="card-header-top">
@@ -489,39 +449,24 @@
                                     </div>
                                 </div>
                                 <div class="periodos-notas">
-                                    <div class="periodo-item">
-                                        <span class="periodo-label">P1</span>
-                                        <span class="periodo-nota bajo">2.5</span>
-                                    </div>
-                                    <div class="periodo-item">
-                                        <span class="periodo-label">P2</span>
-                                        <span class="periodo-nota bajo">3.1</span>
-                                    </div>
-                                    <div class="periodo-item">
-                                        <span class="periodo-label">P3</span>
-                                        <span class="periodo-nota pendiente">--</span>
-                                    </div>
+                                    <div class="periodo-item"><span class="periodo-label">P1</span><span class="periodo-nota bajo">2.5</span></div>
+                                    <div class="periodo-item"><span class="periodo-label">P2</span><span class="periodo-nota bajo">3.1</span></div>
+                                    <div class="periodo-item"><span class="periodo-label">P3</span><span class="periodo-nota pendiente">--</span></div>
                                 </div>
                                 <div class="card-footer">
                                     <div class="footer-item">
-                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                                            <circle cx="12" cy="7" r="4"></circle>
-                                        </svg>
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
                                         <span>Prof. Vargas</span>
                                     </div>
                                     <div class="footer-item">
-                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                                            <line x1="16" y1="2" x2="16" y2="6"></line>
-                                            <line x1="8" y1="2" x2="8" y2="6"></line>
-                                        </svg>
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line></svg>
                                         <span>5 faltas</span>
                                     </div>
                                 </div>
                                 <button class="btn-detalle btn-riesgo" onclick="verDetalle('sociales')">Mejorar nota</button>
                             </div>
                         </div>
+
                     </div>
                 </div>
 
@@ -631,135 +576,116 @@
                         </div>
                     </div>
                 </div>
+
             </div>
+        </th:block>
 
-            <script>
-                // CAMBIO DE VISTAS
-                document.querySelectorAll('.view-btn').forEach(btn => {
-                    btn.addEventListener('click', function() {
-                        const viewType = this.dataset.view;
-
-                        // Actualizar botones activos
-                        document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
-                        this.classList.add('active');
-
-                        // Mostrar vista correspondiente
-                        document.querySelectorAll('.view-content').forEach(v => v.classList.remove('active'));
-                        document.getElementById('view' + viewType.charAt(0).toUpperCase() + viewType.slice(1)).classList.add('active');
-
-                        // Inicializar gráficos si es necesario
-                        if (viewType === 'graph' && !window.chartsInitialized) {
-                            initCharts();
-                            window.chartsInitialized = true;
-                        }
-                    });
-                });
-
-                // FILTROS (solo para docentes y coordinadores)
-                const searchInput = document.getElementById('searchInput');
-                const filterGrado = document.getElementById('filterGrado');
-                const filterMateria = document.getElementById('filterMateria');
-                const filterEstado = document.getElementById('filterEstado');
-
-                function aplicarFiltros() {
-                    const searchTerm = searchInput?.value.toLowerCase() || '';
-                    const grado = filterGrado?.value || '';
-                    const materia = filterMateria?.value || '';
-                    const estado = filterEstado?.value || '';
-
-                    // Filtrar tarjetas
-                    document.querySelectorAll('.materia-card').forEach(card => {
-                        const materiaName = card.querySelector('h3').textContent.toLowerCase();
-                        let visible = materiaName.includes(searchTerm);
-
-                        if (estado === 'riesgo') {
-                            visible = visible && card.classList.contains('card-riesgo');
-                        } else if (estado === 'aprobado') {
-                            visible = visible && !card.classList.contains('card-riesgo');
-                        }
-
-                        card.style.display = visible ? 'block' : 'none';
-                    });
-
-                    // Filtrar tabla
-                    document.querySelectorAll('.notas-table tbody tr').forEach(row => {
-                        const materiaName = row.querySelector('strong').textContent.toLowerCase();
-                        let visible = materiaName.includes(searchTerm);
-
-                        if (estado === 'riesgo') {
-                            visible = visible && row.classList.contains('table-row-danger');
-                        } else if (estado === 'aprobado') {
-                            visible = visible && row.classList.contains('table-row-success');
-                        }
-
-                        row.style.display = visible ? '' : 'none';
-                    });
-                }
-
-                if (searchInput) searchInput.addEventListener('input', aplicarFiltros);
-                if (filterGrado) filterGrado.addEventListener('change', aplicarFiltros);
-                if (filterMateria) filterMateria.addEventListener('change', aplicarFiltros);
-                if (filterEstado) filterEstado.addEventListener('change', aplicarFiltros);
-
-                // FUNCIONES DE INTERACCIÓN
-                function verDetalle(materia) {
-                    alert('Mostrando detalles de ' + materia + '\n\nAquí se mostraría:\n- Actividades evaluadas\n- Logros alcanzados\n- Retroalimentación del docente\n- Recomendaciones');
-                }
-
-                function descargarReporte() {
-                    alert('Generando reporte en PDF...\n\nEl reporte incluirá:\n- Todas las calificaciones del periodo\n- Gráficos de rendimiento\n- Observaciones de docentes\n- Plan de mejoramiento (si aplica)');
-                }
-
-                // GRÁFICOS CON CANVAS (simulación simple)
-                function initCharts() {
-                    const chartEvolucion = document.getElementById('chartEvolucion');
-                    const chartRadar = document.getElementById('chartRadar');
-
-                    if (chartEvolucion) {
-                        const ctx = chartEvolucion.getContext('2d');
-                        // Simulación de gráfico de líneas
-                        ctx.fillStyle = '#008000';
-                        ctx.font = '16px Arial';
-                        ctx.fillText('Gráfico de evolución de notas', 50, 100);
-                        ctx.fillText('(Requiere librería de gráficos como Chart.js)', 30, 130);
-                    }
-
-                    if (chartRadar) {
-                        const ctx = chartRadar.getContext('2d');
-                        ctx.fillStyle = '#008000';
-                        ctx.font = '16px Arial';
-                        ctx.fillText('Gráfico radar de materias', 80, 100);
-                        ctx.fillText('(Requiere librería de gráficos como Chart.js)', 30, 130);
-                    }
-                }
-
-                // Animación de entrada para tarjetas
-                document.addEventListener('DOMContentLoaded', function() {
-                    const cards = document.querySelectorAll('.materia-card');
-                    cards.forEach((card, index) => {
-                        setTimeout(() => {
-                            card.style.opacity = '0';
-                            card.style.transform = 'translateY(20px)';
-                            card.style.transition = 'all 0.5s ease';
-                            setTimeout(() => {
-                                card.style.opacity = '1';
-                                card.style.transform = 'translateY(0)';
-                            }, 50);
-                        }, index * 100);
-                    });
-                });
-            </script>
-
-        <?php else: ?>
+        <!-- Acceso denegado para perfiles 4 y 5 -->
+        <th:block th:if="${session.perfil == 4 or session.perfil == 5}">
             <div class="denied">
                 <h2>Acceso denegado</h2>
                 <p>Esta vista está en construcción para tu perfil</p>
             </div>
-        <?php endif; ?>
+        </th:block>
+
     </main>
 
-    <script src="<?= base_url('js/active.js') ?>"></script>
-    <script src="<?= base_url('js/chatbot.js') ?>"></script>
+    <script>
+        // CAMBIO DE VISTAS
+        document.querySelectorAll('.view-btn').forEach(btn => {
+            btn.addEventListener('click', function () {
+                const viewType = this.dataset.view;
+                document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                document.querySelectorAll('.view-content').forEach(v => v.classList.remove('active'));
+                document.getElementById('view' + viewType.charAt(0).toUpperCase() + viewType.slice(1)).classList.add('active');
+                if (viewType === 'graph' && !window.chartsInitialized) {
+                    initCharts();
+                    window.chartsInitialized = true;
+                }
+            });
+        });
+
+        // FILTROS
+        const searchInput  = document.getElementById('searchInput');
+        const filterGrado  = document.getElementById('filterGrado');
+        const filterMateria = document.getElementById('filterMateria');
+        const filterEstado = document.getElementById('filterEstado');
+
+        function aplicarFiltros() {
+            const searchTerm = searchInput?.value.toLowerCase() || '';
+            const estado = filterEstado?.value || '';
+
+            document.querySelectorAll('.materia-card').forEach(card => {
+                const materiaName = card.querySelector('h3').textContent.toLowerCase();
+                let visible = materiaName.includes(searchTerm);
+                if (estado === 'riesgo') visible = visible && card.classList.contains('card-riesgo');
+                else if (estado === 'aprobado') visible = visible && !card.classList.contains('card-riesgo');
+                card.style.display = visible ? 'block' : 'none';
+            });
+
+            document.querySelectorAll('.notas-table tbody tr').forEach(row => {
+                const materiaName = row.querySelector('strong').textContent.toLowerCase();
+                let visible = materiaName.includes(searchTerm);
+                if (estado === 'riesgo') visible = visible && row.classList.contains('table-row-danger');
+                else if (estado === 'aprobado') visible = visible && row.classList.contains('table-row-success');
+                row.style.display = visible ? '' : 'none';
+            });
+        }
+
+        if (searchInput)  searchInput.addEventListener('input', aplicarFiltros);
+        if (filterGrado)  filterGrado.addEventListener('change', aplicarFiltros);
+        if (filterMateria) filterMateria.addEventListener('change', aplicarFiltros);
+        if (filterEstado) filterEstado.addEventListener('change', aplicarFiltros);
+
+        // FUNCIONES DE INTERACCIÓN
+        function verDetalle(materia) {
+            alert('Mostrando detalles de ' + materia + '\n\nAquí se mostraría:\n- Actividades evaluadas\n- Logros alcanzados\n- Retroalimentación del docente\n- Recomendaciones');
+        }
+
+        function descargarReporte() {
+            alert('Generando reporte en PDF...\n\nEl reporte incluirá:\n- Todas las calificaciones del periodo\n- Gráficos de rendimiento\n- Observaciones de docentes\n- Plan de mejoramiento (si aplica)');
+        }
+
+        // GRÁFICOS CON CANVAS
+        function initCharts() {
+            const chartEvolucion = document.getElementById('chartEvolucion');
+            const chartRadar = document.getElementById('chartRadar');
+            if (chartEvolucion) {
+                const ctx = chartEvolucion.getContext('2d');
+                ctx.fillStyle = '#008000';
+                ctx.font = '16px Arial';
+                ctx.fillText('Gráfico de evolución de notas', 50, 100);
+                ctx.fillText('(Requiere librería de gráficos como Chart.js)', 30, 130);
+            }
+            if (chartRadar) {
+                const ctx = chartRadar.getContext('2d');
+                ctx.fillStyle = '#008000';
+                ctx.font = '16px Arial';
+                ctx.fillText('Gráfico radar de materias', 80, 100);
+                ctx.fillText('(Requiere librería de gráficos como Chart.js)', 30, 130);
+            }
+        }
+
+        // Animación de entrada para tarjetas
+        document.addEventListener('DOMContentLoaded', function () {
+            const cards = document.querySelectorAll('.materia-card');
+            cards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.style.opacity = '0';
+                    card.style.transform = 'translateY(20px)';
+                    card.style.transition = 'all 0.5s ease';
+                    setTimeout(() => {
+                        card.style.opacity = '1';
+                        card.style.transform = 'translateY(0)';
+                    }, 50);
+                }, index * 100);
+            });
+        });
+    </script>
+
+    <script th:src="@{/js/active.js}"></script>
+    <script th:src="@{/js/chatbot.js}"></script>
 </body>
 
 </html>
