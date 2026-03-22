@@ -510,7 +510,6 @@ header.brandinicio .info-icon:hover {
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
-
     animation: fadeIn 1s ease-in ;
 }
 
@@ -1336,6 +1335,7 @@ img.socialmedia:hover {
     align-items: center;
     transition: 0.4s;
     margin-bottom: 0;
+    animation: fadeIn 1s ease-in ; 
 }
 
 div.imagenlogin {
@@ -2109,15 +2109,21 @@ textarea:focus {
 
 div.imagencontacto { display: flex; justify-content: center; align-items: center; }
 
-.contacto { padding: 50px 20px; background: #f9fafb; }
+.contacto {    
+    padding: 50px 20px; 
+    background-image: url('/img/backgroundcontacto.png') !important;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    animation: fadeIn 1s ease-in ; 
+}
 
 .contacto-container {
     max-width: 800px;
     margin: 0 auto;
-    background: #fff;
+    background: var(--blanco);
     padding: 30px;
     border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 .contacto-titulo { font-size: 2rem; color: #fd5828; text-align: center; margin-bottom: 10px; }
