@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
         throw new Error('Webhook error');
       }
 
-      setStatus('Listo! Te dimos la bienvenida a Classify.');
+      setStatus('Revisa tu bandeja de entrada!');
       form.reset();
     } catch (error) {
       setStatus('No pudimos enviar tu correo. Intenta nuevamente.', true);
