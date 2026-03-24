@@ -651,10 +651,20 @@ header.brandinicio .info-icon:hover {
   border-radius: 0px 20px 20px 0px;
 }
 
+img.socialmediainicial {
+  width: 50%;
+  height: 13%;
+  padding: 14px;
+  padding-top: 34px;
+  background: transparent;
+  filter: drop-shadow(0 2px 6px rgba(0, 128, 0, 0.2));
+  transition: filter 0.2s, transform 0.2s;
+}
 img.socialmedia {
   width: 50%;
   height: 13%;
   padding: 14px;
+  padding-top: 2px;
   background: transparent;
   filter: drop-shadow(0 2px 6px rgba(0, 128, 0, 0.2));
   transition: filter 0.2s, transform 0.2s;
