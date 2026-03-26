@@ -3,6 +3,7 @@ package com.classify20.controller;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,14 +25,14 @@ public class WelcomeWebhookController {
 
     public WelcomeWebhookController(
             @Value("${classify.webhooks.welcome.url}") String webhookUrl) {
-        this.restClient = RestClient.create();
+        // Timeout de 10 segundos para conexión y 15 para lectura
+        SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
+        factory.setConnectTimeout(10_000);
+        factory.setReadTimeout(15_000);
+        this.restClient = RestClient.builder().requestFactory(factory).build();
         this.webhookUrl = webhookUrl;
     }
 
-    /**
-     * Endpoint para el formulario de bienvenida de la página de inicio.
-     * Captura el correo y envía un JSON profesional al webhook de n8n.
-     */
     @PostMapping("/welcome")
     public ResponseEntity<Map<String, String>> sendWelcome(@RequestBody WelcomeRequest request) {
         if (request == null || request.email() == null || request.email().trim().isEmpty()) {
@@ -41,7 +42,7 @@ public class WelcomeWebhookController {
 
         String cleanEmail = request.email().trim().toLowerCase();
 
-        // Construir payload profesional para n8n
+        // Payload profesional para n8n
         Map<String, Object> webhookPayload = new LinkedHashMap<>();
         webhookPayload.put("email", cleanEmail);
         webhookPayload.put("source", request.source() != null ? request.source() : "inicio");
@@ -70,10 +71,6 @@ public class WelcomeWebhookController {
         }
     }
 
-    /**
-     * Record que representa la solicitud de bienvenida.
-     * Captura email, origen del formulario y nombre opcional.
-     */
     public record WelcomeRequest(String email, String source, String nombre) {
     }
 }

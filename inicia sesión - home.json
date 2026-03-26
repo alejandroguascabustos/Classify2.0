@@ -5,17 +5,7 @@
       "parameters": {
         "httpMethod": "POST",
         "path": "a54058de-22a2-488b-956c-21bc5520d6a0",
-        "responseMode": "responseNode",
-        "options": {
-          "responseHeaders": {
-            "entries": [
-              {
-                "name": "Access-Control-Allow-Origin",
-                "value": "*"
-              }
-            ]
-          }
-        }
+        "options": {}
       },
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2.1,
@@ -26,24 +16,10 @@
     },
     {
       "parameters": {
-        "respondWith": "json",
-        "responseBody": "={{ JSON.stringify({ status: 'success', message: 'Correo de bienvenida enviado exitosamente' }) }}",
-        "options": {
-          "responseCode": 200
-        }
-      },
-      "type": "n8n-nodes-base.respondToWebhook",
-      "typeVersion": 1.1,
-      "position": [660, 0],
-      "id": "resp-001",
-      "name": "Respuesta Exitosa"
-    },
-    {
-      "parameters": {
-        "sendTo": "={{ $('Webhook - Registro Classify').item.json.body.email }}",
+        "sendTo": "={{ $json.body.email }}",
         "subject": "🎓 ¡Bienvenido(a) a Classify! Tu plataforma educativa",
         "emailType": "html",
-        "message": "<!DOCTYPE html><html lang='es'><head><meta charset='UTF-8'><meta name='viewport' content='width=device-width, initial-scale=1.0'><title>Bienvenido a Classify</title></head><body style='margin:0;padding:0;background-color:#f0f4f0;font-family:Arial,Helvetica,sans-serif;'><table role='presentation' cellspacing='0' cellpadding='0' border='0' align='center' width='100%' style='max-width:600px;margin:0 auto;background-color:#ffffff;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(0,128,0,0.08);'><tr><td style='background:linear-gradient(135deg,#013501 0%,#008000 50%,#35b50b 100%);padding:40px 30px;text-align:center;'><table role='presentation' cellspacing='0' cellpadding='0' border='0' align='center'><tr><td style='padding-bottom:16px;'><img src='https://classify.in.net/img/logo.png' alt='Classify Logo' width='80' style='display:block;margin:0 auto;'/></td></tr><tr><td><h1 style='color:#ffffff;font-size:28px;font-weight:800;margin:0;letter-spacing:-0.5px;'>Classify</h1></td></tr><tr><td style='padding-top:8px;'><p style='color:rgba(255,255,255,0.85);font-size:14px;margin:0;'>Plataforma Educativa Inteligente</p></td></tr></table></td></tr><tr><td style='padding:40px 35px 20px;'><table role='presentation' cellspacing='0' cellpadding='0' border='0' width='100%'><tr><td style='text-align:center;padding-bottom:24px;'><div style='width:64px;height:64px;background:linear-gradient(135deg,#AFD786,#008000);border-radius:50%;margin:0 auto;line-height:64px;font-size:32px;'>🎓</div></td></tr><tr><td><h2 style='color:#013501;font-size:24px;font-weight:700;text-align:center;margin:0 0 16px;'>¡Bienvenido(a) a Classify!</h2></td></tr><tr><td><p style='color:#64748b;font-size:16px;line-height:1.7;text-align:center;margin:0 0 24px;'>Nos emociona tenerte como parte de nuestra comunidad educativa. Con Classify podrás gestionar tus clases, materiales y mucho más de forma inteligente.</p></td></tr></table></td></tr><tr><td style='padding:0 35px 30px;'><table role='presentation' cellspacing='0' cellpadding='0' border='0' width='100%' style='background:#f8faf8;border-radius:12px;border:1px solid #d4e8d4;'><tr><td style='padding:24px;'><h3 style='color:#013501;font-size:16px;font-weight:700;margin:0 0 16px;'>🚀 ¿Qué puedes hacer en Classify?</h3><table role='presentation' cellspacing='0' cellpadding='0' border='0' width='100%'><tr><td style='padding:8px 0;'><table role='presentation' cellspacing='0' cellpadding='0' border='0'><tr><td style='width:24px;vertical-align:top;color:#008000;font-size:16px;'>📅</td><td style='padding-left:10px;color:#333;font-size:14px;line-height:1.5;'><strong>Agenda Académica</strong> — Organiza y agenda tus clases fácilmente</td></tr></table></td></tr><tr><td style='padding:8px 0;'><table role='presentation' cellspacing='0' cellpadding='0' border='0'><tr><td style='width:24px;vertical-align:top;color:#008000;font-size:16px;'>📚</td><td style='padding-left:10px;color:#333;font-size:14px;line-height:1.5;'><strong>Material Académico</strong> — Accede y comparte recursos educativos</td></tr></table></td></tr><tr><td style='padding:8px 0;'><table role='presentation' cellspacing='0' cellpadding='0' border='0'><tr><td style='width:24px;vertical-align:top;color:#008000;font-size:16px;'>🤖</td><td style='padding-left:10px;color:#333;font-size:14px;line-height:1.5;'><strong>Asistente con IA</strong> — Obtén ayuda inteligente para tus estudios</td></tr></table></td></tr><tr><td style='padding:8px 0;'><table role='presentation' cellspacing='0' cellpadding='0' border='0'><tr><td style='width:24px;vertical-align:top;color:#008000;font-size:16px;'>👨‍🏫</td><td style='padding-left:10px;color:#333;font-size:14px;line-height:1.5;'><strong>Contacta Profesores</strong> — Comunícate directamente con tus docentes</td></tr></table></td></tr></table></td></tr></table></td></tr><tr><td style='padding:0 35px 30px;text-align:center;'><a href='https://classify.in.net/inicio' style='display:inline-block;background:linear-gradient(135deg,#013501,#008000);color:#ffffff;text-decoration:none;padding:14px 40px;border-radius:50px;font-size:16px;font-weight:700;letter-spacing:0.3px;box-shadow:0 4px 15px rgba(0,128,0,0.3);'>Ingresar a Classify →</a></td></tr><tr><td style='padding:0 35px 30px;'><table role='presentation' cellspacing='0' cellpadding='0' border='0' width='100%' style='border-top:1px solid #e5e7eb;'><tr><td style='padding-top:24px;text-align:center;'><p style='color:#64748b;font-size:12px;line-height:1.6;margin:0;'>Este correo fue enviado a <strong>{{ $('Webhook - Registro Classify').item.json.body.email }}</strong> porque te registraste en Classify.</p><p style='color:#64748b;font-size:12px;line-height:1.6;margin:8px 0 0;'>© 2026 Classify — Colegio Moralba Sur Oriental · Bogotá, Colombia</p></td></tr></table></td></tr></table></body></html>",
+        "message": "<!DOCTYPE html><html lang='es'><head><meta charset='UTF-8'><meta name='viewport' content='width=device-width, initial-scale=1.0'><title>Bienvenido a Classify</title></head><body style='margin:0;padding:0;background-color:#f0f4f0;font-family:Arial,Helvetica,sans-serif;'><table role='presentation' cellspacing='0' cellpadding='0' border='0' align='center' width='100%' style='max-width:600px;margin:0 auto;background-color:#ffffff;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(0,128,0,0.08);'><tr><td style='background:linear-gradient(135deg,#013501 0%,#008000 50%,#35b50b 100%);padding:40px 30px;text-align:center;'><table role='presentation' cellspacing='0' cellpadding='0' border='0' align='center'><tr><td style='padding-bottom:16px;'><img src='https://classify.in.net/img/logo.png' alt='Classify Logo' width='80' style='display:block;margin:0 auto;'/></td></tr><tr><td><h1 style='color:#ffffff;font-size:28px;font-weight:800;margin:0;letter-spacing:-0.5px;'>Classify</h1></td></tr><tr><td style='padding-top:8px;'><p style='color:rgba(255,255,255,0.85);font-size:14px;margin:0;'>Plataforma Educativa Inteligente</p></td></tr></table></td></tr><tr><td style='padding:40px 35px 20px;'><table role='presentation' cellspacing='0' cellpadding='0' border='0' width='100%'><tr><td style='text-align:center;padding-bottom:24px;'><div style='width:64px;height:64px;background:linear-gradient(135deg,#AFD786,#008000);border-radius:50%;margin:0 auto;line-height:64px;font-size:32px;'>🎓</div></td></tr><tr><td><h2 style='color:#013501;font-size:24px;font-weight:700;text-align:center;margin:0 0 16px;'>¡Bienvenido(a) a Classify!</h2></td></tr><tr><td><p style='color:#64748b;font-size:16px;line-height:1.7;text-align:center;margin:0 0 24px;'>Nos emociona tenerte como parte de nuestra comunidad educativa. Con Classify podrás gestionar tus clases, materiales y mucho más de forma inteligente.</p></td></tr></table></td></tr><tr><td style='padding:0 35px 30px;'><table role='presentation' cellspacing='0' cellpadding='0' border='0' width='100%' style='background:#f8faf8;border-radius:12px;border:1px solid #d4e8d4;'><tr><td style='padding:24px;'><h3 style='color:#013501;font-size:16px;font-weight:700;margin:0 0 16px;'>🚀 ¿Qué puedes hacer en Classify?</h3><table role='presentation' cellspacing='0' cellpadding='0' border='0' width='100%'><tr><td style='padding:8px 0;'><table role='presentation' cellspacing='0' cellpadding='0' border='0'><tr><td style='width:24px;vertical-align:top;color:#008000;font-size:16px;'>📅</td><td style='padding-left:10px;color:#333;font-size:14px;line-height:1.5;'><strong>Agenda Académica</strong> — Organiza y agenda tus clases fácilmente</td></tr></table></td></tr><tr><td style='padding:8px 0;'><table role='presentation' cellspacing='0' cellpadding='0' border='0'><tr><td style='width:24px;vertical-align:top;color:#008000;font-size:16px;'>📚</td><td style='padding-left:10px;color:#333;font-size:14px;line-height:1.5;'><strong>Material Académico</strong> — Accede y comparte recursos educativos</td></tr></table></td></tr><tr><td style='padding:8px 0;'><table role='presentation' cellspacing='0' cellpadding='0' border='0'><tr><td style='width:24px;vertical-align:top;color:#008000;font-size:16px;'>🤖</td><td style='padding-left:10px;color:#333;font-size:14px;line-height:1.5;'><strong>Asistente con IA</strong> — Obtén ayuda inteligente para tus estudios</td></tr></table></td></tr><tr><td style='padding:8px 0;'><table role='presentation' cellspacing='0' cellpadding='0' border='0'><tr><td style='width:24px;vertical-align:top;color:#008000;font-size:16px;'>👨‍🏫</td><td style='padding-left:10px;color:#333;font-size:14px;line-height:1.5;'><strong>Contacta Profesores</strong> — Comunícate directamente con tus docentes</td></tr></table></td></tr></table></td></tr></table></td></tr><tr><td style='padding:0 35px 30px;text-align:center;'><a href='https://classify.in.net/inicio' style='display:inline-block;background:linear-gradient(135deg,#013501,#008000);color:#ffffff;text-decoration:none;padding:14px 40px;border-radius:50px;font-size:16px;font-weight:700;letter-spacing:0.3px;box-shadow:0 4px 15px rgba(0,128,0,0.3);'>Ingresar a Classify →</a></td></tr><tr><td style='padding:0 35px 30px;'><table role='presentation' cellspacing='0' cellpadding='0' border='0' width='100%' style='border-top:1px solid #e5e7eb;'><tr><td style='padding-top:24px;text-align:center;'><p style='color:#64748b;font-size:12px;line-height:1.6;margin:0;'>Este correo fue enviado a <strong>{{ $json.body.email }}</strong> porque te registraste en Classify.</p><p style='color:#64748b;font-size:12px;line-height:1.6;margin:8px 0 0;'>© 2026 Classify — Colegio Moralba Sur Oriental · Bogotá, Colombia</p></td></tr></table></td></tr></table></body></html>",
         "options": {}
       },
       "type": "n8n-nodes-base.gmail",
@@ -66,17 +42,6 @@
         [
           {
             "node": "Enviar Email de Bienvenida",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Enviar Email de Bienvenida": {
-      "main": [
-        [
-          {
-            "node": "Respuesta Exitosa",
             "type": "main",
             "index": 0
           }
