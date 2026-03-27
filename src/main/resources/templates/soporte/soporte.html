@@ -99,28 +99,27 @@
         </div>
     </main>
 
-    <footer class="footer">
-        <div class="footer-container">
-            <div class="footer-col">
-                <h4>Sobre nosotros</h4>
-                <p>
-                    Classify es una plataforma para la gestión de clases y servicios,
-                    diseñada para mejorar la experiencia de los usuarios.
-                </p>
-            </div>
-            <div class="footer-col">
-                <h4>Enlaces útiles</h4>
-                <ul>
-                    <li><a th:href="@{/politicas}">Política de privacidad</a></li>
-                    <li><a th:href="@{/terminos}">Términos y condiciones</a></li>
-                    <li><a th:href="@{/contacto}">Contacto Colegio</a></li>
-                    <li><a th:href="@{/soporte}">Soporte App</a></li>
-                </ul>
-            </div>
+    <footer class="f4">
+        <div class="f4-logo">
+            <div class="f4-icon">C</div>
+            <span class="f4-logo-name">Classify</span>
         </div>
-        <div class="footer-bottom">
-            <p class="footer-text">© 2025 Classify - Todos los derechos reservados</p>
-        </div>
+        <p class="f4-desc">
+            Plataforma educativa para agendar clases, gestionar materiales y conectar a toda la comunidad del Colegio Moralba Sur Oriental.
+        </p>
+        <nav class="f4-links">
+            <a th:href="@{/inicio}">Inicio</a>
+            <a th:href="@{/nosotros}">Nosotros</a>
+            <a th:href="@{/agenda}">Agenda</a>
+            <a th:href="@{/materiales}">Materiales</a>
+            <a th:href="@{/noticias}">Noticias</a>
+            <a th:href="@{/soporte}">Soporte</a>
+            <a th:href="@{/contacto}">Contacto</a>
+            <a th:href="@{/politicas}">Privacidad</a>
+            <a th:href="@{/terminos}">Términos</a>
+        </nav>
+        <div class="f4-divider"></div>
+        <p class="f4-copy">© 2026 Classify — Todos los derechos reservados · Bogotá, Colombia</p>
     </footer>
 
     <script th:src="@{/js/chatbot.js}"></script>

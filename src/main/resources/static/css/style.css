@@ -898,55 +898,42 @@ img.socialmedia:hover {
     position: fixed;
     bottom: 30px;
     right: 30px;
-    width: 70px;
-    height: 70px;
-    background-color: var(--green, #008000);
-    border-radius: 50%;
-    box-shadow: 0 4px 20px rgba(0, 128, 0, 0.4);
+    width: 75px;
+    height: 75px;
+    background: linear-gradient(135deg, var(--green-dark) 0%, var(--green) 100%);
+    border-radius: 42% 58% 70% 30% / 45% 45% 55% 55%;
+    box-shadow: 0 10px 25px rgba(0, 53, 1, 0.3);
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 1000;
-    transition: all 0.3s ease;
-    border: 3px solid #ffffff;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    animation: morph 6s linear infinite;
 }
 
 .chat-bubble img {
-    width: 45px;
-    height: 45px;
+    width: 95px;
+    height: 95px;
+    margin-top: -5px; /* Ajuste para centrar mejor el rostro */
     object-fit: contain;
+    transition: transform 0.3s ease;
 }
 
 .chat-bubble:hover {
-    animation: shake 0.5s ease-in-out;
-    transform: scale(1.1);
-    box-shadow: 0 6px 25px rgba(0, 128, 0, 0.6);
+    transform: scale(1.1) rotate(5deg);
+    box-shadow: 0 15px 35px rgba(0, 53, 1, 0.4);
 }
 
-@keyframes shake {
-    0%, 100% { transform: translateX(0) scale(1.1); }
-    25%  { transform: translateX(-5px) rotate(-5deg) scale(1.1); }
-    50%  { transform: translateX(5px) rotate(5deg) scale(1.1); }
-    75%  { transform: translateX(-5px) rotate(-5deg) scale(1.1); }
+@keyframes morph {
+  0%, 100% { border-radius: 42% 58% 70% 30% / 45% 45% 55% 55%; }
+  25% { border-radius: 70% 30% 46% 54% / 30% 29% 71% 70%; }
+  50% { border-radius: 50% 50% 34% 66% / 56% 68% 32% 44%; }
+  75% { border-radius: 46% 54% 50% 50% / 35% 61% 39% 65%; }
 }
 
-.chat-badge {
-    position: absolute;
-    top: -5px;
-    right: -5px;
-    background-color: var(--orangered, #F38F02);
-    color: white;
-    border-radius: 50%;
-    width: 25px;
-    height: 25px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 12px;
-    font-weight: bold;
-    animation: pulse 2s infinite;
-}
+/* Badge removido por solicitud del usuario */
 
 @keyframes pulse {
     0%, 100% { transform: scale(1); }
@@ -958,15 +945,17 @@ img.socialmedia:hover {
     bottom: 120px;
     right: 30px;
     width: 380px;
-    max-height: 550px;
-    background: white;
-    border-radius: 20px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    max-height: 580px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(15px);
+    border-radius: 28px;
+    box-shadow: 0 20px 50px rgba(0, 53, 1, 0.15);
     display: none;
     flex-direction: column;
     z-index: 999;
     overflow: hidden;
-    animation: slideUp 0.3s ease-out;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    animation: slideUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .chat-container.active {
@@ -978,21 +967,20 @@ img.socialmedia:hover {
 }
 
 .chat-header {
-    background: linear-gradient(135deg, var(--green, #008000) 0%, var(--green-light2, #35b50b) 100%);
-    padding: 20px;
+    background: linear-gradient(135deg, var(--green-dark) 0%, var(--green) 100%);
+    padding: 25px 20px;
     color: white;
     display: flex;
     align-items: center;
     gap: 15px;
+    position: relative;
 }
 
 .chat-header img {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    border: 3px solid white;
-    background: white;
-    padding: 5px;
+    width: 70px;
+    height: 70px;
+    border-radius: 20px;
+    object-fit: contain;
 }
 
 .chat-header-info h3 {
@@ -1031,34 +1019,33 @@ img.socialmedia:hover {
 .chat-body {
     flex: 1;
     overflow-y: auto;
-    padding: 20px;
-    background: #f5f5f5;
-    max-height: 400px;
+    padding: 25px 20px;
+    background: #f8fafc;
+    max-height: 420px;
 }
 
 .chat-message {
-    margin-bottom: 15px;
-    animation: fadeIn 0.3s ease-out;
+    margin-bottom: 20px;
 }
 
 .message-bot {
     display: flex;
-    align-items: flex-start;
-    gap: 10px;
+    align-items: flex-end;
+    gap: 12px;
 }
 
 .message-bot img {
-    width: 35px;
-    height: 35px;
-    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    border-radius: 10px;
 }
 
 .message-content {
     background: white;
-    padding: 12px 16px;
-    border-radius: 15px 15px 15px 5px;
-    max-width: 75%;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 14px 18px;
+    border-radius: 20px 20px 20px 4px;
+    max-width: 80%;
+    box-shadow: 0 4px 12px rgba(0, 53, 1, 0.05);
 }
 
 .message-content p {
@@ -1082,35 +1069,63 @@ img.socialmedia:hover {
 .chat-options {
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    margin-top: 10px;
+    gap: 12px;
+    margin-top: 15px;
+    padding: 0 5px;
 }
 
 .chat-option-btn {
-    background: white;
-    border: 2px solid var(--green, #008000);
-    color: var(--green, #008000);
-    padding: 12px 16px;
-    border-radius: 10px;
+    background: #ffffff;
+    border: 1.5px solid #edf2f7;
+    color: #4a5568;
+    padding: 14px 20px;
+    border-radius: 20px;
     cursor: pointer;
-    font-size: 14px;
-    font-weight: 600;
-    transition: all 0.3s ease;
+    font-size: 14.5px;
+    font-weight: 500;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     text-align: left;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.03);
+    position: relative;
+    overflow: hidden;
+    user-select: none;
+}
+
+.chat-option-btn.used {
+    background: #f1f5f9;
+    border-color: #e2e8f0;
+    color: #94a3b8;
+    opacity: 0.7;
+    cursor: default;
+    box-shadow: none;
+    transform: none !important;
+}
+
+.chat-option-btn.used::before {
+    color: #cbd5e1;
 }
 
 .chat-option-btn:hover {
-    background: var(--green, #008000);
+    background: linear-gradient(135deg, var(--green-dark) 0%, var(--green) 100%);
     color: white;
-    transform: translateX(5px);
+    transform: translateX(8px) scale(1.02);
+    box-shadow: 0 8px 20px rgba(0, 128, 0, 0.2);
+    border-color: transparent;
 }
 
 .chat-option-btn::before {
-    content: "▶";
-    font-size: 12px;
+    content: "●";
+    color: var(--green);
+    font-size: 10px;
+    transition: all 0.3s ease;
+}
+
+.chat-option-btn:hover::before {
+    color: white;
+    transform: scale(1.4);
 }
 
 .chat-input-container {
@@ -1175,8 +1190,8 @@ img.socialmedia:hover {
 }
 
 .chat-welcome-modal img {
-    width: 100px;
-    height: 100px;
+    width: 140px;
+    height: 140px;
     margin-bottom: 20px;
     object-fit: contain;
 }
@@ -2002,55 +2017,77 @@ a.inicioprincipal3 {
 .contentnosotros {
     display: flex;
     justify-content: center;
-    padding: 60px 20px;
-    background: #f7f9fc;
+    padding: 80px 20px;
+    background: linear-gradient(135deg, #f0f7f4 0%, #e2f1e9 100%);
     font-family: "Inter", "Roboto", sans-serif;
     color: #2d2d2d;
+    min-height: calc(100vh - 80px);
 }
 
 .nosotros-wrapper {
     background: #ffffff;
-    padding: 50px 40px;
-    border-radius: 20px;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.09);
+    max-width: 900px;
+    width: 100%;
+    padding: 60px 60px;
+    border-radius: 24px;
+    box-shadow: 0 12px 40px rgba(0, 53, 1, 0.08);
     text-align: left;
     animation: fadeIn 0.6s ease-in-out;
 }
 
-.titlenosotros { font-size: 48px; color: var(--green); font-weight: 800; margin-bottom: 10px; letter-spacing: -1px; }
-.nosotros-wrapper h3 { font-size: 22px; color: #4b4b4b; margin-bottom: 25px; font-weight: 600; }
-.nosotros-wrapper p  { line-height: 1.7; font-size: 17px; color: #555; margin-bottom: 18px; }
+.titlenosotros { font-size: 42px; color: var(--green-dark); font-weight: 800; margin-bottom: 15px; letter-spacing: -1px; }
+.nosotros-wrapper h3 { font-size: 20px; color: var(--green); margin-bottom: 30px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;}
+.nosotros-wrapper p { line-height: 1.8; font-size: 16px; color: #4a5568; margin-bottom: 20px; }
 
-.beneficios { list-style: none; margin: 40px 0; padding: 0; text-align: left; }
+.beneficios { list-style: none; margin: 40px 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
 
 .beneficios li {
-    background: #f2f4ff;
-    padding: 15px 18px;
-    border-radius: 12px;
-    margin-bottom: 12px;
-    border-left: 5px solid orangered;
-    font-size: 16px;
-    transition: transform 0.2s ease;
+    background: #ffffff;
+    padding: 24px;
+    border-radius: 16px;
+    border: 1px solid #e2e8f0;
+    border-left: 6px solid var(--green);
+    font-size: 15px;
+    color: #4a5568;
+    line-height: 1.6;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+    transition: all 0.3s ease;
 }
 
-.beneficios li:hover { transform: translateX(6px); }
+.beneficios li:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0, 53, 1, 0.08); border-color: var(--green-dark); }
+.beneficios li strong { display: block; font-size: 17px; color: var(--green-dark); margin-bottom: 8px; }
 
-.cta-button, .cta-link {
+.cta-group { margin-top: 40px; display: flex; gap: 15px; align-items: center; flex-wrap: wrap; }
+
+.cta-button {
     display: inline-block;
-    background: orangered;
-    padding: 14px 26px;
+    background: linear-gradient(135deg, var(--green-dark) 0%, var(--green) 100%);
+    padding: 16px 36px;
     color: #fff;
     font-size: 16px;
-    font-weight: 600;
-    border-radius: 30px;
+    font-weight: 700;
+    border-radius: 50px;
     text-decoration: none;
-    transition: background 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 15px rgba(0, 128, 0, 0.3);
+    transition: all 0.3s ease;
 }
 
-.cta-link { margin-top: 15px; }
-.cta-button:hover, .cta-link:hover { opacity: 0.7; }
+.cta-link {
+    display: inline-block;
+    padding: 14px 26px;
+    color: var(--green-dark);
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 50px;
+    border: 2px solid #e2e8f0;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
 
-.small { font-size: 15px; color: #666; margin-top: 30px; }
+.cta-button:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0, 128, 0, 0.4); color: white;}
+.cta-link:hover { border-color: var(--green); color: var(--green); background: #f0fdf4; }
+
+.small { font-size: 14px; color: #718096; margin-top: 50px; text-align: center; border-top: 1px solid #e2e8f0; padding-top: 30px; }
 
 .contentsoporte {
     display: flex;
@@ -3213,4 +3250,19 @@ a.botoninicio {
     .cta-title { font-size: 26px; }
     .cta-description { font-size: 16px; }
     .btn-conoce-mas { padding: 14px 28px; font-size: 16px; }
+}
+
+/* ─── Welcome Webhook Status ─── */
+.welcome-status {
+  margin-top: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+  min-height: 20px;
+  transition: opacity 0.3s ease, color 0.3s ease;
+}
+
+.welcome-form input[type="submit"]:disabled {
+  opacity: 0.7;
+  cursor: wait;
 }
