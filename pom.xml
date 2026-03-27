@@ -5,12 +5,21 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
+<<<<<<< HEAD
 		<version>3.4.5</version> 
 		<relativePath/>
 	</parent>
 
 	<groupId>com.classify20</groupId> 
 	<artifactId>classify20</artifactId> 
+=======
+		<version>3.4.5</version> <!-- ❌ 4.0.3 no existe, la versión estable es 3.4.5 -->
+		<relativePath/>
+	</parent>
+
+	<groupId>com.classify20</groupId> <!-- ❌ era solo "com" -->
+	<artifactId>classify20</artifactId> <!-- ❌ el punto en "classify2.0" rompe Maven -->
+>>>>>>> 9313a1becdee308ec3a7cca7e5d97ce6fd83042c
 	<version>0.0.1-SNAPSHOT</version>
 	<name>classify20</name>
 	<description>Proyecto Classify - Spring Boot</description>
@@ -20,40 +29,66 @@
 	</properties>
 
 	<dependencies>
+<<<<<<< HEAD
 		
+=======
+		<!-- Thymeleaf -->
+>>>>>>> 9313a1becdee308ec3a7cca7e5d97ce6fd83042c
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>
 		</dependency>
 
+<<<<<<< HEAD
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId> 
 		</dependency>
 
 
+=======
+		<!-- Web MVC -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId> <!-- ❌ "starter-webmvc" no existe así -->
+		</dependency>
+
+		<!-- Validación -->
+>>>>>>> 9313a1becdee308ec3a7cca7e5d97ce6fd83042c
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-validation</artifactId>
 		</dependency>
 
+		<!-- Lombok -->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
 		</dependency>
 
+<<<<<<< HEAD
 	
+=======
+		<!-- DevTools -->
+>>>>>>> 9313a1becdee308ec3a7cca7e5d97ce6fd83042c
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
 			<optional>true</optional>
 		</dependency>
 
+<<<<<<< HEAD
 	
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId> 
+=======
+		<!-- Tests -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId> <!-- ❌ los "-thymeleaf-test", "-webmvc-test" no existen -->
+>>>>>>> 9313a1becdee308ec3a7cca7e5d97ce6fd83042c
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
