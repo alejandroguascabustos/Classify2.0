@@ -205,13 +205,13 @@ class ClassifyChat {
         // Attach click events only to the newly added buttons
         const optionsContainer = chatBody.lastElementChild;
         const optionButtons = optionsContainer.querySelectorAll('.chat-option-btn');
-        
+
         optionButtons.forEach(btn => {
             btn.addEventListener('click', (e) => {
                 // Prevent multiple clicks on the same set of options
                 if (optionsContainer.getAttribute('data-used')) return;
                 optionsContainer.setAttribute('data-used', 'true');
-                
+
                 // Disable other buttons in this set
                 optionButtons.forEach(b => {
                     b.classList.add('used');
@@ -233,7 +233,7 @@ class ClassifyChat {
             setTimeout(() => {
                 this.removeTypingIndicator();
 
-                switch(action) {
+                switch (action) {
                     case 'crear_clase':
                         this.explainCrearClase();
                         break;
@@ -448,7 +448,7 @@ class ClassifyChat {
         submitBtn.textContent = 'Enviando...';
 
         try {
-            const response = await fetch('https://hook.us2.make.com/4fluqy3u333oancjd4f1g95iei3pa9f5', {
+            const response = await fetch('https://n8n.classify.in.net/webhook/5dbffea7-2dc0-4085-a152-eb981f99da1a', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

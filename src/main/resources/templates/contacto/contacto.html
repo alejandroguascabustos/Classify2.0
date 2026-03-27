@@ -16,20 +16,20 @@
             <a th:href="@{/inicio}"><img th:src="@{/img/logo.png}" alt="logo" class="logo"></a>
             <a th:href="@{/inicio}">Classify</a>
         </div>
-    
+
         <div class="brand2">
             <a th:href="@{/inicio}" class="info-btn">Inicio</a>
             <a th:href="@{/nosotros}" class="info-btn">Nosotros</a>
             <a th:href="@{/contacto}" class="info-btn">Contacto</a>
         </div>
-    
+
         <div class="auth">
             <a th:href="@{/login}" class="info-btnini2">
                 <img th:src="@{/img/perfilinicio.png}" alt="perfilinicio" class="perfilinicio">Inicio Sesión
             </a>
             <a th:href="@{/registro}" class="info-btnini">Registro</a>
         </div>
-    
+
         <div>
             <a href="#info" class="info-btn">
                 <img th:src="@{/img/informacion.png}" alt="Información" class="info-icon">
@@ -45,73 +45,77 @@
         </div>
     </header>
 
-<div class="contacto-wrapper">
-    <main class="contacto-main">
-        <section class="contacto">
-            <div class="contacto-container">
-                <div class="imagencontacto">
-                    <img th:src="@{/img/contacto.gif}">
+    <div class="contacto-wrapper">
+        <main class="contacto-main">
+            <section class="contacto">
+                <div class="contacto-container">
+                    <div class="imagencontacto">
+                        <img th:src="@{/img/contacto.gif}">
+                    </div>
+                    <h2 class="contacto-titulo">Contáctanos</h2>
+                    <p class="contacto-subtitulo">Si tienes dudas sobre el agendamiento de clases o necesitas más
+                        información, comunícate con nosotros:</p>
+
+                    <!-- Información de contacto -->
+                    <div class="contacto-info">
+                        <p><strong>Dirección:</strong> Calle 48 Sur #13-05, Bogotá, Colombia</p>
+                        <p><strong>Teléfono:</strong> (601) 234 5678</p>
+                        <p><strong>Correo institucional:</strong>
+                            <a
+                                href="mailto:coordinacion@moralbasuroriental.edu.co">coordinacion@moralbasuroriental.edu.co</a>
+                        </p>
+                    </div>
+
+                    <!-- Formulario de contacto -->
+                    <form class="contacto-form">
+                        <div class="form-group">
+                            <label for="nombre">Nombre:</label>
+                            <input type="text" id="nombre" name="nombre" placeholder="Escribe tu nombre" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="correo">Correo electrónico:</label>
+                            <input type="email" id="correo" name="correo" placeholder="ejemplo@correo.com" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="mensaje">Mensaje:</label>
+                            <textarea id="mensaje" name="mensaje" rows="5" placeholder="Escribe tu mensaje..."
+                                required></textarea>
+                        </div>
+
+                        <button type="submit" class="btn-enviar">Enviar Mensaje</button>
+                    </form>
                 </div>
-                <h2 class="contacto-titulo">Contáctanos</h2>
-                <p class="contacto-subtitulo">Si tienes dudas sobre el agendamiento de clases o necesitas más
-                    información, comunícate con nosotros:</p>
-
-                <!-- Información de contacto -->
-                <div class="contacto-info">
-                    <p><strong>Dirección:</strong> Calle 48 Sur #13-05, Bogotá, Colombia</p>
-                    <p><strong>Teléfono:</strong> (601) 234 5678</p>
-                    <p><strong>Correo institucional:</strong>
-                        <a href="mailto:coordinacion@moralbasuroriental.edu.co">coordinacion@moralbasuroriental.edu.co</a>
-                    </p>
-                </div>
-
-                <!-- Formulario de contacto -->
-                <form class="contacto-form">
-                    <div class="form-group">
-                        <label for="nombre">Nombre:</label>
-                        <input type="text" id="nombre" name="nombre" placeholder="Escribe tu nombre" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="correo">Correo electrónico:</label>
-                        <input type="email" id="correo" name="correo" placeholder="ejemplo@correo.com" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="mensaje">Mensaje:</label>
-                        <textarea id="mensaje" name="mensaje" rows="5" placeholder="Escribe tu mensaje..." required></textarea>
-                    </div>
-
-                    <button type="submit" class="btn-enviar">Enviar Mensaje</button>
-                </form>
-            </div>
-        </section>
-    </main>
-</div>
-<footer class="f4">
-    <div class="f4-logo">
-        <div class="f4-icon">C</div>
-        <span class="f4-logo-name">Classify</span>
+            </section>
+        </main>
     </div>
-    <p class="f4-desc">
-        Plataforma educativa para agendar clases, gestionar materiales y conectar a toda la comunidad del Colegio Moralba Sur Oriental.
-    </p>
-    <nav class="f4-links">
-        <a href="#">Inicio</a>
-        <a href="#">Nosotros</a>
-        <a href="#">Agenda</a>
-        <a href="#">Materiales</a>
-        <a href="#">Noticias</a>
-        <a href="#">Soporte</a>
-        <a href="#">Contacto</a>
-        <a href="#">Privacidad</a>
-        <a href="#">Términos</a>
-    </nav>
-    <div class="f4-divider"></div>
-    <p class="f4-copy">© 2026 Classify — Todos los derechos reservados · Bogotá, Colombia</p>
+    <footer class="f4">
+        <div class="f4-logo">
+            <div class="f4-icon">C</div>
+            <span class="f4-logo-name">Classify</span>
+        </div>
+        <p class="f4-desc">
+            Plataforma educativa para agendar clases, gestionar materiales y conectar a toda la comunidad del Colegio
+            Moralba Sur Oriental.
+        </p>
+        <nav class="f4-links">
+            <a href="#">Inicio</a>
+            <a href="#">Nosotros</a>
+            <a href="#">Agenda</a>
+            <a href="#">Materiales</a>
+            <a href="#">Noticias</a>
+            <a href="#">Soporte</a>
+            <a href="#">Contacto</a>
+            <a href="#">Privacidad</a>
+            <a href="#">Términos</a>
+        </nav>
+        <div class="f4-divider"></div>
+        <p class="f4-copy">© 2026 Classify — Todos los derechos reservados · Bogotá, Colombia</p>
     </footer>
-    
-<script th:src="@{/js/chatbot.js}"></script>
+
+    <script th:src="@{/js/chatbot.js}"></script>
 
 </body>
+
 </html>
