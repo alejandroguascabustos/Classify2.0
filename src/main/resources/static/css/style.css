@@ -200,7 +200,6 @@ header.brandinicio .brand2 {
     gap: 88px;
     flex: 1;
     justify-content: center;
-    margin-left: 15%;
 }
 
 header.brandinicio .brand2 a.info-btn {
@@ -1878,14 +1877,14 @@ a img.salida:hover { background: #fd5828; transition: 0.4s; }
 
 .right { background-size: 25px; }
 
-.imgmenu  { margin-right: 15px; }
+.imgmenu  { margin-right: 10px; }
 .imgmenu2 { margin-right: 15px; }
 .imgmenu3 { margin-right: 15px; }
 
 .sidebar {
     position: fixed;
-    left: 0;
-    width: 205px;
+    left: 3px;
+    width: 196px;
     height: 100%;
     background: #ffffff;
     padding-top: 20px;
@@ -1894,7 +1893,7 @@ a img.salida:hover { background: #fd5828; transition: 0.4s; }
 }
 
 .sidebar a {
-    padding: 12px;
+    padding: 7px;
     text-decoration: none;
     color: black;
     display: flex;
@@ -1928,7 +1927,7 @@ a.inicioprincipal {
     text-align: center;
     display: flex;
     align-items: center;
-    height: 30px !important;
+    height: 25px !important;
     margin-bottom: 5px;
     text-decoration: none;
     width: 178px;
@@ -1937,7 +1936,9 @@ a.inicioprincipal {
 
 a.inicioprincipal img { justify-content: space-between; }
 
-a.inicioprincipal2 { font-size: 15px; width: 178px; }
+a.inicioprincipal2 { 
+    font-size: 13px; 
+    width: 178px; }
 
 a.inicioprincipal3 {
     background: var(--orangered) !important;
@@ -1986,7 +1987,7 @@ a.inicioprincipal3 {
     margin-left: 220px;
     padding: 20px;
     margin-top: 50px;
-    background-image: url("../img/icons/backgroundprincipal.png");
+    background-image: url("../img/backgroundprincipal.png");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -3194,8 +3195,13 @@ a.botoninicio {
     .login-form button { width: 322px; }
     div .textoregistro { width: 322px; }
 
-    main.contentprincipal { display: none; }
-    .sidebar a { font-size: 0; }
+    main.contentprincipal { 
+        display: none; 
+    }
+    .sidebar a { 
+        font-size: 0; 
+    }
+    
     a.inicioprincipal  { display: flex; justify-content: center; width: 35px; }
     a.inicioprincipal2 { display: flex; justify-content: center; width: 35px; }
     a.inicioprincipal3 { display: flex; justify-content: center; width: 35px; transition: 0.5s; }
