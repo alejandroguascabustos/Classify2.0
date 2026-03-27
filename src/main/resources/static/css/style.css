@@ -92,6 +92,7 @@ input[type=number]::-webkit-inner-spin-button {
 
 input[type=number] {
     -moz-appearance: textfield;
+    appearance: textfield;
 }
 
 input[type="file"] {
@@ -897,25 +898,25 @@ img.socialmedia:hover {
     position: fixed;
     bottom: 30px;
     right: 30px;
-    width: 75px;
-    height: 75px;
-    background: linear-gradient(135deg, var(--green-dark) 0%, var(--green) 100%);
+    width: 90px;
+    height: 90px;
+    background: transparent;
     border-radius: 42% 58% 70% 30% / 45% 45% 55% 55%;
-    box-shadow: 0 10px 25px rgba(0, 53, 1, 0.3);
+    box-shadow: 0 10px 25px rgba(0, 53, 1, 0.1);
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 1000;
     transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    border: 2px solid rgba(255, 255, 255, 0.3);
+    border: 4px solid var(--green);
     animation: morph 6s linear infinite;
 }
 
 .chat-bubble img {
-    width: 95px;
-    height: 95px;
-    margin-top: -5px; /* Ajuste para centrar mejor el rostro */
+    width: 105px;
+    height: 105px;
+    margin-top: -5px;
     object-fit: contain;
     transition: transform 0.3s ease;
 }

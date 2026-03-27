@@ -16,14 +16,14 @@ class ClassifyChat {
         const chatHTML = `
             <!-- Botón flotante del chat -->
             <div class="chat-bubble" id="chatBubble">
-                <img src="${this.getBaseUrl()}img/chatbot-premium-removebg-preview.png" alt="Ayuda">
+                <img src="${this.getBaseUrl()}img/robot_hello.png" alt="Ayuda">
             </div>
 
             <!-- Contenedor del chat -->
             <div class="chat-container" id="chatContainer">
                 <!-- Modal de bienvenida -->
                 <div class="chat-welcome-modal" id="chatWelcomeModal">
-                    <img src="${this.getBaseUrl()}img/chatbot-premium-removebg-preview.png" alt="Asistente Classify">
+                    <img src="${this.getBaseUrl()}img/robot_hello.png" alt="Asistente Classify">
                     <h2>¡Hola! Soy tu Asistente</h2>
                     <p>Estoy aquí para ayudarte con cualquier duda sobre Classify. Antes de comenzar, te invito a revisar nuestra <a href="https://drive.google.com/file/d/1MK4acZ-7dLlQMEUQYd6oThOaQEPmCiIA/view?usp=sharing" target="_blank" style="color: #008000; font-weight: bold; text-decoration: underline;">política de datos</a>.</p>
                     <div class="chat-welcome-buttons">
@@ -34,7 +34,7 @@ class ClassifyChat {
 
                 <!-- Chat principal -->
                 <div class="chat-header">
-                    <img src="${this.getBaseUrl()}img/chatbot-premium-removebg-preview.png" alt="Asistente">
+                    <img src="${this.getBaseUrl()}img/robot_hello.png" alt="Asistente">
                     <div class="chat-header-info">
                         <h3>Asistente Classify</h3>
                         <p>En línea</p>
@@ -163,7 +163,7 @@ class ClassifyChat {
         const chatBody = document.getElementById('chatBody');
         const messageHTML = `
             <div class="chat-message message-bot">
-                <img src="${this.getBaseUrl()}img/chatbot-premium-removebg-preview.png" alt="Bot">
+                <img src="${this.getBaseUrl()}img/robot_hello.png" alt="Bot">
                 <div class="message-content">
                     <p>${message}</p>
                 </div>
@@ -361,7 +361,7 @@ class ClassifyChat {
         const chatBody = document.getElementById('chatBody');
         const typingHTML = `
             <div class="chat-message message-bot" id="typingIndicator">
-                <img src="${this.getBaseUrl()}img/chatbot-premium-removebg-preview.png" alt="Bot">
+                <img src="${this.getBaseUrl()}img/robot_hello.png" alt="Bot">
                 <div class="typing-indicator">
                     <div class="typing-dot"></div>
                     <div class="typing-dot"></div>
