@@ -1,693 +1,336 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
-
 <head>
     <meta charset="UTF-8">
-    <title>Classify - Aprende</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classify - Aprende con IA</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
-    <link rel="stylesheet" th:href="@{/css/chatbot.css}">
+    <link rel="stylesheet" th:href="@{/css/aprende.css}">
     <link rel="shortcut icon" th:href="@{/favicon.ico}" type="image/x-icon">
-    <style>
-        /* Estilos para el spinner */
-        .spinner-container {
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 400px;
-            padding: 40px;
-        }
-
-        .spinner-container.active {
-            display: flex;
-        }
-
-        .spinner-grow {
-            display: inline-block;
-            width: 2rem;
-            height: 2rem;
-            vertical-align: text-bottom;
-            background-color: currentColor;
-            border-radius: 50%;
-            opacity: 0;
-            animation: spinner-grow 0.75s linear infinite;
-        }
-
-        .spinner-grow-sm {
-            width: 1rem;
-            height: 1rem;
-        }
-
-        @keyframes spinner-grow {
-            0% {
-                transform: scale(0);
-                opacity: 0;
-            }
-
-            50% {
-                opacity: 1;
-            }
-
-            100% {
-                transform: scale(1);
-                opacity: 0;
-            }
-        }
-
-        .loading-text {
-            margin-top: 20px;
-            font-size: 18px;
-            color: #4a5568;
-            font-weight: 500;
-        }
-
-        /* Ocultar formulario cuando se muestra respuesta */
-        .form-column.hidden {
-            display: none;
-        }
-
-        .response-column.fullwidth {
-            width: 100%;
-            max-width: 100%;
-        }
-
-        /* Extender contentWrap a ancho completo */
-        #contentWrap {
-            width: 100%;
-            max-width: 100%;
-        }
-
-        #contentWrap .site-container {
-            max-width: 100%;
-            padding: 20px;
-        }
-
-        #contentWrap .result-card {
-            max-width: 100%;
-        }
-
-        /* Estilos para los botones de sugerencias */
-        .suggestions-section {
-            margin-top: 30px;
-            padding: 25px;
-            background: linear-gradient(135deg, #008000 0%, #35b50b 100%);
-            border-radius: 12px;
-            text-align: center;
-            box-shadow: 0 4px 15px rgba(0, 128, 0, 0.3);
-        }
-
-        .suggestions-title {
-            background: linear-gradient(135deg, #ffffff 0%, #e8f5e9 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            font-size: 22px;
-            font-weight: 700;
-            margin-bottom: 20px;
-            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-        }
-
-        .suggestions-buttons {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .suggestion-btn {
-            flex: 1;
-            min-width: 200px;
-            max-width: 280px;
-            padding: 15px 25px;
-            background: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 500;
-            color: #5b21b6;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .suggestion-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
-            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
-            color: white;
-        }
-
-        .suggestion-btn:active {
-            transform: translateY(-1px);
-        }
-
-        .suggestion-btn::before {
-            content: '🎯';
-            margin-right: 8px;
-            font-size: 18px;
-        }
-
-        /* Estilos para referencias y links */
-        .reference-section {
-            margin-top: 30px;
-            padding: 20px;
-            background: #f8fafc;
-            border-radius: 8px;
-            border-left: 4px solid #3b82f6;
-        }
-
-        .reference-link {
-            display: block;
-            margin: 10px 0;
-            padding: 10px;
-            background: white;
-            border-radius: 4px;
-            text-decoration: none;
-            color: #2563eb;
-            transition: all 0.2s;
-        }
-
-        .reference-link:hover {
-            background: #dbeafe;
-            transform: translateX(5px);
-        }
-
-        .resource-badge {
-            display: inline-block;
-            padding: 4px 12px;
-            margin: 5px;
-            background: #e0e7ff;
-            color: #4338ca;
-            border-radius: 12px;
-            font-size: 14px;
-        }
-    </style>
 </head>
+<body class="inicioimg aprende-page">
+    <div th:replace="layout/fragments :: header"></div>
 
-<body>
-    <header>
-        <div class="brand">
-            <a th:href="@{/login}"><img th:src="@{/img/logo.png}" alt="logo" class="logo"></a>
-            <a th:href="@{/login}">Classify</a>
-        </div>
-        <div>
-            <div class="right">
-                <a th:href="@{/noticias}" alt="Noticias">
-                    <img th:src="@{/img/noticias.png}" class="iconostop">
-                </a>
-                <a><img th:src="@{/img/separador.png}" class="separador"></a>
-                <a th:href="@{/login}" alt="Cerrar sesión">
-                    <img th:src="@{/img/salida.png}" class="salida">
-                </a>
-            </div>
-        </div>
-    </header>
+    <div class="contenidoinicio">
+        <div th:replace="layout/fragments :: sidebar"></div>
 
-    <aside class="sidebar">
-        <!-- botón común para todos -->
-        <a th:href="@{/menu}" class="inicioprincipal">
-            <img th:src="@{/img/home.png}" width="25px" class="imgmenu"> Inicio
-        </a>
-
-        <!-- Perfil 1: Administrador -->
-        <th:block th:if="${session.perfil == 1}">
-            <a th:href="@{/agenda}" class="inicioprincipal2">
-                <img th:src="@{/img/agenda.png}" width="25px" class="imgmenu">Agendar clase
-            </a>
-            <a th:href="@{/programacion}" class="inicioprincipal2">
-                <img th:src="@{/img/programacion.png}" width="25px" class="imgmenu">Programación
-            </a>
-            <a th:href="@{/aprende}" class="inicioprincipal2">
-                <img th:src="@{/img/aprende.png}" width="25px" class="imgmenu">Aprende
-            </a>
-            <a th:href="@{/contacta}" class="inicioprincipal2">
-                <img th:src="@{/img/gmail.png}" width="25px" class="imgmenu">Contacta a un profe
-            </a>
-            <a th:href="@{/mismateriales}" class="inicioprincipal2">
-                <img th:src="@{/img/descargamaterial.png}" width="25px" class="imgmenu">Mis Materiales
-            </a>
-            <a th:href="@{/materiales}" class="inicioprincipal2">
-                <img th:src="@{/img/upload.png}" width="25px" class="imgmenu">Carga Materiales
-            </a>
-            <a th:href="@{/califica}" class="inicioprincipal2">
-                <img th:src="@{/img/califica.png}" width="25px" class="imgmenu">Califica un profe
-            </a>
-            <a th:href="@{/izada}" class="inicioprincipal2">
-                <img th:src="@{/img/estrella.png}" width="25px" class="imgmenu">Izada de bandera
-            </a>
-            <a th:href="@{/notas}" class="inicioprincipal2">
-                <img th:src="@{/img/notas.png}" width="25px" class="imgmenu">Notas
-            </a>
-        </th:block>
-
-        <!-- Perfil 2: Coordinador -->
-        <th:block th:if="${session.perfil == 2}">
-            <a th:href="@{/agenda}" class="inicioprincipal2">
-                <img th:src="@{/img/agenda.png}" width="25px" class="imgmenu">Agendar clase
-            </a>
-            <a th:href="@{/programacion}" class="inicioprincipal2">
-                <img th:src="@{/img/programacion.png}" width="25px" class="imgmenu">Programación
-            </a>
-            <a th:href="@{/aprende}" class="inicioprincipal2">
-                <img th:src="@{/img/aprende.png}" width="25px" class="imgmenu">Aprende
-            </a>
-            <a th:href="@{/contacta}" class="inicioprincipal2">
-                <img th:src="@{/img/gmail.png}" width="25px" class="imgmenu">Contacta a un profe
-            </a>
-            <a th:href="@{/materiales}" class="inicioprincipal2">
-                <img th:src="@{/img/upload.png}" width="25px" class="imgmenu">Carga Materiales
-            </a>
-            <a th:href="@{/califica}" class="inicioprincipal2">
-                <img th:src="@{/img/califica.png}" width="25px" class="imgmenu">Califica un profe
-            </a>
-            <a th:href="@{/izada}" class="inicioprincipal2">
-                <img th:src="@{/img/estrella.png}" width="25px" class="imgmenu">Izada de bandera
-            </a>
-            <a th:href="@{/notas}" class="inicioprincipal2">
-                <img th:src="@{/img/notas.png}" width="25px" class="imgmenu">Notas
-            </a>
-        </th:block>
-
-        <!-- Perfil 3: Docente -->
-        <th:block th:if="${session.perfil == 3}">
-            <a th:href="@{/programacion}" class="inicioprincipal2">
-                <img th:src="@{/img/programacion.png}" width="25px" class="imgmenu">Programación
-            </a>
-            <a th:href="@{/aprende}" class="inicioprincipal2">
-                <img th:src="@{/img/aprende.png}" width="25px" class="imgmenu">Aprende
-            </a>
-            <a th:href="@{/materiales}" class="inicioprincipal2">
-                <img th:src="@{/img/upload.png}" width="25px" class="imgmenu">Carga Materiales
-            </a>
-            <a th:href="@{/izada}" class="inicioprincipal2">
-                <img th:src="@{/img/estrella.png}" width="25px" class="imgmenu">Izada de bandera
-            </a>
-        </th:block>
-
-        <!-- Perfil 4: Acudiente -->
-        <th:block th:if="${session.perfil == 4}">
-            <a th:href="@{/programacion}" class="inicioprincipal2">
-                <img th:src="@{/img/programacion.png}" width="25px" class="imgmenu">Programación
-            </a>
-            <a th:href="@{/aprende}" class="inicioprincipal2">
-                <img th:src="@{/img/aprende.png}" width="25px" class="imgmenu">Aprende
-            </a>
-            <a th:href="@{/contacta}" class="inicioprincipal2">
-                <img th:src="@{/img/gmail.png}" width="25px" class="imgmenu">Contacta a un profe
-            </a>
-            <a th:href="@{/mismateriales}" class="inicioprincipal2">
-                <img th:src="@{/img/upload.png}" width="25px" class="imgmenu">Mis Materiales
-            </a>
-            <a th:href="@{/izada}" class="inicioprincipal2">
-                <img th:src="@{/img/estrella.png}" width="25px" class="imgmenu">Izada de bandera
-            </a>
-        </th:block>
-
-        <!-- Perfil 5: Estudiante -->
-        <th:block th:if="${session.perfil == 5}">
-            <a th:href="@{/programacion}" class="inicioprincipal2">
-                <img th:src="@{/img/programacion.png}" width="25px" class="imgmenu">Programación
-            </a>
-            <a th:href="@{/aprende}" class="inicioprincipal2">
-                <img th:src="@{/img/aprende.png}" width="25px" class="imgmenu">Aprende
-            </a>
-            <a th:href="@{/contacta}" class="inicioprincipal2">
-                <img th:src="@{/img/gmail.png}" width="25px" class="imgmenu">Contacta a un profe
-            </a>
-            <a th:href="@{/mismateriales}" class="inicioprincipal2">
-                <img th:src="@{/img/upload.png}" width="25px" class="imgmenu">Mis Materiales
-            </a>
-            <a th:href="@{/califica}" class="inicioprincipal2">
-                <img th:src="@{/img/califica.png}" width="25px" class="imgmenu">Califica un profe
-            </a>
-            <a th:href="@{/izada}" class="inicioprincipal2">
-                <img th:src="@{/img/estrella.png}" width="25px" class="imgmenu">Izada de bandera
-            </a>
-        </th:block>
-    </aside>
-
-    <main class="contentaprende">
-        <!-- Bloque izquierdo: Formulario -->
-        <section class="column form-column" id="formColumn">
-            <div class="login-wrapper2">
-                <div class="login-container">
-                    <div class="imagenlogin">
-                        <img th:src="@{/img/cerebro.gif}" width="150px" alt="Cerebro animado">
+        <main class="contentaprende">
+            <div class="aprende-shell">
+                <section class="aprende-hero">
+                    <span class="aprende-kicker">Módulo Aprende</span>
+                    <h1>Aprende con <span class="aprende-title-accent">IA</span></h1>
+                    <p class="aprende-lead">
+                        Explica temas, resume conceptos y prepara clases en una respuesta clara y ordenada.
+                    </p>
+                    <div class="aprende-reference-strip" aria-label="Referencias sugeridas">
+                        <span class="aprende-reference-label">Fuentes sugeridas</span>
+                        <a href="https://es.khanacademy.org" target="_blank" rel="noopener noreferrer" class="aprende-inline-ref">Khan Academy</a>
+                        <a href="https://www.colombiaaprende.edu.co" target="_blank" rel="noopener noreferrer" class="aprende-inline-ref">Colombia Aprende</a>
+                        <a href="https://www.britannica.com" target="_blank" rel="noopener noreferrer" class="aprende-inline-ref">Britannica</a>
+                        <a href="https://kids.nationalgeographic.com" target="_blank" rel="noopener noreferrer" class="aprende-inline-ref">NatGeo Kids</a>
                     </div>
-                    <h2 class="titleaprende">Aprendamos algo nuevo</h2>
-                    <div class="help-muted">
-                        Selecciona un tema en verde para ver la clase completa.
+                </section>
+
+                <section class="aprende-card aprende-composer">
+                    <div class="aprende-card-head">
+                        <div>
+                            <p class="aprende-section-label">Empieza aquí</p>
+                            <h2>Escribe el tema que vas a enseñar</h2>
+                        </div>
                     </div>
 
-                    <div class="mensajeerror" id="mensaje" style="display:none;"></div>
-
-                    <form id="agendaForm" th:action="@{/agenda}" method="post" class="login-form">
-                        <label class="labelaprende">Escribe la materia</label>
-                        <input type="text" name="materia" id="materia" placeholder="Materia" required>
-                        <label class="labelaprende">Escribe el tema</label>
-                        <input type="text" name="tema" id="tema" placeholder="Tema (ej: Guerra Fría, Fracciones…)" required>
-                        <label class="labelaprende">Escribe un comentario</label>
-                        <textarea name="observaciones" id="observaciones" placeholder="Quiero aprender de..."></textarea>
-                        <button type="submit" id="submitBtn" class="guardaraprende">Guardar</button>
+                    <form id="ai-chat-form-start" class="aprende-form" autocomplete="off">
+                        <label for="ai-user-query-start">Tema o pregunta</label>
+                        <div class="aprende-form-row">
+                            <input
+                                type="text"
+                                id="ai-user-query-start"
+                                placeholder="Ej. Fotosíntesis, fracciones o independencia de Colombia"
+                                required>
+                            <button type="submit" class="aprende-button">Generar</button>
+                        </div>
                     </form>
-                </div>
-            </div>
-        </section>
 
-        <!-- Bloque derecho: Respuestas -->
-        <section class="column response-column" id="responseColumn">
-            <!-- Spinner de carga -->
-            <div class="spinner-container" id="spinnerContainer">
-                <span class="spinner-grow" style="color: #3b82f6;" role="status" aria-hidden="true"></span>
-                <span class="spinner-grow" style="color: #8b5cf6; animation-delay: 0.15s;" role="status" aria-hidden="true"></span>
-                <span class="spinner-grow" style="color: #ec4899; animation-delay: 0.3s;" role="status" aria-hidden="true"></span>
-                <div class="loading-text">Classify está pensando qué responderte...</div>
-            </div>
-
-            <div class="site-container">
-                <!-- Respuesta -->
-                <div id="contentWrap" style="display:none;">
-                    <!-- Sección de sugerencias de temas -->
-                    <div class="suggestions-section" id="suggestionsSection" style="display:none;">
-                        <div class="suggestions-title">
-                            ¿Quieres profundizar en alguno de estos otros temas? 🚀
-                        </div>
-                        <div class="suggestions-buttons" id="suggestionsButtons"></div>
+                    <div class="aprende-suggestions" aria-label="Temas sugeridos">
+                        <button type="button" class="aprende-chip" data-followup="El ciclo del agua">El ciclo del agua</button>
+                        <button type="button" class="aprende-chip" data-followup="La fotosíntesis">La fotosíntesis</button>
+                        <button type="button" class="aprende-chip" data-followup="Fracciones básicas">Fracciones básicas</button>
                     </div>
+                </section>
 
-                    <div class="result-card">
-                        <div class="breadcrumb" id="crumb"></div>
-                        <h3 id="title"></h3>
-                        <p class="muted" id="synopsis"></p>
-
-                        <div class="two-col" style="margin-top:8px;">
-                            <div>
-                                <h4>Vocabulario clave</h4>
-                                <div id="vocab"></div>
-                            </div>
-                            <div>
-                                <h4>Ideas visuales</h4>
-                                <div id="visualIdeas"></div>
-                            </div>
-                        </div>
-
-                        <h4>Puntos clave</h4>
-                        <ul id="keypoints"></ul>
-
-                        <h4>Objetivos</h4>
-                        <ul id="objectives"></ul>
-
-                        <h4>Mini línea de tiempo</h4>
-                        <div id="timeline" class="muted"></div>
-
-                        <h4 id="actTitle"></h4>
-                        <ul id="actSteps"></ul>
-                        <div id="actMeta" class="muted"></div>
-
-                        <h4>Chequeo rápido (3 preguntas)</h4>
-                        <ul id="checks"></ul>
-
-                        <!-- Nueva sección de Referencias -->
-                        <div class="reference-section" id="referencesSection">
-                            <h4>📚 Referencias y Recursos de Apoyo</h4>
-                            <div id="references"></div>
-                            <div id="resources" style="margin-top: 15px;"></div>
-                        </div>
-                    </div>
-
-                    <div id="apiNotice" class="notice"></div>
-                </div>
+                <section id="ai-response-wrapper" class="aprende-response" hidden aria-live="polite"></section>
             </div>
-        </section>
-    </main>
+        </main>
+    </div>
 
-    <script th:inline="javascript">
-        const baseUrl = /*[[@{/}]]*/ '/';
-
-        /* ===== Parser robusto ===== */
-        function parseLLMJson(t) {
-            if (!t) throw new Error("Respuesta vacía");
-            t = t.trim().replace(/^```json\s*/i, "").replace(/^```\s*/i, "").replace(/```$/i, "").trim();
-            const a = t.indexOf("{"), b = t.lastIndexOf("}");
-            if (a !== -1 && b !== -1 && b > a) { const c = t.slice(a, b + 1); try { return JSON.parse(c); } catch (_) { } }
-            return JSON.parse(t);
-        }
-
-        /* ===== Helpers ===== */
-        const $ = s => document.querySelector(s);
-        const msgEl = $('#mensaje'), content = $('#contentWrap');
-        const spinner = $('#spinnerContainer'), formColumn = $('#formColumn'), responseColumn = $('#responseColumn');
-        const suggestionsSection = $('#suggestionsSection'), suggestionsButtons = $('#suggestionsButtons');
-
-        function showMsg(text, type = "info") { msgEl.style.display = 'block'; msgEl.textContent = text; msgEl.style.color = (type === 'error') ? '#b91c1c' : '#0f172a'; }
-        function clearMsg() { msgEl.style.display = 'none'; msgEl.textContent = ''; }
-        function safeArr(v) { return Array.isArray(v) ? v : []; }
-        function safeStr(v, f = "") { return (typeof v === 'string') ? v : f; }
-
-        function showSpinner() {
-            spinner.classList.add('active');
-            formColumn.classList.add('hidden');
-            responseColumn.classList.add('fullwidth');
-        }
-
-        function hideSpinner() {
-            spinner.classList.remove('active');
-        }
-
-        /* ===== Cliente API ===== */
-        async function callOpenAI(messages) {
-            const res = await fetch(baseUrl + 'aprende/chat', {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ model: "gpt-4o-mini", temperature: 0.4, messages })
-            });
-            const data = await res.json().catch(() => null);
-            if (!res.ok) {
-                const rawError = String(data?.error || data?.message || `API ${res.status}`);
-                const normalized = rawError.toLowerCase();
-                if (normalized.includes('quota') || normalized.includes('billing') || normalized.includes('insufficient_quota')) {
-                    throw new Error('La cuenta de IA no tiene saldo disponible. Configura una API key con facturación activa para continuar.');
-                }
-                throw new Error(rawError);
-            }
-            return data?.content || "";
-        }
-
-        /* ===== Prompts actualizados con referencias ===== */
-        function promptSubtopics(subject, topic) {
-            return [
-                { role: "system", content: "Eres Classify, asistente pedagógico para 6°. Devuelve SOLO JSON válido." },
-                {
-                    role: "user", content: `
-Materia: ${subject}
-Tema general: ${topic}
-Devuelve EXACTAMENTE este JSON:
-{"subject":"${subject}","topic":"${topic}","grade":"6",
- "subtopics":[
-  {"title":"Título descriptivo del subtema 1","why_relevant":"Explicación de 2-3 oraciones sobre por qué este subtema es importante y cómo se relaciona con la vida diaria de estudiantes de 6°.","one_sentence":"Descripción completa y clara en una oración que explique el concepto principal del subtema.","keywords":["palabra1","palabra2","palabra3","palabra4"]},
-  {"title":"Título descriptivo del subtema 2","why_relevant":"Explicación de 2-3 oraciones sobre por qué este subtema es importante y cómo se relaciona con la vida diaria de estudiantes de 6°.","one_sentence":"Descripción completa y clara en una oración que explique el concepto principal del subtema.","keywords":["palabra1","palabra2","palabra3","palabra4"]},
-  {"title":"Título descriptivo del subtema 3","why_relevant":"Explicación de 2-3 oraciones sobre por qué este subtema es importante y cómo se relaciona con la vida diaria de estudiantes de 6°.","one_sentence":"Descripción completa y clara en una oración que explique el concepto principal del subtema.","keywords":["palabra1","palabra2","palabra3","palabra4"]},
-  {"title":"Título descriptivo del subtema 4","why_relevant":"Explicación de 2-3 oraciones sobre por qué este subtema es importante y cómo se relaciona con la vida diaria de estudiantes de 6°.","one_sentence":"Descripción completa y clara en una oración que explique el concepto principal del subtema.","keywords":["palabra1","palabra2","palabra3","palabra4"]},
-  {"title":"Título descriptivo del subtema 5","why_relevant":"Explicación de 2-3 oraciones sobre por qué este subtema es importante y cómo se relaciona con la vida diaria de estudiantes de 6°.","one_sentence":"Descripción completa y clara en una oración que explique el concepto principal del subtema.","keywords":["palabra1","palabra2","palabra3","palabra4"]}
- ]}
-Reglas: 3 subtemas distintos pero complementarios, comprensibles para 6°, textos extensos y detallados, sin texto fuera del JSON.
-`}];
-        }
-
-        function promptContent(subject, topic, subtopic, observations = "") {
-            return [
-                { role: "system", content: "Eres Classify, asistente pedagógico para 6°. Crea contenido extenso, detallado y educativo. Devuelve SOLO JSON válido." },
-                {
-                    role: "user", content: `
-Genera contenido de clase COMPLETO Y DETALLADO:
-Materia: ${subject}
-Tema: ${topic}
-Subtema: ${subtopic}
-${observations ? `Observaciones especiales: ${observations}` : ''}
-
-Devuelve EXACTAMENTE este JSON con contenido EXTENSO:
-{
- "breadcrumb":"${subject} > ${topic} > ${subtopic}",
- "title":"${subtopic}",
- "synopsis":"Escribe un párrafo completo de 8-12 líneas que introduzca el tema de forma clara y atractiva para estudiantes de 6°.",
- "key_points":["Punto 1","Punto 2","Punto 3","Punto 4","Punto 5"],
- "objectives":["Objetivo 1","Objetivo 2","Objetivo 3","Objetivo 4"],
- "vocabulary":[{"term":"Término","meaning":"Definición"}],
- "visual_ideas":["Idea 1","Idea 2","Idea 3","Idea 4"],
- "mini_timeline":[{"year":"Fecha","event":"Evento"}],
- "quick_activity":{"title":"Título","time_min":18,"steps":["Paso 1","Paso 2","Paso 3","Paso 4","Paso 5"],"materials":["Material 1","Material 2","Material 3"]},
- "check_questions":[{"type":"open","question":"Pregunta","answer":"Respuesta"},{"type":"option","question":"Pregunta","options":["A","B","C","D"],"correct":"A"},{"type":"true_false","question":"Afirmación","answer":"Verdadero","explanation":"Explicación"}],
- "references":[{"title":"Recurso","url":"https://ejemplo.com","type":"libro","description":"Descripción"}],
- "additional_resources":["Recurso 1","Recurso 2","Recurso 3","Recurso 4"]
-}
-Sin texto fuera del JSON.
-`}];
-        }
-
-        /* ===== Barra TEMAS y contenido ===== */
-        let contentCache = new Map();
-        let currentObservations = "";
-        let allSubtopics = [];
-        let currentSubject = "";
-        let currentTopic = "";
-
-        function renderSuggestionButtons(list, subject, topic, currentSubtopic) {
-            suggestionsButtons.innerHTML = "";
-            const items = safeArr(list).slice(0, 3).filter(s => s.title !== currentSubtopic);
-
-            if (items.length === 0) { suggestionsSection.style.display = 'none'; return; }
-
-            items.forEach(s => {
-                const title = safeStr(s.title, "Tema");
-                const btn = document.createElement('button');
-                btn.className = 'suggestion-btn';
-                btn.textContent = title;
-                btn.title = safeStr(s.one_sentence || s.why_relevant || title);
-                btn.onclick = () => selectSubtopic(subject, topic, title);
-                suggestionsButtons.appendChild(btn);
-            });
-
-            suggestionsSection.style.display = 'block';
-        }
-
-        function renderContent(d, subject, topic, subtopic) {
-            $('#crumb').textContent = safeStr(d.breadcrumb, `${subject} > ${topic} > ${subtopic}`);
-            $('#title').textContent = safeStr(d.title, subtopic);
-            $('#synopsis').textContent = safeStr(d.synopsis);
-            $('#vocab').innerHTML = safeArr(d.vocabulary).map(v => `<span class="badge" title="${safeStr(v.meaning)}">${safeStr(v.term)}</span>`).join('') || '<span class="muted">—</span>';
-            $('#visualIdeas').innerHTML = safeArr(d.visual_ideas).map(x => `<span class="pill">${x}</span>`).join('') || '<span class="muted">—</span>';
-            $('#keypoints').innerHTML = safeArr(d.key_points).map(i => `<li style="margin-bottom:10px;">${i}</li>`).join('');
-            $('#objectives').innerHTML = safeArr(d.objectives).map(i => `<li style="margin-bottom:8px;">${i}</li>`).join('');
-            const tl = safeArr(d.mini_timeline); $('#timeline').innerHTML = tl.length ? tl.map(e => `${safeStr(e.year)}: ${safeStr(e.event)}`).join(' · ') : '—';
-            const act = d.quick_activity || {}, t = (typeof act.time_min === 'number') ? ` · ~${act.time_min} min` : '';
-            $('#actTitle').textContent = (act.title || 'Actividad') + t;
-            $('#actSteps').innerHTML = safeArr(act.steps).map(s => `<li style="margin-bottom:8px;">${s}</li>`).join('');
-            $('#actMeta').innerHTML = act.materials ? `Materiales: ${safeArr(act.materials).join(', ')}` : '';
-
-            const checks = safeArr(d.check_questions).slice(0, 3);
-            $('#checks').innerHTML = checks.map((q, idx) => {
-                let html = `<li style="margin-bottom:15px;"><strong>Pregunta ${idx + 1}:</strong> ${safeStr(q.question)}<br>`;
-                if (q.type === 'option') {
-                    html += '<ul style="list-style-type: none; padding-left: 20px; margin-top: 8px;">';
-                    safeArr(q.options).forEach((opt, i) => {
-                        const isCorrect = q.correct === String.fromCharCode(65 + i);
-                        html += `<li style="margin: 5px 0;">${String.fromCharCode(65 + i)}) ${opt}${isCorrect ? ' ✓' : ''}</li>`;
-                    });
-                    html += '</ul>';
-                } else if (q.type === 'true_false') {
-                    html += `<em style="color: #059669; margin-top: 5px; display: block;">Respuesta: ${safeStr(q.answer)}</em>`;
-                    if (q.explanation) {
-                        html += `<span style="color: #64748b; font-size: 14px; display: block; margin-top: 5px;">${safeStr(q.explanation)}</span>`;
-                    }
-                } else if (q.type === 'open') {
-                    html += `<em style="color: #059669; margin-top: 5px; display: block;">Guía de respuesta: ${safeStr(q.answer)}</em>`;
-                }
-                html += '</li>';
-                return html;
-            }).join('');
-
-            const refs = safeArr(d.references);
-            const refIcons = { 'libro': '📖', 'video': '🎥', 'web': '🌐', 'default': '🔗' };
-            $('#references').innerHTML = refs.length ? refs.map(r => `
-    <a href="${safeStr(r.url)}" target="_blank" class="reference-link">
-      ${refIcons[r.type] || refIcons.default} <strong>${safeStr(r.title)}</strong>
-      ${r.description ? `<br><span style="font-size:14px;color:#64748b;">${safeStr(r.description)}</span>` : ''}
-    </a>
-  `).join('') : '<p class="muted">No hay referencias disponibles.</p>';
-
-            const resources = safeArr(d.additional_resources);
-            $('#resources').innerHTML = resources.length ? '<strong>Otros recursos:</strong><br>' + resources.map(r => `<span class="resource-badge">${r}</span>`).join('') : '';
-
-            renderSuggestionButtons(allSubtopics, subject, topic, subtopic);
-
-            content.style.display = 'block';
-            document.getElementById('suggestionsSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-
-        async function selectSubtopic(subject, topic, title) {
-            try {
-                showSpinner();
-                if (contentCache.has(title)) {
-                    hideSpinner();
-                    renderContent(contentCache.get(title), subject, topic, title);
-                    return;
-                }
-                const raw = await callOpenAI(promptContent(subject, topic, title, currentObservations));
-                const data = parseLLMJson(raw);
-                contentCache.set(title, data);
-                hideSpinner();
-                renderContent(data, subject, topic, title);
-            } catch (err) {
-                hideSpinner();
-                showMsg('Error al cargar contenido: ' + err.message, 'error');
-            }
-        }
-
-        /* ===== Submit ===== */
-        $('#agendaForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            clearMsg();
-            content.style.display = 'none';
-            suggestionsSection.style.display = 'none';
-            contentCache = new Map();
-
-            const materia = $('#materia').value.trim();
-            const tema = $('#tema').value.trim();
-            currentObservations = $('#observaciones').value.trim();
-
-            if (!materia || !tema) {
-                showMsg('Completa "Materia" y "Tema" antes de guardar.', 'error');
-                return;
-            }
-
-            currentSubject = materia;
-            currentTopic = tema;
-            showSpinner();
-
-            try {
-                const saveResponse = await fetch(baseUrl + 'aprende/guardarClase', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                    body: new URLSearchParams({
-                        materia: materia,
-                        tema: tema,
-                        observaciones: currentObservations
-                    })
-                });
-
-                const saveResult = await saveResponse.json();
-
-                if (!saveResult.success) {
-                    hideSpinner();
-                    formColumn.classList.remove('hidden');
-                    responseColumn.classList.remove('fullwidth');
-                    showMsg('Error al guardar: ' + saveResult.message, 'error');
-                    return;
-                }
-
-                const raw = await callOpenAI(promptSubtopics(materia, tema));
-                const json = parseLLMJson(raw);
-                allSubtopics = json.subtopics || [];
-
-                if (allSubtopics.length > 0) {
-                    const firstTopic = allSubtopics[0].title;
-                    await selectSubtopic(materia, tema, firstTopic);
-                } else {
-                    hideSpinner();
-                    showMsg('No se pudieron generar subtemas. Intenta de nuevo.', 'error');
-                }
-            } catch (err) {
-                hideSpinner();
-                formColumn.classList.remove('hidden');
-                responseColumn.classList.remove('fullwidth');
-                showMsg('Error al generar subtemas: ' + err.message, 'error');
-            }
-        });
-    </script>
     <script th:src="@{/js/active.js}"></script>
-    <script th:src="@{/js/chatbot.js}"></script>
-</body>
+    <script>
+        (() => {
+            "use strict";
 
+            const startForm = document.getElementById('ai-chat-form-start');
+            const topicInput = document.getElementById('ai-user-query-start');
+            const responseWrap = document.getElementById('ai-response-wrapper');
+
+            function escapeHtml(value = '') {
+                return String(value)
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;')
+                    .replace(/'/g, '&#39;');
+            }
+
+            function isSafeHttpUrl(value) {
+                return /^https?:\/\//i.test(String(value || '').trim());
+            }
+
+            function formatParagraphs(value) {
+                const text = String(value || '').trim();
+                if (!text) {
+                    return '<p class="aprende-empty">Sin contenido disponible por ahora.</p>';
+                }
+
+                return text
+                    .split(/\n{2,}/)
+                    .map(paragraph => `<p>${escapeHtml(paragraph).replace(/\n/g, '<br>')}</p>`)
+                    .join('');
+            }
+
+            function formatList(items) {
+                const safeItems = Array.isArray(items) ? items.filter(Boolean) : [];
+                if (!safeItems.length) {
+                    return '<li class="aprende-empty">Sin información disponible.</li>';
+                }
+
+                return safeItems
+                    .map(item => `<li>${escapeHtml(item)}</li>`)
+                    .join('');
+            }
+
+            function formatVocabulary(items) {
+                const safeItems = Array.isArray(items)
+                    ? items.filter(item => item && (item.term || item.definition))
+                    : [];
+
+                if (!safeItems.length) {
+                    return '<p class="aprende-empty">Todavía no hay vocabulario para mostrar.</p>';
+                }
+
+                return safeItems
+                    .map(item => `
+                        <article class="aprende-vocab-item">
+                            <strong>${escapeHtml(item.term || 'Término')}</strong>
+                            <span>${escapeHtml(item.definition || 'Definición no disponible.')}</span>
+                        </article>
+                    `)
+                    .join('');
+            }
+
+            function formatReferences(items) {
+                const safeItems = Array.isArray(items)
+                    ? items.filter(item => item && item.title).slice(0, 4)
+                    : [];
+
+                if (!safeItems.length) {
+                    return '<p class="aprende-empty">Todavía no hay referencias para este tema.</p>';
+                }
+
+                return safeItems
+                    .map(item => {
+                        const title = escapeHtml(item.title || 'Fuente');
+                        const type = escapeHtml((item.type || 'lectura').toString());
+                        const source = escapeHtml(item.source || 'Referencia sugerida');
+                        const url = item.url || '';
+
+                        if (isSafeHttpUrl(url)) {
+                            return `
+                                <a class="aprende-reference" href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">
+                                    <span class="aprende-reference-icon">${type === 'video' ? '▶' : '↗'}</span>
+                                    <span class="aprende-reference-body">
+                                        <span class="aprende-reference-title">${title}</span>
+                                        <span class="aprende-reference-meta">${type} · ${source}</span>
+                                    </span>
+                                </a>
+                            `;
+                        }
+
+                        return `
+                            <div class="aprende-reference">
+                                <span class="aprende-reference-icon">${type === 'video' ? '▶' : '◌'}</span>
+                                <span class="aprende-reference-body">
+                                    <span class="aprende-reference-title">${title}</span>
+                                    <span class="aprende-reference-meta">${type} · ${source}</span>
+                                </span>
+                            </div>
+                        `;
+                    })
+                    .join('');
+            }
+
+            function formatSuggestions(items) {
+                const safeItems = Array.isArray(items) ? items.filter(Boolean) : [];
+
+                if (!safeItems.length) {
+                    return '';
+                }
+
+                return safeItems
+                    .map(item => `<button type="button" class="aprende-chip aprende-chip--suggestion" data-followup="${escapeHtml(item)}">${escapeHtml(item)}</button>`)
+                    .join('');
+            }
+
+            function showLoading(query) {
+                responseWrap.hidden = false;
+                responseWrap.classList.add('is-visible');
+                responseWrap.innerHTML = `
+                    <div class="aprende-response-inner">
+                        <div class="aprende-loading-card">
+                            <div class="aprende-spinner" aria-hidden="true"></div>
+                            <h2>Construyendo la lección</h2>
+                            <p>
+                                Classify está organizando la explicación, el vocabulario, la aplicación pedagógica y
+                                las referencias para <strong>${escapeHtml(query)}</strong>.
+                            </p>
+                        </div>
+                    </div>
+                `;
+                responseWrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+
+            function showError(message) {
+                responseWrap.hidden = false;
+                responseWrap.classList.add('is-visible');
+                responseWrap.innerHTML = `
+                    <div class="aprende-response-inner">
+                        <article class="aprende-panel aprende-panel--error">
+                            <p class="aprende-error-title">No fue posible generar la lección</p>
+                            <p class="aprende-text">${escapeHtml(message)}</p>
+                        </article>
+                    </div>
+                `;
+                responseWrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+
+            function parseLLMJson(raw) {
+                const cleaned = String(raw || '').replace(/```json\s*|```/g, '').trim();
+                return JSON.parse(cleaned);
+            }
+
+            async function executeInquiry(query) {
+                const cleanedQuery = String(query || '').trim();
+                if (!cleanedQuery) {
+                    topicInput.focus();
+                    return;
+                }
+
+                topicInput.value = cleanedQuery;
+                showLoading(cleanedQuery);
+
+                try {
+                    const response = await fetch('/aprende/chat', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            messages: [
+                                { role: 'user', content: cleanedQuery }
+                            ]
+                        })
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('La respuesta del servidor no fue correcta. Intenta nuevamente.');
+                    }
+
+                    const data = await response.json();
+                    const ai = parseLLMJson(data.content);
+                    renderAI(ai, cleanedQuery);
+                } catch (error) {
+                    console.error('Error en Aprende:', error);
+                    showError('Revisa tu conexión e inténtalo de nuevo con un tema más específico.');
+                }
+            }
+
+            function renderAI(ai, query) {
+                const breadcrumb = escapeHtml(ai.breadcrumb || query || 'Aprende');
+                const title = escapeHtml(ai.title || query || 'Lección generada');
+                const intro = formatParagraphs(ai.introduction);
+                const content = formatParagraphs(ai.content);
+                const pedagogical = formatParagraphs(ai.pedagogical_application);
+                const curiosity = formatParagraphs(ai.curiosity);
+                const keyPoints = formatList(ai.key_points);
+                const vocabulary = formatVocabulary(ai.vocabulary);
+                const references = formatReferences(ai.references);
+                const suggestions = formatSuggestions(ai.suggestions);
+
+                responseWrap.innerHTML = `
+                    <div class="aprende-response-inner">
+                        <div class="aprende-response-header">
+                            <span class="aprende-breadcrumb">${breadcrumb}</span>
+                            <h2 class="aprende-response-title">${title}</h2>
+                            <div class="aprende-response-intro">${intro}</div>
+                        </div>
+
+                        <div class="aprende-response-grid">
+                            <div class="aprende-response-stack">
+                                <article class="aprende-panel">
+                                    <h3>Desarrollo del tema</h3>
+                                    <div class="aprende-text">${content}</div>
+                                </article>
+
+                                <article class="aprende-panel aprende-panel--accent">
+                                    <h3>Aplicación pedagógica</h3>
+                                    <div class="aprende-text">${pedagogical || '<p class="aprende-empty">Sin sugerencias pedagógicas para mostrar.</p>'}</div>
+                                </article>
+                            </div>
+
+                            <div class="aprende-response-stack">
+                                <article class="aprende-panel">
+                                    <h3>Vocabulario clave</h3>
+                                    <div class="aprende-vocab-grid">${vocabulary}</div>
+                                </article>
+
+                                <article class="aprende-panel">
+                                    <h3>Material de consulta</h3>
+                                    <div class="aprende-reference-list">${references}</div>
+                                </article>
+                            </div>
+                        </div>
+
+                        <article class="aprende-panel">
+                            <h3>Conceptos para recordar</h3>
+                            <ul class="aprende-list">${keyPoints}</ul>
+                        </article>
+
+                        <article class="aprende-panel aprende-curiosity">
+                            <h3>Dato para el aula</h3>
+                            <div class="aprende-text">${curiosity || '<p class="aprende-empty">Todavía no hay una curiosidad para compartir.</p>'}</div>
+                        </article>
+
+                        <article class="aprende-panel aprende-suggestions-panel">
+                            <h3>Seguir explorando</h3>
+                            <p class="aprende-help">Elige uno de estos temas para profundizar sin salir del módulo.</p>
+                            <div class="aprende-suggestions-row">${suggestions || '<span class="aprende-empty">No hay sugerencias disponibles todavía.</span>'}</div>
+                        </article>
+                    </div>
+                `;
+
+                responseWrap.hidden = false;
+                responseWrap.classList.add('is-visible');
+                responseWrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+
+            startForm.addEventListener('submit', (event) => {
+                event.preventDefault();
+                executeInquiry(topicInput.value);
+            });
+
+            document.addEventListener('click', (event) => {
+                const button = event.target.closest('[data-followup]');
+                if (!button) return;
+                executeInquiry(button.dataset.followup);
+            });
+        })();
+    </script>
+</body>
 </html>
