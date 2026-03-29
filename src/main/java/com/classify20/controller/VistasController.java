@@ -1,11 +1,15 @@
 package com.classify20.controller;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller 
 public class VistasController {
     
+    @Value("${classify.webhooks.contacta.url}")
+    private String webhookContactaUrl;
 
     @GetMapping("/agenda")
     public String mostrarAgenda(){
@@ -32,7 +36,8 @@ public class VistasController {
         return "conoce/conoce";
     }
     @GetMapping("/contacta")
-    public String mostrarContacta(){
+    public String mostrarContacta(Model model){
+        model.addAttribute("webhookUrl", webhookContactaUrl);
         return "contacta/contacta";
     }
     @GetMapping("/contacto")
