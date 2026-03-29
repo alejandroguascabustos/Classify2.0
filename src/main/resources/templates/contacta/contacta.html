@@ -7,6 +7,26 @@
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <link rel="stylesheet" th:href="@{/css/chatbot.css}">
     <link rel="shortcut icon" th:href="@{/favicon.ico}" type="image/x-icon">
+    <style>
+        .status-msg {
+            margin-top: 15px;
+            font-size: 14px;
+            font-weight: 600;
+            text-align: center;
+            display: none;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        .status-sending {
+            color: #d4a017; /* Dorado/Naranja como en imagen 2 */
+        }
+        .status-success {
+            color: #28a745; /* Verde como en imagen 3 */
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
 </head>
 
 <body>
@@ -173,13 +193,13 @@
                 necesites.
             </p>
 
-            <form id="contactaForm" method="post" action="https://hook.us2.make.com/mloc7eobxmfi48sq0rzvy41cstg8teky">
-
+            <form id="contactaForm" method="post" th:action="${webhookUrl}">
+                <!-- Contenido del formulario permanece igual -->
                 <label class="labelcontacta" for="nombre">¿Cuál es tu nombre?</label>
                 <input class="inputcontacta" id="nombre" name="nombre" type="text" placeholder="Ej. Camila Días." required>
 
                 <label class="labelcontacta" for="rol">¿Eres Estudiante o Acudiente?</label>
-                <select id="rol" name="rol" required onchange="toggleCampos(this.value)">
+                <select id="rol" name="rol" required onchange="actualizarCampos()">
                     <option value="">Selecciona un rol</option>
                     <option value="Estudiante">Estudiante</option>
                     <option value="Acudiente">Acudiente</option>
@@ -191,7 +211,7 @@
                 <!-- SOLO para Estudiante -->
                 <div id="campoEstudiante" hidden style="margin-top:8px;">
                     <label class="labelcontacta" for="tema_estudiante">¿Qué tema quieres hablar?</label>
-                    <select class="inputcontacta" id="tema_estudiante" name="tema_estudiante">
+                    <select class="inputcontacta" id="tema_estudiante" name="tema">
                         <option value="">Selecciona un tema</option>
                         <option value="disciplina">Disciplina</option>
                         <option value="estado_del_estudiante">Estado del estudiante</option>
@@ -207,7 +227,7 @@
                     <input class="inputcontacta" id="nombre_estudiante" name="nombre_estudiante" type="text"
                         placeholder="Ej. Jose Arteaga">
                     <label class="labelcontacta" for="tema_acudiente">¿Qué tema quieres hablar?</label>
-                    <select class="inputcontacta" id="tema_acudiente" name="tema_acudiente">
+                    <select class="inputcontacta" id="tema_acudiente" name="tema">
                         <option value="">Selecciona un tema</option>
                         <option value="disciplina">Disciplina</option>
                         <option value="estado_del_estudiante">Estado del estudiante</option>
@@ -218,7 +238,7 @@
                 </div>
 
                 <label class="labelcontacta" for="email">¿Cuál es tu correo?</label>
-                <input class="inputcontacta" id="email" name="email" type="email" placeholder="correo@colegio.edu" required>
+                <input class="inputcontacta" id="email" name="correo" type="email" placeholder="correo@colegio.edu" required>
 
                 <input type="hidden" name="fuente" value="contacta_form">
 
@@ -228,7 +248,10 @@
                     estamos para escucharte, porque el bienestar de nuestros estudiantes es nuestra prioridad.
                 </p>
 
-                <button class="btncontacta" type="submit">Enviar</button>
+                <button class="btncontacta" type="submit" id="btnEnviar">Enviar</button>
+
+                <!-- Contenedor único para estados de mensaje -->
+                <div id="statusMessage" class="status-msg"></div>
             </form>
 
             <p id="msg"></p>
@@ -250,6 +273,11 @@
             campoEst.hidden = !esEstudiante;
             campoAcu.hidden = !esAcudiente;
 
+            // Desactivar campos para que no se incluyan en el JSON si están ocultos
+            document.getElementById('tema_estudiante').disabled = !esEstudiante;
+            document.getElementById('tema_acudiente').disabled = !esAcudiente;
+            document.getElementById('nombre_estudiante').disabled = !esAcudiente;
+
             document.getElementById('tema_estudiante').required  = esEstudiante;
             document.getElementById('tema_acudiente').required   = esAcudiente;
             document.getElementById('nombre_estudiante').required = esAcudiente;
@@ -270,20 +298,50 @@
             form.addEventListener("submit", function (e) {
                 e.preventDefault();
 
+                // Referencias a elementos
+                const btn = document.getElementById('btnEnviar');
+                const statusDiv = document.getElementById('statusMessage');
+                const originalText = btn.innerText;
+
+                // ESTADO: ENVIANDO (Imagen 2)
+                btn.innerText = "Enviando...";
+                btn.disabled = true;
+                statusDiv.innerHTML = "⏳ Enviando tu correo de bienvenida...";
+                statusDiv.className = "status-msg status-sending";
+                statusDiv.style.display = "block";
+
+                // Captura los datos y los convierte a un objeto JSON
+                const formData = new FormData(form);
+                const data = Object.fromEntries(formData.entries());
+
                 fetch(form.action, {
                     method: "POST",
-                    body: new FormData(form)
+                    mode: "cors",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(data)
                 })
                 .then(response => {
                     if (response.ok) {
-                        window.location.href = menuUrl;
+                        // ESTADO: ENVIADO (Imagen 3)
+                        btn.innerText = "¡Enviado!";
+                        statusDiv.innerHTML = "✅🎉 ¡Revisa tu bandeja de entrada! Te enviamos un correo de bienvenida.";
+                        statusDiv.className = "status-msg status-success";
                     } else {
-                        alert("Hubo un problema al enviar el formulario. Intenta nuevamente.");
+                        console.error("Respuesta del servidor no OK:", response.status);
+                        alert("El servidor del Webhook no aceptó la petición. (Error " + response.status + ")");
+                        btn.innerText = originalText;
+                        btn.disabled = false;
+                        statusDiv.style.display = "none";
                     }
                 })
                 .catch(error => {
-                    console.error("Error:", error);
-                    alert("Error de conexión. Intenta nuevamente.");
+                    console.error("Error detallado de conexión:", error);
+                    alert("Error de conexión con n8n. Por favor, verifica que el Webhook esté activo.");
+                    btn.innerText = originalText;
+                    btn.disabled = false;
+                    statusDiv.style.display = "none";
                 });
             });
         });
