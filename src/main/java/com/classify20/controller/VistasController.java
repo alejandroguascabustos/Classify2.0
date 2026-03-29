@@ -11,6 +11,9 @@ public class VistasController {
     @Value("${classify.webhooks.contacta.url}")
     private String webhookContactaUrl;
 
+    @Value("${classify.webhooks.contacto.url}")
+    private String webhookContactoUrl;
+
     @GetMapping("/agenda")
     public String mostrarAgenda(){
         return "agenda/agenda";
@@ -41,7 +44,8 @@ public class VistasController {
         return "contacta/contacta";
     }
     @GetMapping("/contacto")
-    public String mostrarContacto(){
+    public String mostrarContacto(Model model){
+        model.addAttribute("webhookUrl", webhookContactoUrl);
         return "contacto/contacto";
     }
     @GetMapping("/inicio")

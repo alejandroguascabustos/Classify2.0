@@ -6,7 +6,12 @@
     <title>Classify - Contacto</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <link rel="stylesheet" th:href="@{/css/chatbot.css}">
-    <link rel="shortcut icon" th:href="@{img/favicon.ico}" type="image/x-icon">
+    <link rel="shortcut icon" th:href="@{/img/favicon.ico}" type="image/x-icon">
+    <style>
+        .btn-enviar {
+            transition: all 0.3s ease;
+        }
+    </style>
 </head>
 
 <body class="inicioimg">
@@ -67,7 +72,11 @@
                     </div>
 
                     <!-- Formulario de contacto -->
-                    <form class="contacto-form">
+                    <form class="contacto-form" id="contactoLandingForm" th:action="${webhookUrl}">
+                        <!-- Campos ocultos para capturar en n8n con el mismo flujo -->
+                        <input type="hidden" name="tema" value="Consulta General desde Landing">
+                        <input type="hidden" name="rol" value="Interesado/Externo">
+
                         <div class="form-group">
                             <label for="nombre">Nombre:</label>
                             <input type="text" id="nombre" name="nombre" placeholder="Escribe tu nombre" required>
@@ -84,7 +93,7 @@
                                 required></textarea>
                         </div>
 
-                        <button type="submit" class="btn-enviar">Enviar Mensaje</button>
+                        <button type="submit" class="btn-enviar" id="btnEnviarLanding">Enviar Mensaje</button>
                     </form>
                 </div>
             </section>
@@ -116,6 +125,60 @@
 
     <script th:src="@{/js/chatbot.js}"></script>
 
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const form = document.getElementById("contactoLandingForm");
+            
+            form.addEventListener("submit", function (e) {
+                e.preventDefault();
+
+                // Referencias
+                const btn = document.getElementById('btnEnviarLanding');
+                const originalText = btn.innerText;
+
+                // ESTADO: ENVIANDO
+                btn.innerText = "⏳ Enviando Mensaje...";
+                btn.disabled = true;
+
+                // Captura los datos y los convierte a un objeto JSON
+                const formData = new FormData(form);
+                const data = Object.fromEntries(formData.entries());
+
+                fetch(form.action, {
+                    method: "POST",
+                    mode: "cors",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(data)
+                })
+                .then(response => {
+                    if (response.ok) {
+                        // ESTADO: ÉXITO
+                        btn.innerText = "✅ ¡Mensaje Enviado!";
+                        btn.style.backgroundColor = "#28a745";
+                        btn.style.color = "white";
+                    } else {
+                        btn.innerText = "❌ Error al enviar";
+                        btn.style.backgroundColor = "#dc3545";
+                        btn.style.color = "white";
+                        setTimeout(() => {
+                            btn.innerText = originalText;
+                            btn.disabled = false;
+                            btn.style.backgroundColor = "";
+                        }, 3000);
+                    }
+                })
+                .catch(error => {
+                    btn.innerText = "⚠️ Error de conexión";
+                    setTimeout(() => {
+                        btn.innerText = originalText;
+                        btn.disabled = false;
+                    }, 3000);
+                });
+            });
+        });
+    </script>
 </body>
 
 </html>

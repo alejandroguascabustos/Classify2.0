@@ -448,7 +448,7 @@ class ClassifyChat {
         submitBtn.textContent = 'Enviando...';
 
         try {
-            const response = await fetch('https://n8n.classify.in.net/webhook/5dbffea7-2dc0-4085-a152-eb981f99da1a', {
+            const response = await fetch('https://n8n.classify.in.net/webhook/1b573e49-3bdc-4985-a993-ff2798735d57', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -456,7 +456,9 @@ class ClassifyChat {
                 body: JSON.stringify({
                     nombre: name,
                     correo: email,
-                    pregunta: question,
+                    mensaje: question,
+                    tema: "Chatbot Soporte",
+                    rol: "Usuario Chatbot",
                     fecha: new Date().toISOString()
                 })
             });
