@@ -2,13 +2,11 @@ package com.classify20.service;
 
 import com.classify20.model.LoginResultado;
 import com.classify20.model.SesionUsuario;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -32,17 +30,10 @@ public class AuthService {
             """;
 
     private final PasswordEncoder passwordEncoder;
-    private final String dbUrl;
-    private final String dbUsername;
-    private final String dbPassword;
+    private final ClassifyDatabaseService databaseService;
 
-    public AuthService(
-            @Value("${classify.db.url:jdbc:postgresql://localhost:5432/classify}") String dbUrl,
-            @Value("${classify.db.username:postgres}") String dbUsername,
-            @Value("${classify.db.password:postgres}") String dbPassword) {
-        this.dbUrl = dbUrl;
-        this.dbUsername = dbUsername;
-        this.dbPassword = dbPassword;
+    public AuthService(ClassifyDatabaseService databaseService) {
+        this.databaseService = databaseService;
         this.passwordEncoder = new BCryptPasswordEncoder();
     }
 
@@ -54,7 +45,7 @@ public class AuthService {
             return new LoginResultado(false, "Debes ingresar tu usuario y tu contrasena.", null);
         }
 
-        try (Connection connection = DriverManager.getConnection(dbUrl, dbUsername, dbPassword);
+        try (Connection connection = databaseService.openConnection();
              PreparedStatement statement = connection.prepareStatement(LOGIN_SQL)) {
 
             statement.setString(1, usuarioNormalizado);
