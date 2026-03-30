@@ -159,7 +159,7 @@ body.aprende-page .aprende-hero h1 {
 
 body.aprende-page .aprende-card h2 {
     margin-top: 4px;
-    font-size: 1.75rem;
+    font-size: 1.5rem;
     line-height: 1.1;
     font-weight: 800;
 }
@@ -225,6 +225,11 @@ body.aprende-page .aprende-card {
     padding: 24px 28px;
 }
 
+body.aprende-page .aprende-composer {
+    width: min(920px, 100%);
+    justify-self: start;
+}
+
 body.aprende-page .aprende-card-head {
     display: grid;
     gap: 4px;
@@ -239,7 +244,7 @@ body.aprende-page .aprende-section-label {
 
 body.aprende-page .aprende-form {
     display: grid;
-    gap: 8px;
+    gap: 6px;
 }
 
 body.aprende-page .aprende-form label {
@@ -252,19 +257,20 @@ body.aprende-page .aprende-form label {
 body.aprende-page .aprende-form-row {
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
-    gap: 12px;
+    gap: 10px;
+    align-items: center;
 }
 
 body.aprende-page .aprende-form-row input {
     width: 100%;
     margin: 0;
-    min-height: 48px;
-    padding: 12px 14px;
+    min-height: 42px;
+    padding: 10px 12px;
     border: 1px solid var(--aprende-neutral);
     border-radius: var(--aprende-radius);
     background: var(--aprende-white);
     color: var(--aprende-text);
-    font-size: 0.98rem;
+    font-size: 0.92rem;
     font-weight: 400;
     box-shadow: none;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
@@ -277,24 +283,24 @@ body.aprende-page .aprende-form-row input:focus {
 }
 
 body.aprende-page .aprende-button {
-    min-width: 188px;
-    min-height: 48px;
-    padding: 0 18px;
+    min-width: 154px;
+    min-height: 42px;
+    padding: 0 16px;
     border: none;
     border-radius: var(--aprende-radius);
     background: linear-gradient(180deg, var(--aprende-secondary) 0%, var(--aprende-primary) 100%);
     color: var(--aprende-white);
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     font-weight: 700;
     cursor: pointer;
-    box-shadow: 0 10px 24px rgba(0, 128, 0, 0.18);
+    box-shadow: 0 8px 18px rgba(0, 128, 0, 0.16);
     transition: filter 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 body.aprende-page .aprende-button:hover {
     filter: brightness(1.03);
     transform: translateY(-1px);
-    box-shadow: 0 14px 28px rgba(0, 128, 0, 0.22);
+    box-shadow: 0 10px 22px rgba(0, 128, 0, 0.18);
 }
 
 body.aprende-page .aprende-suggestions,
@@ -305,18 +311,18 @@ body.aprende-page .aprende-suggestions-row {
 }
 
 body.aprende-page .aprende-suggestions {
-    margin-top: 10px;
+    margin-top: 8px;
 }
 
 body.aprende-page .aprende-chip {
-    min-height: 40px;
-    padding: 0 14px;
+    min-height: 34px;
+    padding: 0 12px;
     border: 1px solid var(--aprende-primary);
     border-radius: var(--aprende-radius);
     background: var(--aprende-white);
     color: var(--aprende-primary);
     cursor: pointer;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 600;
     transition: background 0.2s ease, color 0.2s ease;
 }
