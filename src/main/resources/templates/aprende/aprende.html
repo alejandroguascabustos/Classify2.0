@@ -3,51 +3,55 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Classify - Aprende</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classify - Aprende con IA</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/aprende.css}">
     <link rel="stylesheet" th:href="@{/css/chatbot.css}">
-    <link rel="shortcut icon" th:href="@{img/favicon.ico}" type="image/x-icon">
+    <link rel="shortcut icon" th:href="@{/favicon.ico}" type="image/x-icon">
 </head>
 
-<body>
+<body class="inicioimg aprende-page">
     <header class="brandinicio">
         <div class="brand">
             <a th:href="@{/inicio}"><img th:src="@{/img/logo.png}" alt="logo" class="logo"></a>
             <a th:href="@{/inicio}">Classify</a>
         </div>
-    
-        <div class="brand2">
-            <a th:href="@{/inicio}" class="info-btn" alt="Información">Inicio</a>
-            <a th:href="@{/nosotros}" class="info-btn" alt="Información">Nosotros</a>
-            <a th:href="@{/contacto}" class="info-btn" alt="Información">Contacto</a>
 
+        <div class="brand2">
+            <a th:href="@{/inicio}" class="info-btn" alt="Informacion">Inicio</a>
+            <a th:href="@{/nosotros}" class="info-btn" alt="Informacion">Nosotros</a>
+            <a th:href="@{/contacto}" class="info-btn" alt="Informacion">Contacto</a>
         </div>
-    
+
         <div>
             <a href="#info" class="info-btn">
-                <img th:src="@{/img/informacion.png}" alt="Información" class="info-icon">
+                <img th:src="@{/img/informacion.png}" alt="Informacion" class="info-icon">
             </a>
             <div id="info" class="info-panel">
                 <div class="info-content">
                     <a href="#" class="close">&times;</a>
-                    <img th:src="@{/img/agenda.png}" width="80px">
+                    <img th:src="@{/img/agenda.png}" width="80">
                     <h4>¿Porque agendas tus clases?</h4>
-                    <p class="textoinfo">La implementación de una página web para agendar clases en el colegio Moralba Sur
-                        Oriental representa una herramienta fundamental para optimizar la organización académica y fortalecer
-                        la comunicación entre estudiantes, docentes y la institución.
+                    <p class="textoinfo">La implementacion de una pagina web para agendar clases en el colegio Moralba Sur
+                        Oriental representa una herramienta fundamental para optimizar la organizacion academica y fortalecer
+                        la comunicacion entre estudiantes, docentes y la institucion.
                         En primer lugar, la plataforma permite a los estudiantes y padres de familia consultar de manera
-                        rápida y sencilla la disponibilidad de horarios, evitando confusiones o cruces en las actividades
-                        escolares. <br><br>Esto garantiza una mejor planificación del tiempo, tanto dentro como fuera del
+                        rapida y sencilla la disponibilidad de horarios, evitando confusiones o cruces en las actividades
+                        escolares. <br><br>Esto garantiza una mejor planificacion del tiempo, tanto dentro como fuera del
                         aula.
-                        Por otro lado, los docentes pueden gestionar sus clases de forma más eficiente, teniendo acceso a un
-                        calendario actualizado que facilita la asignación de sesiones, el control de grupos y la preparación
-                        de materiales según la programación establecida. <br><br>
-                        Asimismo, para la institución educativa, la página constituye una herramienta de gestión que
-                        contribuye a la transparencia y al orden administrativo, ya que centraliza la información en un solo
-                        espacio digital accesible desde cualquier dispositivo con conexión a internet. <br><br>
-                        En conclusión, contar con una página para agendar clases no solo mejora la organización interna del
-                        colegio Moralba Sur Oriental, sino que también fortalece la participación de la comunidad educativa,
-                        fomenta la puntualidad, evita pérdidas de tiempo y favorece un proceso de enseñanza-aprendizaje más
+                        Por otro lado, los docentes pueden gestionar sus clases de forma mas eficiente, teniendo acceso a un
+                        calendario actualizado que facilita la asignacion de sesiones, el control de grupos y la preparacion
+                        de materiales segun la programacion establecida. <br><br>
+                        Asimismo, para la institucion educativa, la pagina constituye una herramienta de gestion que
+                        contribuye a la transparencia y al orden administrativo, ya que centraliza la informacion en un solo
+                        espacio digital accesible desde cualquier dispositivo con conexion a internet. <br><br>
+                        En conclusion, contar con una pagina para agendar clases no solo mejora la organizacion interna del
+                        colegio Moralba Sur Oriental, sino que tambien fortalece la participacion de la comunidad educativa,
+                        fomenta la puntualidad, evita perdidas de tiempo y favorece un proceso de ensenanza-aprendizaje mas
                         planificado y efectivo.
                     </p>
                 </div>
@@ -61,43 +65,96 @@
         <span></span>
     </div>
 
-
-
-    <aside class="sidebar">
-        <!-- botón común para todos -->
-        <a th:href="@{/menu}" class="inicioprincipal">
-            <img th:src="@{/img/home.png}" width="25px" class="imgmenu"> Inicio
-        </a>
-
-            <a th:href="@{/agenda}" class="inicioprincipal2">
-                <img th:src="@{/img/agenda.png}" width="25px" class="imgmenu">Agendar clase
+    <div class="contenidoinicio">
+        <aside class="sidebar">
+            <a th:href="@{/menu}" class="inicioprincipal">
+                <img th:src="@{/img/home.png}" width="25" class="imgmenu"> Inicio
             </a>
 
             <a th:href="@{/agenda}" class="inicioprincipal2">
-                <img th:src="@{/img/noticias.png}" width="25px" class="imgmenu">Noticias
+                <img th:src="@{/img/agenda.png}" width="25" class="imgmenu">Agendar clase
             </a>
+
+            <a th:href="@{/noticias}" class="inicioprincipal2">
+                <img th:src="@{/img/noticias.png}" width="25" class="imgmenu">Noticias
+            </a>
+
             <a th:href="@{/programacion}" class="inicioprincipal2">
-                <img th:src="@{/img/programacion.png}" width="25px" class="imgmenu">Programación
+                <img th:src="@{/img/programacion.png}" width="25" class="imgmenu">Programacion
             </a>
+
             <a th:href="@{/aprende}" class="inicioprincipal2">
-                <img th:src="@{/img/aprende.png}" width="25px" class="imgmenu">Aprende
+                <img th:src="@{/img/aprende.png}" width="25" class="imgmenu">Aprende
             </a>
+
             <a th:href="@{/contacta}" class="inicioprincipal2">
-                <img th:src="@{/img/gmail.png}" width="25px" class="imgmenu">Contacta a un profe
+                <img th:src="@{/img/gmail.png}" width="25" class="imgmenu">Contacta a un profe
             </a>
+
             <a th:href="@{/mismateriales}" class="inicioprincipal2">
-                <img th:src="@{/img/descargamaterial.png}" width="25px" class="imgmenu">Mis Materiales
+                <img th:src="@{/img/descargamaterial.png}" width="25" class="imgmenu">Mis Materiales
             </a>
+
             <a th:href="@{/materiales}" class="inicioprincipal2">
-                <img th:src="@{/img/upload.png}" width="25px" class="imgmenu">Carga Materiales
+                <img th:src="@{/img/upload.png}" width="25" class="imgmenu">Carga Materiales
             </a>
+
             <a th:href="@{#}" class="inicioprincipal3">
-                <img th:src="@{/img/config.png}" width="25px" class="imgmenu3">Configuración
+                <img th:src="@{/img/config.png}" width="25" class="imgmenu3">Configuracion
             </a>
-    </aside>
+        </aside>
 
+        <main class="contentaprende">
+            <div class="aprende-shell">
+                <section class="aprende-hero">
+                    <span class="aprende-kicker">Modulo Aprende</span>
+                    <h1>Aprende con <span class="aprende-title-accent">IA</span></h1>
+                    <p class="aprende-lead">
+                        Explica temas, resume conceptos y prepara clases en una respuesta clara y ordenada.
+                    </p>
+                    <div class="aprende-reference-strip" aria-label="Referencias sugeridas">
+                        <span class="aprende-reference-label">Fuentes sugeridas</span>
+                        <a href="https://es.khanacademy.org" target="_blank" rel="noopener noreferrer" class="aprende-inline-ref">Khan Academy</a>
+                        <a href="https://www.colombiaaprende.edu.co" target="_blank" rel="noopener noreferrer" class="aprende-inline-ref">Colombia Aprende</a>
+                        <a href="https://www.britannica.com" target="_blank" rel="noopener noreferrer" class="aprende-inline-ref">Britannica</a>
+                        <a href="https://kids.nationalgeographic.com" target="_blank" rel="noopener noreferrer" class="aprende-inline-ref">NatGeo Kids</a>
+                    </div>
+                </section>
 
+                <section class="aprende-card aprende-composer">
+                    <div class="aprende-card-head">
+                        <div>
+                            <p class="aprende-section-label">Empieza aqui</p>
+                            <h2>Escribe el tema que vas a ensenar</h2>
+                        </div>
+                    </div>
 
+                    <form id="ai-chat-form-start" class="aprende-form" autocomplete="off">
+                        <label for="ai-user-query-start">Tema o pregunta</label>
+                        <div class="aprende-form-row">
+                            <input
+                                type="text"
+                                id="ai-user-query-start"
+                                placeholder="Ej. Fotosintesis, fracciones o independencia de Colombia"
+                                required>
+                            <button type="submit" class="aprende-button">Generar leccion</button>
+                        </div>
+                    </form>
+
+                    <div class="aprende-suggestions" aria-label="Temas sugeridos">
+                        <button type="button" class="aprende-chip" data-followup="El ciclo del agua">El ciclo del agua</button>
+                        <button type="button" class="aprende-chip" data-followup="La fotosintesis">La fotosintesis</button>
+                        <button type="button" class="aprende-chip" data-followup="Fracciones basicas">Fracciones basicas</button>
+                    </div>
+                </section>
+
+                <section id="ai-response-wrapper" class="aprende-response" hidden aria-live="polite"></section>
+            </div>
+        </main>
+    </div>
+
+    <script th:src="@{/js/active.js}"></script>
+    <script th:src="@{/js/chatbot.js}"></script>
     <script>
         (() => {
             "use strict";
@@ -134,7 +191,7 @@
             function formatList(items) {
                 const safeItems = Array.isArray(items) ? items.filter(Boolean) : [];
                 if (!safeItems.length) {
-                    return '<li class="aprende-empty">Sin información disponible.</li>';
+                    return '<li class="aprende-empty">Sin informacion disponible.</li>';
                 }
 
                 return safeItems
@@ -148,14 +205,14 @@
                     : [];
 
                 if (!safeItems.length) {
-                    return '<p class="aprende-empty">Todavía no hay vocabulario para mostrar.</p>';
+                    return '<p class="aprende-empty">Todavia no hay vocabulario para mostrar.</p>';
                 }
 
                 return safeItems
                     .map(item => `
                         <article class="aprende-vocab-item">
-                            <strong>${escapeHtml(item.term || 'Término')}</strong>
-                            <span>${escapeHtml(item.definition || 'Definición no disponible.')}</span>
+                            <strong>${escapeHtml(item.term || 'Termino')}</strong>
+                            <span>${escapeHtml(item.definition || 'Definicion no disponible.')}</span>
                         </article>
                     `)
                     .join('');
@@ -167,7 +224,7 @@
                     : [];
 
                 if (!safeItems.length) {
-                    return '<p class="aprende-empty">Todavía no hay referencias para este tema.</p>';
+                    return '<p class="aprende-empty">Todavia no hay referencias para este tema.</p>';
                 }
 
                 return safeItems
@@ -221,9 +278,9 @@
                     <div class="aprende-response-inner">
                         <div class="aprende-loading-card">
                             <div class="aprende-spinner" aria-hidden="true"></div>
-                            <h2>Construyendo la lección</h2>
+                            <h2>Construyendo la leccion</h2>
                             <p>
-                                Classify está organizando la explicación, el vocabulario, la aplicación pedagógica y
+                                Classify esta organizando la explicacion, el vocabulario, la aplicacion pedagogica y
                                 las referencias para <strong>${escapeHtml(query)}</strong>.
                             </p>
                         </div>
@@ -238,7 +295,7 @@
                 responseWrap.innerHTML = `
                     <div class="aprende-response-inner">
                         <article class="aprende-panel aprende-panel--error">
-                            <p class="aprende-error-title">No fue posible generar la lección</p>
+                            <p class="aprende-error-title">No fue posible generar la leccion</p>
                             <p class="aprende-text">${escapeHtml(message)}</p>
                         </article>
                     </div>
@@ -281,13 +338,13 @@
                     renderAI(ai, cleanedQuery);
                 } catch (error) {
                     console.error('Error en Aprende:', error);
-                    showError('Revisa tu conexión e inténtalo de nuevo con un tema más específico.');
+                    showError('Revisa tu conexion e intentalo de nuevo con un tema mas especifico.');
                 }
             }
 
             function renderAI(ai, query) {
                 const breadcrumb = escapeHtml(ai.breadcrumb || query || 'Aprende');
-                const title = escapeHtml(ai.title || query || 'Lección generada');
+                const title = escapeHtml(ai.title || query || 'Leccion generada');
                 const intro = formatParagraphs(ai.introduction);
                 const content = formatParagraphs(ai.content);
                 const pedagogical = formatParagraphs(ai.pedagogical_application);
@@ -313,8 +370,8 @@
                                 </article>
 
                                 <article class="aprende-panel aprende-panel--accent">
-                                    <h3>Aplicación pedagógica</h3>
-                                    <div class="aprende-text">${pedagogical || '<p class="aprende-empty">Sin sugerencias pedagógicas para mostrar.</p>'}</div>
+                                    <h3>Aplicacion pedagogica</h3>
+                                    <div class="aprende-text">${pedagogical || '<p class="aprende-empty">Sin sugerencias pedagogicas para mostrar.</p>'}</div>
                                 </article>
                             </div>
 
@@ -338,13 +395,13 @@
 
                         <article class="aprende-panel aprende-curiosity">
                             <h3>Dato para el aula</h3>
-                            <div class="aprende-text">${curiosity || '<p class="aprende-empty">Todavía no hay una curiosidad para compartir.</p>'}</div>
+                            <div class="aprende-text">${curiosity || '<p class="aprende-empty">Todavia no hay una curiosidad para compartir.</p>'}</div>
                         </article>
 
                         <article class="aprende-panel aprende-suggestions-panel">
                             <h3>Seguir explorando</h3>
-                            <p class="aprende-help">Elige uno de estos temas para profundizar sin salir del módulo.</p>
-                            <div class="aprende-suggestions-row">${suggestions || '<span class="aprende-empty">No hay sugerencias disponibles todavía.</span>'}</div>
+                            <p class="aprende-help">Elige uno de estos temas para profundizar sin salir del modulo.</p>
+                            <div class="aprende-suggestions-row">${suggestions || '<span class="aprende-empty">No hay sugerencias disponibles todavia.</span>'}</div>
                         </article>
                     </div>
                 `;
@@ -367,4 +424,5 @@
         })();
     </script>
 </body>
+
 </html>
