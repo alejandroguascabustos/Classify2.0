@@ -226,6 +226,10 @@ header.brandinicio .brand2 a.info-btn:hover {
     color: #ffffff;
 }
 
+body:has(.sidebar) header.brandinicio .brand2 {
+    display: none;
+}
+
 .auth {
     display: flex;
     padding: 5px;
