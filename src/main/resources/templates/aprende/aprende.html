@@ -9,10 +9,10 @@
     <link rel="shortcut icon" th:href="@{/favicon.ico}" type="image/x-icon">
 </head>
 <body class="inicioimg aprende-page">
-    <div th:replace="layout/fragments :: header"></div>
+    <div th:replace="~{layout/fragments :: header}"></div>
 
     <div class="contenidoinicio">
-        <div th:replace="layout/fragments :: sidebar"></div>
+        <div th:replace="~{layout/fragments :: sidebar}"></div>
 
         <main class="contentaprende">
             <div class="aprende-shell">
