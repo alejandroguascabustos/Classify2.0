@@ -3,55 +3,65 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Classify - Contacta un Profe</title>
+    <title>Classify - Aprende</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <link rel="stylesheet" th:href="@{/css/chatbot.css}">
-    <link rel="shortcut icon" th:href="@{/favicon.ico}" type="image/x-icon">
-    <style>
-        /* Único ajuste: Subir el contenido para reducir espacio blanco */
-        .contentcontacta {
-            margin-top: -45px !important;
-        }
-        /* Color institucional para el botón */
-        .btncontacta {
-            background-color: #013501 !important; /* Verde Classify */
-            color: white !important;
-            transition: all 0.3s ease;
-        }
-        .btncontacta:hover {
-            background-color: #014d01 !important;
-            transform: translateY(-2px);
-        }
-    </style>
+    <link rel="shortcut icon" th:href="@{img/favicon.ico}" type="image/x-icon">
 </head>
 
 <body>
-    <header>
+    <header class="brandinicio">
         <div class="brand">
-            <a th:href="@{/login}">
-                <img th:src="@{/img/logo.png}" alt="logo" class="logo">
-            </a>
-            <a th:href="@{/login}">Classify</a>
+            <a th:href="@{/inicio}"><img th:src="@{/img/logo.png}" alt="logo" class="logo"></a>
+            <a th:href="@{/inicio}">Classify</a>
         </div>
+    
+        <div class="brand2">
+            <a th:href="@{/inicio}" class="info-btn" alt="Información">Inicio</a>
+            <a th:href="@{/nosotros}" class="info-btn" alt="Información">Nosotros</a>
+            <a th:href="@{/contacto}" class="info-btn" alt="Información">Contacto</a>
 
-        <!-- Saludo personalizado en el header -->
-        <div class="saludo-header.opciones"
-             th:if="${session.nombre != null and session.nombre != 'Usuario'}"
-             th:text="'Hola, ' + ${#strings.capitalize(#strings.toLowerCase(session.nombre))} + '!'">
         </div>
-
+    
         <div>
-            <div class="right">
-                <a th:href="@{/noticias}" alt="Noticias">
-                    <img th:src="@{/img/noticias.png}" class="iconostop">
-                </a>
-                <a><img th:src="@{/img/separador.png}" class="separador"></a>
-                <a th:href="@{/login}" alt="Cerrar sesión">
-                    <img th:src="@{/img/salida.png}" class="salida">
-                </a>
+            <a href="#info" class="info-btn">
+                <img th:src="@{/img/informacion.png}" alt="Información" class="info-icon">
+            </a>
+            <div id="info" class="info-panel">
+                <div class="info-content">
+                    <a href="#" class="close">&times;</a>
+                    <img th:src="@{/img/agenda.png}" width="80px">
+                    <h4>¿Porque agendas tus clases?</h4>
+                    <p class="textoinfo">La implementación de una página web para agendar clases en el colegio Moralba Sur
+                        Oriental representa una herramienta fundamental para optimizar la organización académica y fortalecer
+                        la comunicación entre estudiantes, docentes y la institución.
+                        En primer lugar, la plataforma permite a los estudiantes y padres de familia consultar de manera
+                        rápida y sencilla la disponibilidad de horarios, evitando confusiones o cruces en las actividades
+                        escolares. <br><br>Esto garantiza una mejor planificación del tiempo, tanto dentro como fuera del
+                        aula.
+                        Por otro lado, los docentes pueden gestionar sus clases de forma más eficiente, teniendo acceso a un
+                        calendario actualizado que facilita la asignación de sesiones, el control de grupos y la preparación
+                        de materiales según la programación establecida. <br><br>
+                        Asimismo, para la institución educativa, la página constituye una herramienta de gestión que
+                        contribuye a la transparencia y al orden administrativo, ya que centraliza la información en un solo
+                        espacio digital accesible desde cualquier dispositivo con conexión a internet. <br><br>
+                        En conclusión, contar con una página para agendar clases no solo mejora la organización interna del
+                        colegio Moralba Sur Oriental, sino que también fortalece la participación de la comunidad educativa,
+                        fomenta la puntualidad, evita pérdidas de tiempo y favorece un proceso de enseñanza-aprendizaje más
+                        planificado y efectivo.
+                    </p>
+                </div>
             </div>
         </div>
     </header>
+
+    <div class="menu-toggle" id="menuToggle">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+
+
 
     <aside class="sidebar">
         <!-- botón común para todos -->
@@ -59,10 +69,12 @@
             <img th:src="@{/img/home.png}" width="25px" class="imgmenu"> Inicio
         </a>
 
-        <!-- Perfil 1: Administrador -->
-        <th:block th:if="${session.perfil == 1}">
             <a th:href="@{/agenda}" class="inicioprincipal2">
                 <img th:src="@{/img/agenda.png}" width="25px" class="imgmenu">Agendar clase
+            </a>
+
+            <a th:href="@{/agenda}" class="inicioprincipal2">
+                <img th:src="@{/img/noticias.png}" width="25px" class="imgmenu">Noticias
             </a>
             <a th:href="@{/programacion}" class="inicioprincipal2">
                 <img th:src="@{/img/programacion.png}" width="25px" class="imgmenu">Programación
@@ -79,102 +91,12 @@
             <a th:href="@{/materiales}" class="inicioprincipal2">
                 <img th:src="@{/img/upload.png}" width="25px" class="imgmenu">Carga Materiales
             </a>
-            <a th:href="@{/califica}" class="inicioprincipal2">
-                <img th:src="@{/img/califica.png}" width="25px" class="imgmenu">Califica un profe
+            <a th:href="@{#}" class="inicioprincipal3">
+                <img th:src="@{/img/config.png}" width="25px" class="imgmenu3">Configuración
             </a>
-            <a th:href="@{/izada}" class="inicioprincipal2">
-                <img th:src="@{/img/estrella.png}" width="25px" class="imgmenu">Izada de bandera
-            </a>
-            <a th:href="@{/notas}" class="inicioprincipal2">
-                <img th:src="@{/img/notas.png}" width="25px" class="imgmenu">Notas
-            </a>
-        </th:block>
-
-        <!-- Perfil 2: Coordinador -->
-        <th:block th:if="${session.perfil == 2}">
-            <a th:href="@{/agenda}" class="inicioprincipal2">
-                <img th:src="@{/img/agenda.png}" width="25px" class="imgmenu">Agendar clase
-            </a>
-            <a th:href="@{/programacion}" class="inicioprincipal2">
-                <img th:src="@{/img/programacion.png}" width="25px" class="imgmenu">Programación
-            </a>
-            <a th:href="@{/aprende}" class="inicioprincipal2">
-                <img th:src="@{/img/aprende.png}" width="25px" class="imgmenu">Aprende
-            </a>
-            <a th:href="@{/contacta}" class="inicioprincipal2">
-                <img th:src="@{/img/gmail.png}" width="25px" class="imgmenu">Contacta a un profe
-            </a>
-            <a th:href="@{/materiales}" class="inicioprincipal2">
-                <img th:src="@{/img/upload.png}" width="25px" class="imgmenu">Carga Materiales
-            </a>
-            <a th:href="@{/califica}" class="inicioprincipal2">
-                <img th:src="@{/img/califica.png}" width="25px" class="imgmenu">Califica un profe
-            </a>
-            <a th:href="@{/izada}" class="inicioprincipal2">
-                <img th:src="@{/img/estrella.png}" width="25px" class="imgmenu">Izada de bandera
-            </a>
-            <a th:href="@{/notas}" class="inicioprincipal2">
-                <img th:src="@{/img/notas.png}" width="25px" class="imgmenu">Notas
-            </a>
-        </th:block>
-
-        <!-- Perfil 3: Docente -->
-        <th:block th:if="${session.perfil == 3}">
-            <a th:href="@{/programacion}" class="inicioprincipal2">
-                <img th:src="@{/img/programacion.png}" width="25px" class="imgmenu">Programación
-            </a>
-            <a th:href="@{/aprende}" class="inicioprincipal2">
-                <img th:src="@{/img/aprende.png}" width="25px" class="imgmenu">Aprende
-            </a>
-            <a th:href="@{/materiales}" class="inicioprincipal2">
-                <img th:src="@{/img/upload.png}" width="25px" class="imgmenu">Carga Materiales
-            </a>
-            <a th:href="@{/izada}" class="inicioprincipal2">
-                <img th:src="@{/img/estrella.png}" width="25px" class="imgmenu">Izada de bandera
-            </a>
-        </th:block>
-
-        <!-- Perfil 4: Acudiente -->
-        <th:block th:if="${session.perfil == 4}">
-            <a th:href="@{/programacion}" class="inicioprincipal2">
-                <img th:src="@{/img/programacion.png}" width="25px" class="imgmenu">Programación
-            </a>
-            <a th:href="@{/aprende}" class="inicioprincipal2">
-                <img th:src="@{/img/aprende.png}" width="25px" class="imgmenu">Aprende
-            </a>
-            <a th:href="@{/contacta}" class="inicioprincipal2">
-                <img th:src="@{/img/gmail.png}" width="25px" class="imgmenu">Contacta a un profe
-            </a>
-            <a th:href="@{/mismateriales}" class="inicioprincipal2">
-                <img th:src="@{/img/upload.png}" width="25px" class="imgmenu">Mis Materiales
-            </a>
-            <a th:href="@{/izada}" class="inicioprincipal2">
-                <img th:src="@{/img/estrella.png}" width="25px" class="imgmenu">Izada de bandera
-            </a>
-        </th:block>
-
-        <!-- Perfil 5: Estudiante -->
-        <th:block th:if="${session.perfil == 5}">
-            <a th:href="@{/programacion}" class="inicioprincipal2">
-                <img th:src="@{/img/programacion.png}" width="25px" class="imgmenu">Programación
-            </a>
-            <a th:href="@{/aprende}" class="inicioprincipal2">
-                <img th:src="@{/img/aprende.png}" width="25px" class="imgmenu">Aprende
-            </a>
-            <a th:href="@{/contacta}" class="inicioprincipal2">
-                <img th:src="@{/img/gmail.png}" width="25px" class="imgmenu">Contacta a un profe
-            </a>
-            <a th:href="@{/mismateriales}" class="inicioprincipal2">
-                <img th:src="@{/img/upload.png}" width="25px" class="imgmenu">Mis Materiales
-            </a>
-            <a th:href="@{/califica}" class="inicioprincipal2">
-                <img th:src="@{/img/califica.png}" width="25px" class="imgmenu">Califica un profe
-            </a>
-            <a th:href="@{/izada}" class="inicioprincipal2">
-                <img th:src="@{/img/estrella.png}" width="25px" class="imgmenu">Izada de bandera
-            </a>
-        </th:block>
     </aside>
+
+
 
     <main class="contentcontacta">
         <div class="card">
@@ -344,8 +266,9 @@
         });
     </script>
 
-    <script th:src="@{/js/active.js}"></script>
+
     <script th:src="@{/js/chatbot.js}"></script>
+    <script th:src="@{/js/perfilmodal.js}"></script>
 </body>
 
 </html>
