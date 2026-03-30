@@ -15,11 +15,9 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.security.SecureRandom;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -32,36 +30,6 @@ public class RegistroService {
 
     private static final Logger logger = LoggerFactory.getLogger(RegistroService.class);
 
-    private static final String CREATE_TABLE_SQL = """
-            CREATE TABLE IF NOT EXISTS registro_usuarios (
-                id BIGSERIAL PRIMARY KEY,
-                nombre VARCHAR(120) NOT NULL,
-                apellido VARCHAR(120) NOT NULL,
-                correo VARCHAR(180) NOT NULL UNIQUE,
-                documento VARCHAR(40) NOT NULL UNIQUE,
-                telefono VARCHAR(30) NOT NULL,
-                nombre_usuario VARCHAR(100) NOT NULL UNIQUE,
-                pass_hash VARCHAR(255) NOT NULL,
-                tipo_usuario VARCHAR(20) NOT NULL,
-                curso VARCHAR(50),
-                materia VARCHAR(150),
-                nombre_estudiante VARCHAR(150),
-                codigo_docente_asignado VARCHAR(20) UNIQUE,
-                codigo_docente_referencia VARCHAR(20),
-                creado_en TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
-            )
-            """;
-
-    private static final String CREATE_INDEX_TYPE_SQL = """
-            CREATE INDEX IF NOT EXISTS idx_registro_usuarios_tipo
-            ON registro_usuarios (tipo_usuario)
-            """;
-
-    private static final String CREATE_INDEX_CODE_SQL = """
-            CREATE INDEX IF NOT EXISTS idx_registro_usuarios_codigo_ref
-            ON registro_usuarios (codigo_docente_referencia)
-            """;
-
     private static final String CODE_PREFIX = "DOC-";
     private static final String CODE_ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
     private static final int CODE_SIZE = 8;
@@ -69,19 +37,13 @@ public class RegistroService {
     private final RestClient restClient;
     private final PasswordEncoder passwordEncoder;
     private final SecureRandom secureRandom;
-    private final String dbUrl;
-    private final String dbUsername;
-    private final String dbPassword;
+    private final ClassifyDatabaseService databaseService;
     private final String docenteWebhookUrl;
 
     public RegistroService(
-            @Value("${classify.db.url:jdbc:postgresql://localhost:5432/classify}") String dbUrl,
-            @Value("${classify.db.username:postgres}") String dbUsername,
-            @Value("${classify.db.password:postgres}") String dbPassword,
+            ClassifyDatabaseService databaseService,
             @Value("${classify.webhooks.registro-docente.url:https://n8n.classify.in.net/webhook/bbab4100-3e6e-44cd-98e6-f62e6d3f65af}") String docenteWebhookUrl) {
-        this.dbUrl = dbUrl;
-        this.dbUsername = dbUsername;
-        this.dbPassword = dbPassword;
+        this.databaseService = databaseService;
         this.docenteWebhookUrl = docenteWebhookUrl;
         this.restClient = RestClient.builder().build();
         this.passwordEncoder = new BCryptPasswordEncoder();
@@ -99,7 +61,6 @@ public class RegistroService {
             connection.setAutoCommit(false);
 
             try {
-                asegurarEsquema(connection);
                 validarDuplicados(connection, registro);
 
                 if ("docente".equals(registro.tipoUsuario())) {
@@ -137,15 +98,7 @@ public class RegistroService {
     }
 
     private Connection openConnection() throws SQLException {
-        return DriverManager.getConnection(dbUrl, dbUsername, dbPassword);
-    }
-
-    private void asegurarEsquema(Connection connection) throws SQLException {
-        try (Statement statement = connection.createStatement()) {
-            statement.execute(CREATE_TABLE_SQL);
-            statement.execute(CREATE_INDEX_TYPE_SQL);
-            statement.execute(CREATE_INDEX_CODE_SQL);
-        }
+        return databaseService.openConnection();
     }
 
     private void validarDuplicados(Connection connection, RegistroNormalizado registro) throws SQLException {
