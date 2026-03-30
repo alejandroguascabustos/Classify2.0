@@ -14,7 +14,8 @@
     <link rel="shortcut icon" th:href="@{/favicon.ico}" type="image/x-icon">
 </head>
 
-<body class="inicioimg aprende-page">
+<body class="inicioimg aprende-page"
+      th:attr="data-user-role=${session.tipoUsuario},data-user-subject=${session.materia}">
     <header class="brandinicio">
         <div class="brand">
             <a th:href="@{/inicio}"><img th:src="@{/img/logo.png}" alt="logo" class="logo"></a>
@@ -107,44 +108,86 @@
         <main class="contentaprende">
             <div class="aprende-shell">
                 <section class="aprende-hero">
-                    <span class="aprende-kicker">Modulo Aprende</span>
-                    <h1>Aprende con <span class="aprende-title-accent">IA</span></h1>
-                    <p class="aprende-lead">
-                        Explica temas, resume conceptos y prepara clases en una respuesta clara y ordenada.
-                    </p>
-                    <div class="aprende-reference-strip" aria-label="Referencias sugeridas">
-                        <span class="aprende-reference-label">Fuentes sugeridas</span>
-                        <a href="https://es.khanacademy.org" target="_blank" rel="noopener noreferrer" class="aprende-inline-ref">Khan Academy</a>
-                        <a href="https://www.colombiaaprende.edu.co" target="_blank" rel="noopener noreferrer" class="aprende-inline-ref">Colombia Aprende</a>
-                        <a href="https://www.britannica.com" target="_blank" rel="noopener noreferrer" class="aprende-inline-ref">Britannica</a>
-                        <a href="https://kids.nationalgeographic.com" target="_blank" rel="noopener noreferrer" class="aprende-inline-ref">NatGeo Kids</a>
+                    <div class="aprende-hero-main">
+                        <span class="aprende-kicker">Módulo Aprende</span>
+                        <h1>Aprende con <span class="aprende-title-accent">IA</span></h1>
+                        <p class="aprende-lead"
+                           th:if="${session.tipoUsuario == 'docente'}">
+                            Organiza clases, resume conceptos y recibe ideas de apoyo, tareas y material útil para llevar una mejor sesión al aula.
+                        </p>
+                        <p class="aprende-lead"
+                           th:unless="${session.tipoUsuario == 'docente'}">
+                            Explica temas, resume conceptos y prepara clases con una estructura clara, útil y lista para el aula.
+                        </p>
+                        <div class="aprende-reference-strip" aria-label="Referencias sugeridas">
+                            <span class="aprende-reference-label">Fuentes sugeridas</span>
+                            <a href="https://es.khanacademy.org" target="_blank" rel="noopener noreferrer" class="aprende-inline-ref">Khan Academy</a>
+                            <a href="https://www.colombiaaprende.edu.co" target="_blank" rel="noopener noreferrer" class="aprende-inline-ref">Colombia Aprende</a>
+                            <a href="https://www.britannica.com" target="_blank" rel="noopener noreferrer" class="aprende-inline-ref">Britannica</a>
+                            <a href="https://kids.nationalgeographic.com" target="_blank" rel="noopener noreferrer" class="aprende-inline-ref">NatGeo Kids</a>
+                        </div>
                     </div>
+
+                    <aside class="aprende-hero-side"
+                           aria-label="Resumen del modulo Aprende"
+                           th:if="${session.tipoUsuario == 'docente'}">
+                        <span class="aprende-side-label">Planeación docente</span>
+                        <h2>Respuesta lista para llevar al aula</h2>
+                        <ul class="aprende-side-list">
+                            <li>Resumen claro del tema para explicarlo con seguridad.</li>
+                            <li>Organización sugerida de la clase con inicio, desarrollo y cierre.</li>
+                            <li>Ideas innovadoras, tareas y material de apoyo para reforzar.</li>
+                        </ul>
+                    </aside>
+
+                    <aside class="aprende-hero-side"
+                           aria-label="Resumen del modulo Aprende"
+                           th:unless="${session.tipoUsuario == 'docente'}">
+                        <span class="aprende-side-label">Respuesta profesional</span>
+                        <h2>Contenido breve, claro y útil</h2>
+                        <ul class="aprende-side-list">
+                            <li>Desarrollo estructurado del tema.</li>
+                            <li>Aplicación pedagógica para clase.</li>
+                            <li>Referencias confiables para ampliar.</li>
+                        </ul>
+                    </aside>
                 </section>
 
                 <section class="aprende-card aprende-composer">
-                    <div class="aprende-card-head">
-                        <div>
-                            <p class="aprende-section-label">Empieza aqui</p>
-                            <h2>Escribe el tema que vas a ensenar</h2>
+                    <div class="aprende-composer-top">
+                        <div class="aprende-card-head">
+                            <div>
+                                <p class="aprende-section-label">Empieza aquí</p>
+                                <h2>Escribe el tema que vas a enseñar</h2>
+                            </div>
                         </div>
+                        <p class="aprende-composer-note"
+                           th:if="${session.tipoUsuario == 'docente'}">Recibe una guía con resumen, secuencia de clase, ideas innovadoras y material de apoyo.</p>
+                        <p class="aprende-composer-note"
+                           th:unless="${session.tipoUsuario == 'docente'}">Genera una guía puntual, clara y lista para trabajar en clase.</p>
                     </div>
 
                     <form id="ai-chat-form-start" class="aprende-form" autocomplete="off">
                         <label for="ai-user-query-start">Tema o pregunta</label>
-                        <div class="aprende-form-row">
-                            <input
-                                type="text"
-                                id="ai-user-query-start"
-                                placeholder="Ej. Fotosintesis, fracciones o independencia de Colombia"
-                                required>
-                            <button type="submit" class="aprende-button">Generar leccion</button>
+                        <div class="aprende-input-shell">
+                            <div class="aprende-form-row">
+                                <input
+                                    type="text"
+                                    id="ai-user-query-start"
+                                    placeholder="Ej. Fotosíntesis, fracciones o independencia de Colombia"
+                                    required>
+                                <button type="submit" class="aprende-button">Generar lección</button>
+                            </div>
                         </div>
                     </form>
 
-                    <div class="aprende-suggestions" aria-label="Temas sugeridos">
-                        <button type="button" class="aprende-chip" data-followup="El ciclo del agua">El ciclo del agua</button>
-                        <button type="button" class="aprende-chip" data-followup="La fotosintesis">La fotosintesis</button>
-                        <button type="button" class="aprende-chip" data-followup="Fracciones basicas">Fracciones basicas</button>
+                    <div class="aprende-suggestions-wrap">
+                        <span class="aprende-suggestions-label">Sugerencias rápidas</span>
+                        <div class="aprende-suggestions" aria-label="Temas sugeridos">
+                            <button type="button" class="aprende-chip" data-followup="El ciclo del agua">El ciclo del agua</button>
+                            <button type="button" class="aprende-chip" data-followup="La fotosíntesis">La fotosíntesis</button>
+                            <button type="button" class="aprende-chip" data-followup="Fracciones básicas">Fracciones básicas</button>
+                        </div>
                     </div>
                 </section>
 
@@ -162,6 +205,9 @@
             const startForm = document.getElementById('ai-chat-form-start');
             const topicInput = document.getElementById('ai-user-query-start');
             const responseWrap = document.getElementById('ai-response-wrapper');
+            const currentUserRole = String(document.body.dataset.userRole || '').trim().toLowerCase();
+            const isTeacherView = currentUserRole === 'docente';
+            const currentUserSubject = String(document.body.dataset.userSubject || '').trim();
 
             function escapeHtml(value = '') {
                 return String(value)
@@ -189,9 +235,16 @@
             }
 
             function formatList(items) {
-                const safeItems = Array.isArray(items) ? items.filter(Boolean) : [];
+                const safeItems = Array.isArray(items)
+                    ? items.filter(Boolean)
+                    : typeof items === 'string'
+                        ? items
+                            .split(/\n+/)
+                            .map(item => item.replace(/^[-•]\s*/, '').trim())
+                            .filter(Boolean)
+                        : [];
                 if (!safeItems.length) {
-                    return '<li class="aprende-empty">Sin informacion disponible.</li>';
+                    return '<li class="aprende-empty">Sin información disponible.</li>';
                 }
 
                 return safeItems
@@ -205,14 +258,14 @@
                     : [];
 
                 if (!safeItems.length) {
-                    return '<p class="aprende-empty">Todavia no hay vocabulario para mostrar.</p>';
+                    return '<p class="aprende-empty">Todavía no hay vocabulario para mostrar.</p>';
                 }
 
                 return safeItems
                     .map(item => `
                         <article class="aprende-vocab-item">
-                            <strong>${escapeHtml(item.term || 'Termino')}</strong>
-                            <span>${escapeHtml(item.definition || 'Definicion no disponible.')}</span>
+                            <strong>${escapeHtml(item.term || 'Término')}</strong>
+                            <span>${escapeHtml(item.definition || 'Definición no disponible.')}</span>
                         </article>
                     `)
                     .join('');
@@ -224,7 +277,7 @@
                     : [];
 
                 if (!safeItems.length) {
-                    return '<p class="aprende-empty">Todavia no hay referencias para este tema.</p>';
+                    return '<p class="aprende-empty">Todavía no hay referencias para este tema.</p>';
                 }
 
                 return safeItems
@@ -272,17 +325,19 @@
             }
 
             function showLoading(query) {
+                const title = isTeacherView ? 'Preparando tu planeación docente' : 'Construyendo la lección';
+                const description = isTeacherView
+                    ? `Classify está organizando el resumen, la secuencia de clase, las ideas innovadoras, las tareas y el material de apoyo para <strong>${escapeHtml(query)}</strong>${currentUserSubject ? ` en ${escapeHtml(currentUserSubject)}` : ''}.`
+                    : `Classify está organizando la explicación, el vocabulario, la aplicación pedagógica y las referencias para <strong>${escapeHtml(query)}</strong>.`;
+
                 responseWrap.hidden = false;
                 responseWrap.classList.add('is-visible');
                 responseWrap.innerHTML = `
                     <div class="aprende-response-inner">
                         <div class="aprende-loading-card">
                             <div class="aprende-spinner" aria-hidden="true"></div>
-                            <h2>Construyendo la leccion</h2>
-                            <p>
-                                Classify esta organizando la explicacion, el vocabulario, la aplicacion pedagogica y
-                                las referencias para <strong>${escapeHtml(query)}</strong>.
-                            </p>
+                            <h2>${title}</h2>
+                            <p>${description}</p>
                         </div>
                     </div>
                 `;
@@ -295,7 +350,7 @@
                 responseWrap.innerHTML = `
                     <div class="aprende-response-inner">
                         <article class="aprende-panel aprende-panel--error">
-                            <p class="aprende-error-title">No fue posible generar la leccion</p>
+                            <p class="aprende-error-title">No fue posible generar la lección</p>
                             <p class="aprende-text">${escapeHtml(message)}</p>
                         </article>
                     </div>
@@ -338,13 +393,94 @@
                     renderAI(ai, cleanedQuery);
                 } catch (error) {
                     console.error('Error en Aprende:', error);
-                    showError('Revisa tu conexion e intentalo de nuevo con un tema mas especifico.');
+                    showError('Revisa tu conexión e inténtalo de nuevo con un tema más específico.');
                 }
             }
 
-            function renderAI(ai, query) {
+            function renderTeacherAI(ai, query) {
+                const breadcrumb = escapeHtml(ai.breadcrumb || (currentUserSubject ? `${currentUserSubject} > ${query}` : query) || 'Planeación docente');
+                const title = escapeHtml(ai.title || query || 'Planeación de clase');
+                const intro = formatParagraphs(ai.introduction || 'Planeación sugerida para desarrollar este tema con claridad, apoyo didáctico y cierre efectivo.');
+                const topicSummary = formatParagraphs(ai.topic_summary || ai.content || ai.introduction);
+                const classOrganization = formatParagraphs(ai.class_organization || ai.pedagogical_application);
+                const innovationIdeas = formatList(ai.innovation_ideas);
+                const supportMaterial = formatParagraphs(ai.support_material);
+                const references = formatReferences(ai.references);
+                const homeworkTopics = formatList(ai.homework_topics || ai.suggestions);
+                const keyPoints = formatList(ai.key_points);
+                const successTip = formatParagraphs(ai.success_tip || ai.curiosity);
+                const suggestions = formatSuggestions(ai.suggestions);
+
+                responseWrap.innerHTML = `
+                    <div class="aprende-response-inner aprende-response-inner--teacher">
+                        <div class="aprende-response-header">
+                            <span class="aprende-breadcrumb">${breadcrumb}</span>
+                            <h2 class="aprende-response-title">${title}</h2>
+                            <div class="aprende-response-intro">${intro}</div>
+                        </div>
+
+                        <div class="aprende-response-grid aprende-response-grid--teacher">
+                            <div class="aprende-response-stack">
+                                <article class="aprende-panel">
+                                    <h3>Resumen del tema</h3>
+                                    <div class="aprende-text">${topicSummary}</div>
+                                </article>
+
+                                <article class="aprende-panel aprende-panel--accent">
+                                    <h3>Organización de la clase</h3>
+                                    <div class="aprende-text">${classOrganization || '<p class="aprende-empty">Sin organización sugerida por ahora.</p>'}</div>
+                                </article>
+                            </div>
+
+                            <div class="aprende-response-stack">
+                                <article class="aprende-panel aprende-panel--soft">
+                                    <h3>Ideas de apoyo e innovación</h3>
+                                    <ul class="aprende-list">${innovationIdeas}</ul>
+                                </article>
+
+                                <article class="aprende-panel">
+                                    <h3>Material de apoyo</h3>
+                                    <div class="aprende-panel-copy">
+                                        <div class="aprende-text">${supportMaterial || '<p class="aprende-empty">Sin material de apoyo para mostrar.</p>'}</div>
+                                        <div class="aprende-reference-list">${references}</div>
+                                    </div>
+                                </article>
+                            </div>
+                        </div>
+
+                        <div class="aprende-response-grid aprende-response-grid--teacher-secondary">
+                            <article class="aprende-panel">
+                                <h3>Tareas o temas para dejar en casa</h3>
+                                <ul class="aprende-list">${homeworkTopics}</ul>
+                            </article>
+
+                            <article class="aprende-panel">
+                                <h3>Puntos clave para asegurar el aprendizaje</h3>
+                                <ul class="aprende-list">${keyPoints}</ul>
+                            </article>
+                        </div>
+
+                        <article class="aprende-panel aprende-curiosity">
+                            <h3>Recomendación final para que la clase sea un éxito</h3>
+                            <div class="aprende-text">${successTip || '<p class="aprende-empty">Todavía no hay una recomendación final para compartir.</p>'}</div>
+                        </article>
+
+                        <article class="aprende-panel aprende-suggestions-panel">
+                            <h3>Otros temas para seguir trabajando</h3>
+                            <p class="aprende-help">Puedes usar estas ideas como continuidad, profundización o tarea complementaria.</p>
+                            <div class="aprende-suggestions-row">${suggestions || '<span class="aprende-empty">No hay sugerencias disponibles todavía.</span>'}</div>
+                        </article>
+                    </div>
+                `;
+
+                responseWrap.hidden = false;
+                responseWrap.classList.add('is-visible');
+                responseWrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+
+            function renderDefaultAI(ai, query) {
                 const breadcrumb = escapeHtml(ai.breadcrumb || query || 'Aprende');
-                const title = escapeHtml(ai.title || query || 'Leccion generada');
+                const title = escapeHtml(ai.title || query || 'Lección generada');
                 const intro = formatParagraphs(ai.introduction);
                 const content = formatParagraphs(ai.content);
                 const pedagogical = formatParagraphs(ai.pedagogical_application);
@@ -370,8 +506,8 @@
                                 </article>
 
                                 <article class="aprende-panel aprende-panel--accent">
-                                    <h3>Aplicacion pedagogica</h3>
-                                    <div class="aprende-text">${pedagogical || '<p class="aprende-empty">Sin sugerencias pedagogicas para mostrar.</p>'}</div>
+                                    <h3>Aplicación pedagógica</h3>
+                                    <div class="aprende-text">${pedagogical || '<p class="aprende-empty">Sin sugerencias pedagógicas para mostrar.</p>'}</div>
                                 </article>
                             </div>
 
@@ -395,13 +531,13 @@
 
                         <article class="aprende-panel aprende-curiosity">
                             <h3>Dato para el aula</h3>
-                            <div class="aprende-text">${curiosity || '<p class="aprende-empty">Todavia no hay una curiosidad para compartir.</p>'}</div>
+                            <div class="aprende-text">${curiosity || '<p class="aprende-empty">Todavía no hay una curiosidad para compartir.</p>'}</div>
                         </article>
 
                         <article class="aprende-panel aprende-suggestions-panel">
                             <h3>Seguir explorando</h3>
-                            <p class="aprende-help">Elige uno de estos temas para profundizar sin salir del modulo.</p>
-                            <div class="aprende-suggestions-row">${suggestions || '<span class="aprende-empty">No hay sugerencias disponibles todavia.</span>'}</div>
+                            <p class="aprende-help">Elige uno de estos temas para profundizar sin salir del módulo.</p>
+                            <div class="aprende-suggestions-row">${suggestions || '<span class="aprende-empty">No hay sugerencias disponibles todavía.</span>'}</div>
                         </article>
                     </div>
                 `;
@@ -409,6 +545,15 @@
                 responseWrap.hidden = false;
                 responseWrap.classList.add('is-visible');
                 responseWrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+
+            function renderAI(ai, query) {
+                if (isTeacherView) {
+                    renderTeacherAI(ai, query);
+                    return;
+                }
+
+                renderDefaultAI(ai, query);
             }
 
             startForm.addEventListener('submit', (event) => {

@@ -1,5 +1,6 @@
 package com.classify20.controller;
 
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +10,7 @@ import org.springframework.web.client.RestClient;
 
 import java.util.Map;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Motor de IA de Aprende - Classify (Versión Groq ultra-rápida)
@@ -32,7 +34,8 @@ public class AprendeController {
     }
 
     @PostMapping("/chat")
-    public ResponseEntity<Map<String, Object>> chatWithAI(@RequestBody Map<String, Object> request) {
+    public ResponseEntity<Map<String, Object>> chatWithAI(@RequestBody Map<String, Object> request,
+                                                          HttpSession session) {
         if (apiKey == null || apiKey.isBlank()) {
             return ResponseEntity.status(503)
                     .body(Map.of("error", "El servicio de Aprende no tiene configurada la clave de Groq."));
@@ -43,20 +46,15 @@ public class AprendeController {
             request.put("model", "llama-3.3-70b-versatile");
             request.put("response_format", Map.of("type", "json_object"));
 
-            // Inyectamos el System Prompt Estándar Classify 2.0 (MODERNO)
+            String tipoUsuario = leerAtributoSesion(session, "tipoUsuario").toLowerCase(Locale.ROOT);
+            String materiaUsuario = leerAtributoSesion(session, "materia");
+
+            // Inyectamos el System Prompt según el perfil de la sesión.
             List<Map<String, String>> messages = (List<Map<String, String>>) request.get("messages");
             if (messages != null) {
                 messages.add(0, Map.of(
                     "role", "system", 
-                    "content", "Eres el motor educativo de Classify 2.0, experto en pedagogía. Tu objetivo es proporcionar lecciones profesionales, minimalistas y estructuradas para docentes. " +
-                               "RESPONDE ÚNICAMENTE EN FORMATO JSON. Estructura obligatoria: " +
-                               "{ \"breadcrumb\": \"materia > tema\", \"title\": \"Título Profesional\", \"introduction\": \"Resumen ejecutivo\", " +
-                               "\"content\": \"Desarrollo conceptual profundo y claro\", \"curiosity\": \"Dato de interés para el aula\", " +
-                               "\"pedagogical_application\": \"Guía para el docente: cómo aplicar esto en clase (actividades, debates, dinámicas)\", " +
-                               "\"vocabulary\": [{\"term\": \"término\", \"definition\": \"definición\"}], " +
-                               "\"key_points\": [\"puntos clave de aprendizaje\"], " +
-                               "\"references\": [{\"title\": \"Nombre fuente\", \"url\": \"link real o descriptivo\", \"type\": \"video/lectura\"}], " +
-                               "\"suggestions\": [\"temas para profundizar\"] }"
+                    "content", construirPromptSistema(tipoUsuario, materiaUsuario)
                 ));
             }
 
@@ -103,5 +101,59 @@ public class AprendeController {
             @RequestParam String tema, 
             @RequestParam(required = false) String observaciones) {
         return ResponseEntity.ok(Map.of("success", true, "message", "Clase procesada instantáneamente por Groq"));
+    }
+
+    private String construirPromptSistema(String tipoUsuario, String materiaUsuario) {
+        if ("docente".equals(tipoUsuario)) {
+            String contextoMateria = materiaUsuario == null || materiaUsuario.isBlank()
+                    ? ""
+                    : "Materia principal del docente: " + materiaUsuario + ". ";
+
+            return "Eres el motor pedagógico de Classify 2.0 para docentes. " +
+                    contextoMateria +
+                    "Responde únicamente en JSON válido, sin bloques markdown ni texto adicional. " +
+                    "Tu respuesta debe ayudar a organizar una clase clara, innovadora y lista para ejecutar en el aula. " +
+                    "Prioriza planeación docente, ideas de apoyo, tareas de profundización y material de apoyo real. " +
+                    "Mantén un tono profesional, accionable y breve. " +
+                    "Estructura obligatoria: " +
+                    "{ " +
+                    "\"breadcrumb\": \"materia > tema\", " +
+                    "\"title\": \"Título breve de la clase\", " +
+                    "\"introduction\": \"Resumen ejecutivo de 2 o 3 líneas\", " +
+                    "\"topic_summary\": \"Resumen claro del tema para explicarlo con seguridad\", " +
+                    "\"class_organization\": \"Planeación sugerida con inicio, desarrollo y cierre, incluyendo tiempos aproximados y acciones del docente\", " +
+                    "\"innovation_ideas\": [\"idea concreta para innovar en clase\", \"otra idea concreta\"], " +
+                    "\"support_material\": \"Material físico o digital recomendado y cómo aprovecharlo\", " +
+                    "\"homework_topics\": [\"tema o tarea para dejar en casa\", \"otro tema o tarea\"], " +
+                    "\"key_points\": [\"aprendizaje esencial\", \"otro aprendizaje esencial\"], " +
+                    "\"references\": [{\"title\": \"Nombre de la fuente\", \"url\": \"enlace real\", \"type\": \"video/lectura\", \"source\": \"institución o portal\"}], " +
+                    "\"success_tip\": \"Recomendación final para que la enseñanza sea un éxito\", " +
+                    "\"suggestions\": [\"tema relacionado para profundizar\", \"otro tema relacionado\"] " +
+                    "} " +
+                    "Incluye exactamente 4 referencias confiables y útiles para docentes.";
+        }
+
+        return "Eres el motor educativo de Classify 2.0, experto en pedagogía. " +
+                "Responde únicamente en JSON válido, sin bloques markdown ni texto adicional. " +
+                "Tu objetivo es proporcionar lecciones profesionales, claras y estructuradas para aprendizaje guiado. " +
+                "Estructura obligatoria: " +
+                "{ " +
+                "\"breadcrumb\": \"materia > tema\", " +
+                "\"title\": \"Título profesional\", " +
+                "\"introduction\": \"Resumen ejecutivo\", " +
+                "\"content\": \"Desarrollo conceptual profundo y claro\", " +
+                "\"curiosity\": \"Dato de interés para reforzar el tema\", " +
+                "\"pedagogical_application\": \"Cómo aplicar este contenido en actividades o explicaciones guiadas\", " +
+                "\"vocabulary\": [{\"term\": \"término\", \"definition\": \"definición\"}], " +
+                "\"key_points\": [\"puntos clave de aprendizaje\"], " +
+                "\"references\": [{\"title\": \"Nombre fuente\", \"url\": \"link real o descriptivo\", \"type\": \"video/lectura\", \"source\": \"institución o portal\"}], " +
+                "\"suggestions\": [\"temas para profundizar\"] " +
+                "} " +
+                "Incluye exactamente 4 referencias confiables.";
+    }
+
+    private String leerAtributoSesion(HttpSession session, String atributo) {
+        Object value = session == null ? null : session.getAttribute(atributo);
+        return value == null ? "" : String.valueOf(value).trim();
     }
 }
