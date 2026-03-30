@@ -4,111 +4,1087 @@
 <head>
     <meta charset="UTF-8">
     <title>Classify - Nosotros</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <link rel="stylesheet" th:href="@{/css/chatbot.css}">
     <link rel="shortcut icon" th:href="@{img/favicon.ico}" type="image/x-icon">
+    <style>
+        /* ─── Variables y Minimalismo ────────────────── */
+        :root {
+            --g: #008000;
+            --gd: #013501;
+            --gl: #22CC22;
+            --gl-soft: #AEC9A5;
+            --gl-glow: rgba(34, 204, 34, 0.3);
+            --or: #F38F02;
+            --am: #F5B027;
+            --gr: #64748b;
+            --gr-light: #94a3b8;
+            --bd: #9D9D9C;
+            --sf: #FFFFFF;
+            --sf-glass: rgba(255, 255, 255, 0.7);
+            --ink: #111827;
+            --transition-smooth: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+            --border-radius: 8px;
+            --font-family: 'Nunito Sans', sans-serif;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-family);
+            color: var(--ink);
+            overflow-x: hidden;
+            background-color: var(--sf); /* Recuperar el fondo original */
+            text-align: left;
+        }
+
+        /* ─── Elementos Decorativos de Fondo (Animados) ── */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: radial-gradient(var(--bd) 1.5px, transparent 1.5px);
+            background-size: 30px 30px;
+            opacity: 0.15;
+            pointer-events: none;
+            z-index: -2;
+            animation: moveDotted 60s linear infinite;
+        }
+
+        @keyframes moveDotted {
+            from { background-position: 0 0; }
+            to { background-position: 1000px 0; }
+        }
+
+        .ambient-glow {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, var(--gl-soft) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: -1;
+            filter: blur(50px);
+            animation: floatGlow 15s ease-in-out infinite alternate;
+        }
+        .glow-1 { top: -100px; left: -100px; }
+        .glow-2 { bottom: 10%; right: -200px; animation-delay: -5s; background: radial-gradient(circle, rgba(0,128,0,0.05) 0%, transparent 70%); }
+
+        @keyframes floatGlow {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(50px, 50px) scale(1.1); }
+            100% { transform: translate(-30px, 80px) scale(0.9); }
+        }
+
+        /* ─── Hero Minimalista ──────────────────────── */
+        .n-hero {
+            min-height: calc(100vh - 100px);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            align-items: center;
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 40px; /* Respiración restaurada */
+            position: relative;
+        }
+
+        .n-hero-text { max-width: 560px; }
+
+        .n-kicker {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.85rem;
+            font-weight: 300;
+            letter-spacing: 0.05em;
+            color: var(--ink);
+            margin-bottom: 24px; /* Minimalismo amplio */
+            background: rgba(174, 201, 165, 0.3);
+            padding: 8px 16px;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--gl-soft);
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .n-hero h1 {
+            font-size: clamp(2.2rem, 4.5vw, 3.8rem); /* Elegancia destacada */
+            font-weight: 700;
+            line-height: 1.15;
+            color: var(--ink);
+            letter-spacing: -0.02em;
+            margin-bottom: 24px;
+            animation: fadeInUp 1s ease-out 0.2s backwards;
+        }
+
+        .n-hero h1 em {
+            font-style: normal;
+            background: linear-gradient(135deg, var(--g), var(--gl));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            -webkit-text-fill-color: transparent;
+            display: inline;
+        }
+
+        .n-hero p {
+            font-size: 1.1rem;
+            color: var(--gr);
+            line-height: 1.6;
+            max-width: 500px;
+            margin-bottom: 40px;
+            animation: fadeInUp 1s ease-out 0.4s backwards;
+        }
+
+        .n-cta-row {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            animation: fadeInUp 1s ease-out 0.6s backwards;
+        }
+
+        /* Botones Mejorados Animados */
+        .btn-solid, .btn-line {
+            font-weight: 700; /* Bold */
+            font-size: 0.95rem;
+            padding: 14px 28px;
+            border-radius: var(--border-radius);
+            text-decoration: none;
+            letter-spacing: 0.02em;
+            transition: var(--transition-smooth);
+            position: relative;
+            overflow: hidden;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1;
+        }
+
+        .btn-solid {
+            background: var(--g);
+            color: #fff;
+            box-shadow: 0 10px 20px rgba(0, 128, 0, 0.2);
+            border: 1px solid transparent;
+        }
+        
+        .btn-solid.cta-orange {
+            background: var(--or);
+            box-shadow: 0 10px 20px rgba(243, 143, 2, 0.2);
+        }
+        
+        .btn-solid.cta-orange::before {
+            background: linear-gradient(135deg, #ffa830, var(--or));
+        }
+
+        .btn-solid::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(135deg, var(--gl), var(--g));
+            z-index: -1;
+            transition: opacity 0.3s ease;
+            opacity: 0;
+        }
+
+        .btn-solid:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 25px rgba(0, 128, 0, 0.3);
+        }
+        
+        .btn-solid:hover::before { opacity: 1; }
+
+        .btn-line {
+            color: var(--g);
+            background: transparent;
+            border: 1.5px solid var(--gl);
+        }
+
+        .btn-line:hover {
+            background: var(--gl-soft);
+            transform: translateY(-4px);
+            border-color: var(--g);
+            box-shadow: 0 10px 20px rgba(53, 181, 11, 0.1);
+        }
+
+        /* Hero visual - Tarjetas Flotantes */
+        .n-hero-visual {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            height: 100%;
+            perspective: 1000px;
+        }
+
+        .n-big-letter {
+            font-size: 30rem;
+            color: transparent;
+            -webkit-text-stroke: 1px rgba(53, 181, 11, 0.08); /* Verde claro outline */
+            line-height: 1;
+            user-select: none;
+            position: absolute;
+            right: -40px;
+            animation: pulseSoft 8s ease-in-out infinite;
+        }
+
+        .n-badge-stack {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            gap: 20px; /* Tarjetas esparcidas con estilo */
+            transform-style: preserve-3d;
+        }
+
+        .n-badge {
+            background: rgba(255, 255, 255, 0.85);
+            -webkit-backdrop-filter: blur(12px);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.6);
+            border-radius: 12px;
+            padding: 18px 24px; /* Espacio premium glassmorphism */
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.04);
+            transition: var(--transition-smooth);
+            min-width: 250px;
+            cursor: pointer;
+            animation: fadeInRight 1s ease-out backwards;
+        }
+
+        .n-badge:nth-child(1) { animation-delay: 0.8s; }
+        .n-badge:nth-child(2) { animation-delay: 1.0s; transform: translateX(30px); }
+        .n-badge:nth-child(3) { animation-delay: 1.2s; }
+
+        .n-badge:hover {
+            transform: translateX(-10px) scale(1.02) !important;
+            box-shadow: 0 15px 40px rgba(53, 181, 11, 0.15);
+            background: #ffffff;
+            border-color: var(--gl);
+        }
+
+        .n-badge-dot {
+            width: 12px; height: 12px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            box-shadow: 0 0 10px currentColor;
+            animation: pulseDot 2s infinite;
+        }
+        .n-badge-dot.green { color: var(--gl); background: var(--gl); }
+        .n-badge-dot.orange { color: var(--or); background: var(--or); animation-delay: 0.5s; }
+        .n-badge-dot.yellow { color: var(--am); background: var(--am); animation-delay: 1s; }
+
+        .n-badge strong {
+            font-size: 0.9rem;
+            color: var(--ink);
+            display: block;
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+
+        .n-badge span {
+            font-size: 0.85rem;
+            color: var(--gr);
+            font-weight: 400;
+        }
+
+        /* ─── Stats Elegantes ────────────────────────── */
+        .n-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            border-top: 1px solid var(--bd);
+            border-bottom: 1px solid var(--bd);
+            background: linear-gradient(to right, rgba(255,255,255,0), rgba(255,255,255,0.8), rgba(255,255,255,0));
+        }
+
+        .n-stat {
+            padding: 50px 30px; /* Volúmen recuperado pero sin exceso */
+            border-right: 1px solid var(--bd);
+            text-align: left; /* Manual: Alineación siempre a la izquierda */
+            transition: var(--transition-smooth);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .n-stat::before {
+            content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 3px;
+            background: var(--gl);
+            transform: scaleX(0); transition: transform 0.4s ease; transform-origin: left;
+        }
+
+        .n-stat:last-child { border-right: none; }
+        
+        .n-stat:hover {
+            background: var(--sf);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+            z-index: 1;
+        }
+        
+        .n-stat:hover::before { transform: scaleX(1); }
+
+        .n-stat-num {
+            font-size: 3rem; /* Impresionante número brillante */
+            background: linear-gradient(135deg, var(--g), var(--gl));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            -webkit-text-fill-color: transparent;
+            line-height: 1;
+            display: inline-block;
+            margin-bottom: 12px;
+        }
+
+        .n-stat-txt {
+            font-size: 0.85rem;
+            color: var(--gr);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            display: block;
+        }
+
+        /* ─── Misión / Visión (Tarjetas Flotantes Glass) ── */
+        .n-split {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            max-width: 1200px;
+            margin: 60px auto;
+            gap: 40px;
+            padding: 0 40px;
+        }
+
+        .n-split-panel {
+            padding: 50px 40px;
+            position: relative;
+            overflow: hidden;
+            border-radius: var(--border-radius);
+            transition: var(--transition-smooth);
+        }
+
+        .n-split-panel:first-child {
+            background: linear-gradient(145deg, var(--gd), #024a02);
+            box-shadow: 0 20px 40px rgba(1, 53, 1, 0.2);
+        }
+
+        .n-split-panel:last-child {
+            background: rgba(255, 255, 255, 0.8);
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--bd);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.03);
+        }
+
+        .n-split-panel:hover { transform: translateY(-10px); }
+        .n-split-panel:first-child:hover { box-shadow: 0 30px 60px rgba(1, 53, 1, 0.3); }
+        .n-split-panel:last-child:hover { box-shadow: 0 30px 60px rgba(53, 181, 11, 0.1); border-color: rgba(53, 181, 11, 0.3); }
+
+        .n-split-panel::after {
+            content: attr(data-letter);
+            font-size: 20rem;
+            color: transparent;
+            position: absolute;
+            bottom: -50px;
+            right: -20px;
+            line-height: 1;
+            pointer-events: none;
+            transition: var(--transition-smooth);
+        }
+
+        .n-split-panel:first-child::after { -webkit-text-stroke: 1px rgba(255, 255, 255, 0.04); }
+        .n-split-panel:last-child::after { -webkit-text-stroke: 1px rgba(53, 181, 11, 0.05); }
+        
+        .n-split-panel:hover::after { transform: scale(1.05) rotate(5deg); }
+
+        .n-split-tag {
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            margin-bottom: 24px;
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 50px;
+        }
+
+        .n-split-panel:first-child .n-split-tag {
+            background: rgba(255,255,255,0.1); color: #fff;
+        }
+
+        .n-split-panel:last-child .n-split-tag {
+            background: var(--gl-soft); color: var(--g);
+        }
+
+        .n-split-panel h2 {
+            font-size: 2.8rem;
+            font-weight: 700; /* Bold (H2) */
+            line-height: 1.1;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .n-split-panel:first-child h2 { color: #fff; }
+        .n-split-panel:last-child h2 { color: var(--ink); }
+
+        .n-split-panel p {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            position: relative;
+            z-index: 1;
+        }
+
+        .n-split-panel:first-child p { color: rgba(255, 255, 255, 0.8); }
+        .n-split-panel:last-child p { color: var(--gr); }
+
+        /* ─── Pilares Minimalistas ───────────────────── */
+        .n-pilares {
+            padding: 80px 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .n-section-head {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            margin-bottom: 50px;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+
+        .n-section-head h2 {
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            font-weight: 700; /* Bold (H2) */
+            color: var(--ink);
+            line-height: 1.05;
+        }
+
+        .n-section-head p {
+            font-size: 1.05rem;
+            color: var(--gr);
+            max-width: 400px;
+            line-height: 1.7;
+            text-align: right;
+            border-right: 3px solid var(--gl);
+            padding-right: 20px;
+        }
+
+        .n-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .n-pilar {
+            background: rgba(255, 255, 255, 0.6);
+            -webkit-backdrop-filter: blur(8px);
+            backdrop-filter: blur(8px);
+            border: 1px solid var(--bd);
+            border-radius: var(--border-radius);
+            padding: 50px 40px;
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition-smooth);
+            cursor: default;
+        }
+
+        .n-pilar:hover {
+            background: #fff;
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(53, 181, 11, 0.08);
+            border-color: rgba(53, 181, 11, 0.2);
+        }
+
+        .n-pilar-num {
+            font-size: 5rem;
+            color: transparent;
+            -webkit-text-stroke: 1px rgba(53, 181, 11, 0.15);
+            line-height: 1;
+            position: absolute;
+            top: 15px;
+            right: 25px;
+            font-weight: 400;
+            pointer-events: none;
+            transition: var(--transition-smooth);
+        }
+        
+        .n-pilar:hover .n-pilar-num {
+            color: rgba(53, 181, 11, 0.05);
+            transform: scale(1.1);
+        }
+
+        .n-pilar-icon-wrap {
+            width: 50px; height: 50px;
+            border-radius: 12px;
+            background: var(--gl-soft);
+            display: flex; align-items: center; justify-content: center;
+            margin-bottom: 24px;
+            transition: var(--transition-smooth);
+        }
+        
+        .n-pilar:hover .n-pilar-icon-wrap {
+            background: var(--gl);
+            transform: rotate(10deg);
+        }
+
+        .n-pilar-line { width: 24px; height: 3px; background: var(--g); border-radius: 2px; margin-bottom: 20px; transition: width 0.3s; }
+        .n-pilar:hover .n-pilar-line { width: 48px; background: var(--gl); }
+
+        .n-pilar h3 {
+            font-size: 1.2rem;
+            font-weight: 600; /* SemiBold */
+            color: var(--ink);
+            margin-bottom: 12px;
+            letter-spacing: -0.01em;
+        }
+
+        .n-pilar p {
+            font-size: 0.95rem;
+            color: var(--gr);
+            line-height: 1.75;
+        }
+
+        /* ─── Timeline con Glassmorphism ─────────────── */
+        .n-timeline-wrap {
+            background: var(--sf);
+            padding: 80px 40px;
+            border-top: 1px solid var(--bd);
+        }
+
+        .n-timeline-inner { max-width: 1000px; margin: 0 auto; }
+
+        .n-timeline-head { margin-bottom: 50px; text-align: left; }
+
+        .n-timeline-head h2 {
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            color: var(--ink);
+            font-weight: 700; /* Bold (H2) */
+            margin-top: 16px;
+        }
+
+        .n-tl {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            position: relative;
+        }
+        
+        /* Línea conectora de trayectoria para el Timeline (Manual de marca) */
+        .n-tl::before {
+            content: '';
+            position: absolute;
+            top: 25px; /* Alinear a mitad de los años */
+            left: 5%;
+            width: 90%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--gl-soft), var(--gl), var(--gl-soft));
+            z-index: 0;
+            opacity: 0.6;
+        }
+
+        .n-tl-item {
+            background: var(--sf); /* Blanco fondo estándar */
+            padding: 30px;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--gl-soft); /* Borde sutil */
+            transition: var(--transition-smooth);
+            position: relative;
+            z-index: 1;
+        }
+
+        .n-tl-item:hover {
+            border-color: var(--gl);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 128, 0, 0.08); /* Sombra institucional */
+            background: #fff;
+        }
+
+        .n-tl-year {
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            color: #fff;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+            background: var(--g); /* Verde institucional primario */
+            padding: 6px 16px;
+            border-radius: 50px; /* Botón píldora como el manual */
+            box-shadow: 0 4px 10px rgba(0, 128, 0, 0.3);
+            text-transform: uppercase;
+        }
+
+        .n-tl-item h4 {
+            font-size: 1.15rem;
+            font-weight: 600; /* SemiBold */
+            color: var(--ink);
+            margin-bottom: 12px;
+        }
+
+        .n-tl-item p {
+            font-size: 0.95rem;
+            color: var(--gr);
+            line-height: 1.6;
+        }
+
+        /* ─── Equipo Elegante ────────────────────────── */
+        .n-equipo {
+            padding: 80px 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .n-equipo-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            margin-top: 40px;
+        }
+
+        .n-equipo-card {
+            background: transparent;
+            padding: 40px 30px;
+            border-radius: var(--border-radius);
+            text-align: left;
+            border: 1px solid var(--bd);
+            transition: var(--transition-smooth);
+        }
+
+        .n-equipo-card:hover {
+            background: #fff;
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(53, 181, 11, 0.08);
+            border-color: rgba(53, 181, 11, 0.3);
+        }
+
+        .n-equipo-initial {
+            width: 70px; height: 70px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--gl), var(--g));
+            color: #fff;
+            font-size: 2rem;
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 24px auto;
+            box-shadow: 0 10px 20px rgba(53, 181, 11, 0.3);
+            transition: var(--transition-smooth);
+        }
+        
+        .n-equipo-card:hover .n-equipo-initial {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .n-equipo-card h4 {
+            font-size: 1.1rem;
+            font-weight: 600; /* SemiBold */
+            color: var(--ink);
+            margin-bottom: 8px;
+        }
+
+        .n-equipo-card span {
+            font-size: 0.8rem;
+            color: var(--gr-light);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        /* ─── CTA Final Impresionante ────────────────── */
+        .n-cta-container {
+            padding: 0 40px 80px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .n-cta {
+            background: linear-gradient(135deg, var(--ink), var(--gd));
+            border-radius: var(--border-radius);
+            padding: 80px 60px;
+            display: grid;
+            grid-template-columns: 1fr auto;
+            align-items: center;
+            gap: 48px;
+            box-shadow: 0 30px 60px rgba(1, 53, 1, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .n-cta::before {
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(53,181,11,0.15) 0%, transparent 50%);
+            animation: pulseSoft 10s infinite alternate;
+            pointer-events: none;
+        }
+
+        .n-cta h2 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            color: #fff;
+            font-weight: 400;
+            line-height: 1.1;
+            max-width: 600px;
+            position: relative; z-index: 1;
+        }
+
+        .n-cta h2 em {
+            font-style: normal;
+            color: var(--gl);
+        }
+
+        .n-cta-btns {
+            display: flex; gap: 16px; flex-shrink: 0; flex-wrap: wrap; position: relative; z-index: 1;
+        }
+        
+        .n-cta .btn-solid { background: var(--gl); color: var(--ink); box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
+        .n-cta .btn-solid:hover { background: #fff; transform: translateY(-4px) scale(1.05); }
+        .n-cta .btn-line { border-color: rgba(255,255,255,0.3); color: #fff; }
+        .n-cta .btn-line:hover { background: rgba(255,255,255,0.1); border-color: #fff; }
+
+        /* ─── Animaciones Keyframes ──────────────────── */
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: none; } }
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: none; } }
+        @keyframes fadeInRight { from { opacity: 0; transform: translateX(-40px); } to { opacity: 1; transform: none; } }
+        @keyframes pulseDot { 0% { box-shadow: 0 0 0 0 rgba(currentColor, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(currentColor, 0); } 100% { box-shadow: 0 0 0 0 rgba(currentColor, 0); } }
+        @keyframes pulseSoft { 0% { opacity: 0.6; transform: scale(0.95); } 100% { opacity: 1; transform: scale(1.05); } }
+
+        /* ─── Scroll reveal (Clases de intersección) ─── */
+        .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1), transform 0.8s cubic-bezier(0.25, 1, 0.5, 1); }
+        .reveal.slide-right { transform: translateX(-40px); }
+        .reveal.slide-left { transform: translateX(40px); }
+        .reveal.zoom-in { transform: scale(0.9); }
+        .reveal.on { opacity: 1; transform: none; }
+
+        /* ─── Responsive ─────────────────────────────── */
+        @media (max-width: 992px) {
+            .n-hero { grid-template-columns: 1fr; padding: 120px 24px 60px; text-align: center; }
+            .n-hero-text { margin: 0 auto; }
+            .n-cta-row { justify-content: center; }
+            .n-hero-visual { display: none; }
+            .n-stats { grid-template-columns: 1fr 1fr; border-top: none; }
+            .n-stat { border-bottom: 1px solid var(--bd); }
+            .n-stat:nth-child(even) { border-right: none; }
+            .n-split { grid-template-columns: 1fr; margin: 60px auto; }
+            .n-grid { grid-template-columns: repeat(2, 1fr); }
+            .n-tl { grid-template-columns: 1fr; }
+            .n-equipo-grid { grid-template-columns: repeat(2, 1fr); }
+            .n-cta { grid-template-columns: 1fr; text-align: center; padding: 50px 30px; }
+            .n-cta h2 { margin: 0 auto; }
+            .n-cta-btns { justify-content: center; }
+            .n-section-head { flex-direction: column; align-items: flex-start; gap: 20px; }
+            .n-section-head p { text-align: left; border-right: none; border-left: 3px solid var(--gl); padding-left: 20px; }
+        }
+
+        @media (max-width: 576px) {
+            .n-hero h1 { font-size: 2.5rem; }
+            .n-stats { grid-template-columns: 1fr; }
+            .n-stat { border-right: none; }
+            .n-grid { grid-template-columns: 1fr; }
+            .n-equipo-grid { grid-template-columns: 1fr; }
+            .n-split-panel { padding: 40px 24px; }
+        }
+    </style>
 </head>
 
 <body class="inicioimg">
+    <!-- Glows ambientales de fondo -->
+    <div class="ambient-glow glow-1"></div>
+    <div class="ambient-glow glow-2"></div>
 
-<header class="brandinicio">
-    <div class="brand">
-        <a th:href="@{/inicio}"><img th:src="@{/img/logo.png}" alt="logo" class="logo"></a>
-        <a th:href="@{/inicio}">Classify</a>
-    </div>
-
-    <div class="brand2">
-        <a th:href="@{/inicio}" class="info-btn">Inicio</a>
-        <a th:href="@{/nosotros}" class="info-btn">Nosotros</a>
-        <a th:href="@{/contacto}" class="info-btn">Contacto</a>
-    </div>
-
-    <div class="auth">
-        <a th:href="@{/login}" class="info-btnini2">
-            <img th:src="@{/img/perfilinicio.png}" alt="perfilinicio" class="perfilinicio">Inicio Sesión
-        </a>
-        <a th:href="@{/registro}" class="info-btnini">Registro</a>
-    </div>
-
-    <div>
-        <a href="#info" class="info-btn">
-            <img th:src="@{/img/informacion.png}" alt="Información" class="info-icon">
-        </a>
-        <div id="info" class="info-panel">
-            <div class="info-content">
-                <a href="#" class="close">&times;</a>
-                <img th:src="@{/img/agenda.png}" width="80px">
-                <h4>¿Porque agendas tus clases?</h4>
-                <p class="textoinfo">...</p>
+    <header class="brandinicio">
+        <div class="brand">
+            <a th:href="@{/inicio}"><img th:src="@{/img/logo.png}" alt="logo" class="logo"></a>
+            <a th:href="@{/inicio}">Classify</a>
+        </div>
+        <div class="brand2">
+            <a th:href="@{/inicio}" class="info-btn">Inicio</a>
+            <a th:href="@{/nosotros}" class="info-btn" style="color: var(--gl);">Nosotros</a>
+            <a th:href="@{/contacto}" class="info-btn">Contacto</a>
+        </div>
+        <div class="auth">
+            <a th:href="@{/login}" class="info-btnini2">
+                <img th:src="@{/img/perfilinicio.png}" alt="perfilinicio" class="perfilinicio">Inicio Sesión
+            </a>
+            <a th:href="@{/registro}" class="info-btnini">Registro</a>
+        </div>
+        <div>
+            <a href="#info" class="info-btn">
+                <img th:src="@{/img/informacion.png}" alt="Información" class="info-icon">
+            </a>
+            <div id="info" class="info-panel">
+                <div class="info-content">
+                    <a href="#" class="close">&times;</a>
+                    <img th:src="@{/img/agenda.png}" width="80px">
+                    <h4>¿Por qué agendar tus clases?</h4>
+                    <p class="textoinfo">Classify centraliza la gestión académica del Colegio Moralba Sur Oriental en un
+                        solo lugar accesible desde cualquier dispositivo.</p>
+                </div>
             </div>
         </div>
-    </div>
-</header>
+    </header>
 
-<main class="contentnosotros">
-    <section class="nosotros-wrapper">
-        <h1 class="titlenosotros">CLASSIFY</h1>
-        <h3>Gestión y aprendizaje para colegios de Bogotá</h3>
-        <p>
-            Classify centraliza la programación de clases, la gestión de estudiantes y los recursos administrativos en
-            un único lugar. Nuestra solución permite a directores, coordinadores y profesores reducir tiempo en tareas
-            operativas y enfocarse en lo más importante: la calidad educativa.
-        </p>
-        <p>
-            Con herramientas intuitivas para agendar clases, asignar espacios y materiales, llevar asistencia y generar
-            reportes, Classify facilita la toma de decisiones basada en datos reales y mejora la coordinación entre
-            todas las áreas del colegio.
-        </p>
+    <main>
 
-        <ul class="beneficios">
-            <li><strong>Agendamiento inteligente:</strong> calendario centralizado con control de disponibilidad y notificaciones.</li>
-            <li><strong>Optimización de recursos:</strong> uso eficiente de salones, equipos y personal docente.</li>
-            <li><strong>Seguimiento académico:</strong> historial de clases, progreso de estudiantes y reportes automáticos.</li>
-            <li><strong>Administración simplificada:</strong> automatización de tareas administrativas y generación de informes.</li>
-            <li><strong>Local y seguro:</strong> pensado de manera exclusiva para las necesidades y normativas de los Colegios en Bogotá.</li>
-        </ul>
-        
-        <div class="cta-group">
-            <a href="#" class="cta-button" aria-label="Solicitar demostración de Classify">Solicitar demostración</a>
-            <a href="#" class="cta-link">Conocer el plan por colegios</a>
+        <!-- HERO -->
+        <section class="n-hero">
+            <div class="n-hero-text">
+                <span class="n-kicker">Todo unificado en Classify</span>
+                <h1>Gestión académica<br>pensada para <em>Bogotá</em></h1>
+                <p>Centralizamos la programación, los materiales y la comunicación del Colegio Moralba Sur Oriental en
+                    una sola plataforma, para que cada minuto se invierta en educación pura.</p>
+                <div class="n-cta-row">
+                    <a th:href="@{/contacto}" class="btn-solid cta-orange">Hablar con nosotros</a>
+                    <a th:href="@{/agenda}" class="btn-line">Ver la plataforma</a>
+                </div>
+            </div>
+            <div class="n-hero-visual" aria-hidden="true">
+                <span class="n-big-letter">C</span>
+                <div class="n-badge-stack">
+                    <div class="n-badge">
+                        <span class="n-badge-dot green"></span>
+                        <div>
+                            <strong>Agendamiento inteligente</strong>
+                            <span>Clases, espacios y horarios fluidos</span>
+                        </div>
+                    </div>
+                    <div class="n-badge">
+                        <span class="n-badge-dot orange"></span>
+                        <div>
+                            <strong>Gestión de materiales</strong>
+                            <span>Acceso centralizado e instantáneo</span>
+                        </div>
+                    </div>
+                    <div class="n-badge">
+                        <span class="n-badge-dot yellow"></span>
+                        <div>
+                            <strong>Seguimiento académico</strong>
+                            <span>Notas, reportes y métricas de progreso</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- STATS -->
+        <div class="n-stats">
+            <div class="n-stat reveal zoom-in">
+                <span class="n-stat-num">500+</span>
+                <span class="n-stat-txt">Estudiantes activos</span>
+            </div>
+            <div class="n-stat reveal zoom-in" style="transition-delay:0.1s">
+                <span class="n-stat-num">30+</span>
+                <span class="n-stat-txt">Docentes conectados</span>
+            </div>
+            <div class="n-stat reveal zoom-in" style="transition-delay:0.2s">
+                <span class="n-stat-num">1</span>
+                <span class="n-stat-txt">Institución pionera</span>
+            </div>
+            <div class="n-stat reveal zoom-in" style="transition-delay:0.3s">
+                <span class="n-stat-num">2026</span>
+                <span class="n-stat-txt">Año de lanzamiento</span>
+            </div>
         </div>
-        
-        <p class="small">
-            ¿Quieres que adaptemos Classify a las necesidades específicas de tu institución en Bogotá?
-            <br>
-            Escríbenos y haremos una propuesta personalizada.
-        </p>
-    </section>
-</main>
 
-<footer class="f4">
-    <div class="f4-logo">
-        <div class="f4-icon">C</div>
-        <span class="f4-logo-name">Classify</span>
-    </div>
-    <p class="f4-desc">
-        Plataforma educativa para agendar clases, gestionar materiales y conectar a toda la comunidad del Colegio Moralba Sur Oriental.
-    </p>
-    <nav class="f4-links">
-        <a href="#">Inicio</a>
-        <a href="#">Nosotros</a>
-        <a href="#">Agenda</a>
-        <a href="#">Materiales</a>
-        <a href="#">Noticias</a>
-        <a href="#">Soporte</a>
-        <a href="#">Contacto</a>
-        <a href="#">Privacidad</a>
-        <a href="#">Términos</a>
-    </nav>
-    <div class="f4-divider"></div>
-    <p class="f4-copy">© 2026 Classify — Todos los derechos reservados · Bogotá, Colombia</p>
+        <!-- MISIÓN / VISIÓN -->
+        <div class="n-split">
+            <div class="n-split-panel reveal slide-right" data-letter="M">
+                <span class="n-split-tag">Misión</span>
+                <h2>Por qué existimos</h2>
+                <p>Reducir radicalmente el tiempo que docentes y coordinadores dedican a tareas operativas burocráticas, devolviéndoselo a la
+                    enseñanza de calidad. Classify organiza la gestión para que la institución respire claridad y funcione sin
+                    fricciones diarias.</p>
+            </div>
+            <div class="n-split-panel reveal slide-left" data-letter="V">
+                <span class="n-split-tag">Visión</span>
+                <h2>A dónde vamos</h2>
+                <p>Convertirnos en el ecosistema digital de referencia para la gestión educativa en los colegios de Bogotá, construyendo una
+                    comunidad académica más organizada, informada, transparente y profundamente conectada.</p>
+            </div>
+        </div>
+
+        <!-- PILARES -->
+        <section class="n-pilares">
+            <div class="n-section-head reveal">
+                <h2>Lo que nos<br><em style="color:var(--gl); font-style:normal;">define</em></h2>
+                <p>Principios fundamentales e inquebrantables que guían cada decisión de desarrollo, diseño e interacción con la comunidad.</p>
+            </div>
+            <div class="n-grid">
+                <div class="n-pilar reveal">
+                    <span class="n-pilar-num" aria-hidden="true">01</span>
+                    <div class="n-pilar-line"></div>
+                    <h3>Enfoque local</h3>
+                    <p>Arquitectura diseñada exclusivamente para la vibrante realidad de los colegios bogotanos, sus normativas y sus operaciones.</p>
+                </div>
+                <div class="n-pilar reveal" style="transition-delay:0.1s">
+                    <span class="n-pilar-num" aria-hidden="true">02</span>
+                    <div class="n-pilar-line"></div>
+                    <h3>Claridad ante todo</h3>
+                    <p>Interfaces cristalinas sin ruido visual. Cualquier persona puede dominar la plataforma desde el primer minuto, sin largos manuales.</p>
+                </div>
+                <div class="n-pilar reveal" style="transition-delay:0.2s">
+                    <span class="n-pilar-num" aria-hidden="true">03</span>
+                    <div class="n-pilar-line"></div>
+                    <h3>Datos con propósito</h3>
+                    <p>Métricas y reportes que transforman el historial académico en decisiones estratégicas para la dirección institucional.</p>
+                </div>
+                <div class="n-pilar reveal" style="transition-delay:0.3s">
+                    <span class="n-pilar-num" aria-hidden="true">04</span>
+                    <div class="n-pilar-line"></div>
+                    <h3>Privacidad blindada</h3>
+                    <p>Garantizamos la custodia de los datos estudiantiles bajo rigurosos protocolos de encriptación y máxima soberanía digital.</p>
+                </div>
+                <div class="n-pilar reveal" style="transition-delay:0.4s">
+                    <span class="n-pilar-num" aria-hidden="true">05</span>
+                    <div class="n-pilar-line"></div>
+                    <h3>Comunidad unida</h3>
+                    <p>Un ágora digital unificada donde estudiantes, docentes y familias convergen, fortaleciendo el tejido social del colegio.</p>
+                </div>
+                <div class="n-pilar reveal" style="transition-delay:0.5s">
+                    <span class="n-pilar-num" aria-hidden="true">06</span>
+                    <div class="n-pilar-line"></div>
+                    <h3>Evolución constante</h3>
+                    <p>Nuestro código está vivo. Implementamos mejoras iterativas basadas en el feedback visceral de los usuarios diarios.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- TIMELINE -->
+        <div class="n-timeline-wrap">
+            <div class="n-timeline-inner">
+                <div class="n-timeline-head reveal">
+                    <span class="n-kicker" style="background:var(--gl); color:#fff; border:none; display:inline-block;">Historia</span>
+                    <h2>Nuestra Evolución</h2>
+                </div>
+                <div class="n-tl">
+                    <div class="n-tl-item reveal">
+                        <span class="n-tl-year">2025 — Semilla</span>
+                        <h4>Nace la idea</h4>
+                        <p>El equipo fundador identifica el rezago analógico y burocrático. Se trazan los primeros wireframes hacia la modernidad escolar.</p>
+                    </div>
+                    <div class="n-tl-item reveal" style="transition-delay:0.1s">
+                        <span class="n-tl-year">2025 — MVP</span>
+                        <h4>Primera versión</h4>
+                        <p>Lanzamiento del núcleo funcional: dashboard, agenda y materiales. Validado mediante pruebas piloto in situ con el cuerpo docente.</p>
+                    </div>
+                    <div class="n-tl-item reveal" style="transition-delay:0.2s">
+                        <span class="n-tl-year">2026 — Presente</span>
+                        <h4>Classify 2.0</h4>
+                        <p>Consolidación del ecosistema. Una UI/UX hiper optimizada, reportes dinámicos y fluidez operativa para todo el organigrama.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- EQUIPO -->
+        <section class="n-equipo">
+            <div class="n-section-head reveal">
+                <h2>Cerebros <br><em style="color:var(--gl); font-style:normal;">detrás del código</em></h2>
+                <p>Nuestra sinergia se basa en el compromiso genuino por potenciar el desarrollo tecnológico del Colegio Moralba Sur Oriental.</p>
+            </div>
+            <div class="n-equipo-grid">
+                <div class="n-equipo-card reveal">
+                    <div class="n-equipo-initial">D</div>
+                    <h4>Desarrollo Core</h4>
+                    <span>Ingeniería & Backend</span>
+                </div>
+                <div class="n-equipo-card reveal" style="transition-delay:0.1s">
+                    <div class="n-equipo-initial">D</div>
+                    <h4>Product Design</h4>
+                    <span>Experiencia & Interfaces</span>
+                </div>
+                <div class="n-equipo-card reveal" style="transition-delay:0.2s">
+                    <div class="n-equipo-initial">A</div>
+                    <h4>Consultoría</h4>
+                    <span>Pedagogía & Procesos</span>
+                </div>
+                <div class="n-equipo-card reveal" style="transition-delay:0.3s">
+                    <div class="n-equipo-initial">C</div>
+                    <h4>Aliado Estratégico</h4>
+                    <span>Institución Educativa</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA FINAL -->
+        <div class="n-cta-container">
+            <div class="n-cta reveal zoom-in">
+                <h2>¿Listo para elevar <br><em>tu institución al futuro?</em></h2>
+                <div class="n-cta-btns">
+                    <a th:href="@{/contacto}" class="btn-solid cta-orange">Solicitar Demo</a>
+                    <a th:href="@{/aprende}" class="btn-line">Ver Funciones</a>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="f4">
+        <div class="f4-logo">
+            <div class="f4-icon">C</div>
+            <span class="f4-logo-name">Classify</span>
+        </div>
+        <p class="f4-desc">
+            Plataforma educativa de vanguardia para la gestión magistral de clases, materiales y comunicación dentro del Colegio
+            Moralba Sur Oriental.
+        </p>
+        <nav class="f4-links">
+            <a th:href="@{/inicio}">Inicio</a>
+            <a th:href="@{/nosotros}">Nosotros</a>
+            <a th:href="@{/agenda}">Agenda</a>
+            <a th:href="@{/materiales}">Materiales</a>
+            <a th:href="@{/noticias}">Noticias</a>
+            <a th:href="@{/soporte}">Soporte</a>
+            <a th:href="@{/contacto}">Contacto</a>
+            <a th:href="@{/politicas}">Privacidad</a>
+            <a th:href="@{/terminos}">Términos</a>
+        </nav>
+        <div class="f4-divider"></div>
+        <p class="f4-copy">© 2026 Classify — Código y Diseño desde Bogotá, Colombia.</p>
     </footer>
 
+    <script th:src="@{/js/chatbot.js}"></script>
+    <script>
+        // Animaciones dinámicas al hacer scroll con IntersectionObserver optimizado
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.15
+        };
 
-<script th:src="@{/js/chatbot.js}"></script>
+        const io = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('on');
+                    // Opcional: Descomentar si solo se quiere animar una vez
+                    // observer.unobserve(entry.target);
+                } else {
+                    // Remover clase si queremos que la animación ocurra cada vez que entra en pantalla
+                    // entry.target.classList.remove('on'); 
+                }
+            });
+        }, observerOptions);
 
-
-
+        document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+        
+        // Parallax sutil en hero visual
+        document.addEventListener('mousemove', (e) => {
+            const parallaxEls = document.querySelectorAll('.n-badge');
+            if(!parallaxEls.length) return;
+            const x = (e.clientX / window.innerWidth - 0.5) * 20;
+            const y = (e.clientY / window.innerHeight - 0.5) * 20;
+            
+            parallaxEls.forEach((el, index) => {
+                const depth = (index + 1) * 0.5;
+                el.style.transform = `translate(${x * depth}px, ${y * depth}px)`;
+            });
+        });
+    </script>
 </body>
-
 </html>
