@@ -67,6 +67,12 @@
                 </div>
                 <h2 class="login-title">Iniciar sesión</h2>
 
+                <div th:if="${successMessage}"
+                     class="alert alert-success"
+                     style="color: #1f6f2b; padding: 10px; margin: 10px 0; border: 1px solid #84cc16; border-radius: 5px; background-color: #efffef;">
+                    <span th:text="${successMessage}"></span>
+                </div>
+
                 <div th:if="${mensaje}"
                      class="alert alert-danger"
                      style="color: red; padding: 10px; margin: 10px 0; border: 1px solid red; border-radius: 5px; background-color: #ffe6e6;">
