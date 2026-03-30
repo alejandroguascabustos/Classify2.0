@@ -54,6 +54,7 @@ public class AuthController {
     }
 
     private void guardarSesion(HttpSession session, SesionUsuario usuario) {
+        session.setMaxInactiveInterval(10 * 60);
         session.setAttribute("usuarioId", usuario.id());
         session.setAttribute("nombre", usuario.nombre());
         session.setAttribute("apellido", usuario.apellido());

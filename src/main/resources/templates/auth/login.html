@@ -79,6 +79,12 @@
                     <span th:text="${mensaje}"></span>
                 </div>
 
+                <div th:if="${param.expired}"
+                     class="alert alert-warning"
+                     style="color: #8a5a00; padding: 10px; margin: 10px 0; border: 1px solid #facc15; border-radius: 5px; background-color: #fff7d6;">
+                    Tu sesión expiró por inactividad. Ingresa nuevamente.
+                </div>
+
                 <form th:action="@{/login/auth}" method="post" class="login-form">
                     <div class="mb-3">
                         <label class="labellogin">Ingresa tu usuario</label>

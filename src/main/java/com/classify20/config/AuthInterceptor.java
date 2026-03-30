@@ -16,7 +16,13 @@ public class AuthInterceptor implements HandlerInterceptor {
             return true;
         }
 
-        response.sendRedirect(request.getContextPath() + "/login");
+        String loginUrl = request.getContextPath() + "/login";
+        if (request.getRequestedSessionId() != null && !request.isRequestedSessionIdValid()) {
+            response.sendRedirect(loginUrl + "?expired=1");
+            return false;
+        }
+
+        response.sendRedirect(loginUrl);
         return false;
     }
 }
