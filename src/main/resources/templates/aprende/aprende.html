@@ -3,51 +3,59 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Classify - Aprende</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classify - Aprende con IA</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/aprende.css}">
     <link rel="stylesheet" th:href="@{/css/chatbot.css}">
-    <link rel="shortcut icon" th:href="@{img/favicon.ico}" type="image/x-icon">
+    <link rel="shortcut icon" th:href="@{/favicon.ico}" type="image/x-icon">
 </head>
 
-<body>
+<body class="inicioimg aprende-page"
+      th:attr="data-user-role=${session.tipoUsuario},data-user-subject=${session.materia}">
     <header class="brandinicio">
         <div class="brand">
             <a th:href="@{/inicio}"><img th:src="@{/img/logo.png}" alt="logo" class="logo"></a>
             <a th:href="@{/inicio}">Classify</a>
         </div>
-    
-        <div class="brand2">
-            <a th:href="@{/inicio}" class="info-btn" alt="Información">Inicio</a>
-            <a th:href="@{/nosotros}" class="info-btn" alt="Información">Nosotros</a>
-            <a th:href="@{/contacto}" class="info-btn" alt="Información">Contacto</a>
 
+        <div class="brand2">
+            <a th:href="@{/inicio}" class="info-btn" alt="Informacion">Inicio</a>
+            <a th:href="@{/nosotros}" class="info-btn" alt="Informacion">Nosotros</a>
+            <a th:href="@{/contacto}" class="info-btn" alt="Informacion">Contacto</a>
         </div>
-    
-        <div>
+
+        <div class="header-tools">
             <a href="#info" class="info-btn">
-                <img th:src="@{/img/informacion.png}" alt="Información" class="info-icon">
+                <img th:src="@{/img/informacion.png}" alt="Informacion" class="info-icon">
+            </a>
+            <a th:href="@{/logout}" class="logout-btn" title="Cerrar sesion" aria-label="Cerrar sesion">
+                <img th:src="@{/img/salida.png}" alt="Cerrar sesion" class="logout-icon">
             </a>
             <div id="info" class="info-panel">
                 <div class="info-content">
                     <a href="#" class="close">&times;</a>
-                    <img th:src="@{/img/agenda.png}" width="80px">
+                    <img th:src="@{/img/agenda.png}" width="80">
                     <h4>¿Porque agendas tus clases?</h4>
-                    <p class="textoinfo">La implementación de una página web para agendar clases en el colegio Moralba Sur
-                        Oriental representa una herramienta fundamental para optimizar la organización académica y fortalecer
-                        la comunicación entre estudiantes, docentes y la institución.
+                    <p class="textoinfo">La implementacion de una pagina web para agendar clases en el colegio Moralba Sur
+                        Oriental representa una herramienta fundamental para optimizar la organizacion academica y fortalecer
+                        la comunicacion entre estudiantes, docentes y la institucion.
                         En primer lugar, la plataforma permite a los estudiantes y padres de familia consultar de manera
-                        rápida y sencilla la disponibilidad de horarios, evitando confusiones o cruces en las actividades
-                        escolares. <br><br>Esto garantiza una mejor planificación del tiempo, tanto dentro como fuera del
+                        rapida y sencilla la disponibilidad de horarios, evitando confusiones o cruces en las actividades
+                        escolares. <br><br>Esto garantiza una mejor planificacion del tiempo, tanto dentro como fuera del
                         aula.
-                        Por otro lado, los docentes pueden gestionar sus clases de forma más eficiente, teniendo acceso a un
-                        calendario actualizado que facilita la asignación de sesiones, el control de grupos y la preparación
-                        de materiales según la programación establecida. <br><br>
-                        Asimismo, para la institución educativa, la página constituye una herramienta de gestión que
-                        contribuye a la transparencia y al orden administrativo, ya que centraliza la información en un solo
-                        espacio digital accesible desde cualquier dispositivo con conexión a internet. <br><br>
-                        En conclusión, contar con una página para agendar clases no solo mejora la organización interna del
-                        colegio Moralba Sur Oriental, sino que también fortalece la participación de la comunidad educativa,
-                        fomenta la puntualidad, evita pérdidas de tiempo y favorece un proceso de enseñanza-aprendizaje más
+                        Por otro lado, los docentes pueden gestionar sus clases de forma mas eficiente, teniendo acceso a un
+                        calendario actualizado que facilita la asignacion de sesiones, el control de grupos y la preparacion
+                        de materiales segun la programacion establecida. <br><br>
+                        Asimismo, para la institucion educativa, la pagina constituye una herramienta de gestion que
+                        contribuye a la transparencia y al orden administrativo, ya que centraliza la informacion en un solo
+                        espacio digital accesible desde cualquier dispositivo con conexion a internet. <br><br>
+                        En conclusion, contar con una pagina para agendar clases no solo mejora la organizacion interna del
+                        colegio Moralba Sur Oriental, sino que tambien fortalece la participacion de la comunidad educativa,
+                        fomenta la puntualidad, evita perdidas de tiempo y favorece un proceso de ensenanza-aprendizaje mas
                         planificado y efectivo.
                     </p>
                 </div>
@@ -61,43 +69,135 @@
         <span></span>
     </div>
 
-
-
-    <aside class="sidebar">
-        <!-- botón común para todos -->
-        <a th:href="@{/menu}" class="inicioprincipal">
-            <img th:src="@{/img/home.png}" width="25px" class="imgmenu"> Inicio
-        </a>
-
-            <a th:href="@{/agenda}" class="inicioprincipal2">
-                <img th:src="@{/img/agenda.png}" width="25px" class="imgmenu">Agendar clase
+    <div class="contenidoinicio">
+        <aside class="sidebar">
+            <a th:href="@{/menu}" class="inicioprincipal">
+                <img th:src="@{/img/home.png}" width="25" class="imgmenu"> Inicio
             </a>
 
             <a th:href="@{/agenda}" class="inicioprincipal2">
-                <img th:src="@{/img/noticias.png}" width="25px" class="imgmenu">Noticias
+                <img th:src="@{/img/agenda.png}" width="25" class="imgmenu">Agendar clase
             </a>
+
+            <a th:href="@{/noticias}" class="inicioprincipal2">
+                <img th:src="@{/img/noticias.png}" width="25" class="imgmenu">Noticias
+            </a>
+
             <a th:href="@{/programacion}" class="inicioprincipal2">
-                <img th:src="@{/img/programacion.png}" width="25px" class="imgmenu">Programación
+                <img th:src="@{/img/programacion.png}" width="25" class="imgmenu">Programacion
             </a>
+
             <a th:href="@{/aprende}" class="inicioprincipal2">
-                <img th:src="@{/img/aprende.png}" width="25px" class="imgmenu">Aprende
+                <img th:src="@{/img/aprende.png}" width="25" class="imgmenu">Aprende
             </a>
+
             <a th:href="@{/contacta}" class="inicioprincipal2">
-                <img th:src="@{/img/gmail.png}" width="25px" class="imgmenu">Contacta a un profe
+                <img th:src="@{/img/gmail.png}" width="25" class="imgmenu">Contacta a un profe
             </a>
+
             <a th:href="@{/mismateriales}" class="inicioprincipal2">
-                <img th:src="@{/img/descargamaterial.png}" width="25px" class="imgmenu">Mis Materiales
+                <img th:src="@{/img/descargamaterial.png}" width="25" class="imgmenu">Mis Materiales
             </a>
+
             <a th:href="@{/materiales}" class="inicioprincipal2">
-                <img th:src="@{/img/upload.png}" width="25px" class="imgmenu">Carga Materiales
+                <img th:src="@{/img/upload.png}" width="25" class="imgmenu">Carga Materiales
             </a>
-            <a th:href="@{#}" class="inicioprincipal3">
-                <img th:src="@{/img/config.png}" width="25px" class="imgmenu3">Configuración
-            </a>
-    </aside>
 
+        </aside>
 
+        <main class="contentaprende">
+            <div class="aprende-shell">
+                <section class="aprende-hero">
+                    <div class="aprende-hero-main">
+                        <span class="aprende-kicker">Módulo Aprende</span>
+                        <h1>Aprende con <span class="aprende-title-accent">IA</span></h1>
+                        <p class="aprende-lead"
+                           th:if="${session.tipoUsuario == 'docente'}">
+                            Organiza clases, resume conceptos y recibe ideas de apoyo, tareas y material útil para llevar una mejor sesión al aula.
+                        </p>
+                        <p class="aprende-lead"
+                           th:unless="${session.tipoUsuario == 'docente'}">
+                            Explica temas, resume conceptos y prepara clases con una estructura clara, útil y lista para el aula.
+                        </p>
+                        <div class="aprende-reference-strip" aria-label="Referencias sugeridas">
+                            <span class="aprende-reference-label">Fuentes sugeridas</span>
+                            <a href="https://es.khanacademy.org" target="_blank" rel="noopener noreferrer" class="aprende-inline-ref">Khan Academy</a>
+                            <a href="https://www.colombiaaprende.edu.co" target="_blank" rel="noopener noreferrer" class="aprende-inline-ref">Colombia Aprende</a>
+                            <a href="https://www.britannica.com" target="_blank" rel="noopener noreferrer" class="aprende-inline-ref">Britannica</a>
+                            <a href="https://kids.nationalgeographic.com" target="_blank" rel="noopener noreferrer" class="aprende-inline-ref">NatGeo Kids</a>
+                        </div>
+                    </div>
 
+                    <aside class="aprende-hero-side"
+                           aria-label="Resumen del modulo Aprende"
+                           th:if="${session.tipoUsuario == 'docente'}">
+                        <span class="aprende-side-label">Planeación docente</span>
+                        <h2>Respuesta lista para llevar al aula</h2>
+                        <ul class="aprende-side-list">
+                            <li>Resumen claro del tema para explicarlo con seguridad.</li>
+                            <li>Organización sugerida de la clase con inicio, desarrollo y cierre.</li>
+                            <li>Ideas innovadoras, tareas y material de apoyo para reforzar.</li>
+                        </ul>
+                    </aside>
+
+                    <aside class="aprende-hero-side"
+                           aria-label="Resumen del modulo Aprende"
+                           th:unless="${session.tipoUsuario == 'docente'}">
+                        <span class="aprende-side-label">Respuesta profesional</span>
+                        <h2>Contenido breve, claro y útil</h2>
+                        <ul class="aprende-side-list">
+                            <li>Desarrollo estructurado del tema.</li>
+                            <li>Aplicación pedagógica para clase.</li>
+                            <li>Referencias confiables para ampliar.</li>
+                        </ul>
+                    </aside>
+                </section>
+
+                <section class="aprende-card aprende-composer">
+                    <div class="aprende-composer-top">
+                        <div class="aprende-card-head">
+                            <div>
+                                <p class="aprende-section-label">Empieza aquí</p>
+                                <h2>Escribe el tema que vas a enseñar</h2>
+                            </div>
+                        </div>
+                        <p class="aprende-composer-note"
+                           th:if="${session.tipoUsuario == 'docente'}">Recibe una guía con resumen, secuencia de clase, ideas innovadoras y material de apoyo.</p>
+                        <p class="aprende-composer-note"
+                           th:unless="${session.tipoUsuario == 'docente'}">Genera una guía puntual, clara y lista para trabajar en clase.</p>
+                    </div>
+
+                    <form id="ai-chat-form-start" class="aprende-form" autocomplete="off">
+                        <label for="ai-user-query-start">Tema o pregunta</label>
+                        <div class="aprende-input-shell">
+                            <div class="aprende-form-row">
+                                <input
+                                    type="text"
+                                    id="ai-user-query-start"
+                                    placeholder="Ej. Fotosíntesis, fracciones o independencia de Colombia"
+                                    required>
+                                <button type="submit" class="aprende-button">Generar lección</button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <div class="aprende-suggestions-wrap">
+                        <span class="aprende-suggestions-label">Sugerencias rápidas</span>
+                        <div class="aprende-suggestions" aria-label="Temas sugeridos">
+                            <button type="button" class="aprende-chip" data-followup="El ciclo del agua">El ciclo del agua</button>
+                            <button type="button" class="aprende-chip" data-followup="La fotosíntesis">La fotosíntesis</button>
+                            <button type="button" class="aprende-chip" data-followup="Fracciones básicas">Fracciones básicas</button>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="ai-response-wrapper" class="aprende-response" hidden aria-live="polite"></section>
+            </div>
+        </main>
+    </div>
+
+    <script th:src="@{/js/active.js}"></script>
+    <script th:src="@{/js/chatbot.js}"></script>
     <script>
         (() => {
             "use strict";
@@ -105,6 +205,9 @@
             const startForm = document.getElementById('ai-chat-form-start');
             const topicInput = document.getElementById('ai-user-query-start');
             const responseWrap = document.getElementById('ai-response-wrapper');
+            const currentUserRole = String(document.body.dataset.userRole || '').trim().toLowerCase();
+            const isTeacherView = currentUserRole === 'docente';
+            const currentUserSubject = String(document.body.dataset.userSubject || '').trim();
 
             function escapeHtml(value = '') {
                 return String(value)
@@ -131,8 +234,87 @@
                     .join('');
             }
 
+            function humanizeKey(value = '') {
+                return String(value)
+                    .replace(/_/g, ' ')
+                    .replace(/\b\w/g, letter => letter.toUpperCase())
+                    .trim();
+            }
+
+            function toInlineText(value) {
+                if (value == null) {
+                    return '';
+                }
+
+                if (typeof value === 'string') {
+                    return value.trim();
+                }
+
+                if (Array.isArray(value)) {
+                    return value
+                        .map(toInlineText)
+                        .filter(Boolean)
+                        .join(', ');
+                }
+
+                if (typeof value === 'object') {
+                    return Object.values(value)
+                        .map(toInlineText)
+                        .filter(Boolean)
+                        .join(' · ');
+                }
+
+                return String(value).trim();
+            }
+
+            function formatRichParagraphs(value, emptyMessage = 'Sin contenido disponible por ahora.') {
+                if (value == null || value === '') {
+                    return `<p class="aprende-empty">${escapeHtml(emptyMessage)}</p>`;
+                }
+
+                if (typeof value === 'string') {
+                    return formatParagraphs(value);
+                }
+
+                if (Array.isArray(value)) {
+                    const lines = value.map(toInlineText).filter(Boolean);
+                    if (!lines.length) {
+                        return `<p class="aprende-empty">${escapeHtml(emptyMessage)}</p>`;
+                    }
+
+                    return lines.map(line => `<p>${escapeHtml(line)}</p>`).join('');
+                }
+
+                if (typeof value === 'object') {
+                    const entries = Object.entries(value)
+                        .map(([key, content]) => {
+                            const text = toInlineText(content);
+                            if (!text) {
+                                return '';
+                            }
+                            return `<p><strong>${escapeHtml(humanizeKey(key))}:</strong> ${escapeHtml(text)}</p>`;
+                        })
+                        .filter(Boolean);
+
+                    if (!entries.length) {
+                        return `<p class="aprende-empty">${escapeHtml(emptyMessage)}</p>`;
+                    }
+
+                    return entries.join('');
+                }
+
+                return `<p>${escapeHtml(String(value))}</p>`;
+            }
+
             function formatList(items) {
-                const safeItems = Array.isArray(items) ? items.filter(Boolean) : [];
+                const safeItems = Array.isArray(items)
+                    ? items.filter(Boolean)
+                    : typeof items === 'string'
+                        ? items
+                            .split(/\n+/)
+                            .map(item => item.replace(/^[-•]\s*/, '').trim())
+                            .filter(Boolean)
+                        : [];
                 if (!safeItems.length) {
                     return '<li class="aprende-empty">Sin información disponible.</li>';
                 }
@@ -214,18 +396,164 @@
                     .join('');
             }
 
+            function formatDetailCards(items, options = {}) {
+                const safeItems = Array.isArray(items) ? items.filter(Boolean) : [];
+                if (!safeItems.length) {
+                    return `<p class="aprende-empty">${escapeHtml(options.emptyMessage || 'Sin información disponible por ahora.')}</p>`;
+                }
+
+                return `
+                    <div class="aprende-detail-grid">
+                        ${safeItems.map((item, index) => {
+                            if (typeof item === 'string') {
+                                return `
+                                    <article class="aprende-detail-card">
+                                        <h4>${escapeHtml(`${options.defaultTitle || 'Recurso'} ${index + 1}`)}</h4>
+                                        <p>${escapeHtml(item)}</p>
+                                    </article>
+                                `;
+                            }
+
+                            const title = escapeHtml(item.title || item.resource || item.task || item.idea || `${options.defaultTitle || 'Detalle'} ${index + 1}`);
+                            const firstLabel = options.firstLabel || 'Propósito';
+                            const secondLabel = options.secondLabel || 'Aplicación';
+                            const thirdLabel = options.thirdLabel || 'Apoyo';
+                            const firstText = toInlineText(item.purpose || item.use || item.teacher_action || item.objetivo || item.para_que);
+                            const secondText = toInlineText(item.execution || item.moment || item.delivery || item.student_action || item.implementacion || item.como);
+                            const thirdText = toInlineText(item.resources || item.evidence || item.support || item.recurso || item.evaluacion);
+
+                            return `
+                                <article class="aprende-detail-card">
+                                    <h4>${title}</h4>
+                                    ${firstText ? `<p><strong>${escapeHtml(firstLabel)}:</strong> ${escapeHtml(firstText)}</p>` : ''}
+                                    ${secondText ? `<p><strong>${escapeHtml(secondLabel)}:</strong> ${escapeHtml(secondText)}</p>` : ''}
+                                    ${thirdText ? `<p><strong>${escapeHtml(thirdLabel)}:</strong> ${escapeHtml(thirdText)}</p>` : ''}
+                                </article>
+                            `;
+                        }).join('')}
+                    </div>
+                `;
+            }
+
+            function normalizePlanStage(title, value) {
+                if (!value) {
+                    return null;
+                }
+
+                if (typeof value === 'string') {
+                    return {
+                        title,
+                        time: '',
+                        teacherAction: '',
+                        studentAction: value,
+                        resources: '',
+                        evidence: ''
+                    };
+                }
+
+                if (Array.isArray(value)) {
+                    const text = value.map(toInlineText).filter(Boolean).join(' · ');
+                    return {
+                        title,
+                        time: '',
+                        teacherAction: '',
+                        studentAction: text,
+                        resources: '',
+                        evidence: ''
+                    };
+                }
+
+                return {
+                    title: title || humanizeKey(value.stage || value.phase || value.etapa || 'Etapa'),
+                    time: toInlineText(value.time || value.duration || value.tiempo),
+                    teacherAction: toInlineText(value.teacher_action || value.teacherAction || value.docente || value.accion_docente),
+                    studentAction: toInlineText(value.student_action || value.studentAction || value.estudiantes || value.accion_estudiante || value.activity || value.actividad),
+                    resources: toInlineText(value.resources || value.recursos),
+                    evidence: toInlineText(value.evidence || value.evaluacion || value.evaluation || value.evidencia)
+                };
+            }
+
+            function extractPlanStages(plan) {
+                if (!plan || typeof plan !== 'object') {
+                    return [];
+                }
+
+                if (Array.isArray(plan)) {
+                    return plan
+                        .map(item => normalizePlanStage('', item))
+                        .filter(Boolean);
+                }
+
+                const fromStages = Array.isArray(plan.stages) ? plan.stages : [];
+                if (fromStages.length) {
+                    return fromStages
+                        .map(item => normalizePlanStage('', item))
+                        .filter(Boolean);
+                }
+
+                return [
+                    normalizePlanStage('Inicio', plan.inicio),
+                    normalizePlanStage('Desarrollo', plan.desarrollo),
+                    normalizePlanStage('Cierre', plan.cierre)
+                ].filter(Boolean);
+            }
+
+            function formatTeacherPlan(plan) {
+                if (!plan) {
+                    return '<p class="aprende-empty">Sin organización sugerida por ahora.</p>';
+                }
+
+                if (typeof plan === 'string') {
+                    return formatParagraphs(plan);
+                }
+
+                const objective = toInlineText(plan.objective || plan.objetivo || plan.goal);
+                const stages = extractPlanStages(plan);
+
+                if (!objective && !stages.length) {
+                    return formatRichParagraphs(plan, 'Sin organización sugerida por ahora.');
+                }
+
+                return `
+                    <div class="aprende-plan">
+                        ${objective ? `
+                            <div class="aprende-plan-objective">
+                                <span class="aprende-mini-label">Objetivo de la clase</span>
+                                <p>${escapeHtml(objective)}</p>
+                            </div>
+                        ` : ''}
+                        <div class="aprende-plan-grid">
+                            ${stages.map(stage => `
+                                <article class="aprende-plan-stage">
+                                    <div class="aprende-plan-stage-head">
+                                        <h4>${escapeHtml(stage.title || 'Etapa')}</h4>
+                                        ${stage.time ? `<span class="aprende-plan-time">${escapeHtml(stage.time)}</span>` : ''}
+                                    </div>
+                                    ${stage.teacherAction ? `<p><strong>Docente:</strong> ${escapeHtml(stage.teacherAction)}</p>` : ''}
+                                    ${stage.studentAction ? `<p><strong>Estudiantes:</strong> ${escapeHtml(stage.studentAction)}</p>` : ''}
+                                    ${stage.resources ? `<p><strong>Recursos:</strong> ${escapeHtml(stage.resources)}</p>` : ''}
+                                    ${stage.evidence ? `<p><strong>Verificación:</strong> ${escapeHtml(stage.evidence)}</p>` : ''}
+                                </article>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
             function showLoading(query) {
+                const title = isTeacherView ? 'Preparando tu planeación docente' : 'Construyendo la lección';
+                const description = isTeacherView
+                    ? `Classify está organizando el resumen, la secuencia de clase, las ideas innovadoras, las tareas y el material de apoyo para <strong>${escapeHtml(query)}</strong>${currentUserSubject ? ` en ${escapeHtml(currentUserSubject)}` : ''}.`
+                    : `Classify está organizando la explicación, el vocabulario, la aplicación pedagógica y las referencias para <strong>${escapeHtml(query)}</strong>.`;
+
                 responseWrap.hidden = false;
                 responseWrap.classList.add('is-visible');
                 responseWrap.innerHTML = `
                     <div class="aprende-response-inner">
                         <div class="aprende-loading-card">
                             <div class="aprende-spinner" aria-hidden="true"></div>
-                            <h2>Construyendo la lección</h2>
-                            <p>
-                                Classify está organizando la explicación, el vocabulario, la aplicación pedagógica y
-                                las referencias para <strong>${escapeHtml(query)}</strong>.
-                            </p>
+                            <h2>${title}</h2>
+                            <p>${description}</p>
                         </div>
                     </div>
                 `;
@@ -285,7 +613,106 @@
                 }
             }
 
-            function renderAI(ai, query) {
+            function renderTeacherAI(ai, query) {
+                const breadcrumb = escapeHtml(ai.breadcrumb || (currentUserSubject ? `${currentUserSubject} > ${query}` : query) || 'Planeación docente');
+                const title = escapeHtml(ai.title || query || 'Planeación de clase');
+                const intro = formatRichParagraphs(ai.introduction || 'Planeación sugerida para desarrollar este tema con claridad, apoyo didáctico y cierre efectivo.');
+                const topicSummary = formatRichParagraphs(ai.topic_summary || ai.content || ai.introduction);
+                const classOrganization = formatTeacherPlan(ai.class_organization || ai.pedagogical_application);
+                const innovationIdeas = formatDetailCards(ai.innovation_ideas, {
+                    defaultTitle: 'Idea',
+                    firstLabel: 'Propósito',
+                    secondLabel: 'Cómo aplicarla',
+                    thirdLabel: 'Apoyo',
+                    emptyMessage: 'Sin ideas de innovación para mostrar.'
+                });
+                const supportMaterial = formatDetailCards(ai.support_material, {
+                    defaultTitle: 'Material',
+                    firstLabel: 'Cómo usarlo',
+                    secondLabel: 'Momento sugerido',
+                    thirdLabel: 'Apoyo',
+                    emptyMessage: 'Sin material de apoyo para mostrar.'
+                });
+                const references = formatReferences(ai.references);
+                const homeworkTopics = formatDetailCards(ai.homework_topics, {
+                    defaultTitle: 'Tarea',
+                    firstLabel: 'Qué refuerza',
+                    secondLabel: 'Entrega',
+                    thirdLabel: 'Apoyo',
+                    emptyMessage: 'Sin tareas sugeridas por ahora.'
+                });
+                const keyPoints = formatList(ai.key_points);
+                const successTip = formatRichParagraphs(ai.success_tip || ai.curiosity);
+                const suggestions = formatSuggestions(ai.suggestions);
+
+                responseWrap.innerHTML = `
+                    <div class="aprende-response-inner aprende-response-inner--teacher">
+                        <div class="aprende-response-header">
+                            <span class="aprende-breadcrumb">${breadcrumb}</span>
+                            <h2 class="aprende-response-title">${title}</h2>
+                            <div class="aprende-response-intro">${intro}</div>
+                        </div>
+
+                        <div class="aprende-response-grid aprende-response-grid--teacher">
+                            <div class="aprende-response-stack">
+                                <article class="aprende-panel">
+                                    <h3>Resumen del tema</h3>
+                                    <div class="aprende-text">${topicSummary}</div>
+                                </article>
+
+                                <article class="aprende-panel aprende-panel--accent">
+                                    <h3>Organización de la clase</h3>
+                                    <div class="aprende-text">${classOrganization}</div>
+                                </article>
+                            </div>
+
+                            <div class="aprende-response-stack">
+                                <article class="aprende-panel aprende-panel--soft">
+                                    <h3>Ideas de apoyo e innovación</h3>
+                                    ${innovationIdeas}
+                                </article>
+
+                                <article class="aprende-panel">
+                                    <h3>Material de apoyo</h3>
+                                    <div class="aprende-panel-copy">
+                                        ${supportMaterial}
+                                        <div class="aprende-reference-list">${references}</div>
+                                    </div>
+                                </article>
+                            </div>
+                        </div>
+
+                        <div class="aprende-response-grid aprende-response-grid--teacher-secondary">
+                            <article class="aprende-panel">
+                                <h3>Tareas o temas para dejar en casa</h3>
+                                ${homeworkTopics}
+                            </article>
+
+                            <article class="aprende-panel">
+                                <h3>Puntos clave para asegurar el aprendizaje</h3>
+                                <ul class="aprende-list">${keyPoints}</ul>
+                            </article>
+                        </div>
+
+                        <article class="aprende-panel aprende-curiosity">
+                            <h3>Recomendación final para que la clase sea un éxito</h3>
+                            <div class="aprende-text">${successTip || '<p class="aprende-empty">Todavía no hay una recomendación final para compartir.</p>'}</div>
+                        </article>
+
+                        <article class="aprende-panel aprende-suggestions-panel">
+                            <h3>Otros temas para seguir trabajando</h3>
+                            <p class="aprende-help">Puedes usar estas ideas como continuidad, profundización o tarea complementaria.</p>
+                            <div class="aprende-suggestions-row">${suggestions || '<span class="aprende-empty">No hay sugerencias disponibles todavía.</span>'}</div>
+                        </article>
+                    </div>
+                `;
+
+                responseWrap.hidden = false;
+                responseWrap.classList.add('is-visible');
+                responseWrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+
+            function renderDefaultAI(ai, query) {
                 const breadcrumb = escapeHtml(ai.breadcrumb || query || 'Aprende');
                 const title = escapeHtml(ai.title || query || 'Lección generada');
                 const intro = formatParagraphs(ai.introduction);
@@ -298,53 +725,77 @@
                 const suggestions = formatSuggestions(ai.suggestions);
 
                 responseWrap.innerHTML = `
-                    <div class="aprende-response-inner">
-                        <div class="aprende-response-header">
+                    <div class="aprende-response-inner aprende-response-inner--student">
+                        <div class="aprende-response-header aprende-response-header--student">
                             <span class="aprende-breadcrumb">${breadcrumb}</span>
                             <h2 class="aprende-response-title">${title}</h2>
                             <div class="aprende-response-intro">${intro}</div>
                         </div>
 
-                        <div class="aprende-response-grid">
+                        <div class="aprende-response-grid aprende-response-grid--student-primary">
                             <div class="aprende-response-stack">
-                                <article class="aprende-panel">
+                                <article class="aprende-panel aprende-panel--feature">
                                     <h3>Desarrollo del tema</h3>
                                     <div class="aprende-text">${content}</div>
-                                </article>
-
-                                <article class="aprende-panel aprende-panel--accent">
-                                    <h3>Aplicación pedagógica</h3>
-                                    <div class="aprende-text">${pedagogical || '<p class="aprende-empty">Sin sugerencias pedagógicas para mostrar.</p>'}</div>
                                 </article>
                             </div>
 
                             <div class="aprende-response-stack">
-                                <article class="aprende-panel">
+                                <article class="aprende-panel aprende-panel--soft">
                                     <h3>Vocabulario clave</h3>
                                     <div class="aprende-vocab-grid">${vocabulary}</div>
                                 </article>
 
                                 <article class="aprende-panel">
-                                    <h3>Material de consulta</h3>
-                                    <div class="aprende-reference-list">${references}</div>
+                                    <h3>Conceptos para recordar</h3>
+                                    <ul class="aprende-list">${keyPoints}</ul>
                                 </article>
                             </div>
                         </div>
 
-                        <article class="aprende-panel">
-                            <h3>Conceptos para recordar</h3>
-                            <ul class="aprende-list">${keyPoints}</ul>
-                        </article>
+                        <div class="aprende-response-grid aprende-response-grid--student-secondary">
+                            <article class="aprende-panel aprende-panel--accent">
+                                <h3>Aplicación pedagógica</h3>
+                                <div class="aprende-text">${pedagogical || '<p class="aprende-empty">Sin sugerencias pedagógicas para mostrar.</p>'}</div>
+                            </article>
 
-                        <article class="aprende-panel aprende-curiosity">
-                            <h3>Dato para el aula</h3>
-                            <div class="aprende-text">${curiosity || '<p class="aprende-empty">Todavía no hay una curiosidad para compartir.</p>'}</div>
-                        </article>
+                            <article class="aprende-panel">
+                                <h3>Material de consulta</h3>
+                                <div class="aprende-reference-list">${references}</div>
+                            </article>
+                        </div>
 
-                        <article class="aprende-panel aprende-suggestions-panel">
-                            <h3>Seguir explorando</h3>
-                            <p class="aprende-help">Elige uno de estos temas para profundizar sin salir del módulo.</p>
-                            <div class="aprende-suggestions-row">${suggestions || '<span class="aprende-empty">No hay sugerencias disponibles todavía.</span>'}</div>
+                        <div class="aprende-response-grid aprende-response-grid--student-footer">
+                            <article class="aprende-panel aprende-curiosity">
+                                <h3>Dato para el aula</h3>
+                                <div class="aprende-text">${curiosity || '<p class="aprende-empty">Todavía no hay una curiosidad para compartir.</p>'}</div>
+                            </article>
+
+                            <article class="aprende-panel aprende-suggestions-panel">
+                                <h3>Seguir explorando</h3>
+                                <p class="aprende-help">Elige uno de estos temas para profundizar sin salir del módulo.</p>
+                                <div class="aprende-suggestions-row">${suggestions || '<span class="aprende-empty">No hay sugerencias disponibles todavía.</span>'}</div>
+                            </article>
+                        </div>
+
+                        <article class="aprende-panel aprende-panel--summary">
+                            <div class="aprende-summary-grid">
+                                <div class="aprende-summary-item">
+                                    <span class="aprende-mini-label">Vocabulario</span>
+                                    <strong>${Array.isArray(ai.vocabulary) ? ai.vocabulary.length : 0}</strong>
+                                    <span>conceptos clave</span>
+                                </div>
+                                <div class="aprende-summary-item">
+                                    <span class="aprende-mini-label">Referencias</span>
+                                    <strong>${Array.isArray(ai.references) ? Math.min(ai.references.length, 4) : 0}</strong>
+                                    <span>fuentes para ampliar</span>
+                                </div>
+                                <div class="aprende-summary-item">
+                                    <span class="aprende-mini-label">Siguiente paso</span>
+                                    <strong>${Array.isArray(ai.suggestions) ? ai.suggestions.length : 0}</strong>
+                                    <span>ideas para seguir aprendiendo</span>
+                                </div>
+                            </div>
                         </article>
                     </div>
                 `;
@@ -352,6 +803,15 @@
                 responseWrap.hidden = false;
                 responseWrap.classList.add('is-visible');
                 responseWrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+
+            function renderAI(ai, query) {
+                if (isTeacherView) {
+                    renderTeacherAI(ai, query);
+                    return;
+                }
+
+                renderDefaultAI(ai, query);
             }
 
             startForm.addEventListener('submit', (event) => {
@@ -367,4 +827,5 @@
         })();
     </script>
 </body>
+
 </html>
