@@ -114,23 +114,42 @@ public class AprendeController {
                     "Responde únicamente en JSON válido, sin bloques markdown ni texto adicional. " +
                     "Tu respuesta debe ayudar a organizar una clase clara, innovadora y lista para ejecutar en el aula. " +
                     "Prioriza planeación docente, ideas de apoyo, tareas de profundización y material de apoyo real. " +
-                    "Mantén un tono profesional, accionable y breve. " +
+                    "Evita respuestas superficiales o genéricas. No uses frases vacías como 'es importante' sin explicar cómo se aplica en clase. " +
+                    "Mantén un tono profesional, accionable, concreto y útil para un docente que necesita llevar esto al aula hoy. " +
                     "Estructura obligatoria: " +
                     "{ " +
                     "\"breadcrumb\": \"materia > tema\", " +
                     "\"title\": \"Título breve de la clase\", " +
-                    "\"introduction\": \"Resumen ejecutivo de 2 o 3 líneas\", " +
-                    "\"topic_summary\": \"Resumen claro del tema para explicarlo con seguridad\", " +
-                    "\"class_organization\": \"Planeación sugerida con inicio, desarrollo y cierre, incluyendo tiempos aproximados y acciones del docente\", " +
-                    "\"innovation_ideas\": [\"idea concreta para innovar en clase\", \"otra idea concreta\"], " +
-                    "\"support_material\": \"Material físico o digital recomendado y cómo aprovecharlo\", " +
-                    "\"homework_topics\": [\"tema o tarea para dejar en casa\", \"otro tema o tarea\"], " +
+                    "\"introduction\": \"Resumen ejecutivo de 2 o 3 líneas que explique qué logrará la clase\", " +
+                    "\"topic_summary\": \"Resumen desarrollado en 2 o 3 párrafos con conceptos clave, relaciones y ejemplos cotidianos\", " +
+                    "\"class_organization\": { " +
+                    "\"objective\": \"aprendizaje esperado en una frase\", " +
+                    "\"inicio\": {\"time\": \"10 min\", \"teacher_action\": \"qué hace el docente\", \"student_action\": \"qué hacen los estudiantes\", \"resources\": [\"recurso\"], \"evidence\": \"cómo validar comprensión\"}, " +
+                    "\"desarrollo\": {\"time\": \"25 min\", \"teacher_action\": \"qué hace el docente\", \"student_action\": \"qué hacen los estudiantes\", \"resources\": [\"recurso\"], \"evidence\": \"cómo validar comprensión\"}, " +
+                    "\"cierre\": {\"time\": \"10 min\", \"teacher_action\": \"qué hace el docente\", \"student_action\": \"qué hacen los estudiantes\", \"resources\": [\"recurso\"], \"evidence\": \"cómo validar comprensión\"} " +
+                    "}, " +
+                    "\"innovation_ideas\": [" +
+                    "{\"title\": \"nombre breve\", \"purpose\": \"para qué sirve\", \"execution\": \"cómo aplicarla en clase\"}, " +
+                    "{\"title\": \"nombre breve\", \"purpose\": \"para qué sirve\", \"execution\": \"cómo aplicarla en clase\"}, " +
+                    "{\"title\": \"nombre breve\", \"purpose\": \"para qué sirve\", \"execution\": \"cómo aplicarla en clase\"}" +
+                    "], " +
+                    "\"support_material\": [" +
+                    "{\"resource\": \"material o recurso\", \"use\": \"cómo usarlo\", \"moment\": \"en qué momento de la clase\"}, " +
+                    "{\"resource\": \"material o recurso\", \"use\": \"cómo usarlo\", \"moment\": \"en qué momento de la clase\"}, " +
+                    "{\"resource\": \"material o recurso\", \"use\": \"cómo usarlo\", \"moment\": \"en qué momento de la clase\"}" +
+                    "], " +
+                    "\"homework_topics\": [" +
+                    "{\"task\": \"actividad o tarea\", \"purpose\": \"qué refuerza\", \"delivery\": \"cómo entregarla o presentarla\"}, " +
+                    "{\"task\": \"actividad o tarea\", \"purpose\": \"qué refuerza\", \"delivery\": \"cómo entregarla o presentarla\"}, " +
+                    "{\"task\": \"actividad o tarea\", \"purpose\": \"qué refuerza\", \"delivery\": \"cómo entregarla o presentarla\"}" +
+                    "], " +
                     "\"key_points\": [\"aprendizaje esencial\", \"otro aprendizaje esencial\"], " +
                     "\"references\": [{\"title\": \"Nombre de la fuente\", \"url\": \"enlace real\", \"type\": \"video/lectura\", \"source\": \"institución o portal\"}], " +
-                    "\"success_tip\": \"Recomendación final para que la enseñanza sea un éxito\", " +
+                    "\"success_tip\": \"Recomendación final concreta para que la enseñanza sea un éxito\", " +
                     "\"suggestions\": [\"tema relacionado para profundizar\", \"otro tema relacionado\"] " +
                     "} " +
-                    "Incluye exactamente 4 referencias confiables y útiles para docentes.";
+                    "Incluye exactamente 4 referencias confiables y útiles para docentes. " +
+                    "Prioriza fuentes educativas e institucionales y evita Wikipedia salvo que no exista una mejor alternativa.";
         }
 
         return "Eres el motor educativo de Classify 2.0, experto en pedagogía. " +

@@ -234,6 +234,78 @@
                     .join('');
             }
 
+            function humanizeKey(value = '') {
+                return String(value)
+                    .replace(/_/g, ' ')
+                    .replace(/\b\w/g, letter => letter.toUpperCase())
+                    .trim();
+            }
+
+            function toInlineText(value) {
+                if (value == null) {
+                    return '';
+                }
+
+                if (typeof value === 'string') {
+                    return value.trim();
+                }
+
+                if (Array.isArray(value)) {
+                    return value
+                        .map(toInlineText)
+                        .filter(Boolean)
+                        .join(', ');
+                }
+
+                if (typeof value === 'object') {
+                    return Object.values(value)
+                        .map(toInlineText)
+                        .filter(Boolean)
+                        .join(' · ');
+                }
+
+                return String(value).trim();
+            }
+
+            function formatRichParagraphs(value, emptyMessage = 'Sin contenido disponible por ahora.') {
+                if (value == null || value === '') {
+                    return `<p class="aprende-empty">${escapeHtml(emptyMessage)}</p>`;
+                }
+
+                if (typeof value === 'string') {
+                    return formatParagraphs(value);
+                }
+
+                if (Array.isArray(value)) {
+                    const lines = value.map(toInlineText).filter(Boolean);
+                    if (!lines.length) {
+                        return `<p class="aprende-empty">${escapeHtml(emptyMessage)}</p>`;
+                    }
+
+                    return lines.map(line => `<p>${escapeHtml(line)}</p>`).join('');
+                }
+
+                if (typeof value === 'object') {
+                    const entries = Object.entries(value)
+                        .map(([key, content]) => {
+                            const text = toInlineText(content);
+                            if (!text) {
+                                return '';
+                            }
+                            return `<p><strong>${escapeHtml(humanizeKey(key))}:</strong> ${escapeHtml(text)}</p>`;
+                        })
+                        .filter(Boolean);
+
+                    if (!entries.length) {
+                        return `<p class="aprende-empty">${escapeHtml(emptyMessage)}</p>`;
+                    }
+
+                    return entries.join('');
+                }
+
+                return `<p>${escapeHtml(String(value))}</p>`;
+            }
+
             function formatList(items) {
                 const safeItems = Array.isArray(items)
                     ? items.filter(Boolean)
@@ -324,6 +396,150 @@
                     .join('');
             }
 
+            function formatDetailCards(items, options = {}) {
+                const safeItems = Array.isArray(items) ? items.filter(Boolean) : [];
+                if (!safeItems.length) {
+                    return `<p class="aprende-empty">${escapeHtml(options.emptyMessage || 'Sin información disponible por ahora.')}</p>`;
+                }
+
+                return `
+                    <div class="aprende-detail-grid">
+                        ${safeItems.map((item, index) => {
+                            if (typeof item === 'string') {
+                                return `
+                                    <article class="aprende-detail-card">
+                                        <h4>${escapeHtml(`${options.defaultTitle || 'Recurso'} ${index + 1}`)}</h4>
+                                        <p>${escapeHtml(item)}</p>
+                                    </article>
+                                `;
+                            }
+
+                            const title = escapeHtml(item.title || item.resource || item.task || item.idea || `${options.defaultTitle || 'Detalle'} ${index + 1}`);
+                            const firstLabel = options.firstLabel || 'Propósito';
+                            const secondLabel = options.secondLabel || 'Aplicación';
+                            const thirdLabel = options.thirdLabel || 'Apoyo';
+                            const firstText = toInlineText(item.purpose || item.use || item.teacher_action || item.objetivo || item.para_que);
+                            const secondText = toInlineText(item.execution || item.moment || item.delivery || item.student_action || item.implementacion || item.como);
+                            const thirdText = toInlineText(item.resources || item.evidence || item.support || item.recurso || item.evaluacion);
+
+                            return `
+                                <article class="aprende-detail-card">
+                                    <h4>${title}</h4>
+                                    ${firstText ? `<p><strong>${escapeHtml(firstLabel)}:</strong> ${escapeHtml(firstText)}</p>` : ''}
+                                    ${secondText ? `<p><strong>${escapeHtml(secondLabel)}:</strong> ${escapeHtml(secondText)}</p>` : ''}
+                                    ${thirdText ? `<p><strong>${escapeHtml(thirdLabel)}:</strong> ${escapeHtml(thirdText)}</p>` : ''}
+                                </article>
+                            `;
+                        }).join('')}
+                    </div>
+                `;
+            }
+
+            function normalizePlanStage(title, value) {
+                if (!value) {
+                    return null;
+                }
+
+                if (typeof value === 'string') {
+                    return {
+                        title,
+                        time: '',
+                        teacherAction: '',
+                        studentAction: value,
+                        resources: '',
+                        evidence: ''
+                    };
+                }
+
+                if (Array.isArray(value)) {
+                    const text = value.map(toInlineText).filter(Boolean).join(' · ');
+                    return {
+                        title,
+                        time: '',
+                        teacherAction: '',
+                        studentAction: text,
+                        resources: '',
+                        evidence: ''
+                    };
+                }
+
+                return {
+                    title: title || humanizeKey(value.stage || value.phase || value.etapa || 'Etapa'),
+                    time: toInlineText(value.time || value.duration || value.tiempo),
+                    teacherAction: toInlineText(value.teacher_action || value.teacherAction || value.docente || value.accion_docente),
+                    studentAction: toInlineText(value.student_action || value.studentAction || value.estudiantes || value.accion_estudiante || value.activity || value.actividad),
+                    resources: toInlineText(value.resources || value.recursos),
+                    evidence: toInlineText(value.evidence || value.evaluacion || value.evaluation || value.evidencia)
+                };
+            }
+
+            function extractPlanStages(plan) {
+                if (!plan || typeof plan !== 'object') {
+                    return [];
+                }
+
+                if (Array.isArray(plan)) {
+                    return plan
+                        .map(item => normalizePlanStage('', item))
+                        .filter(Boolean);
+                }
+
+                const fromStages = Array.isArray(plan.stages) ? plan.stages : [];
+                if (fromStages.length) {
+                    return fromStages
+                        .map(item => normalizePlanStage('', item))
+                        .filter(Boolean);
+                }
+
+                return [
+                    normalizePlanStage('Inicio', plan.inicio),
+                    normalizePlanStage('Desarrollo', plan.desarrollo),
+                    normalizePlanStage('Cierre', plan.cierre)
+                ].filter(Boolean);
+            }
+
+            function formatTeacherPlan(plan) {
+                if (!plan) {
+                    return '<p class="aprende-empty">Sin organización sugerida por ahora.</p>';
+                }
+
+                if (typeof plan === 'string') {
+                    return formatParagraphs(plan);
+                }
+
+                const objective = toInlineText(plan.objective || plan.objetivo || plan.goal);
+                const stages = extractPlanStages(plan);
+
+                if (!objective && !stages.length) {
+                    return formatRichParagraphs(plan, 'Sin organización sugerida por ahora.');
+                }
+
+                return `
+                    <div class="aprende-plan">
+                        ${objective ? `
+                            <div class="aprende-plan-objective">
+                                <span class="aprende-mini-label">Objetivo de la clase</span>
+                                <p>${escapeHtml(objective)}</p>
+                            </div>
+                        ` : ''}
+                        <div class="aprende-plan-grid">
+                            ${stages.map(stage => `
+                                <article class="aprende-plan-stage">
+                                    <div class="aprende-plan-stage-head">
+                                        <h4>${escapeHtml(stage.title || 'Etapa')}</h4>
+                                        ${stage.time ? `<span class="aprende-plan-time">${escapeHtml(stage.time)}</span>` : ''}
+                                    </div>
+                                    ${stage.teacherAction ? `<p><strong>Docente:</strong> ${escapeHtml(stage.teacherAction)}</p>` : ''}
+                                    ${stage.studentAction ? `<p><strong>Estudiantes:</strong> ${escapeHtml(stage.studentAction)}</p>` : ''}
+                                    ${stage.resources ? `<p><strong>Recursos:</strong> ${escapeHtml(stage.resources)}</p>` : ''}
+                                    ${stage.evidence ? `<p><strong>Verificación:</strong> ${escapeHtml(stage.evidence)}</p>` : ''}
+                                </article>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
             function showLoading(query) {
                 const title = isTeacherView ? 'Preparando tu planeación docente' : 'Construyendo la lección';
                 const description = isTeacherView
@@ -400,15 +616,33 @@
             function renderTeacherAI(ai, query) {
                 const breadcrumb = escapeHtml(ai.breadcrumb || (currentUserSubject ? `${currentUserSubject} > ${query}` : query) || 'Planeación docente');
                 const title = escapeHtml(ai.title || query || 'Planeación de clase');
-                const intro = formatParagraphs(ai.introduction || 'Planeación sugerida para desarrollar este tema con claridad, apoyo didáctico y cierre efectivo.');
-                const topicSummary = formatParagraphs(ai.topic_summary || ai.content || ai.introduction);
-                const classOrganization = formatParagraphs(ai.class_organization || ai.pedagogical_application);
-                const innovationIdeas = formatList(ai.innovation_ideas);
-                const supportMaterial = formatParagraphs(ai.support_material);
+                const intro = formatRichParagraphs(ai.introduction || 'Planeación sugerida para desarrollar este tema con claridad, apoyo didáctico y cierre efectivo.');
+                const topicSummary = formatRichParagraphs(ai.topic_summary || ai.content || ai.introduction);
+                const classOrganization = formatTeacherPlan(ai.class_organization || ai.pedagogical_application);
+                const innovationIdeas = formatDetailCards(ai.innovation_ideas, {
+                    defaultTitle: 'Idea',
+                    firstLabel: 'Propósito',
+                    secondLabel: 'Cómo aplicarla',
+                    thirdLabel: 'Apoyo',
+                    emptyMessage: 'Sin ideas de innovación para mostrar.'
+                });
+                const supportMaterial = formatDetailCards(ai.support_material, {
+                    defaultTitle: 'Material',
+                    firstLabel: 'Cómo usarlo',
+                    secondLabel: 'Momento sugerido',
+                    thirdLabel: 'Apoyo',
+                    emptyMessage: 'Sin material de apoyo para mostrar.'
+                });
                 const references = formatReferences(ai.references);
-                const homeworkTopics = formatList(ai.homework_topics || ai.suggestions);
+                const homeworkTopics = formatDetailCards(ai.homework_topics, {
+                    defaultTitle: 'Tarea',
+                    firstLabel: 'Qué refuerza',
+                    secondLabel: 'Entrega',
+                    thirdLabel: 'Apoyo',
+                    emptyMessage: 'Sin tareas sugeridas por ahora.'
+                });
                 const keyPoints = formatList(ai.key_points);
-                const successTip = formatParagraphs(ai.success_tip || ai.curiosity);
+                const successTip = formatRichParagraphs(ai.success_tip || ai.curiosity);
                 const suggestions = formatSuggestions(ai.suggestions);
 
                 responseWrap.innerHTML = `
@@ -428,20 +662,20 @@
 
                                 <article class="aprende-panel aprende-panel--accent">
                                     <h3>Organización de la clase</h3>
-                                    <div class="aprende-text">${classOrganization || '<p class="aprende-empty">Sin organización sugerida por ahora.</p>'}</div>
+                                    <div class="aprende-text">${classOrganization}</div>
                                 </article>
                             </div>
 
                             <div class="aprende-response-stack">
                                 <article class="aprende-panel aprende-panel--soft">
                                     <h3>Ideas de apoyo e innovación</h3>
-                                    <ul class="aprende-list">${innovationIdeas}</ul>
+                                    ${innovationIdeas}
                                 </article>
 
                                 <article class="aprende-panel">
                                     <h3>Material de apoyo</h3>
                                     <div class="aprende-panel-copy">
-                                        <div class="aprende-text">${supportMaterial || '<p class="aprende-empty">Sin material de apoyo para mostrar.</p>'}</div>
+                                        ${supportMaterial}
                                         <div class="aprende-reference-list">${references}</div>
                                     </div>
                                 </article>
@@ -451,7 +685,7 @@
                         <div class="aprende-response-grid aprende-response-grid--teacher-secondary">
                             <article class="aprende-panel">
                                 <h3>Tareas o temas para dejar en casa</h3>
-                                <ul class="aprende-list">${homeworkTopics}</ul>
+                                ${homeworkTopics}
                             </article>
 
                             <article class="aprende-panel">
@@ -491,53 +725,77 @@
                 const suggestions = formatSuggestions(ai.suggestions);
 
                 responseWrap.innerHTML = `
-                    <div class="aprende-response-inner">
-                        <div class="aprende-response-header">
+                    <div class="aprende-response-inner aprende-response-inner--student">
+                        <div class="aprende-response-header aprende-response-header--student">
                             <span class="aprende-breadcrumb">${breadcrumb}</span>
                             <h2 class="aprende-response-title">${title}</h2>
                             <div class="aprende-response-intro">${intro}</div>
                         </div>
 
-                        <div class="aprende-response-grid">
+                        <div class="aprende-response-grid aprende-response-grid--student-primary">
                             <div class="aprende-response-stack">
-                                <article class="aprende-panel">
+                                <article class="aprende-panel aprende-panel--feature">
                                     <h3>Desarrollo del tema</h3>
                                     <div class="aprende-text">${content}</div>
-                                </article>
-
-                                <article class="aprende-panel aprende-panel--accent">
-                                    <h3>Aplicación pedagógica</h3>
-                                    <div class="aprende-text">${pedagogical || '<p class="aprende-empty">Sin sugerencias pedagógicas para mostrar.</p>'}</div>
                                 </article>
                             </div>
 
                             <div class="aprende-response-stack">
-                                <article class="aprende-panel">
+                                <article class="aprende-panel aprende-panel--soft">
                                     <h3>Vocabulario clave</h3>
                                     <div class="aprende-vocab-grid">${vocabulary}</div>
                                 </article>
 
                                 <article class="aprende-panel">
-                                    <h3>Material de consulta</h3>
-                                    <div class="aprende-reference-list">${references}</div>
+                                    <h3>Conceptos para recordar</h3>
+                                    <ul class="aprende-list">${keyPoints}</ul>
                                 </article>
                             </div>
                         </div>
 
-                        <article class="aprende-panel">
-                            <h3>Conceptos para recordar</h3>
-                            <ul class="aprende-list">${keyPoints}</ul>
-                        </article>
+                        <div class="aprende-response-grid aprende-response-grid--student-secondary">
+                            <article class="aprende-panel aprende-panel--accent">
+                                <h3>Aplicación pedagógica</h3>
+                                <div class="aprende-text">${pedagogical || '<p class="aprende-empty">Sin sugerencias pedagógicas para mostrar.</p>'}</div>
+                            </article>
 
-                        <article class="aprende-panel aprende-curiosity">
-                            <h3>Dato para el aula</h3>
-                            <div class="aprende-text">${curiosity || '<p class="aprende-empty">Todavía no hay una curiosidad para compartir.</p>'}</div>
-                        </article>
+                            <article class="aprende-panel">
+                                <h3>Material de consulta</h3>
+                                <div class="aprende-reference-list">${references}</div>
+                            </article>
+                        </div>
 
-                        <article class="aprende-panel aprende-suggestions-panel">
-                            <h3>Seguir explorando</h3>
-                            <p class="aprende-help">Elige uno de estos temas para profundizar sin salir del módulo.</p>
-                            <div class="aprende-suggestions-row">${suggestions || '<span class="aprende-empty">No hay sugerencias disponibles todavía.</span>'}</div>
+                        <div class="aprende-response-grid aprende-response-grid--student-footer">
+                            <article class="aprende-panel aprende-curiosity">
+                                <h3>Dato para el aula</h3>
+                                <div class="aprende-text">${curiosity || '<p class="aprende-empty">Todavía no hay una curiosidad para compartir.</p>'}</div>
+                            </article>
+
+                            <article class="aprende-panel aprende-suggestions-panel">
+                                <h3>Seguir explorando</h3>
+                                <p class="aprende-help">Elige uno de estos temas para profundizar sin salir del módulo.</p>
+                                <div class="aprende-suggestions-row">${suggestions || '<span class="aprende-empty">No hay sugerencias disponibles todavía.</span>'}</div>
+                            </article>
+                        </div>
+
+                        <article class="aprende-panel aprende-panel--summary">
+                            <div class="aprende-summary-grid">
+                                <div class="aprende-summary-item">
+                                    <span class="aprende-mini-label">Vocabulario</span>
+                                    <strong>${Array.isArray(ai.vocabulary) ? ai.vocabulary.length : 0}</strong>
+                                    <span>conceptos clave</span>
+                                </div>
+                                <div class="aprende-summary-item">
+                                    <span class="aprende-mini-label">Referencias</span>
+                                    <strong>${Array.isArray(ai.references) ? Math.min(ai.references.length, 4) : 0}</strong>
+                                    <span>fuentes para ampliar</span>
+                                </div>
+                                <div class="aprende-summary-item">
+                                    <span class="aprende-mini-label">Siguiente paso</span>
+                                    <strong>${Array.isArray(ai.suggestions) ? ai.suggestions.length : 0}</strong>
+                                    <span>ideas para seguir aprendiendo</span>
+                                </div>
+                            </div>
                         </article>
                     </div>
                 `;
