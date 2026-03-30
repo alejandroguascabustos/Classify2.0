@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Classify - Menu</title>
+    <title>Classify - Agenda</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <link rel="stylesheet" th:href="@{/css/chatbot.css}">
     <link rel="shortcut icon" th:href="@{img/favicon.ico}" type="image/x-icon">
@@ -25,7 +25,6 @@
     
         <div>
             <a href="#info" class="info-btn">
-                <img th:src="@{/img/informacion.png}" alt="Información" class="info-icon">
                 <img th:src="@{/img/informacion.png}" alt="Información" class="info-icon">
             </a>
             <div id="info" class="info-panel">
@@ -56,6 +55,16 @@
         </div>
     </header>
 
+    <div class="menu-toggle" id="menuToggle">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+
+    <!-- <div id="skeleton-loader" class="skeleton">
+        <img th:src="@{/img/loader.gif}" class="gif-loader">
+    </div> -->
+
     <aside class="sidebar">
         <!-- botón común para todos -->
         <a th:href="@{/menu}" class="inicioprincipal">
@@ -66,7 +75,7 @@
                 <img th:src="@{/img/agenda.png}" width="25px" class="imgmenu">Agendar clase
             </a>
 
-            <a th:href="@{/agenda}" class="inicioprincipal2">
+            <a th:href="@{/noticias}" class="inicioprincipal2">
                 <img th:src="@{/img/noticias.png}" width="25px" class="imgmenu">Noticias
             </a>
             <a th:href="@{/programacion}" class="inicioprincipal2">
@@ -84,16 +93,9 @@
             <a th:href="@{/materiales}" class="inicioprincipal2">
                 <img th:src="@{/img/upload.png}" width="25px" class="imgmenu">Carga Materiales
             </a>
-            <!-- <a th:href="@{/califica}" class="inicioprincipal2">
-                <img th:src="@{/img/califica.png}" width="25px" class="imgmenu">Califica un profe
-            </a> -->
-            <!-- <a th:href="@{/izada}" class="inicioprincipal2">
-                <img th:src="@{/img/estrella.png}" width="25px" class="imgmenu">Izada de bandera
-            </a> -->
-            <!-- <a th:href="@{/notas}" class="inicioprincipal2">
-                <img th:src="@{/img/notas.png}" width="25px" class="imgmenu">Notas
-            </a> -->
-  
+            <a th:href="@{#}" class="inicioprincipal3">
+                <img th:src="@{/img/config.png}" width="25px" class="imgmenu3">Configuración
+            </a>
     </aside>
 
 
@@ -205,12 +207,10 @@
         </div>
     </main>
 
-    <script th:inline="javascript">
-        const baseUrl = /*[[@{/}]]*/ '/';
-    </script>
-    <script th:src="@{/js/active.js}"></script>
+
     <script th:src="@{/js/modalagenda.js}"></script>
     <script th:src="@{/js/chatbot.js}"></script>
+    <script th:src="@{/js/perfilmodal.js}"></script>
 
 </body>
 

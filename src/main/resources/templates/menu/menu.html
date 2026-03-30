@@ -61,10 +61,6 @@
         <span></span>
     </div>
 
-    <!-- <div id="skeleton-loader" class="skeleton">
-        <img th:src="@{/img/loader.gif}" class="gif-loader">
-    </div> -->
-
     <aside class="sidebar">
         <!-- botón común para todos -->
         <a th:href="@{/menu}" class="inicioprincipal">
@@ -75,7 +71,7 @@
                 <img th:src="@{/img/agenda.png}" width="25px" class="imgmenu">Agendar clase
             </a>
 
-            <a th:href="@{/agenda}" class="inicioprincipal2">
+            <a th:href="@{/noticias}" class="inicioprincipal2">
                 <img th:src="@{/img/noticias.png}" width="25px" class="imgmenu">Noticias
             </a>
             <a th:href="@{/programacion}" class="inicioprincipal2">
@@ -93,12 +89,23 @@
             <a th:href="@{/materiales}" class="inicioprincipal2">
                 <img th:src="@{/img/upload.png}" width="25px" class="imgmenu">Carga Materiales
             </a>
-            <a th:href="@{#}" class="inicioprincipal3">
+            <a th:href="@{#}" class="inicioprincipal3" id="btnConfig">
                 <img th:src="@{/img/config.png}" width="25px" class="imgmenu3">Configuración
             </a>
-
-  
     </aside>
+
+    <!-- Modalconfig -->
+    <div id="modalConfig" class="modal-config">
+        <div class="modal-config-content">
+            <div class="modal-config-header">
+                <h3>Configuración</h3>
+                <span class="modal-config-close">&times;</span>
+            </div>
+            <div class="modal-config-body">
+                <a th:href="@{#}" class="cerrarsesion">Cerrar Sesion</a>
+            </div>
+        </div>
+    </div>
 
     <main class="contentprincipal">
         
@@ -109,11 +116,10 @@
     <!-- <script th:src="@{/js/preloader.js}"></script> -->
     <!-- <script th:src="@{/js/skeleton.js}"></script> -->
 
-    <script th:src="@{/js/active.js}"></script>
-    <script th:src="@{/js/active.js}"></script>
+
     <script th:src="@{/js/chatbot.js}"></script>
     <script th:src="@{/js/cambiar_password.js}"></script>
-    <script th:src="@{/js/perfilmodal.js}"></script>
+    <script th:src="@{/js/config.js}"></script>
 </body>
 
 </html>
