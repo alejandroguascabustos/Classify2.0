@@ -27,9 +27,12 @@
             <a th:href="@{/contacto}" class="info-btn" alt="Informacion">Contacto</a>
         </div>
 
-        <div>
+        <div class="header-tools">
             <a href="#info" class="info-btn">
                 <img th:src="@{/img/informacion.png}" alt="Informacion" class="info-icon">
+            </a>
+            <a th:href="@{/logout}" class="logout-btn" title="Cerrar sesion" aria-label="Cerrar sesion">
+                <img th:src="@{/img/salida.png}" alt="Cerrar sesion" class="logout-icon">
             </a>
             <div id="info" class="info-panel">
                 <div class="info-content">
@@ -67,7 +70,7 @@
 
     <div class="contenidoinicio">
         <aside class="sidebar">
-            <a th:href="@{/menu}" class="inicioprincipal">
+            <a th:href="@{/logout}" class="inicioprincipal">
                 <img th:src="@{/img/home.png}" width="25" class="imgmenu"> Inicio
             </a>
 
@@ -99,9 +102,6 @@
                 <img th:src="@{/img/upload.png}" width="25" class="imgmenu">Carga Materiales
             </a>
 
-            <a th:href="@{#}" class="inicioprincipal3">
-                <img th:src="@{/img/config.png}" width="25" class="imgmenu3">Configuracion
-            </a>
         </aside>
 
         <main class="contentaprende">
