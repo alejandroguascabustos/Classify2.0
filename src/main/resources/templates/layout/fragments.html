@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/chatbot.css}">
+    <link rel="shortcut icon" th:href="@{/favicon.ico}" type="image/x-icon">
+</head>
+<body>
+
+    <!-- Header Estilo "Contacta" (Estandarizado para toda la App) -->
+    <header th:fragment="header">
+        <div class="brand">
+            <a th:href="@{/login}">
+                <img th:src="@{/img/logo.png}" alt="logo" class="logo">
+            </a>
+            <a th:href="@{/login}">Classify</a>
+        </div>
+
+        <!-- Saludo inteligente -->
+        <div class="saludo-header.opciones"
+             th:if="${session.nombre != null and session.nombre != 'Usuario'}"
+             th:text="'Hola, ' + ${#strings.capitalize(#strings.toLowerCase(session.nombre))} + '!'">
+        </div>
+
+        <div>
+            <div class="right">
+                <a th:href="@{/noticias}" title="Noticias">
+                    <img th:src="@{/img/noticias.png}" class="iconostop">
+                </a>
+                <a><img th:src="@{/img/separador.png}" class="separador"></a>
+                <a th:href="@{/logout}" title="Cerrar sesión">
+                    <img th:src="@{/img/salida.png}" class="salida">
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Sidebar Estilo "Contacta" (Filtrado por Perfiles) -->
+    <aside th:fragment="sidebar" class="sidebar">
+        <a th:href="@{/menu}" class="inicioprincipal">
+            <img th:src="@{/img/home.png}" width="25px" class="imgmenu"> Inicio
+        </a>
+
+        <!-- Perfil 1: Administrador -->
+        <th:block th:if="${session.perfil == 1}">
+            <a th:href="@{/agenda}" class="inicioprincipal2">
+                <img th:src="@{/img/agenda.png}" width="25px" class="imgmenu">Agendar clase
+            </a>
+            <a th:href="@{/programacion}" class="inicioprincipal2">
+                <img th:src="@{/img/programacion.png}" width="25px" class="imgmenu">Programación
+            </a>
+            <a th:href="@{/aprende}" class="inicioprincipal2">
+                <img th:src="@{/img/aprende.png}" width="25px" class="imgmenu">Aprende
+            </a>
+            <a th:href="@{/contacta}" class="inicioprincipal2">
+                <img th:src="@{/img/gmail.png}" width="25px" class="imgmenu">Contacta a un profe
+            </a>
+            <a th:href="@{/mismateriales}" class="inicioprincipal2">
+                <img th:src="@{/img/descargamaterial.png}" width="25px" class="imgmenu">Mis Materiales
+            </a>
+            <a th:href="@{/materiales}" class="inicioprincipal2">
+                <img th:src="@{/img/upload.png}" width="25px" class="imgmenu">Carga Materiales
+            </a>
+            <a th:href="@{/califica}" class="inicioprincipal2">
+                <img th:src="@{/img/califica.png}" width="25px" class="imgmenu">Califica un profe
+            </a>
+            <a th:href="@{/izada}" class="inicioprincipal2">
+                <img th:src="@{/img/estrella.png}" width="25px" class="imgmenu">Izada de bandera
+            </a>
+            <a th:href="@{/notas}" class="inicioprincipal2">
+                <img th:src="@{/img/notas.png}" width="25px" class="imgmenu">Notas
+            </a>
+        </th:block>
+
+        <!-- Perfil 3: Docente (Ejemplo de filtrado) -->
+        <th:block th:if="${session.perfil == 3}">
+            <a th:href="@{/programacion}" class="inicioprincipal2">
+                <img th:src="@{/img/programacion.png}" width="25px" class="imgmenu">Programación
+            </a>
+            <a th:href="@{/aprende}" class="inicioprincipal2">
+                <img th:src="@{/img/aprende.png}" width="25px" class="imgmenu">Aprende
+            </a>
+            <a th:href="@{/materiales}" class="inicioprincipal2">
+                <img th:src="@{/img/upload.png}" width="25px" class="imgmenu">Carga Materiales
+            </a>
+        </th:block>
+
+        <!-- Perfil 5: Estudiante -->
+        <th:block th:if="${session.perfil == 5}">
+            <a th:href="@{/programacion}" class="inicioprincipal2">
+                <img th:src="@{/img/programacion.png}" width="25px" class="imgmenu">Programación
+            </a>
+            <a th:href="@{/aprende}" class="inicioprincipal2">
+                <img th:src="@{/img/aprende.png}" width="25px" class="imgmenu">Aprende
+            </a>
+            <a th:href="@{/contacta}" class="inicioprincipal2">
+                <img th:src="@{/img/gmail.png}" width="25px" class="imgmenu">Contacta a un profe
+            </a>
+            <a th:href="@{/mismateriales}" class="inicioprincipal2">
+                <img th:src="@{/img/upload.png}" width="25px" class="imgmenu">Mis Materiales
+            </a>
+            <a th:href="@{/califica}" class="inicioprincipal2">
+                <img th:src="@{/img/califica.png}" width="25px" class="imgmenu">Califica un profe
+            </a>
+        </th:block>
+    </aside>
+
+    <!-- Footer Estilo Corporativo -->
+    <footer th:fragment="footer" class="f4">
+        <p class="f4-copy">© 2026 Classify — Todos los derechos reservados · Bogotá, Colombia</p>
+    </footer>
+
+</body>
+</html>
