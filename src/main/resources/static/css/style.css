@@ -3899,17 +3899,19 @@ a.botoninicio {
 }
 
 .modal-config-header {
-    padding: 10px 16px;
+    padding: 0px 20px;
     background-color: var(--green);
     color: white;
     border-radius: 12px 12px 0 0;
     display: flex;
     align-items: center;
     justify-content: space-between;
+
 }
 
 .modal-config-header h3 {
     margin: 0;
+    font-weight: 100;
 }
 
 .modal-config-close {
@@ -3927,11 +3929,6 @@ a.botoninicio {
     padding: 16px;
 }
 
-.modal-config-footer {
-    padding: 10px 16px;
-    background-color: #f1f1f1;
-    text-align: right;
-}
 
 .cerrarsesion{
     text-decoration: none;
