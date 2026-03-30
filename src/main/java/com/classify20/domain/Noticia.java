@@ -29,4 +29,8 @@ public class Noticia {
 
     @Column(name = "tipo_noticia")
     private String tipoNoticia;
+
+    // ← NUEVO: ruta relativa a /static, ej: /uploads/noticias/foto.jpg
+    @Column(name = "imagen_noticia")
+    private String imagenNoticia;
 }

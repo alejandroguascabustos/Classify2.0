@@ -2,75 +2,26 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Classify - Historial de Noticias</title>
+    <title th:text="${noticia.idNoticia == null ? 'Classify - Crear Noticia' : 'Classify - Editar Noticia'}">Classify - Noticia</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <link rel="stylesheet" th:href="@{/css/chatbot.css}">
     <link rel="shortcut icon" th:href="@{/favicon.ico}" type="image/x-icon">
     <style>
         .noticias-container { height: auto !important; min-height: 700px; }
-        .listanoticicas { overflow-y: auto; }
-
-        .noticia-card {
-            border: 1px solid #e5e7eb;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-            transition: box-shadow .2s;
-        }
-        .noticia-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.12); }
-
-        .noticia-card-img {
-            width: 100%;
-            max-height: 200px;
-            object-fit: cover;
-            display: block;
-        }
-
-        .noticia-card-body { padding: 14px 18px; }
-
-        .titlecontentnoticia {
-            color: var(--green-dark);
-            font-size: 1.1rem;
-            margin-bottom: 5px;
-        }
-
-        .noticia-meta {
-            font-size: 0.82rem;
-            color: var(--gris);
-            margin-bottom: 8px;
-            display: flex;
-            gap: 14px;
-            flex-wrap: wrap;
-        }
-
-        .noticia-contenido {
-            color: #444;
-            font-size: 0.93rem;
-            line-height: 1.55;
-            margin-bottom: 10px;
-        }
-
-        .badge-tipo {
-            display: inline-block;
-            background: var(--orangered);
-            color: #fff;
-            border-radius: 20px;
-            padding: 3px 12px;
-            font-size: 12px;
-        }
-
-        .acciones-noticia {
-            display: flex;
-            gap: 10px;
-            margin-top: 10px;
-            align-items: center;
-        }
-
+        .crearnoticicas { overflow-y: auto; }
+        .crear { display: flex; flex-direction: column; max-width: 680px; margin: 0 auto; }
+        .crear input[type="text"],
+        .crear input[type="date"],
+        .crear textarea { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; margin-bottom: 4px; }
+        .crear textarea { min-height: 130px; resize: vertical; }
+        .crear input[type="file"] { display: block !important; padding: 6px; border: 1px dashed #aaa; background: #f9f9f9; cursor: pointer; }
+        .preview-imagen { max-width: 240px; border-radius: 8px; border: 1px solid #ddd; margin-bottom: 8px; display: block; }
         .alerta-exito { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; border-radius: 6px; padding: 10px 16px; margin-bottom: 16px; }
         .alerta-error  { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; border-radius: 6px; padding: 10px 16px; margin-bottom: 16px; }
-
-        .separadornoticias { border: none; border-top: 1px solid #f0f0f0; margin: 0; }
+        .btn-row { display: flex; gap: 10px; margin-top: 16px; align-items: center; }
+        .btncancelarnoticia { background: #aaa; color: white; padding: 11px 22px; border-radius: 5px; text-decoration: none; font-size: 15px; transition: background .2s; }
+        .btncancelarnoticia:hover { background: #888; }
+        .badge-tipo-form { display: inline-block; background: var(--orangered); color: #fff; border-radius: 20px; padding: 3px 12px; font-size: 13px; margin-top: 4px; }
     </style>
 </head>
 <body>
@@ -84,9 +35,13 @@
              th:text="'Hola, ' + ${#strings.capitalize(#strings.toLowerCase(session.nombre))} + '!'">
         </div>
         <div class="right">
-            <a th:href="@{/noticias}"><img th:src="@{/img/noticias.png}" class="iconostop"></a>
+            <a th:href="@{/noticias}" alt="Noticias">
+                <img th:src="@{/img/noticias.png}" class="iconostop">
+            </a>
             <a><img th:src="@{/img/separador.png}" class="separador"></a>
-            <a th:href="@{/login}"><img th:src="@{/img/salida.png}" class="salida"></a>
+            <a th:href="@{/login}" alt="Cerrar sesión">
+                <img th:src="@{/img/salida.png}" class="salida">
+            </a>
         </div>
     </header>
 
@@ -105,7 +60,6 @@
             <a th:href="@{/mismateriales}" class="inicioprincipal2"><img th:src="@{/img/descargamaterial.png}" width="25px" class="imgmenu">Mis Materiales</a>
             <a th:href="@{/materiales}" class="inicioprincipal2"><img th:src="@{/img/upload.png}" width="25px" class="imgmenu">Carga Materiales</a>
             <a th:href="@{/califica}" class="inicioprincipal2"><img th:src="@{/img/califica.png}" width="25px" class="imgmenu">Califica un profe</a>
-            <a th:href="@{/izada}" class="inicioprincipal2"><img th:src="@{/img/estrella.png}" width="25px" class="imgmenu">Izada de bandera</a>
             <a th:href="@{/notas}" class="inicioprincipal2"><img th:src="@{/img/notas.png}" width="25px" class="imgmenu">Notas</a>
         </th:block>
 
@@ -118,7 +72,6 @@
             <a th:href="@{/contacta}" class="inicioprincipal2"><img th:src="@{/img/gmail.png}" width="25px" class="imgmenu">Contacta a un profe</a>
             <a th:href="@{/materiales}" class="inicioprincipal2"><img th:src="@{/img/upload.png}" width="25px" class="imgmenu">Carga Materiales</a>
             <a th:href="@{/califica}" class="inicioprincipal2"><img th:src="@{/img/califica.png}" width="25px" class="imgmenu">Califica un profe</a>
-            <a th:href="@{/izada}" class="inicioprincipal2"><img th:src="@{/img/estrella.png}" width="25px" class="imgmenu">Izada de bandera</a>
             <a th:href="@{/notas}" class="inicioprincipal2"><img th:src="@{/img/notas.png}" width="25px" class="imgmenu">Notas</a>
         </th:block>
 
@@ -128,7 +81,6 @@
             <a th:href="@{/programacion}" class="inicioprincipal2"><img th:src="@{/img/programacion.png}" width="25px" class="imgmenu">Programación</a>
             <a th:href="@{/aprende}" class="inicioprincipal2"><img th:src="@{/img/aprende.png}" width="25px" class="imgmenu">Aprende</a>
             <a th:href="@{/materiales}" class="inicioprincipal2"><img th:src="@{/img/upload.png}" width="25px" class="imgmenu">Carga Materiales</a>
-            <a th:href="@{/izada}" class="inicioprincipal2"><img th:src="@{/img/estrella.png}" width="25px" class="imgmenu">Izada de bandera</a>
         </th:block>
 
         <!-- Perfil 4: Acudiente -->
@@ -138,7 +90,6 @@
             <a th:href="@{/aprende}" class="inicioprincipal2"><img th:src="@{/img/aprende.png}" width="25px" class="imgmenu">Aprende</a>
             <a th:href="@{/contacta}" class="inicioprincipal2"><img th:src="@{/img/gmail.png}" width="25px" class="imgmenu">Contacta a un profe</a>
             <a th:href="@{/mismateriales}" class="inicioprincipal2"><img th:src="@{/img/descargamaterial.png}" width="25px" class="imgmenu">Mis Materiales</a>
-            <a th:href="@{/izada}" class="inicioprincipal2"><img th:src="@{/img/estrella.png}" width="25px" class="imgmenu">Izada de bandera</a>
         </th:block>
 
         <!-- Perfil 5: Estudiante -->
@@ -149,7 +100,6 @@
             <a th:href="@{/contacta}" class="inicioprincipal2"><img th:src="@{/img/gmail.png}" width="25px" class="imgmenu">Contacta a un profe</a>
             <a th:href="@{/mismateriales}" class="inicioprincipal2"><img th:src="@{/img/descargamaterial.png}" width="25px" class="imgmenu">Mis Materiales</a>
             <a th:href="@{/califica}" class="inicioprincipal2"><img th:src="@{/img/califica.png}" width="25px" class="imgmenu">Califica un profe</a>
-            <a th:href="@{/izada}" class="inicioprincipal2"><img th:src="@{/img/estrella.png}" width="25px" class="imgmenu">Izada de bandera</a>
         </th:block>
 
         <a th:href="@{#}" class="inicioprincipal3" id="btnConfig">
@@ -161,11 +111,16 @@
         <div class="content-noticias">
             <div class="noticias-container">
 
+                <!-- Título dinámico -->
                 <div class="titlenoticias">
-                    <h2 class="titleprincipalnoticias">Historial de Noticias</h2>
+                    <h2 class="titleprincipalnoticias"
+                        th:text="${noticia.idNoticia == null ? 'Crear Noticia' : 'Editar Noticia'}">
+                        Noticia
+                    </h2>
                 </div>
                 <br>
 
+                <!-- Menú de navegación noticias -->
                 <ul class="noticias-menu">
                     <li class="btnnoticias">
                         <a th:href="@{/noticias}" class="titlesnoticias">
@@ -186,56 +141,78 @@
 
                 <br>
 
-                <!-- Alertas flash -->
+                <!-- Alertas -->
                 <div th:if="${mensajeExito}" class="alerta-exito" th:text="${mensajeExito}"></div>
-                <div th:if="${mensajeError}" class="alerta-error"  th:text="${mensajeError}"></div>
+                <div th:if="${mensajeError}" class="alerta-error" th:text="${mensajeError}"></div>
 
-                <div class="listanoticicas">
+                <!-- Formulario unificado: crear si idNoticia es null, editar si tiene valor -->
+                <form th:action="@{/noticias/guardar}" method="post" enctype="multipart/form-data">
 
-                    <!-- Lista de noticias -->
-                    <th:block th:if="${noticias != null and !noticias.isEmpty()}">
-                        <div class="noticia-card" th:each="noticia : ${noticias}">
+                    <!-- ID oculto: presente en modo editar, vacío en modo crear -->
+                    <input type="hidden" name="idNoticia" th:value="${noticia.idNoticia}"/>
+
+                    <div class="crearnoticicas">
+                        <div class="crear">
+
+                            <label for="titulo_noticia" class="labelcrearnoticiaprincipal">Título de la noticia:</label>
+                            <input type="text" id="titulo_noticia" name="titulo_noticia"
+                                   th:value="${noticia.tituloNoticia}"
+                                   placeholder="Escribe el título..." required/>
+
+                            <label for="autor_noticia" class="labelcrearnoticia">Autor:</label>
+                            <input type="text" id="autor_noticia" name="autor_noticia"
+                                   th:value="${noticia.autorNoticia}"
+                                   placeholder="Nombre del autor..." required/>
+
+                            <label for="fecha_noticia" class="labelcrearnoticia">Fecha de publicación:</label>
+                            <input type="date" id="fecha_noticia" name="fecha_noticia"
+                                   th:value="${noticia.fechaNoticia}" required/>
+
+                            <label for="tipo_noticia" class="labelcrearnoticia">Tipo de noticia:</label>
+                            <input type="text" id="tipo_noticia" name="tipo_noticia"
+                                   th:value="${noticia.tipoNoticia}"
+                                   placeholder="Ej: Académico, Deportivo, Cultural..."/>
+
+                            <label for="contenido_noticia" class="labelcrearnoticia">Contenido:</label>
+                            <textarea id="contenido_noticia" name="contenido_noticia"
+                                      placeholder="Escribe el contenido de la noticia..."
+                                      required th:text="${noticia.contenidoNoticia}"></textarea>
 
                             <!-- Imagen -->
-                            <img th:if="${noticia.imagenNoticia != null and !#strings.isEmpty(noticia.imagenNoticia)}"
-                                 th:src="${noticia.imagenNoticia}"
-                                 alt="Imagen noticia"
-                                 class="noticia-card-img"/>
+                            <label for="imagen" class="labelcrearnoticia">Imagen de la noticia:</label>
 
-                            <div class="noticia-card-body">
-                                <h3 class="titlecontentnoticia" th:text="${noticia.tituloNoticia}"></h3>
-
-                                <div class="noticia-meta">
-                                    <span th:text="'✍ ' + ${noticia.autorNoticia}"></span>
-                                    <span th:text="'📅 ' + ${#temporals.format(noticia.fechaNoticia, 'dd/MM/yyyy')}"></span>
-                                    <span class="badge-tipo"
-                                          th:if="${noticia.tipoNoticia != null and !#strings.isEmpty(noticia.tipoNoticia)}"
-                                          th:text="${noticia.tipoNoticia}">
-                                    </span>
-                                </div>
-
-                                <p class="noticia-contenido" th:text="${noticia.contenidoNoticia}"></p>
-
-                                <!-- Botones editar / eliminar -->
-                                <div class="acciones-noticia">
-                                    <a th:href="@{/noticias/form/{id}(id=${noticia.idNoticia})}"
-                                       class="btneditarnoticia">Editar</a>
-                                    <a th:href="@{/noticias/eliminar/{id}(id=${noticia.idNoticia})}"
-                                       onclick="return confirm('¿Eliminar esta noticia?')"
-                                       class="btneliminarnoticia">Eliminar</a>
-                                </div>
+                            <!-- Preview imagen actual (modo editar) -->
+                            <div th:if="${noticia.imagenNoticia != null and !#strings.isEmpty(noticia.imagenNoticia)}">
+                                <p style="font-size:0.82rem; color:#888; margin-bottom:6px;">Imagen actual:</p>
+                                <img th:src="${noticia.imagenNoticia}"
+                                     alt="Imagen actual"
+                                     class="preview-imagen"/>
+                                <p style="font-size:0.78rem; color:#aaa; margin-bottom:8px;">
+                                    Selecciona una nueva imagen para reemplazarla, o déjalo vacío para conservarla.
+                                </p>
                             </div>
 
-                            <hr class="separadornoticias">
+                            <!-- Input file siempre visible -->
+                            <input type="file" id="imagen" name="imagen"
+                                   accept="image/png, image/jpeg, image/gif, image/webp"
+                                   onchange="previewImagen(this)"/>
+
+                            <!-- Preview de la nueva imagen antes de guardar -->
+                            <img id="nuevaPreview" class="preview-imagen"
+                                 src="#" alt="Vista previa"
+                                 style="display:none; margin-top:8px;"/>
+
+                            <div class="btn-row btnnoticiascontainer">
+                                <button type="submit" class="btncrearnoticia"
+                                        th:text="${noticia.idNoticia == null ? 'Crear Noticia' : 'Actualizar Noticia'}">
+                                    Guardar
+                                </button>
+                                <a th:href="@{/noticias/historial}" class="btncancelarnoticia">Cancelar</a>
+                            </div>
+
                         </div>
-                    </th:block>
-
-                    <!-- Sin noticias -->
-                    <th:block th:if="${noticias == null or noticias.isEmpty()}">
-                        <p class="parrafonoticias">No hay noticias disponibles.</p>
-                    </th:block>
-
-                </div>
+                    </div>
+                </form>
 
             </div>
         </div>
@@ -256,5 +233,19 @@
 
     <script th:src="@{/js/chatbot.js}"></script>
     <script th:src="@{/js/config.js}"></script>
+    <script>
+        // Preview de imagen antes de guardar
+        function previewImagen(input) {
+            const preview = document.getElementById('nuevaPreview');
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = e => {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
 </body>
 </html>

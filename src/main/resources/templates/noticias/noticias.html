@@ -1,28 +1,79 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
-
 <head>
     <meta charset="UTF-8">
-    <title>Classify - Agenda</title>
+    <title>Classify - Noticias</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <link rel="stylesheet" th:href="@{/css/chatbot.css}">
-    <link rel="shortcut icon" th:href="@{img/favicon.ico}" type="image/x-icon">
-</head>
+    <link rel="shortcut icon" th:href="@{/favicon.ico}" type="image/x-icon">
+    <style>
+        .noticias-container { height: auto !important; min-height: 700px; }
+        .listanoticicas { overflow-y: auto; }
 
+        .noticia-card {
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            transition: box-shadow .2s;
+        }
+        .noticia-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.12); }
+
+        .noticia-card-img {
+            width: 100%;
+            max-height: 220px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .noticia-card-body { padding: 16px 20px; }
+
+        .titlecontentnoticia {
+            color: var(--green-dark);
+            font-size: 1.15rem;
+            margin-bottom: 6px;
+        }
+
+        .noticia-meta {
+            font-size: 0.82rem;
+            color: var(--gris);
+            margin-bottom: 10px;
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        .noticia-contenido {
+            color: #333;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+
+        .badge-tipo {
+            display: inline-block;
+            background: var(--orangered);
+            color: #fff;
+            border-radius: 20px;
+            padding: 3px 12px;
+            font-size: 12px;
+        }
+
+        .separadornoticias { border: none; border-top: 1px solid #f0f0f0; margin: 0; }
+    </style>
+</head>
 <body>
     <header class="brandinicio">
         <div class="brand">
-            <a th:href="@{/inicio}"><img th:src="@{/img/logo.png}" alt="logo" class="logo"></a>
-            <a th:href="@{/inicio}">Classify</a>
+            <a th:href="@{/menu}"><img th:src="@{/img/logo.png}" alt="logo" class="logo"></a>
+            <a th:href="@{/menu}">Classify</a>
         </div>
-    
         <div class="brand2">
-            <a th:href="@{/inicio}" class="info-btn" alt="Información">Inicio</a>
-            <a th:href="@{/nosotros}" class="info-btn" alt="Información">Nosotros</a>
-            <a th:href="@{/contacto}" class="info-btn" alt="Información">Contacto</a>
-
+            <a th:href="@{/inicio}" class="info-btn">Inicio</a>
+            <a th:href="@{/nosotros}" class="info-btn">Nosotros</a>
+            <a th:href="@{/contacto}" class="info-btn">Contacto</a>
         </div>
-    
         <div>
             <a href="#info" class="info-btn">
                 <img th:src="@{/img/informacion.png}" alt="Información" class="info-icon">
@@ -31,143 +82,118 @@
                 <div class="info-content">
                     <a href="#" class="close">&times;</a>
                     <img th:src="@{/img/agenda.png}" width="80px">
-                    <h4>¿Porque agendas tus clases?</h4>
-                    <p class="textoinfo">La implementación de una página web para agendar clases en el colegio Moralba Sur
-                        Oriental representa una herramienta fundamental para optimizar la organización académica y fortalecer
-                        la comunicación entre estudiantes, docentes y la institución.
-                        En primer lugar, la plataforma permite a los estudiantes y padres de familia consultar de manera
-                        rápida y sencilla la disponibilidad de horarios, evitando confusiones o cruces en las actividades
-                        escolares. <br><br>Esto garantiza una mejor planificación del tiempo, tanto dentro como fuera del
-                        aula.
-                        Por otro lado, los docentes pueden gestionar sus clases de forma más eficiente, teniendo acceso a un
-                        calendario actualizado que facilita la asignación de sesiones, el control de grupos y la preparación
-                        de materiales según la programación establecida. <br><br>
-                        Asimismo, para la institución educativa, la página constituye una herramienta de gestión que
-                        contribuye a la transparencia y al orden administrativo, ya que centraliza la información en un solo
-                        espacio digital accesible desde cualquier dispositivo con conexión a internet. <br><br>
-                        En conclusión, contar con una página para agendar clases no solo mejora la organización interna del
-                        colegio Moralba Sur Oriental, sino que también fortalece la participación de la comunidad educativa,
-                        fomenta la puntualidad, evita pérdidas de tiempo y favorece un proceso de enseñanza-aprendizaje más
-                        planificado y efectivo.
-                    </p>
+                    <h4>Cartelera Informativa</h4>
+                    <p class="textoinfo">Aquí encontrarás todas las noticias y comunicados del colegio Moralba Sur Oriental: eventos académicos, deportivos, culturales y administrativos.</p>
                 </div>
             </div>
         </div>
     </header>
 
     <div class="menu-toggle" id="menuToggle">
-        <span></span>
-        <span></span>
-        <span></span>
+        <span></span><span></span><span></span>
     </div>
 
-    <!-- <div id="skeleton-loader" class="skeleton">
-        <img th:src="@{/img/loader.gif}" class="gif-loader">
-    </div> -->
-
     <aside class="sidebar">
-        <!-- botón común para todos -->
         <a th:href="@{/menu}" class="inicioprincipal">
             <img th:src="@{/img/home.png}" width="25px" class="imgmenu"> Inicio
         </a>
-
-            <a th:href="@{/agenda}" class="inicioprincipal2">
-                <img th:src="@{/img/agenda.png}" width="25px" class="imgmenu">Agendar clase
-            </a>
-
-            <a th:href="@{/noticias}" class="inicioprincipal2">
-                <img th:src="@{/img/noticias.png}" width="25px" class="imgmenu">Noticias
-            </a>
-            <a th:href="@{/programacion}" class="inicioprincipal2">
-                <img th:src="@{/img/programacion.png}" width="25px" class="imgmenu">Programación
-            </a>
-            <a th:href="@{/aprende}" class="inicioprincipal2">
-                <img th:src="@{/img/aprende.png}" width="25px" class="imgmenu">Aprende
-            </a>
-            <a th:href="@{/contacta}" class="inicioprincipal2">
-                <img th:src="@{/img/gmail.png}" width="25px" class="imgmenu">Contacta a un profe
-            </a>
-            <a th:href="@{/mismateriales}" class="inicioprincipal2">
-                <img th:src="@{/img/descargamaterial.png}" width="25px" class="imgmenu">Mis Materiales
-            </a>
-            <a th:href="@{/materiales}" class="inicioprincipal2">
-                <img th:src="@{/img/upload.png}" width="25px" class="imgmenu">Carga Materiales
-            </a>
-            <a th:href="@{#}" class="inicioprincipal3">
-                <img th:src="@{/img/config.png}" width="25px" class="imgmenu3">Configuración
-            </a>
+        <a th:href="@{/agenda}" class="inicioprincipal2"><img th:src="@{/img/agenda.png}" width="25px" class="imgmenu">Agendar clase</a>
+        <a th:href="@{/noticias}" class="inicioprincipal2"><img th:src="@{/img/noticias.png}" width="25px" class="imgmenu">Noticias</a>
+        <a th:href="@{/programacion}" class="inicioprincipal2"><img th:src="@{/img/programacion.png}" width="25px" class="imgmenu">Programación</a>
+        <a th:href="@{/aprende}" class="inicioprincipal2"><img th:src="@{/img/aprende.png}" width="25px" class="imgmenu">Aprende</a>
+        <a th:href="@{/contacta}" class="inicioprincipal2"><img th:src="@{/img/gmail.png}" width="25px" class="imgmenu">Contacta a un profe</a>
+        <a th:href="@{/mismateriales}" class="inicioprincipal2"><img th:src="@{/img/descargamaterial.png}" width="25px" class="imgmenu">Mis Materiales</a>
+        <a th:href="@{/materiales}" class="inicioprincipal2"><img th:src="@{/img/upload.png}" width="25px" class="imgmenu">Carga Materiales</a>
+        <a th:href="@{#}" class="inicioprincipal3" id="btnConfig">
+            <img th:src="@{/img/config.png}" width="25px" class="imgmenu3">Configuración
+        </a>
     </aside>
 
     <main class="contentnoticias">
         <div class="content-noticias">
             <div class="noticias-container">
+
                 <div class="titlenoticias">
-                    <div class="imagennoticias"></div>
                     <h2 class="titleprincipalnoticias">Cartelera Informativa</h2>
                 </div>
                 <br>
-                <div>
-                    <ul class="noticias-menu">
-                        <li class="btnnoticias">
-                            <a th:href="@{/noticias}" class="titlesnoticias">
-                                <img th:src="@{/img/periodico.png}" alt="Ver noticias" width="25" class="imgtitlenoticias">
-                                Noticias
-                            </a>
-                        </li>
-                        <li class="btnnoticias">
-                            <a th:href="@{/noticias/crear}" class="titlesnoticias">
-                                <img th:src="@{/img/agregar.png}" alt="Crear noticia" width="25" class="imgtitlenoticias">
-                                Crear Noticia
-                            </a>
-                        </li>
-                        <li class="btnnoticias">
-                            <a th:href="@{/noticias/historial}" class="titlesnoticias">
-                                <img th:src="@{/img/historial.png}" alt="Historial noticias" width="25" class="imgtitlenoticias">
-                                Historial Noticias
-                            </a>
-                        </li>
-                    </ul>
-                </div>
 
-                <div>
-                    <div class="listanoticicas">
+                <ul class="noticias-menu">
+                    <li class="btnnoticias">
+                        <a th:href="@{/noticias}" class="titlesnoticias">
+                            <img th:src="@{/img/periodico.png}" alt="Noticias" width="25" class="imgtitlenoticias">Noticias
+                        </a>
+                    </li>
+                    <li class="btnnoticias">
+                        <a th:href="@{/noticias/form}" class="titlesnoticias">
+                            <img th:src="@{/img/agregar.png}" alt="Crear" width="25" class="imgtitlenoticias">Crear Noticia
+                        </a>
+                    </li>
+                    <li class="btnnoticias">
+                        <a th:href="@{/noticias/historial}" class="titlesnoticias">
+                            <img th:src="@{/img/historial.png}" alt="Historial" width="25" class="imgtitlenoticias">Historial
+                        </a>
+                    </li>
+                </ul>
 
-                        <!-- Lista de noticias -->
-                        <th:block th:if="${noticias != null and !noticias.isEmpty()}">
-                            <div class="noticia" th:each="noticia : ${noticias}">
-                                <div class="encabezadonoticias">
-                                    <h3 class="titlecontentnoticia" th:text="${noticia.tituloNoticia}"></h3>
-                                    <p><em th:text="'Por ' + ${noticia.autorNoticia}"></em></p>
-                                    <div>
-                                        <p th:text="${noticia.contenidoNoticia}"></p>
-                                        <p>
-                                            <strong>Fecha: </strong>
-                                            <span th:text="${#temporals.format(noticia.fechaNoticia, 'dd/MM/yyyy')}"></span>
-                                        </p>
-                                        <span class="badge-tipo"
-                                              th:if="${noticia.tipoNoticia != null and !#strings.isEmpty(noticia.tipoNoticia)}"
-                                              th:text="${noticia.tipoNoticia}">
-                                        </span>
-                                        <hr class="separadornoticias">
-                                    </div>
+                <br>
+
+                <div class="listanoticicas">
+
+                    <!-- Lista de noticias -->
+                    <th:block th:if="${noticias != null and !noticias.isEmpty()}">
+                        <div class="noticia-card" th:each="noticia : ${noticias}">
+
+                            <!-- Imagen de la noticia -->
+                            <img th:if="${noticia.imagenNoticia != null and !#strings.isEmpty(noticia.imagenNoticia)}"
+                                 th:src="${noticia.imagenNoticia}"
+                                 alt="Imagen noticia"
+                                 class="noticia-card-img"/>
+
+                            <div class="noticia-card-body">
+                                <h3 class="titlecontentnoticia" th:text="${noticia.tituloNoticia}"></h3>
+
+                                <div class="noticia-meta">
+                                    <span th:text="'✍ ' + ${noticia.autorNoticia}"></span>
+                                    <span th:text="'📅 ' + ${#temporals.format(noticia.fechaNoticia, 'dd/MM/yyyy')}"></span>
+                                    <span class="badge-tipo"
+                                          th:if="${noticia.tipoNoticia != null and !#strings.isEmpty(noticia.tipoNoticia)}"
+                                          th:text="${noticia.tipoNoticia}">
+                                    </span>
                                 </div>
+
+                                <p class="noticia-contenido" th:text="${noticia.contenidoNoticia}"></p>
                             </div>
-                        </th:block>
 
-                        <!-- Mensaje si no hay noticias -->
-                        <th:block th:if="${noticias == null or noticias.isEmpty()}">
-                            <p class="parrafonoticias">No hay noticias disponibles.</p>
-                        </th:block>
+                            <hr class="separadornoticias">
+                        </div>
+                    </th:block>
 
-                    </div>
+                    <!-- Sin noticias -->
+                    <th:block th:if="${noticias == null or noticias.isEmpty()}">
+                        <p class="parrafonoticias">No hay noticias disponibles.</p>
+                    </th:block>
+
                 </div>
+
             </div>
         </div>
     </main>
 
+    <!-- Modal configuración -->
+    <div id="modalConfig" class="modal-config">
+        <div class="modal-config-content">
+            <div class="modal-config-header">
+                <h3>Configuración</h3>
+                <span class="modal-config-close">&times;</span>
+            </div>
+            <div class="modal-config-body">
+                <a th:href="@{#}" class="cerrarsesion">Cerrar Sesion</a>
+            </div>
+        </div>
+    </div>
+
     <script th:src="@{/js/chatbot.js}"></script>
-    <script th:src="@{/js/perfilmodal.js}"></script>
-
+    <script th:src="@{/js/config.js}"></script>
 </body>
-
 </html>

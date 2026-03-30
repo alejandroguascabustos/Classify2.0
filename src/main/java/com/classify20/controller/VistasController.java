@@ -72,10 +72,7 @@ public class VistasController {
     public String mostrarNotas(){
         return "notas/notas";
     }
-    @GetMapping("/noticias")
-    public String mostrarNoticias(){
-        return "noticias/noticias";
-    }
+
     @GetMapping("/politicas")
     public String mostrarPoliticas(){
         return "politicas/politicas";

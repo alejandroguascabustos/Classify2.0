@@ -4,7 +4,6 @@ import com.classify20.dao.NoticiaDao;
 import com.classify20.domain.Noticia;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -21,7 +20,6 @@ public class NoticiaServiceImpl implements NoticiaService {
 
     @Override
     public List<Noticia> listarParaVista() {
-        // Misma consulta; si en el futuro agregas campo "activa" puedes filtrar aquí
         return noticiaDao.findAllByOrderByFechaNoticiaDesc();
     }
 
@@ -37,18 +35,27 @@ public class NoticiaServiceImpl implements NoticiaService {
 
     @Override
     public void actualizar(Long id, Noticia noticiaEditada) {
-        noticiaDao.findById(id).ifPresent(noticiaExistente -> {
-            noticiaExistente.setTituloNoticia(noticiaEditada.getTituloNoticia());
-            noticiaExistente.setAutorNoticia(noticiaEditada.getAutorNoticia());
-            noticiaExistente.setFechaNoticia(noticiaEditada.getFechaNoticia());
-            noticiaExistente.setContenidoNoticia(noticiaEditada.getContenidoNoticia());
-            noticiaExistente.setTipoNoticia(noticiaEditada.getTipoNoticia());
-            noticiaDao.save(noticiaExistente);
+        noticiaDao.findById(id).ifPresent(existente -> {
+            existente.setTituloNoticia(noticiaEditada.getTituloNoticia());
+            existente.setAutorNoticia(noticiaEditada.getAutorNoticia());
+            existente.setFechaNoticia(noticiaEditada.getFechaNoticia());
+            existente.setContenidoNoticia(noticiaEditada.getContenidoNoticia());
+            existente.setTipoNoticia(noticiaEditada.getTipoNoticia());
+            // Solo actualiza imagen si viene una nueva
+            if (noticiaEditada.getImagenNoticia() != null && !noticiaEditada.getImagenNoticia().isBlank()) {
+                existente.setImagenNoticia(noticiaEditada.getImagenNoticia());
+            }
+            noticiaDao.save(existente);
         });
     }
 
     @Override
     public void eliminar(Long id) {
         noticiaDao.deleteById(id);
+    }
+
+    @Override
+    public Optional<Noticia> buscarMasReciente() {
+        return noticiaDao.findTopByOrderByFechaNoticiaDesc();
     }
 }
