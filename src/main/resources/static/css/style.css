@@ -363,9 +363,10 @@ header.brandinicio .info-icon {
 }
 
 header.brandinicio .logout-btn {
+    background-color: var(--aprende-primary);
     display: flex;
-    align-items: center;
     justify-content: center;
+    align-items: center;
     width: 38px;
     height: 38px;
     border-radius: 999px;
@@ -2279,7 +2280,7 @@ button.btncontacta {
     font-size: 16px;
     font-weight: 700;
     cursor: pointer;
-    background: #F38F02;
+    background: var(--aprende-primary);
     color: #fff;
     transition: 0.5s;
 }
