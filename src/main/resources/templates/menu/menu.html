@@ -76,11 +76,6 @@
         <!-- Con noticia -->
         <div th:if="${noticiaReciente != null}" class="noticia-reciente-card">
 
-            <div class="noticia-reciente-badge">
-                <img th:src="@{/img/noticias.png}" width="16px" alt="">
-                Última noticia
-            </div>
-
             <!-- Imagen si existe -->
             <img th:if="${noticiaReciente.imagenNoticia != null and !#strings.isEmpty(noticiaReciente.imagenNoticia)}"
                  th:src="${noticiaReciente.imagenNoticia}"
