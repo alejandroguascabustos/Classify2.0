@@ -3234,7 +3234,7 @@ label.labelagend { width: 100%; margin-top: 8px; margin-bottom: 3px; }
 
 .noticias-menu { list-style-type: none; display: flex; justify-content: center; align-items: center; gap: 11px; }
 
-.btnnoticias { background-color: var(--orangered); border: none; border-radius: 9px; width: auto; }
+.btnnoticias { background-color: var(--green-light2); border: none; border-radius: 9px; width: auto; }
 .btnnoticias:hover { background-color: var(--green); }
 
 .titlesnoticias {
@@ -3293,7 +3293,7 @@ label.labelagend { width: 100%; margin-top: 8px; margin-bottom: 3px; }
 
 .btneliminarnoticia {
     align-items: center;
-    background-color: var(--orangered);
+    background-color: var(--rojointenso);
     color: white;
     padding: 5px 13px;
     border: none;
@@ -3321,7 +3321,7 @@ label.labelagend { width: 100%; margin-top: 8px; margin-bottom: 3px; }
     text-decoration: none;
 }
 
-.btnactualizarnoticia:hover { background-color: var(--orangered); }
+.btnactualizarnoticia:hover { background-color: var(--green-light2); }
 
 .contentmateriales {
     margin-top: 10px;
@@ -3351,7 +3351,7 @@ img.imgmateriales { width: 100px; }
     display: flex;
     justify-content: center;
     padding: 12px 24px;
-    background-color: var(--orangered);
+    background-color: var(--green);
     color: white;
     border-radius: 5px;
     cursor: pointer;
