@@ -71,7 +71,7 @@ CREATE TABLE IF NOT EXISTS noticias (
     id_noticia       BIGSERIAL    PRIMARY KEY,
     titulo_noticia   VARCHAR(255) NOT NULL,
     autor_noticia    VARCHAR(120) NOT NULL,
-    fecha_noticia    DATETIME         NOT NULL,
+    fecha_noticia    TIMESTAMP        NOT NULL,
     contenido_noticia TEXT        NOT NULL,
     tipo_noticia     VARCHAR(100),
     imagen_noticia   VARCHAR(500),
