@@ -2,9 +2,9 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title th:text="${noticia.idNoticia == null ? 'Classify - Crear Noticia' : 'Classify - Editar Noticia'}">Classify - Noticia</title>
+    <title>Classify - Menu</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
-    <link rel="shortcut icon" th:href="@{/favicon.ico}" type="image/x-icon">
+    <link rel="shortcut icon" th:href="@{img/favicon.ico}" type="image/x-icon">
 </head>
 <body>
     <header class="brandinicio">
@@ -37,202 +37,129 @@
         </div>
     </header>
 
+    <div class="menu-toggle" id="menuToggle">
+        <span></span><span></span><span></span>
+    </div>
+
     <aside class="sidebar">
         <a th:href="@{/menu}" class="inicioprincipal">
             <img th:src="@{/img/home.png}" width="25px" class="imgmenu"> Inicio
         </a>
-
-        <!-- Perfil 1: Administrador -->
-        <th:block th:if="${session.perfil == 1}">
-            <a th:href="@{/agenda}" class="inicioprincipal2"><img th:src="@{/img/agenda.png}" width="25px" class="imgmenu">Agendar clase</a>
-            <a th:href="@{/noticias}" class="inicioprincipal2"><img th:src="@{/img/noticias.png}" width="25px" class="imgmenu">Noticias</a>
-            <a th:href="@{/programacion}" class="inicioprincipal2"><img th:src="@{/img/programacion.png}" width="25px" class="imgmenu">Programación</a>
-            <a th:href="@{/aprende}" class="inicioprincipal2"><img th:src="@{/img/aprende.png}" width="25px" class="imgmenu">Aprende</a>
-            <a th:href="@{/contacta}" class="inicioprincipal2"><img th:src="@{/img/gmail.png}" width="25px" class="imgmenu">Contacta a un profe</a>
-            <a th:href="@{/mismateriales}" class="inicioprincipal2"><img th:src="@{/img/descargamaterial.png}" width="25px" class="imgmenu">Mis Materiales</a>
-            <a th:href="@{/materiales}" class="inicioprincipal2"><img th:src="@{/img/upload.png}" width="25px" class="imgmenu">Carga Materiales</a>
-            <a th:href="@{/califica}" class="inicioprincipal2"><img th:src="@{/img/califica.png}" width="25px" class="imgmenu">Califica un profe</a>
-            <a th:href="@{/notas}" class="inicioprincipal2"><img th:src="@{/img/notas.png}" width="25px" class="imgmenu">Notas</a>
-        </th:block>
-
-        <!-- Perfil 2: Coordinador -->
-        <th:block th:if="${session.perfil == 2}">
-            <a th:href="@{/agenda}" class="inicioprincipal2"><img th:src="@{/img/agenda.png}" width="25px" class="imgmenu">Agendar clase</a>
-            <a th:href="@{/noticias}" class="inicioprincipal2"><img th:src="@{/img/noticias.png}" width="25px" class="imgmenu">Noticias</a>
-            <a th:href="@{/programacion}" class="inicioprincipal2"><img th:src="@{/img/programacion.png}" width="25px" class="imgmenu">Programación</a>
-            <a th:href="@{/aprende}" class="inicioprincipal2"><img th:src="@{/img/aprende.png}" width="25px" class="imgmenu">Aprende</a>
-            <a th:href="@{/contacta}" class="inicioprincipal2"><img th:src="@{/img/gmail.png}" width="25px" class="imgmenu">Contacta a un profe</a>
-            <a th:href="@{/materiales}" class="inicioprincipal2"><img th:src="@{/img/upload.png}" width="25px" class="imgmenu">Carga Materiales</a>
-            <a th:href="@{/califica}" class="inicioprincipal2"><img th:src="@{/img/califica.png}" width="25px" class="imgmenu">Califica un profe</a>
-            <a th:href="@{/notas}" class="inicioprincipal2"><img th:src="@{/img/notas.png}" width="25px" class="imgmenu">Notas</a>
-        </th:block>
-
-        <!-- Perfil 3: Docente -->
-        <th:block th:if="${session.perfil == 3}">
-            <a th:href="@{/noticias}" class="inicioprincipal2"><img th:src="@{/img/noticias.png}" width="25px" class="imgmenu">Noticias</a>
-            <a th:href="@{/programacion}" class="inicioprincipal2"><img th:src="@{/img/programacion.png}" width="25px" class="imgmenu">Programación</a>
-            <a th:href="@{/aprende}" class="inicioprincipal2"><img th:src="@{/img/aprende.png}" width="25px" class="imgmenu">Aprende</a>
-            <a th:href="@{/materiales}" class="inicioprincipal2"><img th:src="@{/img/upload.png}" width="25px" class="imgmenu">Carga Materiales</a>
-        </th:block>
-
-        <!-- Perfil 4: Acudiente -->
-        <th:block th:if="${session.perfil == 4}">
-            <a th:href="@{/noticias}" class="inicioprincipal2"><img th:src="@{/img/noticias.png}" width="25px" class="imgmenu">Noticias</a>
-            <a th:href="@{/programacion}" class="inicioprincipal2"><img th:src="@{/img/programacion.png}" width="25px" class="imgmenu">Programación</a>
-            <a th:href="@{/aprende}" class="inicioprincipal2"><img th:src="@{/img/aprende.png}" width="25px" class="imgmenu">Aprende</a>
-            <a th:href="@{/contacta}" class="inicioprincipal2"><img th:src="@{/img/gmail.png}" width="25px" class="imgmenu">Contacta a un profe</a>
-            <a th:href="@{/mismateriales}" class="inicioprincipal2"><img th:src="@{/img/descargamaterial.png}" width="25px" class="imgmenu">Mis Materiales</a>
-        </th:block>
-
-        <!-- Perfil 5: Estudiante -->
-        <th:block th:if="${session.perfil == 5}">
-            <a th:href="@{/noticias}" class="inicioprincipal2"><img th:src="@{/img/noticias.png}" width="25px" class="imgmenu">Noticias</a>
-            <a th:href="@{/programacion}" class="inicioprincipal2"><img th:src="@{/img/programacion.png}" width="25px" class="imgmenu">Programación</a>
-            <a th:href="@{/aprende}" class="inicioprincipal2"><img th:src="@{/img/aprende.png}" width="25px" class="imgmenu">Aprende</a>
-            <a th:href="@{/contacta}" class="inicioprincipal2"><img th:src="@{/img/gmail.png}" width="25px" class="imgmenu">Contacta a un profe</a>
-            <a th:href="@{/mismateriales}" class="inicioprincipal2"><img th:src="@{/img/descargamaterial.png}" width="25px" class="imgmenu">Mis Materiales</a>
-            <a th:href="@{/califica}" class="inicioprincipal2"><img th:src="@{/img/califica.png}" width="25px" class="imgmenu">Califica un profe</a>
-        </th:block>
-
-        <a th:href="@{#}" class="inicioprincipal3" id="btnConfig">
-            <img th:src="@{/img/config.png}" width="25px" class="imgmenu3">Configuración
+        <a th:href="@{/agenda}" class="inicioprincipal2">
+            <img th:src="@{/img/agenda.png}" width="25px" class="imgmenu">Agendar clase
+        </a>
+        <a th:href="@{/noticias}" class="inicioprincipal2">
+            <img th:src="@{/img/noticias.png}" width="25px" class="imgmenu">Noticias
+        </a>
+        <a th:href="@{/programacion}" class="inicioprincipal2">
+            <img th:src="@{/img/programacion.png}" width="25px" class="imgmenu">Programación
+        </a>
+        <a th:href="@{/aprende}" class="inicioprincipal2">
+            <img th:src="@{/img/aprende.png}" width="25px" class="imgmenu">Aprende
+        </a>
+        <a th:href="@{/contacta}" class="inicioprincipal2">
+            <img th:src="@{/img/gmail.png}" width="25px" class="imgmenu">Contacta a un profe
+        </a>
+        <a th:href="@{/mismateriales}" class="inicioprincipal2">
+            <img th:src="@{/img/descargamaterial.png}" width="25px" class="imgmenu">Mis Materiales
+        </a>
+        <a th:href="@{/materiales}" class="inicioprincipal2">
+            <img th:src="@{/img/upload.png}" width="25px" class="imgmenu">Carga Materiales
         </a>
     </aside>
 
     <main class="contentnoticias">
         <div class="content-noticias">
             <div class="noticias-container">
-
-                <!-- Título dinámico según modo -->
+ 
                 <div class="titlenoticias">
                     <h2 class="titleprincipalnoticias"
-                        th:text="${noticia.idNoticia == null ? 'Crear Noticia' : 'Editar Noticia'}">
-                        Noticia
-                    </h2>
+                        th:text="${noticia.idNoticia == null ? 'Crear Noticia' : 'Editar Noticia'}">Noticia</h2>
                 </div>
                 <br>
-
-                <!-- Menú de navegación noticias -->
+ 
                 <ul class="noticias-menu">
                     <li class="btnnoticias">
                         <a th:href="@{/noticias}" class="titlesnoticias">
-                            <img th:src="@{/img/periodico.png}" alt="Noticias" width="25" class="imgtitlenoticias">Noticias
+                            <img th:src="@{/img/periodico.png}" width="25" class="imgtitlenoticias">Noticias
                         </a>
                     </li>
                     <li class="btnnoticias">
                         <a th:href="@{/noticias/form}" class="titlesnoticias">
-                            <img th:src="@{/img/agregar.png}" alt="Crear" width="25" class="imgtitlenoticias">Crear Noticia
+                            <img th:src="@{/img/agregar.png}" width="25" class="imgtitlenoticias">Crear Noticia
                         </a>
                     </li>
                     <li class="btnnoticias">
                         <a th:href="@{/noticias/historial}" class="titlesnoticias">
-                            <img th:src="@{/img/historial.png}" alt="Historial" width="25" class="imgtitlenoticias">Historial
+                            <img th:src="@{/img/historial.png}" width="25" class="imgtitlenoticias">Historial
                         </a>
                     </li>
                 </ul>
-
-                <!-- Alertas flash -->
+ 
                 <div th:if="${mensajeExito}" class="alerta-exito" th:text="${mensajeExito}"></div>
                 <div th:if="${mensajeError}" class="alerta-error"  th:text="${mensajeError}"></div>
-
-                <!-- ════ FORMULARIO UNIFICADO ════ -->
-                <!-- enctype multipart obligatorio para subir imagen -->
+ 
                 <form th:action="@{/noticias/guardar}" method="post" enctype="multipart/form-data">
-
-                    <!-- ID oculto: null = crear | valor = editar -->
                     <input type="hidden" name="idNoticia" th:value="${noticia.idNoticia}"/>
-
+ 
                     <div class="crear">
-
-                        <!-- TÍTULO -->
-                        <label for="titulo_noticia" class="labelcrearnoticiaprincipal">
-                            Título de la noticia:
-                        </label>
-                        <input type="text"
-                               id="titulo_noticia"
-                               name="titulo_noticia"
+ 
+                        <label class="labelcrearnoticiaprincipal">Título de la noticia:</label>
+                        <input type="text" name="titulo_noticia"
                                th:value="${noticia.tituloNoticia}"
-                               placeholder="Escribe el título de la noticia..."
-                               required/>
-
-                        <!-- AUTOR → pre-llenado desde sesión en modo crear -->
-                        <label for="autor_noticia" class="labelcrearnoticia">Autor:</label>
-                        <input type="text"
-                               id="autor_noticia"
-                               name="autor_noticia"
+                               placeholder="Escribe el título..." required/>
+ 
+                        <label class="labelcrearnoticia">Autor:</label>
+                        <input type="text" name="autor_noticia"
                                th:value="${noticia.autorNoticia}"
-                               placeholder="Nombre del autor"
+                               placeholder="Nombre del autor" required/>
+ 
+                        <!-- ← datetime-local para DATETIME de PostgreSQL -->
+                        <label class="labelcrearnoticia">Fecha y hora de publicación:</label>
+                        <input type="datetime-local" name="fecha_noticia"
+                               th:value="${noticia.fechaNoticia != null ?
+                                   #temporals.format(noticia.fechaNoticia, 'yyyy-MM-dd''T''HH:mm') : ''}"
                                required/>
-
-                        <!-- FECHA → pre-llenada con hoy en modo crear -->
-                        <label for="fecha_noticia" class="labelcrearnoticia">Fecha de publicación:</label>
-                        <input type="date"
-                               id="fecha_noticia"
-                               name="fecha_noticia"
-                               th:value="${noticia.fechaNoticia}"
-                               required/>
-
-                        <!-- TIPO -->
-                        <label for="tipo_noticia" class="labelcrearnoticia">Tipo de noticia:</label>
-                        <input type="text"
-                               id="tipo_noticia"
-                               name="tipo_noticia"
+ 
+                        <label class="labelcrearnoticia">Tipo de noticia:</label>
+                        <input type="text" name="tipo_noticia"
                                th:value="${noticia.tipoNoticia}"
                                placeholder="Ej: Académico, Deportivo, Cultural..."/>
-
-                        <!-- CONTENIDO -->
-                        <label for="contenido_noticia" class="labelcrearnoticia">Contenido:</label>
-                        <textarea id="contenido_noticia"
-                                  name="contenido_noticia"
-                                  placeholder="Escribe el contenido de la noticia..."
-                                  required
+ 
+                        <label class="labelcrearnoticia">Contenido:</label>
+                        <textarea name="contenido_noticia"
+                                  placeholder="Escribe el contenido..." required
                                   th:text="${noticia.contenidoNoticia}"></textarea>
-
-                        <!-- IMAGEN -->
-                        <label for="imagen" class="labelcrearnoticia">Imagen de la noticia:</label>
-
-                        <!-- Preview imagen actual (solo modo editar) -->
+ 
+                        <label class="labelcrearnoticia">Imagen de la noticia:</label>
+ 
+                        <!-- Preview imagen actual (modo editar) -->
                         <div th:if="${noticia.imagenNoticia != null and !#strings.isEmpty(noticia.imagenNoticia)}">
                             <p class="img-label">Imagen actual:</p>
-                            <img th:src="${noticia.imagenNoticia}"
-                                 alt="Imagen actual"
-                                 class="preview-imagen"
-                                 id="imgActual"/>
+                            <img th:src="${noticia.imagenNoticia}" alt="Imagen actual" class="preview-imagen"/>
                         </div>
-
-                        <!-- Selector de archivo -->
-                        <input type="file"
-                               id="imagen"
-                               name="imagen"
+ 
+                        <input type="file" name="imagen"
                                accept="image/png, image/jpeg, image/gif, image/webp"
                                onchange="previewNuevaImagen(this)"/>
-
-                        <!-- Aclaración en modo editar -->
-                        <p class="img-label"
-                           th:if="${noticia.idNoticia != null}">
-                            Selecciona una nueva imagen para reemplazar la actual, o déjalo vacío para conservarla.
+ 
+                        <p class="img-label" th:if="${noticia.idNoticia != null}">
+                            Déjalo vacío para conservar la imagen actual.
                         </p>
-
-                        <!-- Preview de la nueva imagen antes de guardar -->
-                        <img id="nuevaPreview"
-                             class="preview-imagen"
-                             src="#"
-                             alt="Nueva imagen"
-                             style="display:none; margin-top:8px;"/>
-
-                        <!-- BOTONES -->
+ 
+                        <img id="nuevaPreview" class="preview-imagen"
+                             src="#" alt="Nueva imagen" style="display:none; margin-top:8px;"/>
+ 
                         <div class="btn-row btnnoticiascontainer">
-                            <button type="submit"
-                                    class="btncrearnoticia"
+                            <button type="submit" class="btncrearnoticia"
                                     th:text="${noticia.idNoticia == null ? 'Crear Noticia' : 'Actualizar Noticia'}">
                                 Guardar
                             </button>
                             <a th:href="@{/noticias/historial}" class="btncancelarnoticia">Cancelar</a>
                         </div>
-
+ 
                     </div>
                 </form>
-
             </div>
         </div>
     </main>

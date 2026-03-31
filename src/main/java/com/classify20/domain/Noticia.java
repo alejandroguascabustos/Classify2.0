@@ -2,8 +2,7 @@ package com.classify20.domain;
 
 import jakarta.persistence.*;
 import lombok.Data;
-
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @Entity
@@ -21,8 +20,9 @@ public class Noticia {
     @Column(name = "autor_noticia", nullable = false)
     private String autorNoticia;
 
+    // ← DATETIME en lugar de DATE
     @Column(name = "fecha_noticia", nullable = false)
-    private LocalDate fechaNoticia;
+    private LocalDateTime fechaNoticia;
 
     @Column(name = "contenido_noticia", nullable = false, columnDefinition = "TEXT")
     private String contenidoNoticia;
