@@ -17,7 +17,7 @@
             <a th:href="@{/nosotros}" class="info-btn">Nosotros</a>
             <a th:href="@{/contacto}" class="info-btn">Contacto</a>
         </div>
-        <div>
+        <div class="header-tools">
             <a href="#info" class="info-btn">
                 <img th:src="@{/img/informacion.png}" alt="Información" class="info-icon">
             </a>
@@ -66,23 +66,7 @@
         <a th:href="@{/materiales}" class="inicioprincipal2">
             <img th:src="@{/img/upload.png}" width="25px" class="imgmenu">Carga Materiales
         </a>
-        <a th:href="@{#}" class="inicioprincipal3" id="btnConfig">
-            <img th:src="@{/img/config.png}" width="25px" class="imgmenu3">Configuración
-        </a>
     </aside>
-
-    <!-- Modal configuración -->
-    <div id="modalConfig" class="modal-config">
-        <div class="modal-config-content">
-            <div class="modal-config-header">
-                <h3>Configuración</h3>
-                <span class="modal-config-close">&times;</span>
-            </div>
-            <div class="modal-config-body">
-                <a th:href="@{#}" class="cerrarsesion">Cerrar Sesion</a>
-            </div>
-        </div>
-    </div>
 
     <main class="contentprincipal">
 
