@@ -2,9 +2,9 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Classify - Historial de Noticias</title>
+    <title>Classify - Menu</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
-    <link rel="shortcut icon" th:href="@{/favicon.ico}" type="image/x-icon">
+    <link rel="shortcut icon" th:href="@{img/favicon.ico}" type="image/x-icon">
 </head>
 <body>
     <header class="brandinicio">
@@ -37,133 +37,94 @@
         </div>
     </header>
 
+    <div class="menu-toggle" id="menuToggle">
+        <span></span><span></span><span></span>
+    </div>
+
     <aside class="sidebar">
         <a th:href="@{/menu}" class="inicioprincipal">
             <img th:src="@{/img/home.png}" width="25px" class="imgmenu"> Inicio
         </a>
-
-        <!-- Perfil 1: Administrador -->
-        <th:block th:if="${session.perfil == 1}">
-            <a th:href="@{/agenda}" class="inicioprincipal2"><img th:src="@{/img/agenda.png}" width="25px" class="imgmenu">Agendar clase</a>
-            <a th:href="@{/noticias}" class="inicioprincipal2"><img th:src="@{/img/noticias.png}" width="25px" class="imgmenu">Noticias</a>
-            <a th:href="@{/programacion}" class="inicioprincipal2"><img th:src="@{/img/programacion.png}" width="25px" class="imgmenu">Programación</a>
-            <a th:href="@{/aprende}" class="inicioprincipal2"><img th:src="@{/img/aprende.png}" width="25px" class="imgmenu">Aprende</a>
-            <a th:href="@{/contacta}" class="inicioprincipal2"><img th:src="@{/img/gmail.png}" width="25px" class="imgmenu">Contacta a un profe</a>
-            <a th:href="@{/mismateriales}" class="inicioprincipal2"><img th:src="@{/img/descargamaterial.png}" width="25px" class="imgmenu">Mis Materiales</a>
-            <a th:href="@{/materiales}" class="inicioprincipal2"><img th:src="@{/img/upload.png}" width="25px" class="imgmenu">Carga Materiales</a>
-            <a th:href="@{/califica}" class="inicioprincipal2"><img th:src="@{/img/califica.png}" width="25px" class="imgmenu">Califica un profe</a>
-            <a th:href="@{/izada}" class="inicioprincipal2"><img th:src="@{/img/estrella.png}" width="25px" class="imgmenu">Izada de bandera</a>
-            <a th:href="@{/notas}" class="inicioprincipal2"><img th:src="@{/img/notas.png}" width="25px" class="imgmenu">Notas</a>
-        </th:block>
-
-        <!-- Perfil 2: Coordinador -->
-        <th:block th:if="${session.perfil == 2}">
-            <a th:href="@{/agenda}" class="inicioprincipal2"><img th:src="@{/img/agenda.png}" width="25px" class="imgmenu">Agendar clase</a>
-            <a th:href="@{/noticias}" class="inicioprincipal2"><img th:src="@{/img/noticias.png}" width="25px" class="imgmenu">Noticias</a>
-            <a th:href="@{/programacion}" class="inicioprincipal2"><img th:src="@{/img/programacion.png}" width="25px" class="imgmenu">Programación</a>
-            <a th:href="@{/aprende}" class="inicioprincipal2"><img th:src="@{/img/aprende.png}" width="25px" class="imgmenu">Aprende</a>
-            <a th:href="@{/contacta}" class="inicioprincipal2"><img th:src="@{/img/gmail.png}" width="25px" class="imgmenu">Contacta a un profe</a>
-            <a th:href="@{/materiales}" class="inicioprincipal2"><img th:src="@{/img/upload.png}" width="25px" class="imgmenu">Carga Materiales</a>
-            <a th:href="@{/califica}" class="inicioprincipal2"><img th:src="@{/img/califica.png}" width="25px" class="imgmenu">Califica un profe</a>
-            <a th:href="@{/izada}" class="inicioprincipal2"><img th:src="@{/img/estrella.png}" width="25px" class="imgmenu">Izada de bandera</a>
-            <a th:href="@{/notas}" class="inicioprincipal2"><img th:src="@{/img/notas.png}" width="25px" class="imgmenu">Notas</a>
-        </th:block>
-
-        <!-- Perfil 3: Docente -->
-        <th:block th:if="${session.perfil == 3}">
-            <a th:href="@{/noticias}" class="inicioprincipal2"><img th:src="@{/img/noticias.png}" width="25px" class="imgmenu">Noticias</a>
-            <a th:href="@{/programacion}" class="inicioprincipal2"><img th:src="@{/img/programacion.png}" width="25px" class="imgmenu">Programación</a>
-            <a th:href="@{/aprende}" class="inicioprincipal2"><img th:src="@{/img/aprende.png}" width="25px" class="imgmenu">Aprende</a>
-            <a th:href="@{/materiales}" class="inicioprincipal2"><img th:src="@{/img/upload.png}" width="25px" class="imgmenu">Carga Materiales</a>
-            <a th:href="@{/izada}" class="inicioprincipal2"><img th:src="@{/img/estrella.png}" width="25px" class="imgmenu">Izada de bandera</a>
-        </th:block>
-
-        <!-- Perfil 4: Acudiente -->
-        <th:block th:if="${session.perfil == 4}">
-            <a th:href="@{/noticias}" class="inicioprincipal2"><img th:src="@{/img/noticias.png}" width="25px" class="imgmenu">Noticias</a>
-            <a th:href="@{/programacion}" class="inicioprincipal2"><img th:src="@{/img/programacion.png}" width="25px" class="imgmenu">Programación</a>
-            <a th:href="@{/aprende}" class="inicioprincipal2"><img th:src="@{/img/aprende.png}" width="25px" class="imgmenu">Aprende</a>
-            <a th:href="@{/contacta}" class="inicioprincipal2"><img th:src="@{/img/gmail.png}" width="25px" class="imgmenu">Contacta a un profe</a>
-            <a th:href="@{/mismateriales}" class="inicioprincipal2"><img th:src="@{/img/descargamaterial.png}" width="25px" class="imgmenu">Mis Materiales</a>
-            <a th:href="@{/izada}" class="inicioprincipal2"><img th:src="@{/img/estrella.png}" width="25px" class="imgmenu">Izada de bandera</a>
-        </th:block>
-
-        <!-- Perfil 5: Estudiante -->
-        <th:block th:if="${session.perfil == 5}">
-            <a th:href="@{/noticias}" class="inicioprincipal2"><img th:src="@{/img/noticias.png}" width="25px" class="imgmenu">Noticias</a>
-            <a th:href="@{/programacion}" class="inicioprincipal2"><img th:src="@{/img/programacion.png}" width="25px" class="imgmenu">Programación</a>
-            <a th:href="@{/aprende}" class="inicioprincipal2"><img th:src="@{/img/aprende.png}" width="25px" class="imgmenu">Aprende</a>
-            <a th:href="@{/contacta}" class="inicioprincipal2"><img th:src="@{/img/gmail.png}" width="25px" class="imgmenu">Contacta a un profe</a>
-            <a th:href="@{/mismateriales}" class="inicioprincipal2"><img th:src="@{/img/descargamaterial.png}" width="25px" class="imgmenu">Mis Materiales</a>
-            <a th:href="@{/califica}" class="inicioprincipal2"><img th:src="@{/img/califica.png}" width="25px" class="imgmenu">Califica un profe</a>
-            <a th:href="@{/izada}" class="inicioprincipal2"><img th:src="@{/img/estrella.png}" width="25px" class="imgmenu">Izada de bandera</a>
-        </th:block>
-
-        <a th:href="@{#}" class="inicioprincipal3" id="btnConfig">
-            <img th:src="@{/img/config.png}" width="25px" class="imgmenu3">Configuración
+        <a th:href="@{/agenda}" class="inicioprincipal2">
+            <img th:src="@{/img/agenda.png}" width="25px" class="imgmenu">Agendar clase
+        </a>
+        <a th:href="@{/noticias}" class="inicioprincipal2">
+            <img th:src="@{/img/noticias.png}" width="25px" class="imgmenu">Noticias
+        </a>
+        <a th:href="@{/programacion}" class="inicioprincipal2">
+            <img th:src="@{/img/programacion.png}" width="25px" class="imgmenu">Programación
+        </a>
+        <a th:href="@{/aprende}" class="inicioprincipal2">
+            <img th:src="@{/img/aprende.png}" width="25px" class="imgmenu">Aprende
+        </a>
+        <a th:href="@{/contacta}" class="inicioprincipal2">
+            <img th:src="@{/img/gmail.png}" width="25px" class="imgmenu">Contacta a un profe
+        </a>
+        <a th:href="@{/mismateriales}" class="inicioprincipal2">
+            <img th:src="@{/img/descargamaterial.png}" width="25px" class="imgmenu">Mis Materiales
+        </a>
+        <a th:href="@{/materiales}" class="inicioprincipal2">
+            <img th:src="@{/img/upload.png}" width="25px" class="imgmenu">Carga Materiales
         </a>
     </aside>
 
     <main class="contentnoticias">
         <div class="content-noticias">
             <div class="noticias-container">
-
+ 
                 <div class="titlenoticias">
                     <h2 class="titleprincipalnoticias">Historial de Noticias</h2>
                 </div>
                 <br>
-
+ 
                 <ul class="noticias-menu">
                     <li class="btnnoticias">
                         <a th:href="@{/noticias}" class="titlesnoticias">
-                            <img th:src="@{/img/periodico.png}" alt="Noticias" width="25" class="imgtitlenoticias">Noticias
+                            <img th:src="@{/img/periodico.png}" width="25" class="imgtitlenoticias">Noticias
                         </a>
                     </li>
                     <li class="btnnoticias">
                         <a th:href="@{/noticias/form}" class="titlesnoticias">
-                            <img th:src="@{/img/agregar.png}" alt="Crear" width="25" class="imgtitlenoticias">Crear Noticia
+                            <img th:src="@{/img/agregar.png}" width="25" class="imgtitlenoticias">Crear Noticia
                         </a>
                     </li>
                     <li class="btnnoticias">
                         <a th:href="@{/noticias/historial}" class="titlesnoticias">
-                            <img th:src="@{/img/historial.png}" alt="Historial" width="25" class="imgtitlenoticias">Historial
+                            <img th:src="@{/img/historial.png}" width="25" class="imgtitlenoticias">Historial
                         </a>
                     </li>
                 </ul>
-
                 <br>
-
-                <!-- Alertas flash -->
+ 
                 <div th:if="${mensajeExito}" class="alerta-exito" th:text="${mensajeExito}"></div>
                 <div th:if="${mensajeError}" class="alerta-error"  th:text="${mensajeError}"></div>
-
+ 
                 <div class="listanoticicas">
-
-                    <!-- Lista de noticias -->
+ 
+                    <!-- Noticias de más reciente a más antigua -->
                     <th:block th:if="${noticias != null and !noticias.isEmpty()}">
                         <div class="noticia-card" th:each="noticia : ${noticias}">
-
-                            <!-- Imagen -->
+ 
                             <img th:if="${noticia.imagenNoticia != null and !#strings.isEmpty(noticia.imagenNoticia)}"
                                  th:src="${noticia.imagenNoticia}"
                                  alt="Imagen noticia"
                                  class="noticia-card-img"/>
-
+ 
                             <div class="noticia-card-body">
                                 <h3 class="titlecontentnoticia" th:text="${noticia.tituloNoticia}"></h3>
-
+ 
                                 <div class="noticia-meta">
                                     <span th:text="'✍ ' + ${noticia.autorNoticia}"></span>
-                                    <span th:text="'📅 ' + ${#temporals.format(noticia.fechaNoticia, 'dd/MM/yyyy')}"></span>
+                                    <!-- Formato completo dd/MM/yyyy HH:mm -->
+                                    <span th:text="'📅 ' + ${#temporals.format(noticia.fechaNoticia, 'dd/MM/yyyy HH:mm')}"></span>
                                     <span class="badge-tipo"
                                           th:if="${noticia.tipoNoticia != null and !#strings.isEmpty(noticia.tipoNoticia)}"
                                           th:text="${noticia.tipoNoticia}">
                                     </span>
                                 </div>
-
+ 
                                 <p class="noticia-contenido" th:text="${noticia.contenidoNoticia}"></p>
-
-                                <!-- Botones editar / eliminar -->
+ 
                                 <div class="acciones-noticia">
                                     <a th:href="@{/noticias/form/{id}(id=${noticia.idNoticia})}"
                                        class="btneditarnoticia">Editar</a>
@@ -172,18 +133,15 @@
                                        class="btneliminarnoticia">Eliminar</a>
                                 </div>
                             </div>
-
                             <hr class="separadornoticias">
                         </div>
                     </th:block>
-
-                    <!-- Sin noticias -->
+ 
                     <th:block th:if="${noticias == null or noticias.isEmpty()}">
                         <p class="parrafonoticias">No hay noticias disponibles.</p>
                     </th:block>
-
+ 
                 </div>
-
             </div>
         </div>
     </main>
