@@ -77,7 +77,7 @@ public class AuthService {
             }
         } catch (SQLException exception) {
             return new LoginResultado(false,
-                    "No fue posible validar el inicio de sesion en PostgreSQL: " + exception.getMessage(),
+                    "No fue posible validar el inicio de sesion en la base de datos de Classify: " + exception.getMessage(),
                     null);
         }
     }

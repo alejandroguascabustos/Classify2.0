@@ -18,8 +18,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (!correo) return;
 
-        // Webhook de n8n proporcionado por el usuario
-        const webhookUrl = 'https://n8n.classify.in.net/webhook-test/5dbffea7-2dc0-4085-a152-eb981f99da1a';
+        // Webhook publico de registro
+        const webhookUrl = 'https://n8n.classify.in.net/webhook/bbab4100-3e6e-44cd-98e6-f62e6d3f65af';
 
         // Enviar webhook en segundo plano (no bloquea el submit del form)
         const payload = {
@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
             correo: correo,
             nombre_usuario: usuario,
             nombre_completo: `${nombre} ${apellido}`.trim(),
-            source: 'registro_test'
+            source: 'registro_publico'
         };
 
         // Enviar los datos al webhook de n8n

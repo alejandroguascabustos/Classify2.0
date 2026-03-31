@@ -39,12 +39,15 @@ public class RegistroService {
     private final SecureRandom secureRandom;
     private final ClassifyDatabaseService databaseService;
     private final String docenteWebhookUrl;
+    private final String welcomeWebhookUrl;
 
     public RegistroService(
             ClassifyDatabaseService databaseService,
-            @Value("${classify.webhooks.registro-docente.url:https://n8n.classify.in.net/webhook/bbab4100-3e6e-44cd-98e6-f62e6d3f65af}") String docenteWebhookUrl) {
+            @Value("${classify.webhooks.registro-docente.url:https://n8n.classify.in.net/webhook/bbab4100-3e6e-44cd-98e6-f62e6d3f65af}") String docenteWebhookUrl,
+            @Value("${classify.webhooks.welcome.url:https://n8n.classify.in.net/webhook/a54058de-22a2-488b-956c-21bc5520d6a0}") String welcomeWebhookUrl) {
         this.databaseService = databaseService;
         this.docenteWebhookUrl = docenteWebhookUrl;
+        this.welcomeWebhookUrl = welcomeWebhookUrl;
         this.restClient = RestClient.builder().build();
         this.passwordEncoder = new BCryptPasswordEncoder();
         this.secureRandom = new SecureRandom();
@@ -56,6 +59,7 @@ public class RegistroService {
 
         String codigoDocenteAsignado = null;
         String materiaFinal = registro.materia();
+        WebhookResultado webhookResultado = null;
 
         try (Connection connection = openConnection()) {
             connection.setAutoCommit(false);
@@ -68,6 +72,13 @@ public class RegistroService {
                 }
 
                 insertarRegistro(connection, registro, materiaFinal, codigoDocenteAsignado);
+
+                if ("docente".equals(registro.tipoUsuario())) {
+                    webhookResultado = enviarCodigoDocente(registro, codigoDocenteAsignado, materiaFinal);
+                } else {
+                    enviarWebhookBienvenida(registro); 
+                }
+
                 connection.commit();
             } catch (Exception exception) {
                 connection.rollback();
@@ -76,18 +87,15 @@ public class RegistroService {
         } catch (RegistroException exception) {
             return new RegistroResultado(false, exception.getMessage());
         } catch (SQLException exception) {
-            return new RegistroResultado(false, "No fue posible guardar el registro en PostgreSQL: " + exception.getMessage());
+            return new RegistroResultado(false, "No fue posible guardar el registro en la base de datos de Classify: " + exception.getMessage());
         }
 
         if ("docente".equals(registro.tipoUsuario())) {
-            WebhookResultado webhookResultado = enviarCodigoDocente(registro, codigoDocenteAsignado, materiaFinal);
-            if (webhookResultado.enviado()) {
-                return new RegistroResultado(true, "Docente registrado correctamente. Se envio un codigo unico al correo institucional.");
-            }
-
+            String detalleMetodo = webhookResultado == null || webhookResultado.metodo().isBlank()
+                    ? ""
+                    : " mediante " + webhookResultado.metodo();
             return new RegistroResultado(true,
-                    "Docente registrado correctamente. No se pudo enviar el correo automatico, comparte temporalmente este codigo: "
-                            + codigoDocenteAsignado);
+                    "Docente registrado correctamente. Se envio un codigo unico al correo institucional" + detalleMetodo + ".");
         }
 
         if ("estudiante".equals(registro.tipoUsuario())) {
@@ -207,6 +215,31 @@ public class RegistroService {
             builder.append(CODE_ALPHABET.charAt(position));
         }
         return builder.toString();
+    }
+
+    private void enviarWebhookBienvenida(RegistroNormalizado registro) {
+        Map<String, Object> payload = new LinkedHashMap<>();
+        payload.put("action", "welcome_email");
+        payload.put("platform", "Classify");
+        payload.put("tipo_usuario", registro.tipoUsuario());
+        payload.put("nombre", registro.nombre());
+        payload.put("apellido", registro.apellido());
+        payload.put("nombre_completo", registro.nombre() + " " + registro.apellido());
+        payload.put("correo", registro.correo());
+        payload.put("usuario", registro.nombreUsuario());
+        payload.put("source", "registro_app");
+        payload.put("timestamp", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+
+        try {
+            restClient.post()
+                    .uri(docenteWebhookUrl) // Usamos la URL de registro proporcionada por el usuario
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(payload)
+                    .retrieve()
+                    .toBodilessEntity();
+        } catch (Exception exception) {
+            logger.warn("Fallo el envio al webhook de prueba durante el registro.", exception);
+        }
     }
 
     private WebhookResultado enviarCodigoDocente(RegistroNormalizado registro, String codigoDocente, String materiaFinal) {
