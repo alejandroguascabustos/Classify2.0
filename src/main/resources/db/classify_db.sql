@@ -27,7 +27,6 @@ CREATE INDEX IF NOT EXISTS idx_registro_usuarios_tipo ON registro_usuarios (tipo
 CREATE INDEX IF NOT EXISTS idx_registro_usuarios_codigo_ref ON registro_usuarios (codigo_docente_referencia);
 
 -- 2. DATOS DE PRUEBA / INICIALES
--- =========================================================================
 
 INSERT INTO registro_usuarios (
     nombre, apellido, correo, documento, telefono, nombre_usuario, pass_hash,
