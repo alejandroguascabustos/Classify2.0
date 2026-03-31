@@ -11,13 +11,13 @@ $errorId = uniqid('error', true);
     <meta name="robots" content="noindex">
 
     <title><?= esc($title) ?></title>
-    <link rel="stylesheet" href="/css/error-debug.css">
+    <link rel="stylesheet" href="/css/style.css">
 
     <script>
         <?= file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . 'debug.js') ?>
     </script>
 </head>
-<body onload="init()">
+<body class="error-debug-page" onload="init()">
 
     <!-- Header -->
     <div class="header">

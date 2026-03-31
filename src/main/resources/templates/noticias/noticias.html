@@ -4,64 +4,7 @@
     <meta charset="UTF-8">
     <title>Classify - Noticias</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
-    <link rel="stylesheet" th:href="@{/css/chatbot.css}">
     <link rel="shortcut icon" th:href="@{/favicon.ico}" type="image/x-icon">
-    <style>
-        .noticias-container { height: auto !important; min-height: 700px; }
-        .listanoticicas { overflow-y: auto; }
-
-        .noticia-card {
-            border: 1px solid #e5e7eb;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-            transition: box-shadow .2s;
-        }
-        .noticia-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.12); }
-
-        .noticia-card-img {
-            width: 100%;
-            max-height: 220px;
-            object-fit: cover;
-            display: block;
-        }
-
-        .noticia-card-body { padding: 16px 20px; }
-
-        .titlecontentnoticia {
-            color: var(--green-dark);
-            font-size: 1.15rem;
-            margin-bottom: 6px;
-        }
-
-        .noticia-meta {
-            font-size: 0.82rem;
-            color: var(--gris);
-            margin-bottom: 10px;
-            display: flex;
-            gap: 14px;
-            flex-wrap: wrap;
-        }
-
-        .noticia-contenido {
-            color: #333;
-            font-size: 0.95rem;
-            line-height: 1.6;
-            margin-bottom: 10px;
-        }
-
-        .badge-tipo {
-            display: inline-block;
-            background: var(--orangered);
-            color: #fff;
-            border-radius: 20px;
-            padding: 3px 12px;
-            font-size: 12px;
-        }
-
-        .separadornoticias { border: none; border-top: 1px solid #f0f0f0; margin: 0; }
-    </style>
 </head>
 <body>
     <header class="brandinicio">
