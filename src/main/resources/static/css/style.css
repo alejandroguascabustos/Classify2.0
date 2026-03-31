@@ -5385,9 +5385,7 @@ body.contacto-page .contacto-mail-link {
     font-size: 0.95rem;
 }
 
-body.contacto-page .f4-icon.f4-icon--brand {
-    background: var(--g);
-}
+
 
 @keyframes fadeInLeft {
     from {
