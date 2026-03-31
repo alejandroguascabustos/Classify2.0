@@ -5027,6 +5027,7 @@ body.contacto-page *,
 body.contacto-page *::before,
 body.contacto-page *::after {
     box-sizing: border-box;
+    margin-top: -4px;
 }
 
 body.contacto-page {
