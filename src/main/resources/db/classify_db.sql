@@ -101,5 +101,5 @@ VALUES
 ON CONFLICT DO NOTHING;
 
 -- Permisos
-GRANT ALL PRIVILEGES ON TABLE noticias TO classify_app;
-GRANT USAGE, SELECT ON SEQUENCE noticias_id_noticia_seq TO classify_app;
+-- GRANT ALL PRIVILEGES ON TABLE noticias TO classify_app;
+-- GRANT USAGE, SELECT ON SEQUENCE noticias_id_noticia_seq TO classify_app;
