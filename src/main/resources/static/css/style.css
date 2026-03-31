@@ -3225,6 +3225,8 @@ label.labelagend { width: 100%; margin-top: 8px; margin-bottom: 3px; }
     width: 90%;
     margin-left: 0%;
     height: 700px;
+    height: auto !important; 
+    min-height: 700px;
 }
 
 .titleprincipalnoticias { border-left: 3px solid; border-color: var(--green); padding-left: 10px; text-align: left; }
@@ -7250,50 +7252,78 @@ body.error-debug-page .error-table-full {
     display: flex;
     flex-direction: column;
     max-width: 680px;
-    margin: 0 auto;
+    margin: 20px auto;
 }
 
 .crear input[type="text"],
 .crear input[type="date"],
 .crear textarea {
     width: 100%;
-    padding: 10px;
+    padding: 10px 12px;
     border: 1px solid #ddd;
     border-radius: 8px;
     font-size: 1rem;
     margin-bottom: 4px;
+    box-sizing: border-box;
+}
+
+.crear input[type="text"]:focus,
+.crear input[type="date"]:focus,
+.crear textarea:focus {
+    border-color: var(--green);
+    outline: none;
 }
 
 .crear textarea {
-    min-height: 130px;
+    min-height: 140px;
     resize: vertical;
 }
 
+/* Hace visible el input file */
 .crear input[type="file"] {
     display: block !important;
-    padding: 6px;
-    border: 1px dashed #aaa;
+    padding: 8px;
+    border: 1.5px dashed #aaa;
+    border-radius: 8px;
     background: #f9f9f9;
     cursor: pointer;
+    font-size: 0.88rem;
+    margin-bottom: 4px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.crear input[type="file"]:hover { 
+    border-color: var(--green); 
 }
 
 .preview-imagen {
-    max-width: 240px;
+    max-width: 260px;
+    max-height: 180px;
     border-radius: 8px;
     border: 1px solid #ddd;
     margin-bottom: 8px;
     display: block;
+    object-fit: cover;
+}
+
+.img-label {
+    font-size: 0.78rem;
+    color: #888;
+    margin-bottom: 10px;
+    margin-top: 2px;
 }
 
 .btn-row {
     display: flex;
     gap: 10px;
-    margin-top: 16px;
+    margin-top: 20px;
     align-items: center;
 }
 
+
 .btncancelarnoticia {
-    background: #aaa;
+    background: #6c757d;
     color: white;
     padding: 11px 22px;
     border-radius: 5px;
@@ -7303,5 +7333,5 @@ body.error-debug-page .error-table-full {
 }
 
 .btncancelarnoticia:hover {
-    background: #888;
+    background: #555;
 }
