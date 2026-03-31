@@ -4,6 +4,7 @@ import com.classify20.dao.NoticiaDao;
 import com.classify20.domain.Noticia;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -42,7 +43,8 @@ public class NoticiaServiceImpl implements NoticiaService {
             existente.setContenidoNoticia(noticiaEditada.getContenidoNoticia());
             existente.setTipoNoticia(noticiaEditada.getTipoNoticia());
             // Solo actualiza imagen si viene una nueva
-            if (noticiaEditada.getImagenNoticia() != null && !noticiaEditada.getImagenNoticia().isBlank()) {
+            if (noticiaEditada.getImagenNoticia() != null
+                    && !noticiaEditada.getImagenNoticia().isBlank()) {
                 existente.setImagenNoticia(noticiaEditada.getImagenNoticia());
             }
             noticiaDao.save(existente);
@@ -56,6 +58,6 @@ public class NoticiaServiceImpl implements NoticiaService {
 
     @Override
     public Optional<Noticia> buscarMasReciente() {
-        return noticiaDao.findTopByOrderByFechaNoticiaDesc();
+        return noticiaDao.findMasReciente();
     }
 }

@@ -7,14 +7,18 @@ import java.util.Optional;
 
 public interface NoticiaService {
 
-
     List<Noticia> listarTodas();
+
     List<Noticia> listarParaVista();
+
     Optional<Noticia> buscarPorId(Long id);
+
     void guardar(Noticia noticia);
+
     void actualizar(Long id, Noticia noticiaEditada);
+
     void eliminar(Long id);
 
-    // ← NUEVO
+    // Noticia más reciente para el menú
     Optional<Noticia> buscarMasReciente();
 }

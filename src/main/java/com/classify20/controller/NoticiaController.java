@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-
 import java.io.IOException;
 import java.nio.file.*;
 import java.time.LocalDate;
@@ -26,9 +25,9 @@ public class NoticiaController {
     @Autowired
     private NoticiaService noticiaService;
 
-    // Directorio de subida configurado en application.properties
-    @Value("${classify.upload.dir:uploads/noticias}")
-    private String uploadDir;
+    // Ruta absoluta desde application.properties
+    @Value("${classify.upload.path:C:/classify-uploads}")
+    private String uploadPath;
 
     // ─── GET /noticias → vista pública ───────────────────────
     @GetMapping
@@ -46,15 +45,25 @@ public class NoticiaController {
         return "noticias/historialNoticia";
     }
 
-    // ─── GET /noticias/form → formulario unificado (crear) ───
+    // ─── GET /noticias/form → formulario CREAR ────────────────
     @GetMapping("/form")
     public String mostrarFormulario(HttpSession session, Model model) {
         if (session.getAttribute("nombre") == null) return "redirect:/login";
-        model.addAttribute("noticia", new Noticia());   // objeto vacío = modo CREAR
+        Noticia nueva = new Noticia();
+        // Auto-rellenar autor con el nombre del usuario en sesión
+        if (session.getAttribute("nombre") != null) {
+            String nombre = session.getAttribute("nombre").toString();
+            String apellido = session.getAttribute("apellido") != null
+                    ? " " + session.getAttribute("apellido").toString() : "";
+            nueva.setAutorNoticia(nombre + apellido);
+        }
+        // Auto-rellenar fecha con hoy
+        nueva.setFechaNoticia(LocalDate.now());
+        model.addAttribute("noticia", nueva);
         return "noticias/formularioNoticia";
     }
 
-    // ─── GET /noticias/form/{id} → formulario unificado (editar) ─
+    // ─── GET /noticias/form/{id} → formulario EDITAR ─────────
     @GetMapping("/form/{id}")
     public String mostrarFormularioEditar(@PathVariable Long id,
                                           HttpSession session, Model model) {
@@ -84,13 +93,25 @@ public class NoticiaController {
         try {
             // ── Manejo de imagen ──────────────────────────────
             String rutaImagen = null;
+
             if (imagen != null && !imagen.isEmpty()) {
-                String nombreArchivo = UUID.randomUUID() + "_" + imagen.getOriginalFilename();
-                Path dirPath = Paths.get(uploadDir);
+                // Subcarpeta noticias dentro del uploadPath
+                Path dirPath = Paths.get(uploadPath, "noticias");
                 Files.createDirectories(dirPath);
+
+                // Nombre único para evitar colisiones
+                String extension = "";
+                String originalName = imagen.getOriginalFilename();
+                if (originalName != null && originalName.contains(".")) {
+                    extension = originalName.substring(originalName.lastIndexOf("."));
+                }
+                String nombreArchivo = UUID.randomUUID() + extension;
+
                 Files.copy(imagen.getInputStream(),
                            dirPath.resolve(nombreArchivo),
                            StandardCopyOption.REPLACE_EXISTING);
+
+                // URL pública que Spring servirá vía /uploads/**
                 rutaImagen = "/uploads/noticias/" + nombreArchivo;
             }
 
@@ -116,10 +137,12 @@ public class NoticiaController {
             return "redirect:/noticias/historial";
 
         } catch (IOException e) {
-            redirectAttrs.addFlashAttribute("mensajeError", "Error al subir la imagen.");
+            redirectAttrs.addFlashAttribute("mensajeError",
+                    "Error al subir la imagen: " + e.getMessage());
             return "redirect:/noticias/form";
         } catch (Exception e) {
-            redirectAttrs.addFlashAttribute("mensajeError", "Error al guardar la noticia.");
+            redirectAttrs.addFlashAttribute("mensajeError",
+                    "Error al guardar la noticia: " + e.getMessage());
             return "redirect:/noticias/form";
         }
     }
