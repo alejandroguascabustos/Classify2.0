@@ -141,21 +141,26 @@
 
     <footer class="f4">
         <div class="f4-logo">
-            <div class="f4-icon f4-icon--brand">C</div>
+            <div class="f4-icon">C</div>
             <span class="f4-logo-name">Classify</span>
         </div>
         <p class="f4-desc">
-            Plataforma educativa unificada para el Colegio Moralba Sur Oriental. Todo en un solo lugar.
+            Plataforma de gestión escolar que integra procesos académicos, materiales y comunicación institucional en
+            un mismo entorno digital.
         </p>
         <nav class="f4-links">
             <a th:href="@{/inicio}">Inicio</a>
             <a th:href="@{/nosotros}">Nosotros</a>
-            <a href="#">Soporte</a>
+            <a th:href="@{/agenda}">Agenda</a>
+            <a th:href="@{/materiales}">Materiales</a>
+            <a th:href="@{/noticias}">Noticias</a>
+            <a th:href="@{/soporte}">Soporte</a>
             <a th:href="@{/contacto}">Contacto</a>
-            <a href="#">Privacidad</a>
+            <a th:href="@{/politicas}">Privacidad</a>
+            <a th:href="@{/terminos}">Términos</a>
         </nav>
         <div class="f4-divider"></div>
-        <p class="f4-copy">© 2026 Classify — Todo unificado en Classify · Bogotá, Colombia</p>
+        <p class="f4-copy">© 2026 Classify — Código y Diseño desde Bogotá, Colombia.</p>
     </footer>
 
     <script th:src="@{/js/chatbot.js}"></script>

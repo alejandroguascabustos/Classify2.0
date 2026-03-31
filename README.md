@@ -49,7 +49,5 @@ El proyecto combina dos tecnologías principales:
 
 1. Descargue el archivo .zip
 2. Agregue a la carpeta htdocs ubicada comunmente en la ubicación C:
-3. Abra Xampp, VisualStudioCode y abra el proyecto en la ubicación indicada en el punto 2.
-4. Si por algun motivo aparece error en el despliegue elimine la carpeta 'Vendor' e instale nuevamente el composer estando en la ubicación del proyecto, usando la terminal.
-5. Abra de nuevo e intente abrir la ubicación http://localhost/classify/public/
+3. Abra de nuevo e intente abrir la ubicación http://localhost:8080/inicio
 
