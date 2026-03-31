@@ -16,11 +16,13 @@ public class NoticiaServiceImpl implements NoticiaService {
 
     @Override
     public List<Noticia> listarTodas() {
+        // más reciente primero
         return noticiaDao.findAllByOrderByFechaNoticiaDesc();
     }
 
     @Override
     public List<Noticia> listarParaVista() {
+        // más reciente primero
         return noticiaDao.findAllByOrderByFechaNoticiaDesc();
     }
 
@@ -42,7 +44,6 @@ public class NoticiaServiceImpl implements NoticiaService {
             existente.setFechaNoticia(noticiaEditada.getFechaNoticia());
             existente.setContenidoNoticia(noticiaEditada.getContenidoNoticia());
             existente.setTipoNoticia(noticiaEditada.getTipoNoticia());
-            // Solo actualiza imagen si viene una nueva
             if (noticiaEditada.getImagenNoticia() != null
                     && !noticiaEditada.getImagenNoticia().isBlank()) {
                 existente.setImagenNoticia(noticiaEditada.getImagenNoticia());

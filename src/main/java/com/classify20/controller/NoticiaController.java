@@ -14,7 +14,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.nio.file.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -25,7 +25,6 @@ public class NoticiaController {
     @Autowired
     private NoticiaService noticiaService;
 
-    // Ruta absoluta desde application.properties
     @Value("${classify.upload.path:C:/classify-uploads}")
     private String uploadPath;
 
@@ -45,25 +44,22 @@ public class NoticiaController {
         return "noticias/historialNoticia";
     }
 
-    // ─── GET /noticias/form → formulario CREAR ────────────────
+    // ─── GET /noticias/form → CREAR ───────────────────────────
     @GetMapping("/form")
     public String mostrarFormulario(HttpSession session, Model model) {
         if (session.getAttribute("nombre") == null) return "redirect:/login";
         Noticia nueva = new Noticia();
-        // Auto-rellenar autor con el nombre del usuario en sesión
-        if (session.getAttribute("nombre") != null) {
-            String nombre = session.getAttribute("nombre").toString();
-            String apellido = session.getAttribute("apellido") != null
-                    ? " " + session.getAttribute("apellido").toString() : "";
-            nueva.setAutorNoticia(nombre + apellido);
-        }
-        // Auto-rellenar fecha con hoy
-        nueva.setFechaNoticia(LocalDate.now());
+        // Auto-rellenar autor con nombre + apellido de sesión
+        String nombre   = session.getAttribute("nombre")   != null ? session.getAttribute("nombre").toString()   : "";
+        String apellido = session.getAttribute("apellido") != null ? " " + session.getAttribute("apellido").toString() : "";
+        nueva.setAutorNoticia((nombre + apellido).trim());
+        // Auto-rellenar fecha con ahora mismo
+        nueva.setFechaNoticia(LocalDateTime.now());
         model.addAttribute("noticia", nueva);
         return "noticias/formularioNoticia";
     }
 
-    // ─── GET /noticias/form/{id} → formulario EDITAR ─────────
+    // ─── GET /noticias/form/{id} → EDITAR ────────────────────
     @GetMapping("/form/{id}")
     public String mostrarFormularioEditar(@PathVariable Long id,
                                           HttpSession session, Model model) {
@@ -80,8 +76,9 @@ public class NoticiaController {
             @RequestParam(value = "idNoticia", required = false) Long idNoticia,
             @RequestParam("titulo_noticia")    String tituloNoticia,
             @RequestParam("autor_noticia")     String autorNoticia,
+            // ISO datetime-local: "2026-03-31T14:30"
             @RequestParam("fecha_noticia")
-            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaNoticia,
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fechaNoticia,
             @RequestParam("contenido_noticia") String contenidoNoticia,
             @RequestParam(value = "tipo_noticia", required = false) String tipoNoticia,
             @RequestParam(value = "imagen",    required = false) MultipartFile imagen,
@@ -91,31 +88,22 @@ public class NoticiaController {
         if (session.getAttribute("nombre") == null) return "redirect:/login";
 
         try {
-            // ── Manejo de imagen ──────────────────────────────
+            // ── Imagen ────────────────────────────────────────
             String rutaImagen = null;
-
             if (imagen != null && !imagen.isEmpty()) {
-                // Subcarpeta noticias dentro del uploadPath
                 Path dirPath = Paths.get(uploadPath, "noticias");
                 Files.createDirectories(dirPath);
-
-                // Nombre único para evitar colisiones
-                String extension = "";
                 String originalName = imagen.getOriginalFilename();
-                if (originalName != null && originalName.contains(".")) {
-                    extension = originalName.substring(originalName.lastIndexOf("."));
-                }
-                String nombreArchivo = UUID.randomUUID() + extension;
-
+                String ext = (originalName != null && originalName.contains("."))
+                        ? originalName.substring(originalName.lastIndexOf(".")) : "";
+                String nombreArchivo = UUID.randomUUID() + ext;
                 Files.copy(imagen.getInputStream(),
                            dirPath.resolve(nombreArchivo),
                            StandardCopyOption.REPLACE_EXISTING);
-
-                // URL pública que Spring servirá vía /uploads/**
                 rutaImagen = "/uploads/noticias/" + nombreArchivo;
             }
 
-            // ── Construir entidad ─────────────────────────────
+            // ── Entidad ───────────────────────────────────────
             Noticia noticia = new Noticia();
             noticia.setTituloNoticia(tituloNoticia);
             noticia.setAutorNoticia(autorNoticia);
@@ -125,24 +113,19 @@ public class NoticiaController {
             if (rutaImagen != null) noticia.setImagenNoticia(rutaImagen);
 
             if (idNoticia != null) {
-                // EDITAR: conserva imagen anterior si no se subió una nueva
                 noticiaService.actualizar(idNoticia, noticia);
                 redirectAttrs.addFlashAttribute("mensajeExito", "Noticia actualizada correctamente.");
             } else {
-                // CREAR
                 noticiaService.guardar(noticia);
                 redirectAttrs.addFlashAttribute("mensajeExito", "Noticia creada correctamente.");
             }
-
             return "redirect:/noticias/historial";
 
         } catch (IOException e) {
-            redirectAttrs.addFlashAttribute("mensajeError",
-                    "Error al subir la imagen: " + e.getMessage());
+            redirectAttrs.addFlashAttribute("mensajeError", "Error al subir la imagen: " + e.getMessage());
             return "redirect:/noticias/form";
         } catch (Exception e) {
-            redirectAttrs.addFlashAttribute("mensajeError",
-                    "Error al guardar la noticia: " + e.getMessage());
+            redirectAttrs.addFlashAttribute("mensajeError", "Error al guardar: " + e.getMessage());
             return "redirect:/noticias/form";
         }
     }

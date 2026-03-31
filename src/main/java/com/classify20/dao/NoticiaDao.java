@@ -11,14 +11,13 @@ import java.util.Optional;
 @Repository
 public interface NoticiaDao extends JpaRepository<Noticia, Long> {
 
-    // Todas las noticias ordenadas por fecha desc (más recientes primero)
+    // Todas ordenadas de más reciente a más antigua (por datetime)
     List<Noticia> findAllByOrderByFechaNoticiaDesc();
 
-    // Buscar por tipo ordenadas por fecha
+    // Por tipo, ordenadas desc
     List<Noticia> findByTipoNoticiaOrderByFechaNoticiaDesc(String tipoNoticia);
 
-    // Noticia más reciente para el menú
-    // Usamos @Query explícita para garantizar compatibilidad con PostgreSQL
+    // La más reciente para el menú — LIMIT 1 compatible con PostgreSQL y H2
     @Query("SELECT n FROM Noticia n ORDER BY n.fechaNoticia DESC LIMIT 1")
     Optional<Noticia> findMasReciente();
 }
