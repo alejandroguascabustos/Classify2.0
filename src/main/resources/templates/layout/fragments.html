@@ -23,16 +23,13 @@
              th:text="'Hola, ' + ${#strings.capitalize(#strings.toLowerCase(session.nombre))} + '!'">
         </div>
 
-        <div>
-            <div class="right">
-                <a th:href="@{/noticias}" title="Noticias">
-                    <img th:src="@{/img/noticias.png}" class="iconostop">
-                </a>
-                <a><img th:src="@{/img/separador.png}" class="separador"></a>
-                <a th:href="@{/logout}" title="Cerrar sesión">
-                    <img th:src="@{/img/salida.png}" class="salida">
-                </a>
-            </div>
+        <div class="header-tools">
+            <a th:href="@{/noticias}" title="Noticias">
+                <img th:src="@{/img/noticias.png}" class="info-icon">
+            </a>
+            <a th:href="@{/logout}" class="logout-btn" title="Cerrar sesión">
+                <img th:src="@{/img/salida.png}" class="logout-icon">
+            </a>
         </div>
     </header>
 
