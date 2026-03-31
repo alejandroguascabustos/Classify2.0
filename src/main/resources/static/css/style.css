@@ -3997,3 +3997,79 @@ a.botoninicio {
     from { opacity: 0; }
     to   { opacity: 1; }
 }
+
+/* Inline styles externalized from templates */
+.auth-alert {
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid;
+    border-radius: 5px;
+}
+
+.auth-alert--success {
+    color: #1f6f2b;
+    border-color: #84cc16;
+    background-color: #efffef;
+}
+
+.auth-alert--danger {
+    color: red;
+    border-color: red;
+    background-color: #ffe6e6;
+}
+
+.auth-alert--warning {
+    color: #8a5a00;
+    border-color: #facc15;
+    background-color: #fff7d6;
+}
+
+.auth-alert--info {
+    color: #0056b3;
+    border-color: #0056b3;
+    background-color: #cce5ff;
+}
+
+.auth-helper-text {
+    text-align: center;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.auth-dynamic-field {
+    display: none;
+}
+
+.login-links--compact {
+    margin-top: 15px;
+}
+
+.auth-login-note {
+    text-align: center;
+    color: #888;
+    font-size: 14px;
+}
+
+.contacta-role-block {
+    margin-top: 8px;
+}
+
+.file-input-hidden {
+    display: none;
+}
+
+.upload-submit-row {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.modal-hidden {
+    display: none;
+}
+
+.noticia-submit-row {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+    align-items: center;
+}
