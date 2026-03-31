@@ -1,0 +1,53 @@
+.card-header--matematicas {
+    background: linear-gradient(135deg, #2196f3 0%, #1976d2 100%);
+}
+
+.progress-fill--matematicas {
+    width: 90%;
+    background: #2196f3;
+}
+
+.card-header--espanol {
+    background: linear-gradient(135deg, #ff5722 0%, #e64a19 100%);
+}
+
+.progress-fill--espanol {
+    width: 94%;
+    background: #ff5722;
+}
+
+.card-header--ingles {
+    background: linear-gradient(135deg, #9c27b0 0%, #7b1fa2 100%);
+}
+
+.progress-fill--ingles {
+    width: 80%;
+    background: #9c27b0;
+}
+
+.card-header--ciencias {
+    background: linear-gradient(135deg, #4caf50 0%, #388e3c 100%);
+}
+
+.progress-fill--ciencias {
+    width: 86%;
+    background: #4caf50;
+}
+
+.card-header--informatica {
+    background: linear-gradient(135deg, #607d8b 0%, #455a64 100%);
+}
+
+.progress-fill--informatica {
+    width: 96%;
+    background: #607d8b;
+}
+
+.card-header--sociales {
+    background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
+}
+
+.progress-fill--sociales {
+    width: 56%;
+    background: #ff9800;
+}
