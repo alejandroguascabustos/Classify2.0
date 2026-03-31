@@ -111,7 +111,7 @@
                     <img th:src="@{/img/upload.gif}" width="25px" class="imgmateriales">
                 </div>
 
-                <input type="file" id="file-input" name="archivo[]" multiple style="display: none;">
+                <input type="file" id="file-input" name="archivo[]" multiple class="file-input-hidden">
 
                 <label class="labelmateriales" for="file-input">
                     <i class="fa-solid fa-arrow-up-from-bracket"></i>
@@ -124,7 +124,7 @@
                 <!-- Formulario de subida de archivos -->
                 <form th:action="@{/mismateriales/subirArchivo}" method="post" enctype="multipart/form-data">
                     <input type="file" name="archivo[]" multiple>
-                    <div style="text-align: center; margin-top: 20px;">
+                    <div class="upload-submit-row">
                         <button type="submit" class="btn-subir">Subir archivos</button>
                     </div>
                 </form>
@@ -165,7 +165,7 @@
                 </table>
 
                 <!-- Modal de edición -->
-                <div id="modalEditar" class="modaleditar" style="display:none;">
+                <div id="modalEditar" class="modaleditar modal-hidden">
                     <div class="modaleditar-contenido">
                         <h2>Edita el archivo</h2>
                         <form th:action="@{/materiales/actualizar}" method="post"

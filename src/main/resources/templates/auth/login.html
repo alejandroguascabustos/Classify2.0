@@ -68,20 +68,17 @@
                 <h2 class="login-title">Iniciar sesión</h2>
 
                 <div th:if="${successMessage}"
-                     class="alert alert-success"
-                     style="color: #1f6f2b; padding: 10px; margin: 10px 0; border: 1px solid #84cc16; border-radius: 5px; background-color: #efffef;">
+                     class="alert alert-success auth-alert auth-alert--success">
                     <span th:text="${successMessage}"></span>
                 </div>
 
                 <div th:if="${mensaje}"
-                     class="alert alert-danger"
-                     style="color: red; padding: 10px; margin: 10px 0; border: 1px solid red; border-radius: 5px; background-color: #ffe6e6;">
+                     class="alert alert-danger auth-alert auth-alert--danger">
                     <span th:text="${mensaje}"></span>
                 </div>
 
                 <div th:if="${param.expired}"
-                     class="alert alert-warning"
-                     style="color: #8a5a00; padding: 10px; margin: 10px 0; border: 1px solid #facc15; border-radius: 5px; background-color: #fff7d6;">
+                     class="alert alert-warning auth-alert auth-alert--warning">
                     Tu sesión expiró por inactividad. Ingresa nuevamente.
                 </div>
 
