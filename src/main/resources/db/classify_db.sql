@@ -1,0 +1,66 @@
+-- CLASSIFY - BASE DE DATOS UNIFICADA (PostgreSQL)
+-- Este archivo centraliza la estructura, usuario y datos básicos del sistema.
+
+-- 1. ESTRUCTURA DE LA TABLA (Requerida para el funcionamiento de Classify)
+-- =========================================================================
+
+CREATE TABLE IF NOT EXISTS registro_usuarios (
+    id BIGSERIAL PRIMARY KEY,
+    nombre VARCHAR(120) NOT NULL,
+    apellido VARCHAR(120) NOT NULL,
+    correo VARCHAR(180) NOT NULL UNIQUE,
+    documento VARCHAR(40) NOT NULL UNIQUE,
+    telefono VARCHAR(30) NOT NULL,
+    nombre_usuario VARCHAR(100) NOT NULL UNIQUE,
+    pass_hash VARCHAR(255) NOT NULL,
+    tipo_usuario VARCHAR(20) NOT NULL,
+    curso VARCHAR(50),
+    materia VARCHAR(150),
+    nombre_estudiante VARCHAR(150),
+    codigo_docente_asignado VARCHAR(20) UNIQUE,
+    codigo_docente_referencia VARCHAR(20),
+    creado_en TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Índices de optimización
+CREATE INDEX IF NOT EXISTS idx_registro_usuarios_tipo ON registro_usuarios (tipo_usuario);
+CREATE INDEX IF NOT EXISTS idx_registro_usuarios_codigo_ref ON registro_usuarios (codigo_docente_referencia);
+
+-- 2. DATOS DE PRUEBA / INICIALES
+-- =========================================================================
+
+INSERT INTO registro_usuarios (
+    nombre, apellido, correo, documento, telefono, nombre_usuario, pass_hash,
+    tipo_usuario, curso, materia, nombre_estudiante, codigo_docente_asignado,
+    codigo_docente_referencia, creado_en
+)
+VALUES
+    ('Admin', 'Test', 'admin@classify.local', 'TEST-ADM-BASE', '3000000001', 'admin', '$2y$10$IQMkN2GaYiKq908CK0aju.Z9GFBe981aHlGhI7aDCnu3CtN8UQjLK', 'administrador', NULL, NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP),
+    ('Docente', 'Test', 'docente@classify.local', 'TEST-DOC-BASE', '3000000002', 'docente', '$2y$10$IQMkN2GaYiKq908CK0aju.Z9GFBe981aHlGhI7aDCnu3CtN8UQjLK', 'docente', NULL, 'Ciencias Naturales', NULL, 'DOC-BASE01', NULL, CURRENT_TIMESTAMP),
+    ('Estudiante', 'Test', 'estudiante@classify.local', 'TEST-EST-BASE', '3000000003', 'estudiante', '$2y$10$IQMkN2GaYiKq908CK0aju.Z9GFBe981aHlGhI7aDCnu3CtN8UQjLK', 'estudiante', '7A', NULL, NULL, NULL, NULL, CURRENT_TIMESTAMP),
+    ('Acudiente', 'Test', 'acudiente@classify.local', 'TEST-ACU-BASE', '3000000004', 'acudiente', '$2y$10$IQMkN2GaYiKq908CK0aju.Z9GFBe981aHlGhI7aDCnu3CtN8UQjLK', 'acudiente', NULL, NULL, 'Estudiante Demo', NULL, NULL, CURRENT_TIMESTAMP)
+ON CONFLICT (nombre_usuario)
+DO UPDATE SET
+    nombre = EXCLUDED.nombre,
+    apellido = EXCLUDED.apellido,
+    correo = EXCLUDED.correo,
+    documento = EXCLUDED.documento,
+    telefono = EXCLUDED.telefono,
+    pass_hash = EXCLUDED.pass_hash,
+    tipo_usuario = EXCLUDED.tipo_usuario,
+    curso = EXCLUDED.curso,
+    materia = EXCLUDED.materia,
+    nombre_estudiante = EXCLUDED.nombre_estudiante,
+    codigo_docente_asignado = EXCLUDED.codigo_docente_asignado,
+    codigo_docente_referencia = EXCLUDED.codigo_docente_referencia;
+
+-- 3. CONFIGURACION PARA ADMINISTRADORES (OPCIONAL EN PSQL)
+-- =========================================================================
+-- Si necesitas registrar el usuario o la base en tu entorno Postgres manual:
+/*
+-- Crear Rol (psql):
+-- SELECT 'CREATE ROLE classify_app LOGIN PASSWORD ''ClassifyLocal2026!''' WHERE NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'classify_app')\gexec
+-- Crear DB (psql):
+-- SELECT 'CREATE DATABASE classify OWNER classify_app' WHERE NOT EXISTS (SELECT 1 FROM pg_database WHERE datname = 'classify')\gexec
+*/
+

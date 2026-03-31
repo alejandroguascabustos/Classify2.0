@@ -20,9 +20,20 @@ public class RegistroController {
     }
 
     @PostMapping("/procesarRegistro")
-    public String procesarRegistro(@ModelAttribute RegistroForm registroForm,
-                                   RedirectAttributes redirectAttributes) {
+    @org.springframework.web.bind.annotation.ResponseBody
+    public Object procesarRegistro(@ModelAttribute RegistroForm registroForm,
+                                   RedirectAttributes redirectAttributes,
+                                   jakarta.servlet.http.HttpServletRequest request) {
         RegistroResultado resultado = registroService.registrar(registroForm);
+
+        // Si es una petición AJAX (Fetch), devolvemos JSON
+        String accept = request.getHeader("Accept");
+        if (accept != null && (accept.contains("application/json") || "XMLHttpRequest".equals(request.getHeader("X-Requested-With")))) {
+            java.util.Map<String, Object> response = new java.util.HashMap<>();
+            response.put("success", resultado.success());
+            response.put("message", resultado.message());
+            return response;
+        }
 
         if (resultado.success()) {
             redirectAttributes.addFlashAttribute("successMessage", resultado.message());
@@ -30,6 +41,6 @@ public class RegistroController {
             redirectAttributes.addFlashAttribute("errorMessage", resultado.message());
         }
 
-        return "redirect:/registro";
+        return new org.springframework.web.servlet.view.RedirectView("/registro");
     }
 }
