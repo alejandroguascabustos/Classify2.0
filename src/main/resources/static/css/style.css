@@ -5334,7 +5334,7 @@ body.contacto-page .btn-enviar {
     justify-content: center;
     align-items: center;
     z-index: 1;
-    background: var(--or);
+    background: var(--aprende-primary);
     color: #fff;
     border: 1px solid transparent;
     cursor: pointer;
@@ -5350,7 +5350,7 @@ body.contacto-page .btn-enviar::before {
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(135deg, #ffa830, var(--or));
+    background: linear-gradient(135deg, var(--aprende-secondary), var(--aprende-primary));
     z-index: -1;
     transition: opacity 0.3s ease;
     opacity: 0;
