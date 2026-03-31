@@ -1,19 +1,38 @@
 package com.classify20.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+
+import com.classify20.service.NoticiaService;
+
 import jakarta.servlet.http.HttpSession;
 
 @Controller 
 public class VistasController {
-    
+
+     // ── Inyección del servicio de noticias ────────────────────
+    @Autowired
+    private NoticiaService noticiaService;
+ 
     @Value("${classify.webhooks.contacta.url}")
     private String webhookContactaUrl;
-
+ 
     @Value("${classify.webhooks.contacto.url}")
     private String webhookContactoUrl;
+ 
+    // ── Menú principal: pasa la noticia más reciente ──────────
+    @GetMapping("/menu")
+    public String mostrarMenu(Model model) {
+        noticiaService.buscarMasReciente()
+                      .ifPresent(n -> model.addAttribute("noticiaReciente", n));
+        return "menu/menu";
+    }
+ 
+    // ⚠️ NO hay @GetMapping("/noticias") aquí —
+    //    ese endpoint lo maneja NoticiaController (@RequestMapping("/noticias"))
 
     @GetMapping("/agenda")
     public String mostrarAgenda(){
@@ -60,10 +79,7 @@ public class VistasController {
     public String mostrarMateriales(){
         return "materiales/materiales";
     }
-    @GetMapping("/menu")
-    public String mostrarMenu(){
-        return "menu/menu";
-    }
+
     @GetMapping("/mismateriales")
     public String mostrarMismateriales(){
         return "mismateriales/mismateriales";
