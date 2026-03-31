@@ -75,19 +75,19 @@
 
                 <form th:action="@{/registro/procesarRegistro}" method="post" class="form-registro">
                     <label class="labelregistro">Nombre</label>
-                    <input type="text" name="nombre" placeholder="Jose" required>
+                    <input type="text" name="nombre" placeholder="Jose" required pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$" title="Solo se permiten letras" oninput="this.value = this.value.replace(/[0-9]/g, '')">
 
                     <label class="labelregistro">Apellidos</label>
-                    <input type="text" name="apellido" placeholder="Arteaga" required>
+                    <input type="text" name="apellido" placeholder="Arteaga" required pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$" title="Solo se permiten letras" oninput="this.value = this.value.replace(/[0-9]/g, '')">
 
                     <label class="labelregistro">Correo</label>
                     <input type="email" name="correo" placeholder="Jose@colegio.com" required>
 
                     <label class="labelregistro">Número de Documento</label>
-                    <input type="number" name="documento" placeholder="1234567890" required>
+                    <input type="text" name="documento" placeholder="1234567890" required pattern="[0-9]{8,11}" title="Debe tener entre 8 y 11 dígitos" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 11)">
 
                     <label class="labelregistro">Telefono</label>
-                    <input type="number" name="telefono" placeholder="322222222" required>
+                    <input type="text" name="telefono" placeholder="322222222" required pattern="[0-9]+" title="Solo se permiten números" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
 
                     <label class="labelregistro">Usuario</label>
                     <input type="text" name="nombre_usu" placeholder="Jose123" required>
