@@ -7,6 +7,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!registroForm) return;
 
     registroForm.addEventListener('submit', (e) => {
+        // Solo enviar si el formulario es válido
+        if (!registroForm.checkValidity()) return;
+
         const nombreInput = registroForm.querySelector('input[name="nombre"]');
         const apellidoInput = registroForm.querySelector('input[name="apellido"]');
         const emailInput = registroForm.querySelector('input[name="correo"]');
