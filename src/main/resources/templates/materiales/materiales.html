@@ -3,54 +3,48 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Classify - Agenda</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classify - Materiales</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/materiales.css}">
     <link rel="shortcut icon" th:href="@{img/favicon.ico}" type="image/x-icon">
 </head>
 
-<body>
+<body class="materiales-page">
+    <div class="ambient-glow glow-1"></div>
+    <div class="ambient-glow glow-2"></div>
+
     <header class="brandinicio">
         <div class="brand">
             <a th:href="@{/inicio}"><img th:src="@{/img/logo.png}" alt="logo" class="logo"></a>
             <a th:href="@{/inicio}">Classify</a>
         </div>
-    
-        <div class="brand2">
-            <a th:href="@{/inicio}" class="info-btn" alt="Información">Inicio</a>
-            <a th:href="@{/nosotros}" class="info-btn" alt="Información">Nosotros</a>
-            <a th:href="@{/contacto}" class="info-btn" alt="Información">Contacto</a>
 
+        <div class="brand2">
+            <a th:href="@{/inicio}" class="info-btn" alt="Informacion">Inicio</a>
+            <a th:href="@{/nosotros}" class="info-btn" alt="Informacion">Nosotros</a>
+            <a th:href="@{/contacto}" class="info-btn" alt="Informacion">Contacto</a>
         </div>
-    
+
         <div class="header-tools">
             <a href="#info" class="info-btn">
-                <img th:src="@{/img/informacion.png}" alt="Información" class="info-icon">
+                <img th:src="@{/img/informacion.png}" alt="Informacion" class="info-icon">
             </a>
-            <a th:href="@{/logout}" class="logout-btn" title="Cerrar sesión" aria-label="Cerrar sesión">
-                <img th:src="@{/img/salida.png}" alt="Cerrar sesión" class="logout-icon">
+            <a th:href="@{/logout}" class="logout-btn" title="Cerrar sesion" aria-label="Cerrar sesion">
+                <img th:src="@{/img/salida.png}" alt="Cerrar sesion" class="logout-icon">
             </a>
             <div id="info" class="info-panel">
                 <div class="info-content">
                     <a href="#" class="close">&times;</a>
-                    <img th:src="@{/img/agenda.png}" width="80px">
-                    <h4>¿Porque agendas tus clases?</h4>
-                    <p class="textoinfo">La implementación de una página web para agendar clases en el colegio Moralba Sur
-                        Oriental representa una herramienta fundamental para optimizar la organización académica y fortalecer
-                        la comunicación entre estudiantes, docentes y la institución.
-                        En primer lugar, la plataforma permite a los estudiantes y padres de familia consultar de manera
-                        rápida y sencilla la disponibilidad de horarios, evitando confusiones o cruces en las actividades
-                        escolares. <br><br>Esto garantiza una mejor planificación del tiempo, tanto dentro como fuera del
-                        aula.
-                        Por otro lado, los docentes pueden gestionar sus clases de forma más eficiente, teniendo acceso a un
-                        calendario actualizado que facilita la asignación de sesiones, el control de grupos y la preparación
-                        de materiales según la programación establecida. <br><br>
-                        Asimismo, para la institución educativa, la página constituye una herramienta de gestión que
-                        contribuye a la transparencia y al orden administrativo, ya que centraliza la información en un solo
-                        espacio digital accesible desde cualquier dispositivo con conexión a internet. <br><br>
-                        En conclusión, contar con una página para agendar clases no solo mejora la organización interna del
-                        colegio Moralba Sur Oriental, sino que también fortalece la participación de la comunidad educativa,
-                        fomenta la puntualidad, evita pérdidas de tiempo y favorece un proceso de enseñanza-aprendizaje más
-                        planificado y efectivo.
+                    <img th:src="@{/img/agenda.png}" width="80" alt="Agenda">
+                    <h4>Por que agendas tus clases?</h4>
+                    <p class="textoinfo">
+                        La plataforma Classify facilita la organizacion academica del colegio Moralba Sur Oriental.
+                        Centraliza horarios, materiales y comunicacion para estudiantes, docentes y familias, ayudando
+                        a planificar mejor cada clase y a mantener toda la informacion en un solo lugar.
                     </p>
                 </div>
             </div>
@@ -63,139 +57,131 @@
         <span></span>
     </div>
 
-    <!-- <div id="skeleton-loader" class="skeleton">
-        <img th:src="@{/img/loader.gif}" class="gif-loader">
-    </div> -->
-
     <aside class="sidebar">
-        <!-- botón común para todos -->
         <a th:href="@{/menu}" class="inicioprincipal">
-            <img th:src="@{/img/home.png}" width="25px" class="imgmenu"> Inicio
+            <img th:src="@{/img/home.png}" width="25" class="imgmenu" alt="Inicio"> Inicio
         </a>
-
-            <a th:href="@{/agenda}" class="inicioprincipal2">
-                <img th:src="@{/img/agenda.png}" width="25px" class="imgmenu">Agendar clase
-            </a>
-
-            <a th:href="@{/noticias}" class="inicioprincipal2">
-                <img th:src="@{/img/noticias.png}" width="25px" class="imgmenu">Noticias
-            </a>
-            <a th:href="@{/programacion}" class="inicioprincipal2">
-                <img th:src="@{/img/programacion.png}" width="25px" class="imgmenu">Programación
-            </a>
-            <a th:href="@{/aprende}" class="inicioprincipal2">
-                <img th:src="@{/img/aprende.png}" width="25px" class="imgmenu">Aprende
-            </a>
-            <a th:href="@{/contacta}" class="inicioprincipal2">
-                <img th:src="@{/img/gmail.png}" width="25px" class="imgmenu">Contacta a un profe
-            </a>
-            <a th:href="@{/mismateriales}" class="inicioprincipal2">
-                <img th:src="@{/img/descargamaterial.png}" width="25px" class="imgmenu">Mis Materiales
-            </a>
-            <a th:href="@{/materiales}" class="inicioprincipal2">
-                <img th:src="@{/img/upload.png}" width="25px" class="imgmenu">Carga Materiales
-            </a>
+        <a th:href="@{/agenda}" class="inicioprincipal2">
+            <img th:src="@{/img/agenda.png}" width="25" class="imgmenu" alt="Agenda">Agendar clase
+        </a>
+        <a th:href="@{/noticias}" class="inicioprincipal2">
+            <img th:src="@{/img/noticias.png}" width="25" class="imgmenu" alt="Noticias">Noticias
+        </a>
+        <a th:href="@{/programacion}" class="inicioprincipal2">
+            <img th:src="@{/img/programacion.png}" width="25" class="imgmenu" alt="Programacion">Programacion
+        </a>
+        <a th:href="@{/aprende}" class="inicioprincipal2">
+            <img th:src="@{/img/aprende.png}" width="25" class="imgmenu" alt="Aprende">Aprende
+        </a>
+        <a th:href="@{/contacta}" class="inicioprincipal2">
+            <img th:src="@{/img/gmail.png}" width="25" class="imgmenu" alt="Contacta">Contacta a un profe
+        </a>
+        <a th:href="@{/mismateriales}" class="inicioprincipal2">
+            <img th:src="@{/img/descargamaterial.png}" width="25" class="imgmenu" alt="Mis materiales">Mis Materiales
+        </a>
+        <a th:href="@{/materiales}" class="inicioprincipal2 active">
+            <img th:src="@{/img/upload.png}" width="25" class="imgmenu" alt="Carga materiales">Carga Materiales
+        </a>
     </aside>
 
     <main class="contentmateriales">
-        <form th:action="@{/materiales/subir}" method="post" enctype="multipart/form-data">
+        <section class="materiales-shell">
+            <header class="materiales-hero">
+                <span class="materiales-kicker">Gestor Docente</span>
+                <h1 class="titulocargamateriales">Carga y administra tus <em>materiales</em></h1>
+                <p class="parrafocargamateriales">
+                    Publica archivos para tus estudiantes, actualiza nombres y elimina versiones antiguas desde un solo panel.
+                </p>
+            </header>
 
-            <div class="container">
-                <h1 class="titulocargamateriales">Modulo carga materiales</h1>
-                <h1 class="subtitulocargamateriales">Carga tu archivo</h1>
-                <p class="parrafocargamateriales">Aquí puedes cargar los archivos de tus clases y tus alumnos las
-                    podran descargar y aprender</p>
+            <section class="materiales-card">
+                <h2 class="subtitulocargamateriales">Sube tu archivo</h2>
+                <p class="parrafocargamateriales">Selecciona uno o varios archivos y envialos en un solo paso.</p>
 
                 <div class="image-container">
-                    <img th:src="@{/img/upload.gif}" width="25px" class="imgmateriales">
+                    <img th:src="@{/img/upload.gif}" class="imgmateriales" alt="Subir archivo">
                 </div>
 
-                <input type="file" id="file-input" name="archivo[]" multiple class="file-input-hidden">
-
-                <label class="labelmateriales" for="file-input">
-                    <i class="fa-solid fa-arrow-up-from-bracket"></i>
-                    &nbsp; Selecciona tu archivo
-                </label>
-
-                <div id="num-of-files">No hay archivos seleccionados</div>
-                <ul id="files-list"></ul>
-
-                <!-- Formulario de subida de archivos -->
-                <form th:action="@{/mismateriales/subirArchivo}" method="post" enctype="multipart/form-data">
-                    <input type="file" name="archivo[]" multiple>
+                <form th:action="@{/materiales/subir}" method="post" enctype="multipart/form-data" class="upload-form">
+                    <input type="file" id="file-input" name="archivo[]" multiple class="file-input-hidden">
+                    <label class="labelmateriales" for="file-input">Selecciona tu archivo</label>
+                    <div id="num-of-files">No hay archivos seleccionados</div>
+                    <ul id="files-list"></ul>
                     <div class="upload-submit-row">
                         <button type="submit" class="btn-subir">Subir archivos</button>
                     </div>
                 </form>
+            </section>
 
-                <h1 class="subtitulocargamateriales">Tus cargas</h1>
-                <p class="parrafovermateriales">Edita y elimina fácilmente tus archivos, o simplemente cambia el nombre
-                    de una manera rapida</p>
+            <section class="materiales-card">
+                <h2 class="subtitulocargamateriales">Tus cargas</h2>
+                <p class="parrafovermateriales">Edita el nombre de un archivo o elimina materiales que ya no uses.</p>
 
-                <table class="programacion-tabla-materiales" id="agendaTable">
-                    <thead>
-                        <tr>
-                            <th class="titletablematerial">Archivo</th>
-                            <th class="titletablematerial">Fecha de carga</th>
-                            <th class="titletablematerial">Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <th:block th:if="${materiales != null and !materiales.isEmpty()}">
-                            <tr th:each="mat : ${materiales}">
-                                <td th:text="${mat.nombreArchivo}"></td>
-                                <td th:text="${mat.fechaSubida}"></td>
-                                <td>
-                                    <div class="containermaterialesbtn">
-                                        <div class="btnmaterialesedit">
-                                            <a href="#" class="btn-editar"
-                                               th:onclick="'abrirModalEditar(' + ${mat.idMaterial} + ', \'' + ${mat.nombreArchivo} + '\')'">Editar</a>
-                                        </div>
-                                        <div class="btnmaterialesdelete">
-                                            <a th:href="@{/materiales/eliminar/{id}(id=${mat.idMaterial})}"
-                                               class="btn-eliminar"
-                                               onclick="return confirm('¿Seguro que deseas eliminar este archivo?');">Eliminar</a>
-                                        </div>
-                                    </div>
-                                </td>
+                <div class="table-wrap">
+                    <table class="programacion-tabla-materiales" id="agendaTable">
+                        <thead>
+                            <tr>
+                                <th class="titletablematerial">Archivo</th>
+                                <th class="titletablematerial">Fecha de carga</th>
+                                <th class="titletablematerial">Acciones</th>
                             </tr>
-                        </th:block>
-                    </tbody>
-                </table>
-
-                <!-- Modal de edición -->
-                <div id="modalEditar" class="modaleditar modal-hidden">
-                    <div class="modaleditar-contenido">
-                        <h2>Edita el archivo</h2>
-                        <form th:action="@{/materiales/actualizar}" method="post"
-                              enctype="multipart/form-data" id="form-editar-material"
-                              onsubmit="actualizarMaterial(event)">
-                            <input type="hidden" id="edit-id" name="id_material">
-
-                            <label>Nombre del archivo:</label>
-                            <input type="text" id="edit-nombre" name="nombre_archivo" required>
-
-                            <label>Selecciona un nuevo archivo:</label>
-                            <input type="file" name="archivo" id="edit-archivo">
-
-                            <div class="modaleditar-botones">
-                                <button type="submit">Guardar cambios</button>
-                                <button type="button" onclick="cerrarModalEditar()">Cancelar</button>
-                            </div>
-                        </form>
-                    </div>
+                        </thead>
+                        <tbody>
+                            <th:block th:if="${materiales != null and !materiales.isEmpty()}">
+                                <tr th:each="mat : ${materiales}">
+                                    <td th:text="${mat.nombreArchivo}"></td>
+                                    <td th:text="${mat.fechaSubida}"></td>
+                                    <td>
+                                        <div class="containermaterialesbtn">
+                                            <div class="btnmaterialesedit">
+                                                <a href="#" class="btn-editar"
+                                                   th:onclick="'abrirModalEditar(' + ${mat.idMaterial} + ', \'' + ${mat.nombreArchivo} + '\')'">Editar</a>
+                                            </div>
+                                            <div class="btnmaterialesdelete">
+                                                <a th:href="@{/materiales/eliminar/{id}(id=${mat.idMaterial})}"
+                                                   class="btn-eliminar"
+                                                   onclick="return confirm('Seguro que deseas eliminar este archivo?');">Eliminar</a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </th:block>
+                            <th:block th:if="${materiales == null or materiales.isEmpty()}">
+                                <tr>
+                                    <td colspan="3" class="estado-vacio">Aun no has subido materiales.</td>
+                                </tr>
+                            </th:block>
+                        </tbody>
+                    </table>
                 </div>
-
-            </div>
-        </form>
+            </section>
+        </section>
     </main>
 
+    <div id="modalEditar" class="modaleditar modal-hidden">
+        <div class="modaleditar-contenido">
+            <h2>Edita el archivo</h2>
+            <form th:action="@{/materiales/actualizar}" method="post" enctype="multipart/form-data" id="form-editar-material" onsubmit="actualizarMaterial(event)">
+                <input type="hidden" id="edit-id" name="id_material">
+
+                <label for="edit-nombre">Nombre del archivo:</label>
+                <input type="text" id="edit-nombre" name="nombre_archivo" required>
+
+                <label for="edit-archivo">Selecciona un nuevo archivo:</label>
+                <input type="file" name="archivo" id="edit-archivo">
+
+                <div class="modaleditar-botones">
+                    <button type="submit">Guardar cambios</button>
+                    <button type="button" onclick="cerrarModalEditar()">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <script th:src="@{/js/materiales.js}"></script>
     <script th:src="@{/js/chatbot.js}"></script>
     <script th:src="@{/js/modaleditarmateriales.js}"></script>
-    <script th:src="@{/js/perfilmodal.js}"></script>
-    
+    <script th:src="@{/js/active.js}"></script>
 </body>
 
 </html>
