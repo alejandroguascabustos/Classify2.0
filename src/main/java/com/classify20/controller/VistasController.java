@@ -10,13 +10,13 @@ import com.classify20.service.NoticiaService;
 
 import jakarta.servlet.http.HttpSession;
 
-@Controller 
+@Controller
 public class VistasController {
 
      // ── Inyección del servicio de noticias ────────────────────
     @Autowired
     private NoticiaService noticiaService;
- 
+
     @Value("${classify.webhooks.contacta.url}")
     private String webhookContactaUrl;
  
@@ -74,15 +74,6 @@ public class VistasController {
     @GetMapping("/inicio")
     public String mostrarInicio(){
         return "inicio/inicio";
-    }
-    @GetMapping("/materiales")
-    public String mostrarMateriales(){
-        return "materiales/materiales";
-    }
-
-    @GetMapping("/mismateriales")
-    public String mostrarMismateriales(){
-        return "mismateriales/mismateriales";
     }
     @GetMapping("/nosotros")
     public String mostrarNosotros(){

@@ -103,7 +103,7 @@
                 </div>
 
                 <form th:action="@{/materiales/subir}" method="post" enctype="multipart/form-data" class="upload-form">
-                    <input type="file" id="file-input" name="archivo[]" multiple class="file-input-hidden">
+                    <input type="file" id="file-input" name="archivos" multiple class="file-input-hidden">
                     <label class="labelmateriales" for="file-input">Selecciona tu archivo</label>
                     <div id="num-of-files">No hay archivos seleccionados</div>
                     <ul id="files-list"></ul>
@@ -135,7 +135,9 @@
                                         <div class="containermaterialesbtn">
                                             <div class="btnmaterialesedit">
                                                 <a href="#" class="btn-editar"
-                                                   th:onclick="'abrirModalEditar(' + ${mat.idMaterial} + ', \'' + ${mat.nombreArchivo} + '\')'">Editar</a>
+                                                   th:data-id="${mat.idMaterial}"
+                                                   th:data-nombre="${mat.nombreArchivo}"
+                                                   onclick="abrirModalEditar(this.dataset.id, this.dataset.nombre)">Editar</a>
                                             </div>
                                             <div class="btnmaterialesdelete">
                                                 <a th:href="@{/materiales/eliminar/{id}(id=${mat.idMaterial})}"
