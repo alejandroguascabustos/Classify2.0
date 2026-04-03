@@ -6,7 +6,7 @@ El objetivo del proyecto es construir una **plataforma escolar** para el colegio
 
 El proyecto combina dos tecnologías principales:
 
-- **Frontend y gestión de vistas con CodeIgniter 4 (PHP Framework)**
+- **Frontend y gestión de vistas con Springboot**
 ---
 
 ## Funcionalidades del sistema
