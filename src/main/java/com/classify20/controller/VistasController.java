@@ -6,9 +6,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import jakarta.servlet.http.HttpSession;
 
-@Controller 
+@Controller
 public class VistasController {
-    
+
     @Value("${classify.webhooks.contacta.url}")
     private String webhookContactaUrl;
 
@@ -56,17 +56,9 @@ public class VistasController {
     public String mostrarInicio(){
         return "inicio/inicio";
     }
-    @GetMapping("/materiales")
-    public String mostrarMateriales(){
-        return "materiales/materiales";
-    }
     @GetMapping("/menu")
     public String mostrarMenu(){
         return "menu/menu";
-    }
-    @GetMapping("/mismateriales")
-    public String mostrarMismateriales(){
-        return "mismateriales/mismateriales";
     }
     @GetMapping("/nosotros")
     public String mostrarNosotros(){
