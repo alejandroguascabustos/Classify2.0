@@ -3,54 +3,47 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Classify - Aprende</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classify - Mis Materiales</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/materiales.css}">
     <link rel="shortcut icon" th:href="@{img/favicon.ico}" type="image/x-icon">
 </head>
 
-<body>
+<body class="mismateriales-page">
+    <div class="ambient-glow glow-1"></div>
+    <div class="ambient-glow glow-2"></div>
+
     <header class="brandinicio">
         <div class="brand">
             <a th:href="@{/inicio}"><img th:src="@{/img/logo.png}" alt="logo" class="logo"></a>
             <a th:href="@{/inicio}">Classify</a>
         </div>
-    
-        <div class="brand2">
-            <a th:href="@{/inicio}" class="info-btn" alt="Información">Inicio</a>
-            <a th:href="@{/nosotros}" class="info-btn" alt="Información">Nosotros</a>
-            <a th:href="@{/contacto}" class="info-btn" alt="Información">Contacto</a>
 
+        <div class="brand2">
+            <a th:href="@{/inicio}" class="info-btn" alt="Informacion">Inicio</a>
+            <a th:href="@{/nosotros}" class="info-btn" alt="Informacion">Nosotros</a>
+            <a th:href="@{/contacto}" class="info-btn" alt="Informacion">Contacto</a>
         </div>
-    
+
         <div class="header-tools">
             <a href="#info" class="info-btn">
-                <img th:src="@{/img/informacion.png}" alt="Información" class="info-icon">
+                <img th:src="@{/img/informacion.png}" alt="Informacion" class="info-icon">
             </a>
-            <a th:href="@{/logout}" class="logout-btn" title="Cerrar sesión" aria-label="Cerrar sesión">
-                <img th:src="@{/img/salida.png}" alt="Cerrar sesión" class="logout-icon">
+            <a th:href="@{/logout}" class="logout-btn" title="Cerrar sesion" aria-label="Cerrar sesion">
+                <img th:src="@{/img/salida.png}" alt="Cerrar sesion" class="logout-icon">
             </a>
             <div id="info" class="info-panel">
                 <div class="info-content">
                     <a href="#" class="close">&times;</a>
-                    <img th:src="@{/img/agenda.png}" width="80px">
-                    <h4>¿Porque agendas tus clases?</h4>
-                    <p class="textoinfo">La implementación de una página web para agendar clases en el colegio Moralba Sur
-                        Oriental representa una herramienta fundamental para optimizar la organización académica y fortalecer
-                        la comunicación entre estudiantes, docentes y la institución.
-                        En primer lugar, la plataforma permite a los estudiantes y padres de familia consultar de manera
-                        rápida y sencilla la disponibilidad de horarios, evitando confusiones o cruces en las actividades
-                        escolares. <br><br>Esto garantiza una mejor planificación del tiempo, tanto dentro como fuera del
-                        aula.
-                        Por otro lado, los docentes pueden gestionar sus clases de forma más eficiente, teniendo acceso a un
-                        calendario actualizado que facilita la asignación de sesiones, el control de grupos y la preparación
-                        de materiales según la programación establecida. <br><br>
-                        Asimismo, para la institución educativa, la página constituye una herramienta de gestión que
-                        contribuye a la transparencia y al orden administrativo, ya que centraliza la información en un solo
-                        espacio digital accesible desde cualquier dispositivo con conexión a internet. <br><br>
-                        En conclusión, contar con una página para agendar clases no solo mejora la organización interna del
-                        colegio Moralba Sur Oriental, sino que también fortalece la participación de la comunidad educativa,
-                        fomenta la puntualidad, evita pérdidas de tiempo y favorece un proceso de enseñanza-aprendizaje más
-                        planificado y efectivo.
+                    <img th:src="@{/img/agenda.png}" width="80" alt="Agenda">
+                    <h4>Por que agendas tus clases?</h4>
+                    <p class="textoinfo">
+                        Classify centraliza la gestion academica para que encuentres recursos, clases y comunicacion
+                        en un solo lugar. Asi aprovechas mejor tu tiempo y mantienes todo organizado.
                     </p>
                 </div>
             </div>
@@ -63,78 +56,81 @@
         <span></span>
     </div>
 
-
-
     <aside class="sidebar">
-        <!-- botón común para todos -->
         <a th:href="@{/menu}" class="inicioprincipal">
-            <img th:src="@{/img/home.png}" width="25px" class="imgmenu"> Inicio
+            <img th:src="@{/img/home.png}" width="25" class="imgmenu" alt="Inicio"> Inicio
         </a>
-
-            <a th:href="@{/agenda}" class="inicioprincipal2">
-                <img th:src="@{/img/agenda.png}" width="25px" class="imgmenu">Agendar clase
-            </a>
-
-            <a th:href="@{/agenda}" class="inicioprincipal2">
-                <img th:src="@{/img/noticias.png}" width="25px" class="imgmenu">Noticias
-            </a>
-            <a th:href="@{/programacion}" class="inicioprincipal2">
-                <img th:src="@{/img/programacion.png}" width="25px" class="imgmenu">Programación
-            </a>
-            <a th:href="@{/aprende}" class="inicioprincipal2">
-                <img th:src="@{/img/aprende.png}" width="25px" class="imgmenu">Aprende
-            </a>
-            <a th:href="@{/contacta}" class="inicioprincipal2">
-                <img th:src="@{/img/gmail.png}" width="25px" class="imgmenu">Contacta a un profe
-            </a>
-            <a th:href="@{/mismateriales}" class="inicioprincipal2">
-                <img th:src="@{/img/descargamaterial.png}" width="25px" class="imgmenu">Mis Materiales
-            </a>
-            <a th:href="@{/materiales}" class="inicioprincipal2">
-                <img th:src="@{/img/upload.png}" width="25px" class="imgmenu">Carga Materiales
-            </a>
+        <a th:href="@{/agenda}" class="inicioprincipal2">
+            <img th:src="@{/img/agenda.png}" width="25" class="imgmenu" alt="Agenda">Agendar clase
+        </a>
+        <a th:href="@{/noticias}" class="inicioprincipal2">
+            <img th:src="@{/img/noticias.png}" width="25" class="imgmenu" alt="Noticias">Noticias
+        </a>
+        <a th:href="@{/programacion}" class="inicioprincipal2">
+            <img th:src="@{/img/programacion.png}" width="25" class="imgmenu" alt="Programacion">Programacion
+        </a>
+        <a th:href="@{/aprende}" class="inicioprincipal2">
+            <img th:src="@{/img/aprende.png}" width="25" class="imgmenu" alt="Aprende">Aprende
+        </a>
+        <a th:href="@{/contacta}" class="inicioprincipal2">
+            <img th:src="@{/img/gmail.png}" width="25" class="imgmenu" alt="Contacta">Contacta a un profe
+        </a>
+        <a th:href="@{/mismateriales}" class="inicioprincipal2 active">
+            <img th:src="@{/img/descargamaterial.png}" width="25" class="imgmenu" alt="Mis materiales">Mis Materiales
+        </a>
+        <a th:href="@{/materiales}" class="inicioprincipal2">
+            <img th:src="@{/img/upload.png}" width="25" class="imgmenu" alt="Carga materiales">Carga Materiales
+        </a>
     </aside>
 
-
-
     <main class="contentmateriales">
-        <div class="container">
-            <h1 class="materialestitletablavistaunica">Mis materiales</h1>
-            <p class="parrafomismateriales">Descarga archivos, tareas, material de apoyo y mucho más solo con dar clic
-                en boton naranja 🟠</p>
+        <section class="materiales-shell">
+            <header class="materiales-hero">
+                <span class="materiales-kicker">Biblioteca</span>
+                <h1 class="materialestitletablavistaunica">Mis <em>materiales</em></h1>
+                <p class="parrafomismateriales">
+                    Descarga guias, tareas y recursos de clase desde una vista clara y ordenada.
+                </p>
+            </header>
 
-            <table class="programacion-tabla-materiales" id="agendaTable">
-                <thead>
-                    <tr>
-                        <th class="titletablematerial">Archivo</th>
-                        <th class="titletablematerial">Fecha de carga</th>
-                        <th class="titletablematerial">Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <th:block th:if="${materiales != null and !materiales.isEmpty()}">
-                        <tr th:each="row : ${materiales}">
-                            <td th:text="${row.nombreArchivo}"></td>
-                            <td th:text="${row.fechaSubida}"></td>
-                            <td>
-                                <div class="contentdescargar">
-                                    <a th:href="@{/materiales/descargar/{id}(id=${row.idMaterial})}"
-                                       class="btn-descargar">Descargar</a>
-                                    <img th:src="@{/img/descargar.png}" class="imgdescargarmateriales">
-                                </div>
-                            </td>
-                        </tr>
-                    </th:block>
-                </tbody>
-            </table>
-        </div>
+            <section class="materiales-card">
+                <div class="table-wrap">
+                    <table class="programacion-tabla-materiales" id="agendaTable">
+                        <thead>
+                            <tr>
+                                <th class="titletablematerial">Archivo</th>
+                                <th class="titletablematerial">Fecha de carga</th>
+                                <th class="titletablematerial">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <th:block th:if="${materiales != null and !materiales.isEmpty()}">
+                                <tr th:each="row : ${materiales}">
+                                    <td th:text="${row.nombreArchivo}"></td>
+                                    <td th:text="${row.fechaSubida}"></td>
+                                    <td>
+                                        <div class="contentdescargar">
+                                            <a th:href="@{/materiales/descargar/{id}(id=${row.idMaterial})}" class="btn-descargar">Descargar</a>
+                                            <img th:src="@{/img/descargar.png}" class="imgdescargarmateriales" alt="Descargar">
+                                        </div>
+                                    </td>
+                                </tr>
+                            </th:block>
+                            <th:block th:if="${materiales == null or materiales.isEmpty()}">
+                                <tr>
+                                    <td colspan="3" class="estado-vacio">No hay materiales disponibles por el momento.</td>
+                                </tr>
+                            </th:block>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </section>
     </main>
-
 
     <script th:src="@{/js/materiales.js}"></script>
     <script th:src="@{/js/chatbot.js}"></script>
-    <script th:src="@{/js/perfilmodal.js}"></script>
-
+    <script th:src="@{/js/active.js}"></script>
 </body>
 
 </html>
