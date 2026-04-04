@@ -34,3 +34,4 @@ build/
 
 # Base de datos embebida local
 .classify-data/
+
