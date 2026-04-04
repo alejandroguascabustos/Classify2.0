@@ -25,7 +25,7 @@ public class NoticiaController {
     @Autowired
     private NoticiaService noticiaService;
 
-    @Value("${classify.upload.path:C:/classify-uploads}")
+    @Value("${classify.upload.path=C:/classify-uploads}")
     private String uploadPath;
 
     // ─── GET /noticias → vista pública ───────────────────────
