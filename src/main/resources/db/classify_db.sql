@@ -103,3 +103,24 @@ ON CONFLICT DO NOTHING;
 -- Permisos
 -- GRANT ALL PRIVILEGES ON TABLE noticias TO classify_app;
 -- GRANT USAGE, SELECT ON SEQUENCE noticias_id_noticia_seq TO classify_app;
+
+-- ============================================================
+-- 5. Tabla materiales para Classify - PostgreSQL
+-- ============================================================
+
+CREATE TABLE IF NOT EXISTS materiales (
+    id_material    BIGSERIAL    PRIMARY KEY,
+    nombre_archivo VARCHAR(255) NOT NULL,
+    ruta_archivo   VARCHAR(500),
+    fecha_subida   TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    id_usuario     BIGINT       NOT NULL REFERENCES registro_usuarios(id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_materiales_usuario
+    ON materiales (id_usuario);
+
+CREATE INDEX IF NOT EXISTS idx_materiales_fecha
+    ON materiales (fecha_subida DESC);
+
+-- GRANT ALL PRIVILEGES ON TABLE materiales TO classify_app;
+-- GRANT USAGE, SELECT ON SEQUENCE materiales_id_material_seq TO classify_app;

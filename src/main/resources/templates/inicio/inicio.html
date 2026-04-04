@@ -4,11 +4,17 @@
 <head>
     <meta charset="UTF-8">
     <title>Classify - Inicio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/inicio.css}">
     <link rel="shortcut icon" th:href="@{img/favicon.ico}" type="image/x-icon">
 </head>
 
 <body class="inicioimg">
+    <div class="ambient-glow glow-1"></div>
+    <div class="ambient-glow glow-2"></div>
     <!-- <div id="preloader">
         <div class="spinner"></div>
     </div> -->
@@ -19,7 +25,7 @@
         </div>
 
         <div class="brand2">
-            <a th:href="@{/inicio}" class="info-btn" alt="Información">Inicio</a>
+            <a th:href="@{/inicio}" class="info-btn is-active" alt="Información">Inicio</a>
             <a th:href="@{/nosotros}" class="info-btn" alt="Información">Nosotros</a>
             <a th:href="@{/contacto}" class="info-btn" alt="Información">Contacto</a>
             
@@ -74,7 +80,7 @@
 
                 <div class="tituloiniciocontenido">
                     <h1 class="titulo">Agenda tus clases ahora</h1>
-                    <p class="parrafotitulo">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Illum officia quos dolores numquam vitae ipsa odio ratione earum quisquam labore voluptatum eum libero eligendi, ut veritatis, veniam quasi! Maiores, dolore.</p>
+                    <p class="parrafotitulo">Organiza las clases del Colegio Moralba Sur Oriental desde un solo lugar. Consulta horarios, accede a materiales y mantente al día con la programación académica de forma sencilla y desde cualquier dispositivo.</p>
                     <form id="welcomeForm" class="welcome-form" novalidate>
                         <input type="email" name="email" id="welcomeEmail" placeholder="Ingresa tu correo electronico" required>
                         <input type="submit" id="welcomeSubmit" value="Inicia Sesión">
@@ -82,7 +88,7 @@
                     </form>
                     <div>
                         <img th:src="@{/img/check.png}" alt="tiktok" class="check">
-                        <p class="parrafoinicio">Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis ab architecto, hic tenetur sequi laudantium iste iure eveniet dolorem in aut nam eligendi, sint unde sit animi deleniti? Optio, laudantium.</p>
+                        <p class="parrafoinicio">Acceso disponible las 24 horas desde cualquier dispositivo con conexión a internet. Sin descargas, sin complicaciones.</p>
                     </div>
                 </div>
                 
@@ -119,7 +125,7 @@
         <a th:href="@{/noticias}">Noticias</a>
         <a th:href="@{/soporte}">Soporte</a>
         <a th:href="@{/contacto}">Contacto</a>
-        <a th:href="@{/privacidad}">Privacidad</a>
+        <a th:href="@{/politicas}">Privacidad</a>
         <a th:href="@{/terminos}">Términos</a>
     </nav>
     <div class="f4-divider"></div>

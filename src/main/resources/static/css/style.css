@@ -548,17 +548,27 @@ header.brandinicio .info-icon:hover {
 
 
 .contenidoinicio {
-    height: 85vh;
+    min-height: calc(100vh - 100px); /* Adaptabilidad: permite crecer sin cortar contenido */
     width: 100%;
-    padding: 15px;
-    padding-left: 0px;
+    padding: 15px 15px 50px 0px; /* Espacio extra abajo */
     gap: 70px;
     display: flex;
+    position: relative;
+    z-index: 1;
+    animation: fadeIn 1s ease-in;
+}
+
+.contenidoinicio::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
     background-image: url('/img/backgroundinicio.png') !important; 
     background-repeat: no-repeat;
     background-size: cover;
-    background-position: center;
-    animation: fadeIn 1s ease-in ;
+    background-position: right bottom; /* Ancla al muñeco dibujado en la esquina */
+    mix-blend-mode: multiply; /* Magia: elimina el fondo blanco de la imagen para revelar los puntos traseros */
+    z-index: -1;
+    pointer-events: none;
 }
 
 .registro {
@@ -1393,12 +1403,46 @@ img.socialmedia:hover {
 
 .contentindex {
     background: url("/img/backgroundlogin.png") no-repeat center center;
-    background-size: 70% 100%;
+    background-size: cover;
     display: flex;
     justify-content: center;
     align-items: center;
     transition: 0.4s;
     margin-bottom: 0;
+    min-height: calc(100vh - 88px);
+    position: relative;
+    isolation: isolate;
+    overflow: visible;
+}
+
+body.auth-login-page .ambient-glow {
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(174, 201, 165, 0.5) 0%, transparent 72%);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: -1;
+    filter: blur(50px);
+    animation: floatGlowLogin 15s ease-in-out infinite alternate;
+}
+
+body.auth-login-page .glow-1 {
+    top: -180px;
+    left: -180px;
+}
+
+body.auth-login-page .glow-2 {
+    bottom: -160px;
+    right: -200px;
+    animation-delay: -5s;
+    background: radial-gradient(circle, rgba(0, 128, 0, 0.08) 0%, transparent 72%);
+}
+
+@keyframes floatGlowLogin {
+    0% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(50px, 50px) scale(1.1); }
+    100% { transform: translate(-30px, 80px) scale(0.9); }
 }
 .contentregistro {
     background: url("/img/backgroundregistro.png") no-repeat center center;
@@ -2263,10 +2307,9 @@ div.imagencontacto { display: flex; justify-content: center; align-items: center
     width: 450px;
     margin: auto;
     margin-top: 103px;
-    background: #fff;
+    background: var(--sf);
     padding: 24px;
     border-radius: 12px;
-    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.80);
 }
 
 #rol { padding: 5px 2px 2px 2px; width: 102%; }
@@ -3107,7 +3150,7 @@ label.labelagend { width: 100%; margin-top: 8px; margin-bottom: 3px; }
     padding-top: 30px;
     padding-right: 30px;
     padding-bottom: 172px;
-    background: #f4f6f9;
+    background: var(--sf);
     font-family: "Segoe UI", Tahoma, sans-serif;
     color: #333;
 }
@@ -3220,7 +3263,6 @@ label.labelagend { width: 100%; margin-top: 8px; margin-bottom: 3px; }
     background: white;
     padding: 24px;
     border-radius: 10px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
     margin-top: 0px;
     margin-bottom: 30px;
     width: 90%;

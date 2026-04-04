@@ -8,3 +8,7 @@ function abrirModalEditar(id, nombre) {
 function cerrarModalEditar() {
     document.getElementById('modalEditar').style.display = 'none';
 }
+
+function actualizarMaterial(event) {
+    document.getElementById('form-editar-material').submit();
+}
