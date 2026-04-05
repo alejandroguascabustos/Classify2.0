@@ -3,9 +3,9 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Classify - Agenda</title>
+    <title>Classify - Agendar clase</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
-    <link rel="shortcut icon" th:href="@{img/favicon.ico}" type="image/x-icon">
+    <link rel="shortcut icon" th:href="@{/img/favicon.ico}" type="image/x-icon">
 </head>
 
 <body>
@@ -16,10 +16,10 @@
         </div>
     
         <div class="brand2">
-            <a th:href="@{/inicio}" class="info-btn" alt="Información">Inicio</a>
-            <a th:href="@{/nosotros}" class="info-btn" alt="Información">Nosotros</a>
-            <a th:href="@{/contacto}" class="info-btn" alt="Información">Contacto</a>
 
+            <a th:href="@{/inicio}" class="info-btn">Inicio</a>
+            <a th:href="@{/nosotros}" class="info-btn">Nosotros</a>
+            <a th:href="@{/contacto}" class="info-btn">Contacto</a>
         </div>
     
         <div class="header-tools">
@@ -32,7 +32,8 @@
             <div id="info" class="info-panel">
                 <div class="info-content">
                     <a href="#" class="close">&times;</a>
-                    <img th:src="@{/img/agenda.png}" width="80px">
+             
+                    <img th:src="@{/img/agenda.png}" width="80" alt="Agenda">
                     <h4>¿Porque agendas tus clases?</h4>
                     <p class="textoinfo">La implementación de una página web para agendar clases en el colegio Moralba Sur
                         Oriental representa una herramienta fundamental para optimizar la organización académica y fortalecer
@@ -63,154 +64,204 @@
         <span></span>
     </div>
 
-    <!-- <div id="skeleton-loader" class="skeleton">
-        <img th:src="@{/img/loader.gif}" class="gif-loader">
-    </div> -->
-
     <aside class="sidebar">
-        <!-- botón común para todos -->
         <a th:href="@{/menu}" class="inicioprincipal">
-            <img th:src="@{/img/home.png}" width="25px" class="imgmenu"> Inicio
+            <img th:src="@{/img/home.png}" width="25" class="imgmenu" alt="Inicio"> Inicio
         </a>
-
-            <a th:href="@{/agenda}" class="inicioprincipal2">
-                <img th:src="@{/img/agenda.png}" width="25px" class="imgmenu">Agendar clase
-            </a>
-
-            <a th:href="@{/noticias}" class="inicioprincipal2">
-                <img th:src="@{/img/noticias.png}" width="25px" class="imgmenu">Noticias
-            </a>
-            <a th:href="@{/programacion}" class="inicioprincipal2">
-                <img th:src="@{/img/programacion.png}" width="25px" class="imgmenu">Programación
-            </a>
-            <a th:href="@{/aprende}" class="inicioprincipal2">
-                <img th:src="@{/img/aprende.png}" width="25px" class="imgmenu">Aprende
-            </a>
-            <a th:href="@{/contacta}" class="inicioprincipal2">
-                <img th:src="@{/img/gmail.png}" width="25px" class="imgmenu">Contacta a un profe
-            </a>
-            <a th:href="@{/mismateriales}" class="inicioprincipal2">
-                <img th:src="@{/img/descargamaterial.png}" width="25px" class="imgmenu">Mis Materiales
-            </a>
-            <a th:href="@{/materiales}" class="inicioprincipal2">
-                <img th:src="@{/img/upload.png}" width="25px" class="imgmenu">Carga Materiales
-            </a>
+        <a th:href="@{/agenda}" class="inicioprincipal2">
+            <img th:src="@{/img/agenda.png}" width="25" class="imgmenu" alt="Agendar"> Agendar clase
+        </a>
+        <a th:href="@{/noticias}" class="inicioprincipal2">
+            <img th:src="@{/img/noticias.png}" width="25" class="imgmenu" alt="Noticias"> Noticias
+        </a>
+        <a th:href="@{/programacion}" class="inicioprincipal2">
+            <img th:src="@{/img/programacion.png}" width="25" class="imgmenu" alt="Programación"> Programación
+        </a>
+        <a th:href="@{/aprende}" class="inicioprincipal2">
+            <img th:src="@{/img/aprende.png}" width="25" class="imgmenu" alt="Aprende"> Aprende
+        </a>
+        <a th:href="@{/contacta}" class="inicioprincipal2">
+            <img th:src="@{/img/gmail.png}" width="25" class="imgmenu" alt="Contacto"> Contacta a un profe
+        </a>
+        <a th:href="@{/mismateriales}" class="inicioprincipal2">
+            <img th:src="@{/img/descargamaterial.png}" width="25" class="imgmenu" alt="Mis Materiales"> Mis Materiales
+        </a>
+        <a th:href="@{/materiales}" class="inicioprincipal2">
+            <img th:src="@{/img/upload.png}" width="25" class="imgmenu" alt="Carga Materiales"> Carga Materiales
+        </a>
     </aside>
 
-
     <main class="contentagenda">
-        <div class="login-wrapper">
-            <div class="login-container">
-                <div class="titleagenda">
-                    <div class="imagenagenda">
-                        <img th:src="@{/img/agenda.gif}" width="100px">
-                    </div>
-                    <h2>Agendar nueva clase</h2>
-                </div>
+        
+        <div class="agenda-form-container">
+            <h2>Agenda tu Clase</h2>
+            <p class="subtitulo">Completa todos los datos para programar una clase</p>
+        
+            <form id="agendaForm" class="agenda-form" th:action="@{/guardar-agenda}" th:object="${agenda}" method="post">
+                
 
-                <div class="alert alert-success" th:if="${successMessage}" th:text="${successMessage}"></div>
-
-                <div class="alert alert-danger" th:if="${errorMessage}" th:text="${errorMessage}"></div>
-
-                <div class="alert alert-danger" th:if="${errors != null and !errors.isEmpty()}">
-                    <ul>
-                        <li th:each="error : ${errors}" th:text="${error}"></li>
-                    </ul>
-                </div>
-
-                <form th:action="@{/agenda}" method="post" class="login-form" id="agendaForm">
-                    <input type="hidden" name="usuario_id" value="1">
-
-                    <div class="custom-select">
-                        <label class="labelagend">Materias</label>
-                        <select name="materia" class="custom-agenda" required>
-                            <option value="">Selecciona una materia</option>
-                            <option class="custom-options" value="Matemáticas">Matemáticas</option>
-                            <option class="custom-options" value="Lengua Castellana">Lengua Castellana</option>
-                            <option class="custom-options" value="Biología">Biología</option>
-                            <option class="custom-options" value="Química">Química</option>
-                            <option class="custom-options" value="Física">Física</option>
-                            <option class="custom-options" value="Historia">Historia</option>
-                            <option class="custom-options" value="Geografía">Geografía</option>
-                            <option class="custom-options" value="Constitución y Democracia">Constitución y Democracia</option>
-                            <option class="custom-options" value="Inglés">Inglés</option>
-                            <option class="custom-options" value="Tecnología e Informática">Tecnología e Informática</option>
-                            <option class="custom-options" value="Educación Artística">Educación Artística</option>
-                            <option class="custom-options" value="Educación Física">Educación Física</option>
-                            <option class="custom-options" value="Religión">Religión</option>
-                            <option class="custom-options" value="Ética y Valores">Ética y Valores</option>
-                        </select>
-                    </div>
-
-                    <div class="custom-select">
-                        <label class="labelagend">Profesor</label>
-                        <select name="profesor" class="custom-agenda" required>
-                            <option value="">Selecciona un profesor</option>
-                            <option class="custom-options" value="Camilo Rodriguez">Camilo Rodriguez</option>
-                            <option class="custom-options" value="Luis Hernandez">Luis Hernandez</option>
-                            <option class="custom-options" value="Bruno Fernandez">Bruno Fernandez</option>
-                            <option class="custom-options" value="Juan Perez">Juan Perez</option>
-                            <option class="custom-options" value="Andres Hernandez">Andres Hernandez</option>
-                            <option class="custom-options" value="Tomas Díaz">Tomas Díaz</option>
-                            <option class="custom-options" value="Jorge Castillo">Jorge Castillo</option>
-                        </select>
-                    </div>
-
-                    <div class="custom-select">
-                        <label class="labelagend">Horario</label>
-                        <select name="hora" class="custom-agenda" required>
-                            <option value="">Selecciona una hora</option>
-                            <option class="custom-options" value="07:00 a.m. a 09:00 a.m.">07:00 a.m. a 09:00 a.m.</option>
-                            <option class="custom-options" value="09:00 a.m. a 11:00 a.m.">09:00 a.m. a 11:00 a.m.</option>
-                            <option class="custom-options" value="11:00 a.m. a 01:00 p.m.">11:00 a.m. a 01:00 p.m.</option>
-                            <option class="custom-options" value="01:00 p.m. a 03:00 p.m.">01:00 p.m. a 03:00 p.m.</option>
-                        </select>
-                    </div>
-
-                    <div class="custom-select">
-                        <label class="labelagend">Curso</label>
-                        <select name="curso" class="custom-agenda" required>
-                            <option value="">Selecciona un curso</option>
-                            <option class="custom-options" value="501">501</option>
-                            <option class="custom-options" value="502">502</option>
-                            <option class="custom-options" value="503">503</option>
-                            <option class="custom-options" value="504">504</option>
-                            <option class="custom-options" value="601">601</option>
-                            <option class="custom-options" value="602">602</option>
-                            <option class="custom-options" value="603">603</option>
-                            <option class="custom-options" value="604">604</option>
-                        </select>
-                    </div>
-
-                    <label class="labelagend">Observaciones</label>
-                    <textarea name="observaciones" class="custom-options-observ" placeholder="Observaciones" required></textarea>
-
-                    <button type="submit">Guardar</button>
-                </form>
-
-                <div id="agendaConfirmModal" class="agenda-modal">
-                    <div class="agenda-modal-content">
-                        <div class="agenda-modal-icon">
-                            <img th:src="@{/img/ok.gif}" width="80" alt="¡Genial!">
+                <fieldset>
+                    <legend>Datos del salon</legend>
+        
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="grado">Grado *</label>
+                            <select id="grado" name="grado" required>
+                                <option value="">Selecciona grado</option>
+                                <option value="1">1° Grado</option>
+                                <option value="2">2° Grado</option>
+                                <option value="3">3° Grado</option>
+                                <option value="4">4° Grado</option>
+                                <option value="5">5° Grado</option>
+                                <option value="6">6° Grado</option>
+                            </select>
                         </div>
-                        <h3 class="agenda-modal-title">¡Clase Guardada!</h3>
-                        <h4 class="agenda-modal-text">La clase ha sido agendada exitosamente</h4>
-                        <h5 class="agenda-modal-text2">Revisa la tabla programacion</h5>
-                        <div class="agenda-modal-progress">
-                            <div class="agenda-progress-bar"></div>
+                        <div class="form-group">
+                            <label for="grupo">Grupo (si aplica)</label>
+                            <input type="text" id="grupo" name="grupo" placeholder="Ej: A, B, C">
                         </div>
                     </div>
-                </div>
+                </fieldset>
+        
+                <fieldset>
+                    <legend>Detalles de la clase</legend>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="profesor">Profesor *</label>
+                            <select id="profesor" name="profesor" required>
+                                <option value="">Selecciona un profesor</option>
+                                <option value="Ana García">Ana García </option>
+                                <option value="Carlos Méndez">Carlos Méndez</option>
+                                <option value="Laura Fernández">Laura Fernández</option>
+                                <option value="Jorge Ramírez">Jorge Ramírez</option>
+                                <option value="Sofía Torres">Sofía Torres</option>
+                                <option value="Andrés López">Andrés López</option>
+                                <option value="Marta Ríos">Marta Ríos</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="materia">Materia</label>
+                            <select id="materia" name="materia" required>
+                                <option value="">Selecciona la materia</option>
+                                <option value="Ana García">Matematicas </option>
+                                <option value="Carlos Méndez">Español</option>
+                                <option value="Laura Fernández">Historia</option>
+                                <option value="Jorge Ramírez">Ingles</option>
+                                <option value="Sofía Torres">Etica y valores</option>
+                                <option value="Andrés López">Educación fisica</option>
+                                <option value="Marta Ríos">Informatica</option>
+                            </select>
+                        </div>
+                    </div>
+        
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="fecha">Fecha de agendamiento *</label>
+                            <input type="date" id="fecha" name="fecha" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="horaInicio">Hora de agendamiento *</label>
+                            <input type="time" id="horaInicio" name="horaInicio" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="duracion">Duración de la clase</label>
+                            <select id="duracion" name="duracion" required>
+                                <option value="30">30 minutos</option>
+                                <option value="45">45 minutos</option>
+                                <option value="60" selected>60 minutos</option>
+                                <option value="90">90 minutos</option>
+                                <option value="120">120 minutos</option>
+                            </select>
+                        </div>
+                    </div>
+        
+                    <div class="form-group">
+                        <label for="modalidad">Modalidad de la clase</label>
+                        <select id="modalidad" name="modalidad">
+                            <option value="presencial">Presencial (en el colegio)</option>
+                            <option value="virtual">Virtual (videollamada)</option>
+                        </select>
+                    </div>
+                </fieldset>
+        
+          
+                <fieldset>
+                    <legend>Objetivos y temas a tratar</legend>
+                    
+                    <div class="form-group">
+                        <label for="temaPrincipal">Tema principal de la clase *</label>
+                        <input type="text" id="temaPrincipal" name="temaPrincipal" placeholder="Ej: Fracciones, Verbos en inglés, El ciclo del agua" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="objetivos">Objetivos específicos de aprendizaje</label>
+                        <textarea id="objetivos" name="objetivos" rows="3" placeholder="¿Qué espera aprender el estudiante en esta clase?"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="dificultades">Dificultades específicas que se pueden presentar</label>
+                        <textarea id="dificultades" name="dificultades" rows="2" placeholder="Ej: Problemas con multiplicación, falta de comprensión lectora..."></textarea>
+                    </div>
+                </fieldset>
 
+                <fieldset>
+                    <legend>Recursos y materiales 📎</legend>
+                    
+                    <div class="form-group">
+                        <label>¿El grupo cuenta con los materiales básicos? *</label>
+                        <div class="radio-group">
+                            <label><input type="radio" name="materialesBasicos" value="si" required> Sí</label>
+                            <label><input type="radio" name="materialesBasicos" value="no"> No</label>
+                            <label><input type="radio" name="materialesBasicos" value="parcialmente"> Parcialmente</label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="recursosNecesarios">Recursos adicionales que necesita el profesor preparar</label>
+                        <textarea id="recursosNecesarios" name="recursosNecesarios" rows="2" placeholder="Ej: Guía impresa, presentación interactiva, material concreto..."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="adjuntos">Herramientas adjuntas (tareas previas, ejercicios)</label>
+                        <input type="file" id="adjuntos" name="adjuntos" multiple accept=".pdf,.doc,.docx,.jpg,.png">
+                        <small>Puedes subir hasta 5 archivos (máx. 10MB total)</small>
+                        
+                    </div>
+                </fieldset>
+    
+
+                <fieldset>
+                    <legend> Carga de archivos (opcional)</legend>
+                    <p class="fieldset-note">Puedes adjuntar hasta 5 archivos. Formatos permitidos: PDF, JPG, PNG, DOC, DOCX (máx. 10MB por archivo).</p>
+
+                    <div class="file-upload-area" id="fileUploadArea">
+                        <p>Arrastra y suelta archivos aquí o</p>
+                        <label for="archivos" class="file-upload-label">Seleccionar archivos</label>
+                        <input type="file" id="archivos" name="archivos" multiple accept=".pdf,.jpg,.jpeg,.png,.doc,.docx" style="display: none;">
+                        <p class="file-limite">Máx. 10MB por archivo</p>
+                    </div>
+
+             
+                    <ul id="listaArchivos" class="file-list"></ul>
+                </fieldset>
+
+
+                <div class="form-buttons">
+                    <button type="submit" class="btn-submit"> Subir agendamiento</button>
+                    <button type="reset" class="btn-reset">Limpiar todo</button>
+                </div>
+            </form>
+        
+            <div id="mensajeConfirmacion" class="mensaje-confirmacion" style="display: none;">
+                Solicitud enviada exitosamente. En breve recibirás confirmación al correo registrado.
             </div>
         </div>
-    </main>
 
+    </main>
 
     <script th:src="@{/js/modalagenda.js}"></script>
     <script th:src="@{/js/chatbot.js}"></script>
-    <script th:src="@{/js/perfilmodal.js}"></script>
-
 </body>
 
 </html>
