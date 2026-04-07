@@ -1,6 +1,5 @@
 package com.classify20.config;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -10,13 +9,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebConfig implements WebMvcConfigurer {
 
     private final AuthInterceptor authInterceptor;
+    private final UploadStorageResolver uploadStorageResolver;
 
-    // Lee el path desde application.properties
-    @Value("${classify.upload.path:C:/classify-uploads}")
-    private String uploadPath;
-
-    public WebConfig(AuthInterceptor authInterceptor) {
+    public WebConfig(AuthInterceptor authInterceptor, UploadStorageResolver uploadStorageResolver) {
         this.authInterceptor = authInterceptor;
+        this.uploadStorageResolver = uploadStorageResolver;
     }
 
     @Override
@@ -39,11 +36,7 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        // Normaliza la ruta: agrega / al final si no lo tiene
-        String normalizedPath = uploadPath.endsWith("/") ? uploadPath : uploadPath + "/";
-
-        // Sirve /uploads/** desde el directorio absoluto configurado
         registry.addResourceHandler("/uploads/**")
-                .addResourceLocations("file:///" + normalizedPath);
+                .addResourceLocations(uploadStorageResolver.toResourceLocation());
     }
 }

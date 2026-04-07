@@ -73,12 +73,12 @@
             <div class="noticias-container">
  
                 <div class="titlenoticias">
-                    <h2 class="titleprincipalnoticias"
+                    <h2 class="titleprincipalnoticias"  
                         th:text="${noticia.idNoticia == null ? 'Crear Noticia' : 'Editar Noticia'}">Noticia</h2>
                 </div>
                 <br>
  
-                <ul class="noticias-menu">
+                <ul class="noticiasmenu">
                     <li class="btnnoticias">
                         <a th:href="@{/noticias}" class="titlesnoticias">
                             <img th:src="@{/img/periodico.png}" width="25" class="imgtitlenoticias">Noticias
@@ -122,10 +122,13 @@
                                required/>
  
                         <label class="labelcrearnoticia">Tipo de noticia:</label>
-                        <input type="text" name="tipo_noticia"
-                               th:value="${noticia.tipoNoticia}"
-                               placeholder="Ej: Académico, Deportivo, Cultural..."/>
- 
+                        <!-- <input type="text" name="tipo_noticia" th:value="${noticia.tipoNoticia}" placeholder="Ej: Académico, Deportivo, Cultural..."/> --> 
+                                <select  class="selectformnoticia" id="">
+                                    <option value="">Academico</option>
+                                    <option value="">Deportivo</option>
+                                    <option value="">Disciplinario</option>
+                                    <option value="">Cultural</option>
+                                </select>
                         <label class="labelcrearnoticia">Contenido:</label>
                         <textarea name="contenido_noticia"
                                   placeholder="Escribe el contenido..." required

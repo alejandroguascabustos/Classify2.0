@@ -1,10 +1,10 @@
 package com.classify20.controller;
 
+import com.classify20.config.UploadStorageResolver;
 import com.classify20.domain.Noticia;
 import com.classify20.service.NoticiaService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,8 +25,8 @@ public class NoticiaController {
     @Autowired
     private NoticiaService noticiaService;
 
-    @Value("${classify.upload.path=C:/classify-uploads}")
-    private String uploadPath;
+    @Autowired
+    private UploadStorageResolver uploadStorageResolver;
 
     // ─── GET /noticias → vista pública ───────────────────────
     @GetMapping
@@ -91,8 +91,7 @@ public class NoticiaController {
             // ── Imagen ────────────────────────────────────────
             String rutaImagen = null;
             if (imagen != null && !imagen.isEmpty()) {
-                Path dirPath = Paths.get(uploadPath, "noticias");
-                Files.createDirectories(dirPath);
+                Path dirPath = uploadStorageResolver.resolveSubdirectory("noticias");
                 String originalName = imagen.getOriginalFilename();
                 String ext = (originalName != null && originalName.contains("."))
                         ? originalName.substring(originalName.lastIndexOf(".")) : "";

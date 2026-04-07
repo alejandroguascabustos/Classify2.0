@@ -67,7 +67,22 @@
             <img th:src="@{/img/upload.png}" width="25px" class="imgmenu">Carga Materiales
         </a>
     </aside>
+    <!-- Modal perfil -->
+    <div id="modalConfig" class="modal-config">
+        <div class="modal-config-content">
+            <div class="modal-config-header">
+                <h3>Configuración</h3>
+                <span class="modal-config-close">&times;</span>
+                
+            </div>
+            <div class="modal-config-body">
+                <a th:href="@{#}" class="cerrarsesion" id="btnConfig">Cerrar sesión</a>
+            </div>
 
+        </div>
+    </div>
+
+    <!-- Contenido de la pagina -->
     <main class="contentprincipal">
 
         <!-- ── Noticia más reciente ─────────────────────────── -->

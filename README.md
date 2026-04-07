@@ -15,13 +15,7 @@ El proyecto combina dos tecnologías principales:
 
 - **Registro de usuarios** 
 - **Inicio de sesión** con validación de credenciales.  
-- **Roles de usuario**:  
-  - **Docente:** puede crear agendamientos, cargar materiales y gestionar clases.  
-  - **Estudiante:** puede visualizar los materiales y los agendamientos asignados.  
-  - **Administrador:** puede visualizar todos los servicios
-  - **Coordinador:** puede visualizar y crear agendamientos
-  - **Acudiente:** tiene acceso a ciertos modulos
-  - **Estudiante:** tiene acceso a funcionalidades dadas para su formación
+- **Roles de usuario**
 - **Cierre de sesión seguro.**
 
 ---
