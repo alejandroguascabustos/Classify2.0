@@ -7,10 +7,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestClient;
+import org.springframework.web.client.RestClientResponseException;
 
 import java.util.Map;
 import java.util.List;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Motor de IA de Aprende - Classify (Versión Groq ultra-rápida)
@@ -19,6 +22,8 @@ import java.util.Locale;
 @RestController
 @RequestMapping("/aprende")
 public class AprendeController {
+    private static final Pattern GROQ_MESSAGE_PATTERN =
+            Pattern.compile("\"message\"\\s*:\\s*\"((?:\\\\.|[^\"\\\\])*)\"");
 
     private final RestClient restClient;
     private final String apiKey;
@@ -89,6 +94,9 @@ public class AprendeController {
             
             return ResponseEntity.ok(Map.of("content", message.get("content")));
 
+        } catch (RestClientResponseException e) {
+            return ResponseEntity.status(e.getStatusCode())
+                    .body(Map.of("error", extraerMensajeGroq(e)));
         } catch (Exception e) {
             return ResponseEntity.status(502)
                     .body(Map.of("error", "Error conectando con Groq: " + e.getMessage()));
@@ -174,5 +182,27 @@ public class AprendeController {
     private String leerAtributoSesion(HttpSession session, String atributo) {
         Object value = session == null ? null : session.getAttribute(atributo);
         return value == null ? "" : String.valueOf(value).trim();
+    }
+
+    private String extraerMensajeGroq(RestClientResponseException exception) {
+        String body = exception.getResponseBodyAsString();
+
+        if (body != null && !body.isBlank()) {
+            Matcher matcher = GROQ_MESSAGE_PATTERN.matcher(body);
+            if (matcher.find()) {
+                return matcher.group(1)
+                        .replace("\\n", "\n")
+                        .replace("\\\"", "\"")
+                        .replace("\\\\", "\\");
+            }
+        }
+
+        String statusText = exception.getStatusText();
+        int statusCode = exception.getStatusCode().value();
+        if (statusText != null && !statusText.isBlank()) {
+            return "Groq respondió " + statusCode + ": " + statusText;
+        }
+
+        return "Groq respondió " + statusCode + ".";
     }
 }

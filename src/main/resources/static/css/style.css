@@ -1946,7 +1946,7 @@ h2.recupera-title {
 .btn-recuperar {
     width: 99%;
     padding: 6px;
-    background: #fd5828;
+    background: var(--green-dark);
     border: none;
     border-radius: 6px;
     color: white;
@@ -1958,6 +1958,19 @@ h2.recupera-title {
 
 .btn-recuperar:hover {
     background: var(--green);
+}
+
+.btn-recuperar--success {
+    background: var(--green-accent);
+    color: var(--blanco);
+    cursor: default;
+    opacity: 1;
+    font-size: 13px;
+    letter-spacing: 0.3px;
+}
+
+.btn-recuperar--success:hover {
+    background: var(--green-accent);
 }
 
 .textorecupera {
@@ -5617,7 +5630,7 @@ body.aprende-page textarea {
 }
 
 body.aprende-page {
-    background: linear-gradient(180deg, #ffffff 0%, #ffffff 68%, rgba(174, 201, 165, 0.12) 100%);
+    background: #ffffff !important;
     color: var(--ink);
     overflow-x: hidden;
 }
@@ -9536,4 +9549,18 @@ body.mismateriales-page .modaleditar-botones button[type="button"] {
         flex-direction: column;
         align-items: stretch;
     }
+}
+
+/* Forzar fondo blanco en el módulo Aprende */
+body.aprende-page, 
+body.aprende-page .contenidoinicio, 
+body.aprende-page .contentaprende {
+    background-color: #ffffff !important;
+    background-image: none !important;
+}
+
+body.aprende-page .contenidoinicio::before, 
+body.aprende-page .contenidoinicio::after {
+    display: none !important;
+    content: none !important;
 }
