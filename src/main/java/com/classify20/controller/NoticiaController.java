@@ -25,7 +25,7 @@ public class NoticiaController {
     @Autowired
     private NoticiaService noticiaService;
 
-    @Value("${classify.upload.path=/Users/macbookair/Classify2/Classify2.0/src/main/resources/static/uploads}")
+    @Value("${classify.upload.path:/Users/macbookair/Classify2/Classify2.0/src/main/resources/static/uploads}")
     private String uploadPath;
 
     // ─── GET /noticias → vista pública ───────────────────────
