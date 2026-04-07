@@ -35,7 +35,8 @@ public class NoticiaServiceImpl implements NoticiaService {
     public void guardar(Noticia noticia) {
         noticiaDao.save(noticia);
     }
-
+    
+    // Solo actualiza los campos editables, no borra la imagen si no se sube una nueva
     @Override
     public void actualizar(Long id, Noticia noticiaEditada) {
         noticiaDao.findById(id).ifPresent(existente -> {

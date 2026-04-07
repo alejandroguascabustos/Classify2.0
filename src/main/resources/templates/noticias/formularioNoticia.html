@@ -116,18 +116,25 @@
  
                         <!-- ← datetime-local para DATETIME de PostgreSQL -->
                         <label class="labelcrearnoticia">Fecha y hora de publicación:</label>
-                        <input type="datetime-local" name="fecha_noticia"
-                               th:value="${noticia.fechaNoticia != null ?
-                                   #temporals.format(noticia.fechaNoticia, 'yyyy-MM-dd''T''HH:mm') : ''}"
-                               required/>
+                        <input type="datetime-local" name="fecha_noticia" th:value="${noticia.fechaNoticia != null ? #temporals.format(noticia.fechaNoticia, 'yyyy-MM-dd''T''HH:mm') : ''}" required/>
  
                         <label class="labelcrearnoticia">Tipo de noticia:</label>
-                        <!-- <input type="text" name="tipo_noticia" th:value="${noticia.tipoNoticia}" placeholder="Ej: Académico, Deportivo, Cultural..."/> --> 
-                                <select  class="selectformnoticia" id="">
-                                    <option value="">Academico</option>
-                                    <option value="">Deportivo</option>
-                                    <option value="">Disciplinario</option>
-                                    <option value="">Cultural</option>
+                        <select id="tipo_noticia" name="tipo_noticia" class="labelcrearnoticia" required>
+                                    <option value="" disabled th:selected="${noticia.tipoNoticia == null or #strings.isEmpty(noticia.tipoNoticia)}">
+                                        Selecciona el tipo de noticia
+                                    </option>
+                                    <option value="Academico" th:selected="${noticia.tipoNoticia == 'Academico'}">
+                                        Académico
+                                    </option>
+                                    <option value="Deportivo" th:selected="${noticia.tipoNoticia == 'Deportivo'}">
+                                        Deportivo
+                                    </option>
+                                    <option value="Disciplinario" th:selected="${noticia.tipoNoticia == 'Disciplinario'}">
+                                        Disciplinario
+                                    </option>
+                                    <option value="Cultural" th:selected="${noticia.tipoNoticia == 'Cultural'}">
+                                        Cultural
+                                    </option>
                                 </select>
                         <label class="labelcrearnoticia">Contenido:</label>
                         <textarea name="contenido_noticia"

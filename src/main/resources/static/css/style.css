@@ -2462,6 +2462,8 @@ a.inicioprincipal3 {
     margin-top: 0px;
     margin-left: -5px;
     font-size: 19px;
+    overflow-wrap: break-word;
+    word-break: break-all;
 }
 
 .contentnosotros {
@@ -8633,6 +8635,7 @@ ul.noticiasmenu{
     font-size: 0.95rem;
     line-height: 1.6;
     margin-bottom: 10px;
+    word-break: break-all;
 }
 
 .badge-tipo,
@@ -8756,13 +8759,19 @@ ul.noticiasmenu{
 
 
 .btncancelarnoticia {
-    background: #6c757d;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--border-strong);
     color: white;
-    padding: 11px 22px;
+    padding: 12px 40px;
+    border: none;
     border-radius: 5px;
+    cursor: pointer;
+    margin-top: 8px;
     text-decoration: none;
-    font-size: 15px;
-    transition: background 0.2s;
+    font-size: 16px;
+    transition: background 0.3s;
 }
 
 .btncancelarnoticia:hover {
