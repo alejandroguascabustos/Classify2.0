@@ -9,7 +9,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/style.css}">
-    <link rel="stylesheet" th:href="@{/css/materiales.css}">
     <link rel="shortcut icon" th:href="@{img/favicon.ico}" type="image/x-icon">
 </head>
 
@@ -87,35 +86,77 @@
     <main class="contentmateriales">
         <section class="materiales-shell">
             <header class="materiales-hero">
-                <span class="materiales-kicker">Gestor Docente</span>
-                <h1 class="titulocargamateriales">Carga y administra tus <em>materiales</em></h1>
-                <p class="parrafocargamateriales">
-                    Publica archivos para tus estudiantes, actualiza nombres y elimina versiones antiguas desde un solo panel.
-                </p>
+                <div class="materiales-hero-copy">
+                    <span class="materiales-kicker">Gestor Docente</span>
+                    <h1 class="titulocargamateriales">Carga y administra tus <em>materiales</em></h1>
+                    <p class="parrafocargamateriales">
+                        Publica archivos para tus estudiantes, actualiza nombres y elimina versiones antiguas desde un solo panel.
+                    </p>
+                </div>
+                <div class="materiales-hero-panel">
+                    <div class="materiales-stat-grid">
+                        <article class="materiales-stat-card">
+                            <span class="materiales-stat-label">Archivos activos</span>
+                            <strong class="materiales-stat-value" th:text="${materiales != null ? materiales.size() : 0}">0</strong>
+                        </article>
+                        <article class="materiales-stat-card">
+                            <span class="materiales-stat-label">Carga multiple</span>
+                            <strong class="materiales-stat-value">Disponible</strong>
+                        </article>
+                    </div>
+                    <ul class="materiales-upload-checklist">
+                        <li>Sube uno o varios archivos sin salir del panel docente.</li>
+                        <li>Renombra o elimina recursos antiguos cuando ya no los necesites.</li>
+                    </ul>
+                </div>
             </header>
 
-            <section class="materiales-card">
-                <h2 class="subtitulocargamateriales">Sube tu archivo</h2>
-                <p class="parrafocargamateriales">Selecciona uno o varios archivos y envialos en un solo paso.</p>
-
-                <div class="image-container">
-                    <img th:src="@{/img/upload.gif}" class="imgmateriales" alt="Subir archivo">
+            <section class="materiales-card materiales-card-upload">
+                <div class="materiales-card-header">
+                    <div>
+                        <h2 class="subtitulocargamateriales">Sube tu archivo</h2>
+                        <p class="parrafocargamateriales">Selecciona uno o varios archivos y envialos en un solo paso.</p>
+                    </div>
+                    <span class="materiales-card-badge">Paso 1</span>
                 </div>
 
-                <form th:action="@{/materiales/subir}" method="post" enctype="multipart/form-data" class="upload-form">
-                    <input type="file" id="file-input" name="archivos" multiple class="file-input-hidden">
-                    <label class="labelmateriales" for="file-input">Selecciona tu archivo</label>
-                    <div id="num-of-files">No hay archivos seleccionados</div>
-                    <ul id="files-list"></ul>
-                    <div class="upload-submit-row">
-                        <button type="submit" class="btn-subir">Subir archivos</button>
+                <div class="materiales-upload-grid">
+                    <div class="materiales-dropzone">
+                        <div class="image-container">
+                            <img th:src="@{/img/upload.gif}" class="imgmateriales" alt="Subir archivo">
+                        </div>
+                        <div class="materiales-dropzone-copy">
+                            <h3>Organiza recursos por clase</h3>
+                            <p>Comparte guias, talleres y documentos en una vista clara para mantener tus materiales siempre a mano.</p>
+                            <div class="materiales-dropzone-tags">
+                                <span>Guias</span>
+                                <span>Talleres</span>
+                                <span>Apoyos</span>
+                            </div>
+                        </div>
                     </div>
-                </form>
+
+                    <form th:action="@{/materiales/subir}" method="post" enctype="multipart/form-data" class="upload-form">
+                        <input type="file" id="file-input" name="archivos" multiple class="file-input-hidden">
+                        <label class="labelmateriales" for="file-input">Elegir archivos</label>
+                        <div id="num-of-files">No hay archivos seleccionados</div>
+                        <ul id="files-list"></ul>
+                        <div class="upload-submit-row">
+                            <button type="submit" class="btn-subir">Subir archivos</button>
+                            <p class="materiales-field-help">Despues podras renombrarlos o reemplazarlos desde la tabla inferior.</p>
+                        </div>
+                    </form>
+                </div>
             </section>
 
             <section class="materiales-card">
-                <h2 class="subtitulocargamateriales">Tus cargas</h2>
-                <p class="parrafovermateriales">Edita el nombre de un archivo o elimina materiales que ya no uses.</p>
+                <div class="materiales-card-header">
+                    <div>
+                        <h2 class="subtitulocargamateriales">Tus cargas</h2>
+                        <p class="parrafovermateriales">Edita el nombre de un archivo o elimina materiales que ya no uses.</p>
+                    </div>
+                    <span class="materiales-count-badge" th:text="${materiales != null ? materiales.size() + ' archivo(s)' : '0 archivo(s)'}">0 archivo(s)</span>
+                </div>
 
                 <div class="table-wrap">
                     <table class="programacion-tabla-materiales" id="agendaTable">
@@ -129,9 +170,9 @@
                         <tbody>
                             <th:block th:if="${materiales != null and !materiales.isEmpty()}">
                                 <tr th:each="mat : ${materiales}">
-                                    <td th:text="${mat.nombreArchivo}"></td>
-                                    <td th:text="${mat.fechaSubida}"></td>
-                                    <td>
+                                    <td class="materiales-file-name" th:text="${mat.nombreArchivo}"></td>
+                                    <td class="materiales-date" th:text="${mat.fechaSubida}"></td>
+                                    <td class="materiales-actions-cell">
                                         <div class="containermaterialesbtn">
                                             <div class="btnmaterialesedit">
                                                 <a href="#" class="btn-editar"
@@ -150,7 +191,7 @@
                             </th:block>
                             <th:block th:if="${materiales == null or materiales.isEmpty()}">
                                 <tr>
-                                    <td colspan="3" class="estado-vacio">Aun no has subido materiales.</td>
+                                    <td colspan="3" class="estado-vacio">Aun no has subido materiales. Cuando cargues uno, aparecera aqui para editarlo o eliminarlo.</td>
                                 </tr>
                             </th:block>
                         </tbody>

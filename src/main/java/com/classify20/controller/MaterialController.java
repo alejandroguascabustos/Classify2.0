@@ -1,11 +1,11 @@
 package com.classify20.controller;
 
+import com.classify20.config.UploadStorageResolver;
 import com.classify20.domain.Material;
 import com.classify20.service.MaterialService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -29,8 +29,8 @@ public class MaterialController {
     @Autowired
     private MaterialService materialService;
 
-    @Value("${classify.upload.path:C:/classify-uploads}")
-    private String uploadPath;
+    @Autowired
+    private UploadStorageResolver uploadStorageResolver;
 
     // ─── GET /materiales → vista docente ─────────────────────────
     @GetMapping("/materiales")
@@ -60,8 +60,7 @@ public class MaterialController {
         Long idUsuario = (Long) session.getAttribute("usuarioId");
 
         try {
-            Path dirPath = Paths.get(uploadPath, "materiales");
-            Files.createDirectories(dirPath);
+            Path dirPath = uploadStorageResolver.resolveSubdirectory("materiales");
 
             int subidos = 0;
             for (MultipartFile archivo : archivos) {
@@ -112,8 +111,7 @@ public class MaterialController {
         try {
             String nuevaRuta = null;
             if (archivo != null && !archivo.isEmpty()) {
-                Path dirPath = Paths.get(uploadPath, "materiales");
-                Files.createDirectories(dirPath);
+                Path dirPath = uploadStorageResolver.resolveSubdirectory("materiales");
                 String originalName = archivo.getOriginalFilename();
                 String ext = (originalName != null && originalName.contains("."))
                         ? originalName.substring(originalName.lastIndexOf(".")) : "";
@@ -164,7 +162,7 @@ public class MaterialController {
         Material material = opt.get();
         // rutaArchivo tiene forma "/uploads/materiales/uuid.ext"
         String relativePath = material.getRutaArchivo().replace("/uploads/", "");
-        Path filePath = Paths.get(uploadPath).resolve(relativePath);
+        Path filePath = uploadStorageResolver.resolveRootPath().resolve(relativePath).normalize();
 
         if (!Files.exists(filePath)) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND, "Archivo no encontrado en el servidor.");

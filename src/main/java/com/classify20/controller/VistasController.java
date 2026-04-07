@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import com.classify20.model.Agenda;
 import com.classify20.service.NoticiaService;
 
 import jakarta.servlet.http.HttpSession;
@@ -30,14 +31,15 @@ public class VistasController {
                       .ifPresent(n -> model.addAttribute("noticiaReciente", n));
         return "menu/menu";
     }
- 
-    // ⚠️ NO hay @GetMapping("/noticias") aquí —
-    //    ese endpoint lo maneja NoticiaController (@RequestMapping("/noticias"))
 
+    //Este muestra la vista y la agenda completa
     @GetMapping("/agenda")
-    public String mostrarAgenda(){
+    public String mostrarAgenda(Model model) {
+        model.addAttribute("agenda", new Agenda()); 
         return "agenda/agenda";
     }
+
+
     @GetMapping("/aprende")
     public String mostrarAprende(){
         return "aprende/aprende";

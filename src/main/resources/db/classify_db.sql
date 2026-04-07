@@ -124,3 +124,8 @@ CREATE INDEX IF NOT EXISTS idx_materiales_fecha
 
 -- GRANT ALL PRIVILEGES ON TABLE materiales TO classify_app;
 -- GRANT USAGE, SELECT ON SEQUENCE materiales_id_material_seq TO classify_app;
+
+
+
+
+SELECT * FROM agendas;

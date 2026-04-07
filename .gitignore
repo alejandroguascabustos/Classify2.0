@@ -35,3 +35,6 @@ build/
 # Base de datos embebida local
 .classify-data/
 
+# Archivos generados localmente
+/uploads/
+/C:/

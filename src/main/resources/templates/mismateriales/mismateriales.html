@@ -9,7 +9,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/style.css}">
-    <link rel="stylesheet" th:href="@{/css/materiales.css}">
     <link rel="shortcut icon" th:href="@{img/favicon.ico}" type="image/x-icon">
 </head>
 
@@ -86,14 +85,23 @@
     <main class="contentmateriales">
         <section class="materiales-shell">
             <header class="materiales-hero">
-                <span class="materiales-kicker">Biblioteca</span>
-                <h1 class="materialestitletablavistaunica">Mis <em>materiales</em></h1>
-                <p class="parrafomismateriales">
-                    Descarga guias, tareas y recursos de clase desde una vista clara y ordenada.
-                </p>
+                <div class="materiales-hero-copy">
+                    <span class="materiales-kicker">Biblioteca</span>
+                    <h1 class="materialestitletablavistaunica">Mis <em>materiales</em></h1>
+                    <p class="parrafomismateriales">
+                        Descarga guias, tareas y recursos de clase desde una vista clara y ordenada.
+                    </p>
+                </div>
             </header>
 
             <section class="materiales-card">
+                <div class="materiales-card-header">
+                    <div>
+                        <h2 class="subtitulocargamateriales">Archivos disponibles</h2>
+                        <p class="parrafomismateriales">Consulta el historial publicado y descarga lo que necesites en segundos.</p>
+                    </div>
+                    <span class="materiales-count-badge" th:text="${materiales != null ? materiales.size() + ' archivo(s)' : '0 archivo(s)'}">0 archivo(s)</span>
+                </div>
                 <div class="table-wrap">
                     <table class="programacion-tabla-materiales" id="agendaTable">
                         <thead>
