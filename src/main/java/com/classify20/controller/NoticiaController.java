@@ -66,6 +66,8 @@ public class NoticiaController {
         if (session.getAttribute("nombre") == null) return "redirect:/login";
         Optional<Noticia> opt = noticiaService.buscarPorId(id);
         if (opt.isEmpty()) return "redirect:/noticias/historial";
+        // Auto-rellenar fecha con ahora mismo (si se quiere mantener la fecha original, comentar esta línea)
+        opt.get().setFechaNoticia(LocalDateTime.now());
         model.addAttribute("noticia", opt.get());
         return "noticias/formularioNoticia";
     }
