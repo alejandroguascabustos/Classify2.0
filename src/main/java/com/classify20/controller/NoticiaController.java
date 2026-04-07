@@ -1,10 +1,10 @@
 package com.classify20.controller;
 
-import com.classify20.config.UploadStorageResolver;
 import com.classify20.domain.Noticia;
 import com.classify20.service.NoticiaService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,8 +25,8 @@ public class NoticiaController {
     @Autowired
     private NoticiaService noticiaService;
 
-    @Autowired
-    private UploadStorageResolver uploadStorageResolver;
+    @Value("${classify.upload.path=/Users/macbookair/Classify2/Classify2.0/src/main/resources/static/uploads}")
+    private String uploadPath;
 
     // ─── GET /noticias → vista pública ───────────────────────
     @GetMapping
@@ -66,8 +66,6 @@ public class NoticiaController {
         if (session.getAttribute("nombre") == null) return "redirect:/login";
         Optional<Noticia> opt = noticiaService.buscarPorId(id);
         if (opt.isEmpty()) return "redirect:/noticias/historial";
-        // Auto-rellenar fecha con ahora mismo (si se quiere mantener la fecha original, comentar esta línea)
-        opt.get().setFechaNoticia(LocalDateTime.now());
         model.addAttribute("noticia", opt.get());
         return "noticias/formularioNoticia";
     }
@@ -93,7 +91,8 @@ public class NoticiaController {
             // ── Imagen ────────────────────────────────────────
             String rutaImagen = null;
             if (imagen != null && !imagen.isEmpty()) {
-                Path dirPath = uploadStorageResolver.resolveSubdirectory("noticias");
+                Path dirPath = Paths.get(uploadPath, "noticias");
+                Files.createDirectories(dirPath);
                 String originalName = imagen.getOriginalFilename();
                 String ext = (originalName != null && originalName.contains("."))
                         ? originalName.substring(originalName.lastIndexOf(".")) : "";

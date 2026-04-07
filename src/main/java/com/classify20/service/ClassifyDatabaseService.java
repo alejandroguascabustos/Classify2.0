@@ -1,20 +1,19 @@
 package com.classify20.service;
 
-import com.classify20.config.ClassifyDatabaseProperties;
 import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -54,8 +53,9 @@ public class ClassifyDatabaseService {
                 nombre_estudiante,
                 codigo_docente_asignado,
                 codigo_docente_referencia,
+                password_temporal,
                 creado_en
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """;
 
     private static final String UPDATE_USER_SQL = """
@@ -72,6 +72,7 @@ public class ClassifyDatabaseService {
                 nombre_estudiante = ?,
                 codigo_docente_asignado = ?,
                 codigo_docente_referencia = ?,
+                password_temporal = ?,
                 creado_en = ?
             WHERE nombre_usuario = ?
             """;
@@ -87,17 +88,15 @@ public class ClassifyDatabaseService {
                     "acudiente", "acudiente", null, null, "Estudiante Demo", null, null)
     );
 
-    private final ClassifyDatabaseProperties properties;
+    private final DataSource dataSource;
     private final PasswordEncoder passwordEncoder;
     private final String testPasswordHash;
     private final List<String> schemaStatements;
 
-    private volatile ConnectionSettings activeSettings;
-
     public ClassifyDatabaseService(
-            ClassifyDatabaseProperties properties,
+            DataSource dataSource,
             ResourceLoader resourceLoader) {
-        this.properties = properties;
+        this.dataSource = dataSource;
         this.passwordEncoder = new BCryptPasswordEncoder();
         this.testPasswordHash = passwordEncoder.encode("12345");
         this.schemaStatements = cargarSentenciasSql(resourceLoader.getResource(SCHEMA_SQL_RESOURCE));
@@ -106,72 +105,26 @@ public class ClassifyDatabaseService {
     @PostConstruct
     void initialize() {
         try {
-            ensureReady();
+            ensureSchemaAndSeed();
         } catch (SQLException exception) {
-            logger.error("No fue posible inicializar la base de datos de Classify.", exception);
+            logger.error("No fue posible inicializar el esquema de la base de datos.", exception);
         }
     }
 
     public Connection openConnection() throws SQLException {
-        try {
-            ConnectionSettings settings = ensureReady();
-            Connection connection = DriverManager.getConnection(settings.url(), settings.username(), settings.password());
-            ensureSchemaAndSeed(connection);
-            return connection;
-        } catch (SQLException primaryException) {
-            if (activeSettings == null || activeSettings.fallback()) {
-                throw primaryException;
-            }
-
-            logger.warn("Fallo la conexion a la base primaria. Se intentara la base embebida.", primaryException);
-            synchronized (this) {
-                activeSettings = fallbackSettings();
-            }
-
-            ConnectionSettings fallback = ensureReady();
-            Connection connection = DriverManager.getConnection(fallback.url(), fallback.username(), fallback.password());
-            ensureSchemaAndSeed(connection);
-            return connection;
-        }
+        return dataSource.getConnection();
     }
 
-    public synchronized ConnectionSettings ensureReady() throws SQLException {
-        if (activeSettings != null) {
-            return activeSettings;
-        }
-
-        ConnectionSettings primary = primarySettings();
-
-        try (Connection connection = DriverManager.getConnection(primary.url(), primary.username(), primary.password())) {
-            ensureSchemaAndSeed(connection);
-            activeSettings = primary;
-            logger.info("Classify usara la base de datos principal: {}", activeSettings.url());
-            return activeSettings;
-        } catch (SQLException exception) {
-            logger.warn("No fue posible conectar con la base primaria {}. Se utilizara una base embebida local.",
-                    primary.url());
-            ConnectionSettings fallback = fallbackSettings();
-            try (Connection connection = DriverManager.getConnection(
-                    fallback.url(),
-                    fallback.username(),
-                    fallback.password())) {
-                ensureSchemaAndSeed(connection);
-                activeSettings = fallback;
-                logger.info("Classify usara la base de datos embebida: {}", activeSettings.url());
-                return activeSettings;
-            }
-        }
-    }
-
-    private void ensureSchemaAndSeed(Connection connection) throws SQLException {
-        try (Statement statement = connection.createStatement()) {
+    private void ensureSchemaAndSeed() throws SQLException {
+        try (Connection connection = dataSource.getConnection();
+             Statement statement = connection.createStatement()) {
             for (String sql : schemaStatements) {
                 statement.execute(sql);
             }
-        }
-
-        for (SeedUser user : TEST_USERS) {
-            upsertUser(connection, user);
+            
+            for (SeedUser user : TEST_USERS) {
+                upsertUser(connection, user);
+            }
         }
     }
 
@@ -199,8 +152,9 @@ public class ClassifyDatabaseService {
                 statement.setString(10, user.studentName());
                 statement.setString(11, user.teacherCode());
                 statement.setString(12, user.teacherReference());
-                statement.setTimestamp(13, Timestamp.valueOf(LocalDateTime.now()));
-                statement.setString(14, user.username());
+                statement.setBoolean(13, false);
+                statement.setTimestamp(14, Timestamp.valueOf(LocalDateTime.now()));
+                statement.setString(15, user.username());
                 statement.executeUpdate();
             }
             return;
@@ -220,27 +174,10 @@ public class ClassifyDatabaseService {
             statement.setString(11, user.studentName());
             statement.setString(12, user.teacherCode());
             statement.setString(13, user.teacherReference());
-            statement.setTimestamp(14, Timestamp.valueOf(LocalDateTime.now()));
+            statement.setBoolean(14, false);
+            statement.setTimestamp(15, Timestamp.valueOf(LocalDateTime.now()));
             statement.executeUpdate();
         }
-    }
-
-    private ConnectionSettings primarySettings() {
-        return new ConnectionSettings(
-                properties.getUrl(),
-                properties.getUsername(),
-                properties.getPassword(),
-                false
-        );
-    }
-
-    private ConnectionSettings fallbackSettings() {
-        return new ConnectionSettings(
-                properties.getFallbackUrl(),
-                properties.getFallbackUsername(),
-                properties.getFallbackPassword(),
-                true
-        );
     }
 
     private List<String> cargarSentenciasSql(Resource resource) {
@@ -269,9 +206,6 @@ public class ClassifyDatabaseService {
         return normalized.startsWith("CREATE TABLE")
                 || normalized.startsWith("CREATE INDEX")
                 || normalized.startsWith("ALTER TABLE");
-    }
-
-    public record ConnectionSettings(String url, String username, String password, boolean fallback) {
     }
 
     private record SeedUser(

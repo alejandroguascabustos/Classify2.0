@@ -572,8 +572,21 @@
             }
 
             function parseLLMJson(raw) {
+                if (raw && typeof raw === 'object') {
+                    return raw;
+                }
+
                 const cleaned = String(raw || '').replace(/```json\s*|```/g, '').trim();
-                return JSON.parse(cleaned);
+                if (!cleaned) {
+                    throw new Error('La IA no devolvió contenido para esta consulta.');
+                }
+
+                try {
+                    return JSON.parse(cleaned);
+                } catch (error) {
+                    console.error('Respuesta inválida de Aprende:', raw);
+                    throw new Error('La IA respondió, pero no en un formato JSON válido.');
+                }
             }
 
             async function executeInquiry(query) {
@@ -597,16 +610,17 @@
                         })
                     });
 
+                    const data = await response.json().catch(() => ({}));
+
                     if (!response.ok) {
-                        throw new Error('La respuesta del servidor no fue correcta. Intenta nuevamente.');
+                        throw new Error(data.error || 'La respuesta del servidor no fue correcta. Intenta nuevamente.');
                     }
 
-                    const data = await response.json();
                     const ai = parseLLMJson(data.content);
                     renderAI(ai, cleanedQuery);
                 } catch (error) {
                     console.error('Error en Aprende:', error);
-                    showError('Revisa tu conexión e inténtalo de nuevo con un tema más específico.');
+                    showError(error?.message || 'Revisa tu conexión e inténtalo de nuevo con un tema más específico.');
                 }
             }
 
