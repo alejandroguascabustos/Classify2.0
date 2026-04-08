@@ -119,7 +119,7 @@
                     <input type="text" name="documento" placeholder="1234567890" required pattern="[0-9]{8,11}" title="Debe tener entre 8 y 11 dígitos" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 11)">
 
                     <label class="labelregistro">Telefono</label>
-                    <input type="text" name="telefono" placeholder="322222222" required pattern="[0-9]+" title="Solo se permiten números" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                    <input type="text" name="telefono" placeholder="322222222" required pattern="[0-9]{7,10}" minlength="7" maxlength="10" inputmode="numeric" title="Debe tener entre 7 y 10 digitos" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10)">
 
                     <label class="labelregistro">Usuario</label>
                     <input type="text" name="nombre_usu" placeholder="Jose123" required pattern="^[a-zA-Z0-9._]+$" title="Solo letras, números, puntos y guiones bajos" oninput="this.value = this.value.replace(/[^a-zA-Z0-9._]/g, '')">
