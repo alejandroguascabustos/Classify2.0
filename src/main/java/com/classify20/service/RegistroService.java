@@ -33,6 +33,7 @@ public class RegistroService {
     private static final String CODE_PREFIX = "DOC-";
     private static final String CODE_ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
     private static final int CODE_SIZE = 8;
+    private static final String TELEFONO_REGEX = "\\d{7,10}";
 
     private final RestClient restClient;
     private final PasswordEncoder passwordEncoder;
@@ -322,6 +323,10 @@ public class RegistroService {
 
         if (!registro.correo().contains("@")) {
             throw new RegistroException("Debes ingresar un correo valido.");
+        }
+
+        if (!registro.telefono().matches(TELEFONO_REGEX)) {
+            throw new RegistroException("El telefono debe tener entre 7 y 10 digitos numericos.");
         }
 
         switch (registro.tipoUsuario()) {
