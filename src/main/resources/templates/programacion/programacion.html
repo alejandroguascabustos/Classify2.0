@@ -117,20 +117,20 @@
                         <th>Profesor</th>
                         <th>Horario</th>
                         <th>Curso</th>
-                        <th>Observaciones</th>
-                        <th>Fecha creación</th>
+                        <th>Tema Principal</th>
+                        <th>Duracion</th>
                     </tr>
                 </thead>
                 <tbody>
                     <th:block th:if="${clases != null and !clases.isEmpty()}">
                         <tr th:each="clase : ${clases}">
-                            <td th:text="${clase.idAgendamiento}"></td>
+                            <td th:text="${clase.id}"></td>
                             <td th:text="${clase.materia}"></td>
                             <td th:text="${clase.profesor}"></td>
-                            <td th:text="${clase.hora}"></td>
-                            <td th:text="${clase.curso}"></td>
-                            <td th:text="${clase.observaciones}"></td>
-                            <td th:text="${clase.createdAt}"></td>
+                            <td th:text="${clase.fecha != null ? clase.fecha : ''} + ' ' + ${clase.horaInicio != null ? clase.horaInicio : ''}"></td>
+                            <td th:text="${clase.grado != null ? clase.grado : ''} + ' ' + ${clase.grupo != null ? clase.grupo : ''}"></td>
+                            <td th:text="${clase.temaPrincipal}"></td>
+                            <td th:text="${clase.duracion != null ? clase.duracion + ' min' : ''}"></td>
                         </tr>
                     </th:block>
                 </tbody>

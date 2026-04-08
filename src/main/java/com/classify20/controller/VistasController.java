@@ -7,12 +7,16 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import com.classify20.model.Agenda;
+import com.classify20.service.AgendaService;
 import com.classify20.service.NoticiaService;
 
 import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class VistasController {
+
+    @Autowired
+    private AgendaService agendaService;
 
      // ── Inyección del servicio de noticias ────────────────────
     @Autowired
@@ -91,7 +95,8 @@ public class VistasController {
         return "politicas/politicas";
     }
     @GetMapping("/programacion")
-    public String mostrarProgramacion(){
+    public String mostrarProgramacion(Model model){
+        model.addAttribute("clases", agendaService.listarAgendas());
         return "programacion/programacion";
     }
     @GetMapping("/soporte")
