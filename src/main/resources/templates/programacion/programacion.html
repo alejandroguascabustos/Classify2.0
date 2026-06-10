@@ -80,7 +80,7 @@
             <a th:href="@{/noticias}" class="inicioprincipal2">
                 <img th:src="@{/img/noticias.png}" width="25px" class="imgmenu">Noticias
             </a>
-            <a th:href="@{/programacion}" class="inicioprincipal2">
+            <a th:href="${session.perfil == 1} ? 'http://localhost:8081/' : @{/programacion}" class="inicioprincipal2">
                 <img th:src="@{/img/programacion.png}" width="25px" class="imgmenu">Programación
             </a>
             <a th:href="@{/aprende}" class="inicioprincipal2">
@@ -95,7 +95,7 @@
             <a th:href="@{/materiales}" class="inicioprincipal2">
                 <img th:src="@{/img/upload.png}" width="25px" class="imgmenu">Carga Materiales
             </a>
-    </aside>
+</aside>
 
     <main class="programacion-main">
         <h2 class="programacion-title">Clases Programadas</h2>

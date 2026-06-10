@@ -38,3 +38,14 @@ build/
 # Archivos generados localmente
 /uploads/
 /C:/
+
+# macOS
+.DS_Store
+
+# Scripts y archivos de diagnostico local
+consulta-usuarios.txt
+consultar-usuarios.command
+diagnostico-8080.command
+diagnostico-8080.txt
+hacer-push.command
+push-resultado.txt
