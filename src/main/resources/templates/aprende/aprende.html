@@ -79,12 +79,21 @@
 
             <a th:href="@{/noticias}" class="inicioprincipal2">
                 <img th:src="@{/img/noticias.png}" width="25" class="imgmenu">Noticias
+<<<<<<< HEAD
             </a>
 
             <a th:href="@{/programacion}" class="inicioprincipal2">
                 <img th:src="@{/img/programacion.png}" width="25" class="imgmenu">Programacion
             </a>
 
+=======
+            </a>
+
+            <a th:href="${session.perfil == 1} ? 'http://localhost:8081/' : @{/programacion}" class="inicioprincipal2">
+                <img th:src="@{/img/programacion.png}" width="25" class="imgmenu">Programacion
+            </a>
+
+>>>>>>> d5d857d3312caa3d093c4ca721ee4c97861816c4
             <a th:href="@{/aprende}" class="inicioprincipal2">
                 <img th:src="@{/img/aprende.png}" width="25" class="imgmenu">Aprende
             </a>
@@ -101,7 +110,11 @@
                 <img th:src="@{/img/upload.png}" width="25" class="imgmenu">Carga Materiales
             </a>
 
+<<<<<<< HEAD
         </aside>
+=======
+</aside>
+>>>>>>> d5d857d3312caa3d093c4ca721ee4c97861816c4
 
         <main class="contentaprende">
             <div class="aprende-shell">
