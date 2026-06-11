@@ -78,7 +78,11 @@
             <a th:href="@{/agenda}" class="inicioprincipal2">
                 <img th:src="@{/img/noticias.png}" width="25px" class="imgmenu">Noticias
             </a>
+<<<<<<< HEAD
             <a th:href="@{/programacion}" class="inicioprincipal2">
+=======
+            <a th:href="${session.perfil == 1} ? 'http://localhost:8081/' : @{/programacion}" class="inicioprincipal2">
+>>>>>>> d5d857d3312caa3d093c4ca721ee4c97861816c4
                 <img th:src="@{/img/programacion.png}" width="25px" class="imgmenu">Programación
             </a>
             <a th:href="@{/aprende}" class="inicioprincipal2">
@@ -93,7 +97,13 @@
             <a th:href="@{/materiales}" class="inicioprincipal2">
                 <img th:src="@{/img/upload.png}" width="25px" class="imgmenu">Carga Materiales
             </a>
+<<<<<<< HEAD
     </aside>
+=======
+</aside>
+
+
+>>>>>>> d5d857d3312caa3d093c4ca721ee4c97861816c4
 
 
 
@@ -110,7 +120,11 @@
                 necesites.
             </p>
 
+<<<<<<< HEAD
             <form id="contactaForm" method="post" th:action="${webhookUrl}">
+=======
+            <form id="contactaForm" method="post" th:action="@{/api/contacta}">
+>>>>>>> d5d857d3312caa3d093c4ca721ee4c97861816c4
                 <!-- Contenido del formulario permanece igual -->
                 <label class="labelcontacta" for="nombre">¿Cuál es tu nombre?</label>
                 <input class="inputcontacta" id="nombre" name="nombre" type="text" placeholder="Ej. Camila Días." required>
@@ -228,7 +242,10 @@
 
                 fetch(form.action, {
                     method: "POST",
+<<<<<<< HEAD
                     mode: "cors",
+=======
+>>>>>>> d5d857d3312caa3d093c4ca721ee4c97861816c4
                     headers: {
                         "Content-Type": "application/json"
                     },

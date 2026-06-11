@@ -1,0 +1,38 @@
+{% extends "agenda/base.html" %}
+<!--
+  Vista principal del módulo Programación.
+  Hereda layout y estilos de base.html (header, sidebar, CSS);
+  aquí solo va el contenido propio: la tarjeta con la tabla de agendas.
+-->
+
+{% block contenido %}
+    {% if error_bd %}
+    <div class="agenda-py-error">
+        <strong>No se pudo conectar a la base de datos:</strong> {{ error_bd }}<br>
+        Verifica que PostgreSQL esté corriendo y las variables DB_*.
+    </div>
+    {% else %}
+    <div class="agenda-py-card">
+        <div class="agenda-py-toolbar">
+            <h2>📅 Agendas registradas ({{ agendas|length }})</h2>
+            <a class="agenda-py-btn" href="/programacion/exportarExcel">⬇ Descargar Excel</a>
+        </div>
+        {% if agendas %}
+        <table class="agenda-py-tabla">
+            <tr><th>ID</th><th>Materia</th><th>Profesor</th><th>Fecha</th><th>Hora</th><th>Curso</th><th>Modalidad</th><th>Tema</th><th>Duración</th></tr>
+            {% for a in agendas %}
+            <tr>
+                <td>{{ a.id }}</td><td>{{ a.materia }}</td><td>{{ a.profesor }}</td>
+                <td>{{ a.fecha }}</td><td>{{ a.hora_inicio }}</td>
+                <td>{{ a.grado }} {{ a.grupo|default_if_none:"" }}</td>
+                <td>{{ a.modalidad }}</td><td>{{ a.tema_principal }}</td>
+                <td>{{ a.duracion }} min</td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% else %}
+        <p class="agenda-py-vacio">No hay agendas registradas todavía.</p>
+        {% endif %}
+    </div>
+    {% endif %}
+{% endblock %}

@@ -233,7 +233,11 @@ public class RegistroService {
 
         try {
             restClient.post()
+<<<<<<< HEAD
                     .uri(docenteWebhookUrl) // Usamos la URL de registro proporcionada por el usuario
+=======
+                    .uri(welcomeWebhookUrl) // Webhook de bienvenida (correo de bienvenida)
+>>>>>>> d5d857d3312caa3d093c4ca721ee4c97861816c4
                     .contentType(MediaType.APPLICATION_JSON)
                     .body(payload)
                     .retrieve()

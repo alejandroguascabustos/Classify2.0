@@ -1,0 +1,100 @@
+/*
+  Estilos propios del módulo Programación (Python/Django).
+  Complementa al style.css global de Classify (servido por Spring Boot
+  en el puerto 8090) sin modificarlo: solo afecta esta vista.
+*/
+
+/* El style.css global deja padding-left de 240px en .contentprincipal;
+   aquí se reduce para que la tarjeta quede cerca del aside.sidebar */
+main.contentprincipal {
+    padding-left: 30px;
+}
+
+/* Tarjeta principal del módulo */
+.agenda-py-card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 1.5rem 2rem 2rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, .08);
+    border-left: 5px solid #006100;
+}
+
+/* Barra superior: título + botón de descarga */
+.agenda-py-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: .5rem;
+}
+
+.agenda-py-toolbar h2 {
+    margin: 0;
+    color: #006100;
+}
+
+/* Tabla de agendas */
+.agenda-py-tabla {
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
+    margin-top: 1rem;
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, .10);
+}
+
+.agenda-py-tabla th {
+    background: #006100;
+    color: #fff;
+    padding: 10px 14px;
+    text-align: left;
+}
+
+.agenda-py-tabla td {
+    padding: 10px 14px;
+    border-bottom: 1px solid #e8e8e8;
+}
+
+.agenda-py-tabla tr:last-child td {
+    border-bottom: none;
+}
+
+.agenda-py-tabla tr:nth-child(even) td {
+    background: #f3f8f3;
+}
+
+.agenda-py-tabla tr:hover td {
+    background: #e6f1e6;
+}
+
+/* Botón verde de descarga */
+.agenda-py-btn {
+    display: inline-block;
+    padding: 10px 18px;
+    background: #006100;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: background .2s;
+}
+
+.agenda-py-btn:hover {
+    background: #0a7a0a;
+}
+
+/* Estados especiales */
+.agenda-py-error {
+    background: #fdecea;
+    border: 1px solid #f5c6cb;
+    padding: 1rem;
+    border-radius: 8px;
+}
+
+.agenda-py-vacio {
+    color: #666;
+    padding: 1rem 0;
+}
