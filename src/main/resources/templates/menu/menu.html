@@ -51,11 +51,8 @@
         <a th:href="@{/noticias}" class="inicioprincipal2">
             <img th:src="@{/img/noticias.png}" width="25px" class="imgmenu">Noticias
         </a>
-<<<<<<< HEAD
         <a th:href="@{/programacion}" class="inicioprincipal2">
-=======
         <a th:href="${session.perfil == 1} ? 'http://localhost:8081/' : @{/programacion}" class="inicioprincipal2">
->>>>>>> d5d857d3312caa3d093c4ca721ee4c97861816c4
             <img th:src="@{/img/programacion.png}" width="25px" class="imgmenu">Programación
         </a>
         <a th:href="@{/aprende}" class="inicioprincipal2">
