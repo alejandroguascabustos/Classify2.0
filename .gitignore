@@ -42,6 +42,12 @@ build/
 # macOS
 .DS_Store
 
+# Logs de ejecución local (Spring Boot / Django)
+*.log
+
+# Entorno virtual del microservicio Python
+agenda-service/venv/
+
 # Scripts y archivos de diagnostico local
 consulta-usuarios.txt
 consultar-usuarios.command

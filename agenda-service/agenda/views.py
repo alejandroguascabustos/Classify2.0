@@ -99,6 +99,8 @@ def inicio(request):
 
 # ── POST /guardar-agenda ─────────────────────────────────────────
 
+# REVIEW 🔴 [seguridad]: @csrf_exempt deja el endpoint abierto a CSRF. Aceptable como
+# REVIEW   puente temporal; si pasa a producción, habilitar CSRF o validar origen. (REVIEW.md #4)
 @csrf_exempt  # el formulario original no envía token CSRF de Django
 @require_POST
 def guardar_agenda(request):

@@ -24,9 +24,11 @@ public class AgendaController {
     //Muestra formulario vacio
 
     // POST: recibe los datos del formulario y los guarda
+    // REVIEW 🔴 [seguridad]: endpoint sin verificar sesión (cualquiera puede POSTear)
+    // REVIEW   y sin @Valid sobre la entidad. Validar usuarioId en sesión + @Valid. (REVIEW.md #3)
     @PostMapping("/guardar-agenda")
     public Object guardarAgenda(
-            @ModelAttribute Agenda agenda, 
+            @ModelAttribute Agenda agenda,
             @RequestHeader(value = "X-Requested-With", required = false) String requestedWith,
             Model model) {
         
@@ -44,6 +46,8 @@ public class AgendaController {
             model.addAttribute("agenda", new Agenda());
             return "agenda/agenda";
             
+        // REVIEW 🟠 [robustez]: catch genérico sin logging; abajo se devuelve e.getMessage()
+        // REVIEW   al cliente (fuga de detalle interno). Usar log.error(...) + mensaje genérico. (REVIEW.md #5,#6)
         } catch (Exception e) {
             if ("XMLHttpRequest".equals(requestedWith)) {
                 Map<String, Object> response = new HashMap<>();
@@ -56,6 +60,9 @@ public class AgendaController {
         }
     }
 
+    // REVIEW 🟡 [rendimiento]: listarAgendas() trae todas las filas sin límite y autoSizeColumn
+    // REVIEW   recorre cada celda. Con muchos registros se vuelve lento. Paginar/filtrar
+    // REVIEW   por rango de fechas o usar SXSSF para streaming. (REVIEW.md #7)
     @GetMapping("/programacion/exportarExcel")
     public void exportarExcel(HttpServletResponse response) throws IOException {
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
