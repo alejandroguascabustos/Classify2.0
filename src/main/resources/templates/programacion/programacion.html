@@ -6,6 +6,168 @@
     <title>Classify - Agenda</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <link rel="shortcut icon" th:href="@{img/favicon.ico}" type="image/x-icon">
+
+    <style>
+        /* ── Botones Editar / Eliminar ───────────────────────────────── */
+        .acciones-cell {
+            display: flex;
+            gap: 6px;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: nowrap;
+        }
+
+        .btn-editar-clase,
+        .btn-eliminar-clase {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 6px 13px;
+            border: none;
+            border-radius: 20px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
+            white-space: nowrap;
+        }
+
+        .btn-editar-clase {
+            background: var(--green);
+            color: #fff;
+            box-shadow: 0 2px 6px rgba(0,128,0,.22);
+        }
+        .btn-editar-clase:hover  { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,128,0,.3); }
+
+        .btn-eliminar-clase {
+            background: #fee2e2;
+            color: #b91c1c;
+            box-shadow: 0 2px 6px rgba(185,28,28,.12);
+        }
+        .btn-eliminar-clase:hover { transform: translateY(-1px); background: #fca5a5; box-shadow: 0 4px 12px rgba(185,28,28,.22); }
+
+        /* ── Modal de edición ────────────────────────────────────────── */
+        #modalEditar {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #modalOverlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,.52);
+            backdrop-filter: blur(2px);
+        }
+
+        .modal-contenido {
+            position: relative;
+            z-index: 1;
+            background: #fff;
+            border-radius: 22px;
+            padding: 28px 30px 24px;
+            width: min(92vw, 580px);
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 24px 60px rgba(0,0,0,.22);
+            animation: slideDown 0.28s cubic-bezier(0.25,1,0.5,1);
+        }
+
+        @keyframes slideDown {
+            from { opacity:0; transform: translateY(-16px) scale(.97); }
+            to   { opacity:1; transform: translateY(0)    scale(1);    }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 14px;
+            border-bottom: 2px solid #f0f4f0;
+        }
+
+        .modal-header h3 {
+            margin: 0;
+            font-size: 1.2rem;
+            color: var(--green);
+            font-weight: 700;
+        }
+
+        .btn-cerrar-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #94a3b8;
+            line-height: 1;
+            padding: 4px 8px;
+            border-radius: 8px;
+            transition: background .2s, color .2s;
+        }
+        .btn-cerrar-modal:hover { background: #f1f5f9; color: #334155; }
+
+        .modal-form-row {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+            margin-bottom: 4px;
+        }
+        .modal-form-row .form-group { flex: 1; min-width: 180px; }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 22px;
+            padding-top: 16px;
+            border-top: 2px solid #f0f4f0;
+        }
+
+        .btn-modal-cancelar {
+            padding: 10px 22px;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 30px;
+            background: #f8fafc;
+            color: #475569;
+            font-weight: 600;
+            font-size: .9rem;
+            cursor: pointer;
+            transition: background .2s, border-color .2s;
+        }
+        .btn-modal-cancelar:hover { background: #e2e8f0; }
+
+        .btn-modal-guardar {
+            padding: 10px 26px;
+            border: none;
+            border-radius: 30px;
+            background: var(--green);
+            color: #fff;
+            font-weight: 700;
+            font-size: .9rem;
+            cursor: pointer;
+            transition: transform .15s, box-shadow .15s;
+            box-shadow: 0 4px 12px rgba(0,128,0,.25);
+        }
+        .btn-modal-guardar:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(0,128,0,.32); }
+
+        /* ── Alerta feedback dentro de la página ────────────────────── */
+        .alerta-programacion {
+            display: none;
+            padding: 12px 18px;
+            border-radius: 12px;
+            font-size: .88rem;
+            font-weight: 600;
+            margin-bottom: 14px;
+            animation: slideDown .25s ease;
+        }
+        .alerta-programacion.visible { display: block; }
+        .alerta-programacion.success { background: #dcfce7; color: #15803d; border-left: 4px solid #22c55e; }
+        .alerta-programacion.error   { background: #fee2e2; color: #b91c1c; border-left: 4px solid #ef4444; }
+    </style>
 </head>
 
 <body>
@@ -14,14 +176,11 @@
             <a th:href="@{/inicio}"><img th:src="@{/img/logo.png}" alt="logo" class="logo"></a>
             <a th:href="@{/inicio}">Classify</a>
         </div>
-    
         <div class="brand2">
-            <a th:href="@{/inicio}" class="info-btn" alt="Información">Inicio</a>
-            <a th:href="@{/nosotros}" class="info-btn" alt="Información">Nosotros</a>
-            <a th:href="@{/contacto}" class="info-btn" alt="Información">Contacto</a>
-
+            <a th:href="@{/inicio}" class="info-btn">Inicio</a>
+            <a th:href="@{/nosotros}" class="info-btn">Nosotros</a>
+            <a th:href="@{/contacto}" class="info-btn">Contacto</a>
         </div>
-    
         <div class="header-tools">
             <a href="#info" class="info-btn">
                 <img th:src="@{/img/informacion.png}" alt="Información" class="info-icon">
@@ -37,38 +196,15 @@
                     <p class="textoinfo">La implementación de una página web para agendar clases en el colegio Moralba Sur
                         Oriental representa una herramienta fundamental para optimizar la organización académica y fortalecer
                         la comunicación entre estudiantes, docentes y la institución.
-                        En primer lugar, la plataforma permite a los estudiantes y padres de familia consultar de manera
-                        rápida y sencilla la disponibilidad de horarios, evitando confusiones o cruces en las actividades
-                        escolares. <br><br>Esto garantiza una mejor planificación del tiempo, tanto dentro como fuera del
-                        aula.
-                        Por otro lado, los docentes pueden gestionar sus clases de forma más eficiente, teniendo acceso a un
-                        calendario actualizado que facilita la asignación de sesiones, el control de grupos y la preparación
-                        de materiales según la programación establecida. <br><br>
-                        Asimismo, para la institución educativa, la página constituye una herramienta de gestión que
-                        contribuye a la transparencia y al orden administrativo, ya que centraliza la información en un solo
-                        espacio digital accesible desde cualquier dispositivo con conexión a internet. <br><br>
-                        En conclusión, contar con una página para agendar clases no solo mejora la organización interna del
-                        colegio Moralba Sur Oriental, sino que también fortalece la participación de la comunidad educativa,
-                        fomenta la puntualidad, evita pérdidas de tiempo y favorece un proceso de enseñanza-aprendizaje más
-                        planificado y efectivo.
                     </p>
                 </div>
             </div>
         </div>
     </header>
 
-    <div class="menu-toggle" id="menuToggle">
-        <span></span>
-        <span></span>
-        <span></span>
-    </div>
-
-    <!-- <div id="skeleton-loader" class="skeleton">
-        <img th:src="@{/img/loader.gif}" class="gif-loader">
-    </div> -->
+    <div class="menu-toggle" id="menuToggle"><span></span><span></span><span></span></div>
 
     <aside class="sidebar">
-        <!-- botón común para todos -->
         <a th:href="@{/menu}" class="inicioprincipal">
             <img th:src="@{/img/home.png}" width="25px" class="imgmenu"> Inicio
         </a>
@@ -100,19 +236,43 @@
                 <img th:src="@{/img/upload.png}" width="25px" class="imgmenu">Carga Materiales
             </a>
 <<<<<<< HEAD
+        <a th:href="@{/agenda}" class="inicioprincipal2">
+            <img th:src="@{/img/agenda.png}" width="25px" class="imgmenu">Agendar clase
+        </a>
+        <a th:href="@{/noticias}" class="inicioprincipal2">
+            <img th:src="@{/img/noticias.png}" width="25px" class="imgmenu">Noticias
+        </a>
+        <a th:href="@{/programacion}" class="inicioprincipal2">
+            <img th:src="@{/img/programacion.png}" width="25px" class="imgmenu">Programación
+        </a>
+        <a th:href="@{/aprende}" class="inicioprincipal2">
+            <img th:src="@{/img/aprende.png}" width="25px" class="imgmenu">Aprende
+        </a>
+        <a th:href="@{/contacta}" class="inicioprincipal2">
+            <img th:src="@{/img/gmail.png}" width="25px" class="imgmenu">Contacta a un profe
+        </a>
+        <a th:href="@{/mismateriales}" class="inicioprincipal2">
+            <img th:src="@{/img/descargamaterial.png}" width="25px" class="imgmenu">Mis Materiales
+        </a>
+        <a th:href="@{/materiales}" class="inicioprincipal2">
+            <img th:src="@{/img/upload.png}" width="25px" class="imgmenu">Carga Materiales
+        </a>
     </aside>
 =======
 </aside>
->>>>>>> d5d857d3312caa3d093c4ca721ee4c97861816c4
+>>>>>>> d5d857d3312caa3d093c4ca721ee4c97861816c4 
 
     <main class="programacion-main">
         <h2 class="programacion-title">Clases Programadas</h2>
 
+        <!-- Alerta de feedback de acciones -->
+        <div id="alertaProgramacion" class="alerta-programacion" role="alert"></div>
+
         <div class="filtros-container">
             <div class="filtro-group">
-                <input type="text" id="filtroMateria" placeholder="Filtrar por materia...">
-                <input type="text" id="filtroProfesor" placeholder="Filtrar por profesor...">
-                <input type="text" id="filtroCurso" placeholder="Filtrar por curso...">
+                <input type="text" id="filtroMateria"   placeholder="Filtrar por materia...">
+                <input type="text" id="filtroProfesor"  placeholder="Filtrar por profesor...">
+                <input type="text" id="filtroCurso"     placeholder="Filtrar por curso...">
             </div>
         </div>
 
@@ -126,7 +286,8 @@
                         <th>Horario</th>
                         <th>Curso</th>
                         <th>Tema Principal</th>
-                        <th>Duracion</th>
+                        <th>Duración</th>
+                        <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -139,8 +300,43 @@
                             <td th:text="${clase.grado != null ? clase.grado : ''} + ' ' + ${clase.grupo != null ? clase.grupo : ''}"></td>
                             <td th:text="${clase.temaPrincipal}"></td>
                             <td th:text="${clase.duracion != null ? clase.duracion + ' min' : ''}"></td>
+                            <td>
+                                <div class="acciones-cell">
+                                    <!--
+                                        Pasamos todos los datos como atributos data-*
+                                        para pre-rellenar el modal sin llamada extra al servidor.
+                                    -->
+                                    <button class="btn-editar-clase"
+                                            th:data-id="${clase.id}"
+                                            th:data-materia="${clase.materia}"
+                                            th:data-profesor="${clase.profesor}"
+                                            th:data-fecha="${clase.fecha}"
+                                            th:data-hora="${clase.horaInicio}"
+                                            th:data-duracion="${clase.duracion}"
+                                            th:data-grado="${clase.grado}"
+                                            th:data-grupo="${clase.grupo}"
+                                            th:data-modalidad="${clase.modalidad}"
+                                            th:data-tema="${clase.temaPrincipal}"
+                                            type="button"
+                                            title="Editar clase">
+                                        ✏️ Editar
+                                    </button>
+                                    <button class="btn-eliminar-clase"
+                                            th:data-id="${clase.id}"
+                                            th:data-info="${clase.materia + ' – ' + clase.profesor}"
+                                            type="button"
+                                            title="Eliminar clase">
+                                        🗑️ Eliminar
+                                    </button>
+                                </div>
+                            </td>
                         </tr>
                     </th:block>
+                    <tr th:if="${clases == null or clases.isEmpty()}">
+                        <td colspan="8" style="text-align:center; color:var(--gris); padding:24px; font-style:italic;">
+                            No hay clases programadas aún.
+                        </td>
+                    </tr>
                 </tbody>
             </table>
         </div>
@@ -154,11 +350,118 @@
     </main>
 
 
+    <!-- ════════════════════════════════════════════════════════════════
+         MODAL DE EDICIÓN
+         ════════════════════════════════════════════════════════════════ -->
+    <div id="modalEditar" role="dialog" aria-modal="true" aria-labelledby="modalTitulo">
+        <div id="modalOverlay"></div>
+        <div class="modal-contenido">
+
+            <div class="modal-header">
+                <h3 id="modalTitulo">✏️ Editar Clase</h3>
+                <button id="btnCerrarModal" class="btn-cerrar-modal" aria-label="Cerrar modal">×</button>
+            </div>
+
+            <form id="formEditar" novalidate>
+                <input type="hidden" id="editId">
+
+                <div class="modal-form-row">
+                    <div class="form-group">
+                        <label for="editMateria">Materia</label>
+                        <select id="editMateria">
+                            <option value="">Selecciona la materia</option>
+                            <option value="Matematicas">Matematicas</option>
+                            <option value="Español">Español</option>
+                            <option value="Historia">Historia</option>
+                            <option value="Ingles">Ingles</option>
+                            <option value="Etica y valores">Etica y valores</option>
+                            <option value="Educación fisica">Educación fisica</option>
+                            <option value="Informatica">Informatica</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="editProfesor">Profesor</label>
+                        <select id="editProfesor">
+                            <option value="">Selecciona un profesor</option>
+                            <option value="Ana García">Ana García</option>
+                            <option value="Carlos Méndez">Carlos Méndez</option>
+                            <option value="Laura Fernández">Laura Fernández</option>
+                            <option value="Jorge Ramírez">Jorge Ramírez</option>
+                            <option value="Sofía Torres">Sofía Torres</option>
+                            <option value="Andrés López">Andrés López</option>
+                            <option value="Marta Ríos">Marta Ríos</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="modal-form-row">
+                    <div class="form-group">
+                        <label for="editFecha">Fecha</label>
+                        <input type="date" id="editFecha">
+                    </div>
+                    <div class="form-group">
+                        <label for="editHoraInicio">Hora</label>
+                        <!-- step=900 → intervalos de 15 min -->
+                        <input type="time" id="editHoraInicio" step="900">
+                    </div>
+                    <div class="form-group">
+                        <label for="editDuracion">Duración</label>
+                        <select id="editDuracion">
+                            <option value="30">30 min</option>
+                            <option value="45">45 min</option>
+                            <option value="60">60 min</option>
+                            <option value="90">90 min</option>
+                            <option value="120">120 min</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="modal-form-row">
+                    <div class="form-group">
+                        <label for="editGrado">Grado</label>
+                        <select id="editGrado">
+                            <option value="">-</option>
+                            <option value="1">1°</option>
+                            <option value="2">2°</option>
+                            <option value="3">3°</option>
+                            <option value="4">4°</option>
+                            <option value="5">5°</option>
+                            <option value="6">6°</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="editGrupo">Grupo</label>
+                        <input type="text" id="editGrupo" placeholder="Ej: A, B">
+                    </div>
+                    <div class="form-group">
+                        <label for="editModalidad">Modalidad</label>
+                        <select id="editModalidad">
+                            <option value="presencial">Presencial</option>
+                            <option value="virtual">Virtual</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="editTemaPrincipal">Tema principal</label>
+                    <input type="text" id="editTemaPrincipal" placeholder="Tema de la clase">
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" id="btnCancelarEditar" class="btn-modal-cancelar">Cancelar</button>
+                    <button type="submit" class="btn-modal-guardar">💾 Guardar cambios</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
     <script th:src="@{/js/chatbot.js}"></script>
     <script th:src="@{/js/filtrosprog.js}"></script>
     <script th:src="@{/js/paginacionprog.js}"></script>
     <script th:src="@{/js/perfilmodal.js}"></script>
-    
+    <!-- Acciones de editar / eliminar -->
+    <script th:src="@{/js/programacion-acciones.js}"></script>
 </body>
 
 </html>
