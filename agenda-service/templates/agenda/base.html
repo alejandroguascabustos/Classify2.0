@@ -21,7 +21,7 @@
     {% include "agenda/partials/header.html" %}
     {% include "agenda/partials/sidebar.html" %}
 
-    <main class="contentprincipal">
+    <main class="{% block main_class %}contentprincipal{% endblock %}">
         {% block contenido %}{% endblock %}
     </main>
 </body>

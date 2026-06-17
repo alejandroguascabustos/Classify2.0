@@ -38,8 +38,6 @@ build/
 # Archivos generados localmente
 /uploads/
 /C:/
-<<<<<<< HEAD
-=======
 
 # macOS
 .DS_Store
@@ -51,4 +49,6 @@ diagnostico-8080.command
 diagnostico-8080.txt
 hacer-push.command
 push-resultado.txt
->>>>>>> d5d857d3312caa3d093c4ca721ee4c97861816c4
+reintentar-push.command
+classify.bat
+iniciar-todo.bat
