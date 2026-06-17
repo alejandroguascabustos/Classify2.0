@@ -1,11 +1,4 @@
-/*
-  Estilos propios del módulo Programación (Python/Django).
-  Complementa al style.css global de Classify (servido por Spring Boot
-  en el puerto 8090) sin modificarlo: solo afecta esta vista.
-*/
 
-/* El style.css global deja padding-left de 240px en .contentprincipal;
-   aquí se reduce para que la tarjeta quede cerca del aside.sidebar */
 main.contentprincipal {
     padding-left: 30px;
 }
@@ -97,4 +90,203 @@ main.contentprincipal {
 .agenda-py-vacio {
     color: #666;
     padding: 1rem 0;
+}
+
+/* ───────────────────────────────────────────────────────────────
+   Acciones por fila (editar / eliminar) — íconos lápiz y papelera
+   ─────────────────────────────────────────────────────────────── */
+.acciones-cell {
+    white-space: nowrap;
+}
+
+.btn-accion {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    margin: 0 2px;
+    border-radius: 6px;
+    line-height: 0;
+    transition: background .2s, transform .15s;
+}
+
+.btn-accion img {
+    display: block;
+    width: 22px;
+    height: 22px;
+    object-fit: contain;
+}
+
+.btn-accion:hover {
+    background: #e6f1e6;
+    transform: scale(1.08);
+}
+
+.btn-eliminar:hover {
+    background: #fdecea;
+}
+
+/* ───────────────────────────────────────────────────────────────
+   Modal de edición
+   ─────────────────────────────────────────────────────────────── */
+.modal-prog {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background: rgba(0, 0, 0, .45);
+    justify-content: center;
+    align-items: flex-start;
+    padding: 40px 16px;
+    overflow-y: auto;
+}
+
+.modal-prog.abierto {
+    display: flex;
+}
+
+.modal-prog-contenido {
+    background: #fff;
+    width: 100%;
+    max-width: 640px;
+    border-radius: 14px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, .25);
+    border-top: 6px solid #006100;
+    animation: modalProgIn .18s ease-out;
+}
+
+@keyframes modalProgIn {
+    from { opacity: 0; transform: translateY(-12px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.modal-prog-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 22px;
+    border-bottom: 1px solid #eee;
+}
+
+.modal-prog-header h3 {
+    margin: 0;
+    color: #006100;
+    font-size: 19px;
+}
+
+.modal-prog-cerrar {
+    background: transparent;
+    border: none;
+    font-size: 26px;
+    line-height: 1;
+    color: #888;
+    cursor: pointer;
+    padding: 0 6px;
+    border-radius: 6px;
+}
+
+.modal-prog-cerrar:hover {
+    color: #222;
+    background: #f0f0f0;
+}
+
+.form-editar-prog {
+    padding: 18px 22px 22px;
+}
+
+.form-row-prog {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+}
+
+.form-group-prog {
+    flex: 1;
+    min-width: 160px;
+    margin-bottom: 14px;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group-prog label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #444;
+    margin-bottom: 5px;
+}
+
+.form-group-prog input,
+.form-group-prog select,
+.form-group-prog textarea {
+    padding: 9px 11px;
+    border: 1px solid #ccc;
+    border-radius: 7px;
+    font-size: 14px;
+    font-family: inherit;
+    background: #fff;
+    transition: border-color .2s, box-shadow .2s;
+}
+
+.form-group-prog input:focus,
+.form-group-prog select:focus,
+.form-group-prog textarea:focus {
+    outline: none;
+    border-color: #006100;
+    box-shadow: 0 0 0 3px rgba(0, 97, 0, .12);
+}
+
+.form-group-prog textarea {
+    resize: vertical;
+}
+
+.modal-prog-acciones {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 8px;
+}
+
+.btn-prog-guardar,
+.btn-prog-cancelar {
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    border: none;
+    transition: background .2s;
+}
+
+.btn-prog-guardar {
+    background: #006100;
+    color: #fff;
+}
+
+.btn-prog-guardar:hover {
+    background: #0a7a0a;
+}
+
+.btn-prog-cancelar {
+    background: #ececec;
+    color: #333;
+}
+
+.btn-prog-cancelar:hover {
+    background: #dcdcdc;
+}
+
+.modal-prog-msg {
+    min-height: 20px;
+    font-size: 14px;
+    margin: 4px 0 10px;
+}
+
+.modal-prog-msg.ok {
+    color: #006100;
+    font-weight: 600;
+}
+
+.modal-prog-msg.error {
+    color: #c0392b;
+    font-weight: 600;
 }

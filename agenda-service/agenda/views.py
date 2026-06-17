@@ -66,23 +66,51 @@ def _hora_o_none(valor):
     return None
 
 
+def _datos_desde_formulario(post) -> dict:
+    """
+    Convierte los datos del formulario (mismos names del HTML) al diccionario
+    de campos del modelo. Reutilizado tanto al crear como al editar.
+    """
+    return {
+        "grado": _int_o_none(post.get("grado")),
+        "grupo": _str_o_none(post.get("grupo")),
+        "profesor": _str_o_none(post.get("profesor")),
+        "materia": _str_o_none(post.get("materia")),
+        "fecha": _fecha_o_none(post.get("fecha")),
+        "hora_inicio": _hora_o_none(post.get("horaInicio")),
+        "duracion": _int_o_none(post.get("duracion")),
+        "modalidad": _str_o_none(post.get("modalidad")),
+        "tema_principal": _str_o_none(post.get("temaPrincipal")),
+        "objetivos": _str_o_none(post.get("objetivos")),
+        "dificultades": _str_o_none(post.get("dificultades")),
+        "materiales_basicos": _str_o_none(post.get("materialesBasicos")),
+        "recursos_necesarios": _str_o_none(post.get("recursosNecesarios")),
+    }
+
+
 def _agenda_desde_formulario(post) -> Agenda:
     """Construye la entidad Agenda desde los datos del formulario."""
-    return Agenda(
-        grado=_int_o_none(post.get("grado")),
-        grupo=_str_o_none(post.get("grupo")),
-        profesor=_str_o_none(post.get("profesor")),
-        materia=_str_o_none(post.get("materia")),
-        fecha=_fecha_o_none(post.get("fecha")),
-        hora_inicio=_hora_o_none(post.get("horaInicio")),
-        duracion=_int_o_none(post.get("duracion")),
-        modalidad=_str_o_none(post.get("modalidad")),
-        tema_principal=_str_o_none(post.get("temaPrincipal")),
-        objetivos=_str_o_none(post.get("objetivos")),
-        dificultades=_str_o_none(post.get("dificultades")),
-        materiales_basicos=_str_o_none(post.get("materialesBasicos")),
-        recursos_necesarios=_str_o_none(post.get("recursosNecesarios")),
-    )
+    return Agenda(**_datos_desde_formulario(post))
+
+
+def _agenda_a_dict(a: Agenda) -> dict:
+    """Serializa una agenda a JSON (names = los del formulario HTML)."""
+    return {
+        "id": a.id,
+        "grado": a.grado,
+        "grupo": a.grupo or "",
+        "profesor": a.profesor or "",
+        "materia": a.materia or "",
+        "fecha": a.fecha.isoformat() if a.fecha else "",
+        "horaInicio": a.hora_inicio.strftime("%H:%M") if a.hora_inicio else "",
+        "duracion": a.duracion,
+        "modalidad": a.modalidad or "",
+        "temaPrincipal": a.tema_principal or "",
+        "objetivos": a.objetivos or "",
+        "dificultades": a.dificultades or "",
+        "materialesBasicos": a.materiales_basicos or "",
+        "recursosNecesarios": a.recursos_necesarios or "",
+    }
 
 
 # ── GET / (página de inicio del servicio, para ver en navegador) ─
@@ -127,6 +155,84 @@ def guardar_agenda(request):
             request,
             "agenda/agenda.html",
             {"error": "Error al guardar la agenda."},
+        )
+
+
+# ── GET /programacion/agenda/<id> (datos de una agenda en JSON) ──
+
+@require_GET
+def obtener_agenda(request, agenda_id):
+    """Devuelve los datos de una agenda en JSON para rellenar el modal de edición."""
+    try:
+        agenda = services.obtener_agenda(agenda_id)
+        return JsonResponse({"success": True, "agenda": _agenda_a_dict(agenda)})
+    except Agenda.DoesNotExist:
+        return JsonResponse(
+            {"success": False, "message": "La agenda no existe."}, status=404
+        )
+    except Exception as e:
+        return JsonResponse(
+            {"success": False, "message": f"Error al obtener la agenda: {e}"},
+            status=500,
+        )
+
+
+# ── POST /programacion/editar/<id> (actualizar agenda) ───────────
+
+@csrf_exempt  # el formulario no envía token CSRF de Django (igual que guardar)
+@require_POST
+def editar_agenda(request, agenda_id):
+    es_ajax = request.headers.get("X-Requested-With") == AJAX_HEADER
+    try:
+        datos = _datos_desde_formulario(request.POST)
+        services.actualizar_agenda(agenda_id, datos)
+        if es_ajax:
+            return JsonResponse({"success": True, "message": "¡Agenda actualizada!"})
+        return render(
+            request, "agenda/agenda.html", {"mensaje": "¡Agenda actualizada!"}
+        )
+    except Agenda.DoesNotExist:
+        if es_ajax:
+            return JsonResponse(
+                {"success": False, "message": "La agenda no existe."}, status=404
+            )
+        return render(request, "agenda/agenda.html", {"error": "La agenda no existe."})
+    except Exception as e:
+        if es_ajax:
+            return JsonResponse(
+                {"success": False, "message": f"Error al actualizar: {e}"}, status=500
+            )
+        return render(
+            request, "agenda/agenda.html", {"error": "Error al actualizar la agenda."}
+        )
+
+
+# ── POST /programacion/eliminar/<id> (eliminar agenda) ───────────
+
+@csrf_exempt
+@require_POST
+def eliminar_agenda(request, agenda_id):
+    es_ajax = request.headers.get("X-Requested-With") == AJAX_HEADER
+    try:
+        services.eliminar_agenda(agenda_id)
+        if es_ajax:
+            return JsonResponse({"success": True, "message": "¡Agenda eliminada!"})
+        return render(
+            request, "agenda/agenda.html", {"mensaje": "¡Agenda eliminada!"}
+        )
+    except Agenda.DoesNotExist:
+        if es_ajax:
+            return JsonResponse(
+                {"success": False, "message": "La agenda no existe."}, status=404
+            )
+        return render(request, "agenda/agenda.html", {"error": "La agenda no existe."})
+    except Exception as e:
+        if es_ajax:
+            return JsonResponse(
+                {"success": False, "message": f"Error al eliminar: {e}"}, status=500
+            )
+        return render(
+            request, "agenda/agenda.html", {"error": "Error al eliminar la agenda."}
         )
 
 
