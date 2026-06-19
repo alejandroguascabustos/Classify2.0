@@ -68,53 +68,32 @@
     </div>
 
     <div class="contenidoinicio">
-        <aside class="sidebar">
-            <a th:href="@{/menu}" class="inicioprincipal">
-                <img th:src="@{/img/home.png}" width="25" class="imgmenu"> Inicio
-            </a>
-
-            <a th:href="@{/agenda}" class="inicioprincipal2">
-                <img th:src="@{/img/agenda.png}" width="25" class="imgmenu">Agendar clase
-            </a>
-
-            <a th:href="@{/noticias}" class="inicioprincipal2">
-                <img th:src="@{/img/noticias.png}" width="25" class="imgmenu">Noticias
-<<<<<<< HEAD
-            </a>
-
-            <a th:href="@{/programacion}" class="inicioprincipal2">
-                <img th:src="@{/img/programacion.png}" width="25" class="imgmenu">Programacion
-            </a>
-
-=======
-            </a>
-
-            <a th:href="${session.perfil == 1} ? 'http://localhost:8081/' : @{/programacion}" class="inicioprincipal2">
-                <img th:src="@{/img/programacion.png}" width="25" class="imgmenu">Programacion
-            </a>
-
->>>>>>> d5d857d3312caa3d093c4ca721ee4c97861816c4
-            <a th:href="@{/aprende}" class="inicioprincipal2">
-                <img th:src="@{/img/aprende.png}" width="25" class="imgmenu">Aprende
-            </a>
-
-            <a th:href="@{/contacta}" class="inicioprincipal2">
-                <img th:src="@{/img/gmail.png}" width="25" class="imgmenu">Contacta a un profe
-            </a>
-
-            <a th:href="@{/mismateriales}" class="inicioprincipal2">
-                <img th:src="@{/img/descargamaterial.png}" width="25" class="imgmenu">Mis Materiales
-            </a>
-
-            <a th:href="@{/materiales}" class="inicioprincipal2">
-                <img th:src="@{/img/upload.png}" width="25" class="imgmenu">Carga Materiales
-            </a>
-
-<<<<<<< HEAD
-        </aside>
-=======
-</aside>
->>>>>>> d5d857d3312caa3d093c4ca721ee4c97861816c4
+<aside class="sidebar">
+        <a th:href="@{/menu}" class="inicioprincipal">
+            <img th:src="@{/img/home.png}" width="25" class="imgmenu" alt="Inicio"> Inicio
+        </a>
+        <a th:href="@{/agenda}" class="inicioprincipal2">
+            <img th:src="@{/img/agenda.png}" width="25" class="imgmenu" alt="Agendar"> Agendar clase
+        </a>
+        <a th:href="@{/noticias}" class="inicioprincipal2">
+            <img th:src="@{/img/noticias.png}" width="25" class="imgmenu" alt="Noticias"> Noticias
+        </a>
+        <a th:href="@{/programacion}" class="inicioprincipal2">
+            <img th:src="@{/img/programacion.png}" width="25" class="imgmenu" alt="Programación"> Programación
+        </a>
+        <a th:href="@{/aprende}" class="inicioprincipal2">
+            <img th:src="@{/img/aprende.png}" width="25" class="imgmenu" alt="Aprende"> Aprende
+        </a>
+        <a th:href="@{/contacta}" class="inicioprincipal2">
+            <img th:src="@{/img/gmail.png}" width="25" class="imgmenu" alt="Contacto"> Contacta a un profe
+        </a>
+        <a th:href="@{/mismateriales}" class="inicioprincipal2">
+            <img th:src="@{/img/descargamaterial.png}" width="25" class="imgmenu" alt="Mis Materiales"> Mis Materiales
+        </a>
+        <a th:href="@{/materiales}" class="inicioprincipal2">
+            <img th:src="@{/img/upload.png}" width="25" class="imgmenu" alt="Carga Materiales"> Carga Materiales
+        </a>
+    </aside>
 
         <main class="contentaprende">
             <div class="aprende-shell">

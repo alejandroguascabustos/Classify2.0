@@ -58,29 +58,7 @@ body {
     margin: 0;
 }
 
-@keyframes moveDotted {
-    from {
-        background-position: 0 0;
-    }
 
-    to {
-        background-position: 1000px 0;
-    }
-}
-
-@keyframes floatGlow {
-    0% {
-        transform: translate(0, 0) scale(1);
-    }
-
-    50% {
-        transform: translate(50px, 50px) scale(1.1);
-    }
-
-    100% {
-        transform: translate(-30px, 80px) scale(0.9);
-    }
-}
 
 body.inicioimg {
     display: flex;
@@ -408,19 +386,7 @@ a.info-btnini {
     animation: ini 1.5s infinite;
 }
 
-@keyframes ini {
-    0% {
-        transform: scale(1);
-    }
 
-    50% {
-        transform: scale(1.1);
-    }
-
-    100% {
-        transform: scale(1);
-    }
-}
 
 a.info-btnini:hover {
     color: #008000;
@@ -572,17 +538,7 @@ header.brandinicio .info-icon:hover {
     animation: fadeInLeft 1s ease-out;
 }
 
-@keyframes fadeInLeft {
-    from {
-        opacity: 0;
-        transform: translateX(-30px);
-    }
 
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
-}
 
 .hero-title {
     font-size: 48px;
@@ -651,15 +607,7 @@ header.brandinicio .info-icon:hover {
     align-items: center;
 }
 
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
 
-    to {
-        opacity: 1;
-    }
-}
 
 
 .contenidoinicio {
@@ -3476,15 +3424,7 @@ body.aprende-page .aprende-spinner {
     animation: aprende-spin 1s linear infinite;
 }
 
-@keyframes aprende-spin {
-    from {
-        transform: rotate(0deg);
-    }
 
-    to {
-        transform: rotate(360deg);
-    }
-}
 
 @media (max-width: 1100px) {
     body.aprende-page .aprende-response-grid {
@@ -3976,11 +3916,6 @@ textarea:focus {
     border-radius: 0;
 }
 
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-12px); }
-    to { opacity: 1; transform: translateY(0); }
-}
 
 
 @media (max-width: 850px) {
@@ -5079,17 +5014,6 @@ a.botoninicio {
     padding: 15px 15px;
 }
 
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
 
 @keyframes slideUp {
     from {
