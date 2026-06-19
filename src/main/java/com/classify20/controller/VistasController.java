@@ -95,9 +95,8 @@ public class VistasController {
         return "politicas/politicas";
     }
     @GetMapping("/programacion")
-    public String mostrarProgramacion(Model model){
-        model.addAttribute("clases", agendaService.listarAgendas());
-        return "programacion/programacion";
+    public String mostrarProgramacion(){
+        return "redirect:http://localhost:8081/";
     }
     @GetMapping("/soporte")
     public String mostrarSoporte(){
