@@ -20,21 +20,31 @@ def listar_agendas():
 
 
 def obtener_agenda(agenda_id: int) -> Agenda:
-    """Obtener una agenda por su id (equivale a agendaRepository.findById)."""
-    return Agenda.objects.get(pk=agenda_id)
+    """1. Manejo crucial: ¿Qué pasa si el ID no existe?"""
+    try:
+        return Agenda.objects.get(pk=agenda_id)
+    except Agenda.DoesNotExist:
+        # Equivale al EntityNotFound de Spring Boot
+        raise ValueError(f"La agenda con ID {agenda_id} no existe.")
 
 
 def actualizar_agenda(agenda_id: int, datos: dict) -> Agenda:
-    """
-    Actualizar los campos de una agenda existente y guardarla.
-    Recibe la agenda ya construida con los nuevos datos; conserva el mismo id
-    (equivale a cargar la entidad, setear campos y llamar a save()).
-    """
-    agenda = Agenda.objects.get(pk=agenda_id)
-    for campo, valor in datos.items():
-        setattr(agenda, campo, valor)
-    agenda.save()
-    return agenda
+    """2. Manejo crucial: ¿Qué pasa si el ID no existe OR los datos son inválidos?"""
+    try:
+        agenda = Agenda.objects.get(pk=agenda_id)
+        
+        for campo, valor in datos.items():
+            setattr(agenda, campo, valor)
+            
+        agenda.full_clean()  # Fuerza a Django a validar los datos antes de guardar
+        agenda.save()
+        return agenda
+        
+    except Agenda.DoesNotExist:
+        raise ValueError(f"No se puede actualizar. La agenda con ID {agenda_id} no existe.")
+    except (ValidationError, IntegrityError) as e:
+        # Captura datos corruptos, campos nulos o violaciones de restricciones
+        raise ValueError(f"Error de validación en los datos proporcionados: {e}")
 
 
 def eliminar_agenda(agenda_id: int) -> None:
