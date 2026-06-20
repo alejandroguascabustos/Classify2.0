@@ -36,6 +36,9 @@ build/
 .claude/
 CLAUDE.md
 
+# Configuración local con secretos (nunca subir a git)
+src/main/resources/application-local.properties
+
 # Base de datos embebida local
 .classify-data/
 
