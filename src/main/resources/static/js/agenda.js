@@ -31,18 +31,30 @@
     }
 
     /* ── Referencias DOM ─────────────────────────────────────────────── */
-    const form          = document.getElementById('agendaForm');
-    const fechaInput    = document.getElementById('fecha');
-    const horaInput     = document.getElementById('horaInicio');
-    const duracionSel   = document.getElementById('duracion');
-    const profesorSel   = document.getElementById('profesor');
-    const materiaSel    = document.getElementById('materia');
-    const alertaBox     = document.getElementById('alertaHorario');
-    const alertaIcono   = document.getElementById('alertaIcono');
-    const alertaTitulo  = document.getElementById('alertaTitulo');
-    const alertaMensaje = document.getElementById('alertaMensaje');
-    const alertaDetalle = document.getElementById('alertaDetalle');
-    const horaHint      = document.getElementById('horaHint');
+    const form               = document.getElementById('agendaForm');
+    const fechaInput         = document.getElementById('fecha');
+    const horaInput          = document.getElementById('horaInicio');
+    const horaPickerContainer= document.getElementById('horaPickerContainer');
+    const horaHoras          = document.getElementById('horaHoras');
+    const horaMinutos        = document.getElementById('horaMinutos');
+    const duracionSel        = document.getElementById('duracion');
+    const profesorSel        = document.getElementById('profesor');
+    const materiaSel         = document.getElementById('materia');
+    const gradoSel           = document.getElementById('grado');
+    const grupoInput         = document.getElementById('grupo');
+    const alertaBox          = document.getElementById('alertaHorario');
+    const alertaIcono        = document.getElementById('alertaIcono');
+    const alertaTitulo       = document.getElementById('alertaTitulo');
+    const alertaMensaje      = document.getElementById('alertaMensaje');
+    const alertaDetalle      = document.getElementById('alertaDetalle');
+    const horaHint           = document.getElementById('horaHint');
+
+    /** Sincroniza los selects de hora con el input hidden */
+    function sincronizarHora() {
+        const h = horaHoras.value;
+        const m = horaMinutos.value;
+        horaInput.value = h ? `${h}:${m || '00'}` : '';
+    }
 
     /* Estado */
     let hayConflicto    = false;
@@ -93,18 +105,17 @@
 
     /* ══════════════════════════════════════════════════════════════════
        1. HORA EN INTERVALOS DE 15 MINUTOS
-       step="900" en el input nativo ya lo limita; este handler
-       cubre cuando el usuario escribe la hora a mano.
+       Los selects solo ofrecen :00 :15 :30 :45, así que no hace
+       falta redondear — simplemente sincronizamos y validamos.
        ══════════════════════════════════════════════════════════════════ */
-    horaInput.addEventListener('change', function () {
-        if (!this.value) return;
-        const min = horaAMinutos(this.value);
-        if (min === null) return;
-        const redondeado = redondear15(min);
-        this.value = minutosAHora(redondeado >= 1440 ? 1425 : redondeado); // tope: 23:45
+    function onHoraCambia() {
+        sincronizarHora();
+        if (!horaInput.value) return;
         validarAnticipacion();
         verificarConflicto();
-    });
+    }
+    horaHoras.addEventListener('change', onHoraCambia);
+    horaMinutos.addEventListener('change', onHoraCambia);
 
     /* ══════════════════════════════════════════════════════════════════
        2. BLOQUEO DE ANTICIPACIÓN MÍNIMA (1 hora)
@@ -139,7 +150,7 @@
         const horaVal  = horaInput.value;
 
         hayAnticipacion = false;
-        horaInput.classList.remove('campo-invalido');
+        horaPickerContainer.classList.remove('campo-invalido');
         horaHint.className   = 'hora-hint';
         horaHint.textContent = '';
 
@@ -161,7 +172,7 @@
 
         if (minElegido < minActual) {
             hayAnticipacion = true;
-            horaInput.classList.add('campo-invalido');
+            horaPickerContainer.classList.add('campo-invalido');
             horaHint.textContent = `⏱ Debes programar con al menos 1 hora de anticipación. Mínimo hoy: ${horaMin}`;
             horaHint.classList.add('visible', 'error');
             mostrarAlerta('anticipacion',
@@ -182,18 +193,28 @@
     });
 
     /* ══════════════════════════════════════════════════════════════════
-       3. DETECCIÓN DE CONFLICTOS CON EL PROFESOR
+       3. DETECCIÓN DE CONFLICTOS: SALÓN Y PROFESOR
+       Regla 1 – mismo salón (grado + grupo) con horario superpuesto.
+       Regla 2 – mismo profesor en cualquier salón con horario superpuesto.
        ══════════════════════════════════════════════════════════════════ */
     let abortController = null;
 
+    /** Devuelve true si dos franjas se superponen */
+    function seSolapan(inicioA, finA, inicioB, finB) {
+        return inicioA < finB && finA > inicioB;
+    }
+
     async function verificarConflicto() {
-        const profesor = profesorSel.value;
         const fecha    = fechaInput.value;
         const hora     = horaInput.value;
         const duracion = parseInt(duracionSel.value, 10);
+        const grado    = gradoSel.value;
+        const grupo    = (grupoInput.value || '').trim().toLowerCase();
+        const profesor = profesorSel.value;
 
         hayConflicto = false;
-        if (!profesor || !fecha || !hora) return;
+        // Se necesita al menos fecha, hora y grado para verificar
+        if (!fecha || !hora || !grado) return;
 
         if (abortController) abortController.abort();
         abortController = new AbortController();
@@ -202,38 +223,72 @@
             const resp = await fetch('/api/agendas', { signal: abortController.signal });
             if (!resp.ok) return;
 
-            const agendas = await resp.json();
-            const nuevaInicio = horaAMinutos(hora);
-            const nuevaFin    = nuevaInicio + duracion;
+            const agendas   = await resp.json();
+            const nuevaIni  = horaAMinutos(hora);
+            const nuevaFin  = nuevaIni + duracion;
 
-            const clasesProfesor = agendas.filter(a =>
-                a.profesor === profesor && normalizarFecha(a.fecha) === fecha
+            // ── Conflicto 1: mismo salón ───────────────────────────────
+            const clasesSalon = agendas.filter(a =>
+                normalizarFecha(a.fecha) === fecha &&
+                String(a.grado) === String(grado) &&
+                (a.grupo || '').trim().toLowerCase() === grupo
             );
 
-            for (const clase of clasesProfesor) {
+            for (const clase of clasesSalon) {
                 const horaClase   = normalizarHora(clase.horaInicio);
                 if (!horaClase) continue;
-                const claseInicio = horaAMinutos(horaClase);
-                const claseFin    = claseInicio + (clase.duracion || 60);
+                const claseIni = horaAMinutos(horaClase);
+                const claseFin = claseIni + (clase.duracion || 60);
 
-                if (nuevaInicio < claseFin && nuevaFin > claseInicio) {
+                if (seSolapan(nuevaIni, nuevaFin, claseIni, claseFin)) {
                     hayConflicto = true;
+                    const salon   = `${grado}°${grupo ? ' ' + grupo.toUpperCase() : ''}`;
                     const hFinFmt = minutosAHora(claseFin);
                     mostrarAlerta('conflicto',
-                        `${profesor} ya tiene clase en ese horario`,
-                        `Cruce con la clase de "${clase.materia || 'otra materia'}" ` +
-                        `programada de ${horaClase.substring(0,5)} a ${hFinFmt} (${clase.duracion || 60} min).`,
+                        `El salón ${salon} ya tiene clase en ese horario`,
+                        `"${clase.materia || 'Otra materia'}" con ${clase.profesor || '–'} ` +
+                        `de ${horaClase.substring(0,5)} a ${hFinFmt}.`,
                         `📅 ${fecha}   🕐 ${horaClase.substring(0,5)} – ${hFinFmt}`
                     );
                     return;
                 }
             }
+
+            // ── Conflicto 2: mismo profesor en otro salón ──────────────
+            if (profesor) {
+                const clasesProfesor = agendas.filter(a =>
+                    a.profesor === profesor && normalizarFecha(a.fecha) === fecha
+                );
+
+                for (const clase of clasesProfesor) {
+                    const horaClase   = normalizarHora(clase.horaInicio);
+                    if (!horaClase) continue;
+                    const claseIni = horaAMinutos(horaClase);
+                    const claseFin = claseIni + (clase.duracion || 60);
+
+                    if (seSolapan(nuevaIni, nuevaFin, claseIni, claseFin)) {
+                        hayConflicto = true;
+                        const salonEx = `${clase.grado || '?'}°${clase.grupo ? ' ' + clase.grupo.toUpperCase() : ''}`;
+                        const hFinFmt = minutosAHora(claseFin);
+                        mostrarAlerta('conflicto',
+                            `${profesor} ya tiene clase en ese horario`,
+                            `Está en el salón ${salonEx} con "${clase.materia || '–'}" ` +
+                            `de ${horaClase.substring(0,5)} a ${hFinFmt}.`,
+                            `📅 ${fecha}   🕐 ${horaClase.substring(0,5)} – ${hFinFmt}`
+                        );
+                        return;
+                    }
+                }
+            }
+
             if (!hayAnticipacion) ocultarAlerta();
         } catch (err) {
             if (err.name !== 'AbortError') console.warn('[Classify] Error verificando conflictos:', err);
         }
     }
 
+    gradoSel.addEventListener('change', verificarConflicto);
+    grupoInput.addEventListener('input', verificarConflicto);
     profesorSel.addEventListener('change', verificarConflicto);
     duracionSel.addEventListener('change', verificarConflicto);
 
@@ -329,13 +384,14 @@
        BLOQUEO EN EL SUBMIT
        ══════════════════════════════════════════════════════════════════ */
     form.addEventListener('submit', function (e) {
+        sincronizarHora();
         validarAnticipacion();
         if (hayAnticipacion) {
             e.preventDefault();
             mostrarAlerta('anticipacion',
                 'No puedes programar con menos de 1 hora de anticipación',
                 'Elige una hora que sea al menos 1 hora desde ahora.', null);
-            horaInput.focus();
+            horaHoras.focus();
             return;
         }
         if (hayConflicto) {
@@ -343,7 +399,7 @@
             mostrarAlerta('conflicto',
                 'Conflicto de horario sin resolver',
                 'El profesor ya tiene clase en ese horario. Por favor elige otra hora o fecha.', null);
-            horaInput.focus();
+            horaHoras.focus();
         }
     });
 
@@ -354,10 +410,15 @@
         hayConflicto    = false;
         hayAnticipacion = false;
         ocultarAlerta();
-        horaInput.classList.remove('campo-invalido');
+        horaPickerContainer.classList.remove('campo-invalido');
         horaHint.className   = 'hora-hint';
         horaHint.textContent = '';
-        restaurarProfesores(); // restablecer lista completa de profesores
+        setTimeout(function () {
+            horaHoras.value    = '';
+            horaMinutos.value  = '00';
+            horaInput.value    = '';
+        }, 0);
+        restaurarProfesores();
     });
 
     /* Bloquear fechas pasadas al cargar */

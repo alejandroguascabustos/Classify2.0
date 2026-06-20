@@ -32,6 +32,10 @@ build/
 ### VS Code ###
 .vscode/
 
+# Claude Code (configuración local del IDE)
+.claude/
+CLAUDE.md
+
 # Base de datos embebida local
 .classify-data/
 
