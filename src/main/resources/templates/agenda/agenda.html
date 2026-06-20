@@ -111,6 +111,22 @@
                 <p th:text="${mensaje}"></p>
             </div>
 
+            <div th:if="${errorConflicto}" class="alerta-horario conflicto visible" style="margin-bottom:1.2rem;">
+                <div class="alerta-icono">🚫</div>
+                <div class="alerta-body">
+                    <strong>Conflicto de horario</strong>
+                    <span th:text="${errorConflicto}"></span>
+                </div>
+            </div>
+
+            <div th:if="${error}" class="alerta-horario anticipacion visible" style="margin-bottom:1.2rem;">
+                <div class="alerta-icono">⚠️</div>
+                <div class="alerta-body">
+                    <strong>Error</strong>
+                    <span th:text="${error}"></span>
+                </div>
+            </div>
+
             <!-- Alerta dinámica JS -->
             <div id="alertaHorario" class="alerta-horario" role="alert" aria-live="polite">
                 <div class="alerta-icono" id="alertaIcono">⚠️</div>
@@ -190,10 +206,45 @@
                             <input type="date" id="fecha" name="fecha" required>
                         </div>
                         <div class="form-group">
-                            <label for="horaInicio">Hora de agendamiento *</label>
-                          
-                            <input type="time" id="horaInicio" name="horaInicio"
-                                   step="900" required>
+                            <label for="horaHoras">Hora de agendamiento *</label>
+                            <div class="hora-picker" id="horaPickerContainer">
+                                <select id="horaHoras" class="hora-select" required>
+                                    <option value="">HH</option>
+                                    <option value="00">00</option>
+                                    <option value="01">01</option>
+                                    <option value="02">02</option>
+                                    <option value="03">03</option>
+                                    <option value="04">04</option>
+                                    <option value="05">05</option>
+                                    <option value="06">06</option>
+                                    <option value="07">07</option>
+                                    <option value="08">08</option>
+                                    <option value="09">09</option>
+                                    <option value="10">10</option>
+                                    <option value="11">11</option>
+                                    <option value="12">12</option>
+                                    <option value="13">13</option>
+                                    <option value="14">14</option>
+                                    <option value="15">15</option>
+                                    <option value="16">16</option>
+                                    <option value="17">17</option>
+                                    <option value="18">18</option>
+                                    <option value="19">19</option>
+                                    <option value="20">20</option>
+                                    <option value="21">21</option>
+                                    <option value="22">22</option>
+                                    <option value="23">23</option>
+                                </select>
+                                <span class="hora-sep">:</span>
+                                <select id="horaMinutos" class="hora-select">
+                                    <option value="00">00</option>
+                                    <option value="15">15</option>
+                                    <option value="30">30</option>
+                                    <option value="45">45</option>
+                                </select>
+                                <span class="hora-label-sufijo">hrs</span>
+                                <input type="hidden" id="horaInicio" name="horaInicio">
+                            </div>
                             <p class="hora-hint" id="horaHint"></p>
                         </div>
                         <div class="form-group">

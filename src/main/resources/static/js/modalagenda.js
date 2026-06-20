@@ -47,37 +47,28 @@ class AgendaModal {
             }
         })
         .then(response => {
-            if (!response.ok) {
-                throw new Error('Error en la respuesta del servidor');
-            }
-            return response.json();
+            return response.json().then(data => ({ status: response.status, data }));
         })
-        .then(data => {
-            if (data.success) {
+        .then(({ status, data }) => {
+            if (status === 200 && data.success) {
                 this.show();
                 form.reset();
-                
-                // Redirigir después de 1.5 segundos - USANDO baseUrl
                 setTimeout(() => {
-                    // Usar la variable baseUrl definida globalmente
                     const redirectUrl = (typeof baseUrl !== 'undefined' ? baseUrl : '') + '/programacion';
-                    console.log('Redirigiendo a:', redirectUrl);
                     window.location.href = redirectUrl;
                 }, 1500);
+            } else if (status === 409 && data.conflicto) {
+                this.showAlertaConflicto(data.message || 'Conflicto de horario detectado.');
             } else {
                 this.showError(data.message || 'Error al guardar la clase');
             }
         })
         .catch(error => {
             console.error('Error:', error);
-            // Si falla AJAX, enviar el formulario de forma normal
-            this.showError('Error de conexión. Enviando formulario de forma normal...');
-            setTimeout(() => {
-                form.submit();
-            }, 1500);
+            this.showError('Error de conexión. Reintentando de forma normal...');
+            setTimeout(() => { form.submit(); }, 1500);
         })
         .finally(() => {
-            // Restaurar botón
             submitBtn.textContent = originalText;
             submitBtn.disabled = false;
         });
@@ -103,26 +94,38 @@ class AgendaModal {
         }
     }
     
+    showAlertaConflicto(message) {
+        // Usa el bloque de alerta existente en agenda.html (mismo estilo visual)
+        const alertaBox     = document.getElementById('alertaHorario');
+        const alertaIcono   = document.getElementById('alertaIcono');
+        const alertaTitulo  = document.getElementById('alertaTitulo');
+        const alertaMensaje = document.getElementById('alertaMensaje');
+        const alertaDetalle = document.getElementById('alertaDetalle');
+
+        if (alertaBox) {
+            alertaBox.className = 'alerta-horario conflicto visible';
+            if (alertaIcono)   alertaIcono.textContent   = '🚫';
+            if (alertaTitulo)  alertaTitulo.textContent  = 'Conflicto de horario';
+            if (alertaMensaje) alertaMensaje.textContent = message;
+            if (alertaDetalle) alertaDetalle.style.display = 'none';
+            alertaBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        } else {
+            this.showError(message);
+        }
+    }
+
     showError(message) {
-        // Crear un toast de error temporal
         const errorToast = document.createElement('div');
         errorToast.style.cssText = `
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: #f44336;
-            color: white;
-            padding: 15px 20px;
-            border-radius: 5px;
-            z-index: 10000;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            position: fixed; top: 20px; right: 20px;
+            background: #ef4444; color: white;
+            padding: 15px 20px; border-radius: 12px;
+            z-index: 10000; box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            font-size: 0.9rem; max-width: 360px; line-height: 1.4;
         `;
         errorToast.textContent = message;
         document.body.appendChild(errorToast);
-        
-        setTimeout(() => {
-            document.body.removeChild(errorToast);
-        }, 5000);
+        setTimeout(() => { document.body.removeChild(errorToast); }, 5000);
     }
 }
 

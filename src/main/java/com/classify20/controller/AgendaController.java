@@ -37,6 +37,18 @@ public class AgendaController {
             model.addAttribute("mensaje", "Agenda guardada exitosamente!");
             model.addAttribute("agenda", new Agenda());
             return "agenda/agenda";
+        } catch (IllegalStateException e) {
+            // Conflicto de horario detectado
+            if ("XMLHttpRequest".equals(requestedWith)) {
+                Map<String, Object> response = new HashMap<>();
+                response.put("success", false);
+                response.put("conflicto", true);
+                response.put("message", e.getMessage());
+                return ResponseEntity.status(409).body(response);
+            }
+            model.addAttribute("errorConflicto", e.getMessage());
+            model.addAttribute("agenda", agenda);
+            return "agenda/agenda";
         } catch (Exception e) {
             if ("XMLHttpRequest".equals(requestedWith)) {
                 Map<String, Object> response = new HashMap<>();
@@ -44,7 +56,8 @@ public class AgendaController {
                 response.put("message", "Error al guardar: " + e.getMessage());
                 return ResponseEntity.status(500).body(response);
             }
-            model.addAttribute("error", "Error al guardar la agenda.");
+            model.addAttribute("error", "Error inesperado al guardar la agenda.");
+            model.addAttribute("agenda", agenda);
             return "agenda/agenda";
         }
     }
@@ -72,6 +85,12 @@ public class AgendaController {
             resp.put("success", true);
             resp.put("data", actualizada);
             return ResponseEntity.ok(resp);
+        } catch (IllegalStateException e) {
+            Map<String, Object> err = new HashMap<>();
+            err.put("success", false);
+            err.put("conflicto", true);
+            err.put("message", e.getMessage());
+            return ResponseEntity.status(409).body(err);
         } catch (Exception e) {
             Map<String, Object> err = new HashMap<>();
             err.put("success", false);
