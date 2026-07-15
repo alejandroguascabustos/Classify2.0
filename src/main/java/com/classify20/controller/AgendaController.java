@@ -68,6 +68,19 @@ public class AgendaController {
         return ResponseEntity.ok(agendaService.listarAgendas());
     }
 
+    @GetMapping("/api/agendas/{id}")
+    @ResponseBody
+    public ResponseEntity<Object> obtenerAgenda(@PathVariable Long id) {
+        return agendaService.buscarPorId(id)
+                .<ResponseEntity<Object>>map(ResponseEntity::ok)
+                .orElseGet(() -> {
+                    Map<String, Object> err = new HashMap<>();
+                    err.put("success", false);
+                    err.put("message", "Agenda no encontrada con ID: " + id);
+                    return ResponseEntity.status(404).body(err);
+                });
+    }
+
     @PutMapping("/api/agendas/{id}")
     @ResponseBody
     public ResponseEntity<Object> actualizarAgenda(
