@@ -1,12 +1,12 @@
 #!/bin/bash
-# Inicia TODO el proyecto Classify 2.0:
+# Inicia el proyecto Classify 2.0 (100% Java / Spring Boot):
 #   1. PostgreSQL (si está instalado con Homebrew)
-#   2. Módulo Agenda en Python/Django  → http://localhost:8081
-#   3. App principal Spring Boot       → http://localhost:8080
+#   2. App principal Spring Boot  → http://localhost:8090
+# El módulo Programación ahora es parte de la misma app Java (/programacion).
 # Doble clic desde Finder o ejecútalo en Terminal.
 cd "$(dirname "$0")"
 
-echo "── 1/3 PostgreSQL ──────────────────────────────"
+echo "── 1/2 PostgreSQL ──────────────────────────────"
 if command -v brew >/dev/null 2>&1; then
     brew services start postgresql@16 2>/dev/null \
         || brew services start postgresql@15 2>/dev/null \
@@ -18,27 +18,10 @@ else
 fi
 
 echo ""
-echo "── 2/3 Módulo Agenda (Python/Django, puerto 8081) ──"
-(
-    cd agenda-service
-    if [ ! -d "venv" ]; then
-        echo "Creando entorno virtual..."
-        python3 -m venv venv
-    fi
-    source venv/bin/activate
-    pip install -q -r requirements.txt
-    python manage.py runserver 8081
-) &
-DJANGO_PID=$!
-
-# Al cerrar esta terminal, detener también el servicio Django
-trap 'kill $DJANGO_PID 2>/dev/null' EXIT
-
+echo "── 2/2 App principal (Spring Boot, puerto 8090) ──"
 echo ""
-echo "── 3/3 App principal (Spring Boot, puerto 8080) ──"
-echo ""
-echo "  Inicio : http://localhost:8080/inicio"
-echo "  Login  : http://localhost:8080/login"
-echo "  Agenda Python : http://localhost:8081/"
+echo "  Inicio       : http://localhost:8090/inicio"
+echo "  Login        : http://localhost:8090/login"
+echo "  Programación : http://localhost:8090/programacion"
 echo ""
 ./mvnw spring-boot:run
