@@ -7,8 +7,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import com.classify20.model.Agenda;
-import com.classify20.service.AgendaService;
 import com.classify20.service.NoticiaService;
+import com.classify20.service.AgendaService;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -16,11 +16,10 @@ import jakarta.servlet.http.HttpSession;
 public class VistasController {
 
     @Autowired
-    private AgendaService agendaService;
-
-     // ── Inyección del servicio de noticias ────────────────────
-    @Autowired
     private NoticiaService noticiaService;
+
+    @Autowired
+    private AgendaService agendaService;
 
     @Value("${classify.webhooks.contacta.url}")
     private String webhookContactaUrl;
@@ -36,10 +35,9 @@ public class VistasController {
         return "menu/menu";
     }
 
-    //Este muestra la vista y la agenda completa
     @GetMapping("/agenda")
     public String mostrarAgenda(Model model) {
-        model.addAttribute("agenda", new Agenda()); 
+        model.addAttribute("agenda", new Agenda());
         return "agenda/agenda";
     }
 
@@ -95,8 +93,9 @@ public class VistasController {
         return "politicas/politicas";
     }
     @GetMapping("/programacion")
-    public String mostrarProgramacion(){
-        return "redirect:http://localhost:8081/";
+    public String mostrarProgramacion(Model model){
+        model.addAttribute("clases", agendaService.listarAgendas());
+        return "programacion/programacion";
     }
     @GetMapping("/soporte")
     public String mostrarSoporte(){
