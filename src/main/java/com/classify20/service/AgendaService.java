@@ -78,6 +78,11 @@ public class AgendaService {
         return agendaRepository.findAll();
     }
 
+    /** Buscar una agenda por ID (para cargar el modal de edición) */
+    public Optional<Agenda> buscarPorId(Long id) {
+        return agendaRepository.findById(id);
+    }
+
     /**
      * Actualizar una agenda existente.
      * Solo sobreescribe los campos editables; el ID no cambia.

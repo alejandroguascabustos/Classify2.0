@@ -3,9 +3,10 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Classify - Agenda</title>
+    <title>Classify - Programación</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
-    <link rel="shortcut icon" th:href="@{img/favicon.ico}" type="image/x-icon">
+    <link rel="stylesheet" th:href="@{/css/programacion.css}">
+    <link rel="shortcut icon" th:href="@{/img/favicon.ico}" type="image/x-icon">
 </head>
 
 <body>
@@ -14,14 +15,13 @@
             <a th:href="@{/inicio}"><img th:src="@{/img/logo.png}" alt="logo" class="logo"></a>
             <a th:href="@{/inicio}">Classify</a>
         </div>
-    
+
         <div class="brand2">
             <a th:href="@{/inicio}" class="info-btn" alt="Información">Inicio</a>
             <a th:href="@{/nosotros}" class="info-btn" alt="Información">Nosotros</a>
             <a th:href="@{/contacto}" class="info-btn" alt="Información">Contacto</a>
-
         </div>
-    
+
         <div class="header-tools">
             <a href="#info" class="info-btn">
                 <img th:src="@{/img/informacion.png}" alt="Información" class="info-icon">
@@ -63,12 +63,8 @@
         <span></span>
     </div>
 
-    <!-- <div id="skeleton-loader" class="skeleton">
-        <img th:src="@{/img/loader.gif}" class="gif-loader">
-    </div> -->
-
-<aside class="sidebar">
-        <a th:href="@{/menu}" class="inicioprincipal">
+    <aside class="sidebar">
+        <a th:href="@{/menu}" class="inicioprincipal2">
             <img th:src="@{/img/home.png}" width="25" class="imgmenu" alt="Inicio"> Inicio
         </a>
         <a th:href="@{/agenda}" class="inicioprincipal2">
@@ -77,7 +73,7 @@
         <a th:href="@{/noticias}" class="inicioprincipal2">
             <img th:src="@{/img/noticias.png}" width="25" class="imgmenu" alt="Noticias"> Noticias
         </a>
-        <a th:href="@{/programacion}" class="inicioprincipal2">
+        <a th:href="@{/programacion}" class="inicioprincipal">
             <img th:src="@{/img/programacion.png}" width="25" class="imgmenu" alt="Programación"> Programación
         </a>
         <a th:href="@{/aprende}" class="inicioprincipal2">
@@ -116,22 +112,36 @@
                         <th>Curso</th>
                         <th>Tema Principal</th>
                         <th>Duracion</th>
+                        <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <th:block th:if="${clases != null and !clases.isEmpty()}">
-                        <tr th:each="clase : ${clases}">
-                            <td th:text="${clase.id}"></td>
-                            <td th:text="${clase.materia}"></td>
-                            <td th:text="${clase.profesor}"></td>
-                            <td th:text="${clase.fecha != null ? clase.fecha : ''} + ' ' + ${clase.horaInicio != null ? clase.horaInicio : ''}"></td>
-                            <td th:text="${clase.grado != null ? clase.grado : ''} + ' ' + ${clase.grupo != null ? clase.grupo : ''}"></td>
-                            <td th:text="${clase.temaPrincipal}"></td>
-                            <td th:text="${clase.duracion != null ? clase.duracion + ' min' : ''}"></td>
-                        </tr>
-                    </th:block>
+                    <tr th:each="clase : ${clases}" th:attr="data-id=${clase.id}">
+                        <td th:text="${clase.id}"></td>
+                        <td th:text="${clase.materia}"></td>
+                        <td th:text="${clase.profesor}"></td>
+                        <td th:text="${(clase.fecha != null ? clase.fecha : '')} + ' ' + ${(clase.horaInicio != null ? clase.horaInicio : '')}"></td>
+                        <td th:text="${(clase.grado != null ? clase.grado : '')} + ' ' + ${(clase.grupo != null ? clase.grupo : '')}"></td>
+                        <td th:text="${clase.temaPrincipal}"></td>
+                        <td th:text="${clase.duracion != null ? clase.duracion + ' min' : ''}"></td>
+                        <td class="acciones-cell">
+                            <button type="button" class="btn-accion btn-editar" title="Editar"
+                                    th:attr="data-id=${clase.id}" aria-label="Editar agenda">
+                                <img th:src="@{/img/editar.png}" alt="Editar" width="22">
+                            </button>
+                            <button type="button" class="btn-accion btn-eliminar" title="Eliminar"
+                                    th:attr="data-id=${clase.id},data-info=${clase.materia} + ' (' + ${(clase.fecha != null ? clase.fecha : '')} + ')'"
+                                    aria-label="Eliminar agenda">
+                                <img th:src="@{/img/eliminar.png}" alt="Eliminar" width="22">
+                            </button>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
+
+            <p class="agenda-py-vacio" th:if="${clases == null or clases.isEmpty()}">
+                No hay agendas registradas todavía.
+            </p>
         </div>
 
         <a th:href="@{/programacion/exportarExcel}" class="btn-descargarprogramacion">
@@ -140,14 +150,142 @@
         </a>
 
         <div class="programacion-paginacion" id="paginacion"></div>
+
+        <!-- ── Modal de edición ─────────────────────────────────────── -->
+        <div id="modalEditar" class="modal-prog" aria-hidden="true">
+            <div class="modal-prog-contenido">
+                <div class="modal-prog-header">
+                    <h3>Editar agenda <span id="modalEditarId"></span></h3>
+                    <button type="button" class="modal-prog-cerrar" id="modalCerrar" aria-label="Cerrar">&times;</button>
+                </div>
+
+                <form id="formEditar" class="form-editar-prog">
+                    <input type="hidden" name="id" id="ed_id">
+
+                    <div class="form-row-prog">
+                        <div class="form-group-prog">
+                            <label for="ed_grado">Grado</label>
+                            <select id="ed_grado" name="grado">
+                                <option value="">Selecciona grado</option>
+                                <option value="1">1° Grado</option>
+                                <option value="2">2° Grado</option>
+                                <option value="3">3° Grado</option>
+                                <option value="4">4° Grado</option>
+                                <option value="5">5° Grado</option>
+                                <option value="6">6° Grado</option>
+                            </select>
+                        </div>
+                        <div class="form-group-prog">
+                            <label for="ed_grupo">Grupo</label>
+                            <input type="text" id="ed_grupo" name="grupo" placeholder="Ej: A, B, C">
+                        </div>
+                    </div>
+
+                    <div class="form-row-prog">
+                        <div class="form-group-prog">
+                            <label for="ed_profesor">Profesor</label>
+                            <select id="ed_profesor" name="profesor">
+                                <option value="">Selecciona un profesor</option>
+                                <option value="Ana García">Ana García</option>
+                                <option value="Carlos Méndez">Carlos Méndez</option>
+                                <option value="Laura Fernández">Laura Fernández</option>
+                                <option value="Jorge Ramírez">Jorge Ramírez</option>
+                                <option value="Sofía Torres">Sofía Torres</option>
+                                <option value="Andrés López">Andrés López</option>
+                                <option value="Marta Ríos">Marta Ríos</option>
+                            </select>
+                        </div>
+                        <div class="form-group-prog">
+                            <label for="ed_materia">Materia</label>
+                            <select id="ed_materia" name="materia">
+                                <option value="">Selecciona la materia</option>
+                                <option value="Matematicas">Matematicas</option>
+                                <option value="Español">Español</option>
+                                <option value="Historia">Historia</option>
+                                <option value="Ingles">Ingles</option>
+                                <option value="Etica y valores">Etica y valores</option>
+                                <option value="Educación fisica">Educación fisica</option>
+                                <option value="Informatica">Informatica</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row-prog">
+                        <div class="form-group-prog">
+                            <label for="ed_fecha">Fecha</label>
+                            <input type="date" id="ed_fecha" name="fecha">
+                        </div>
+                        <div class="form-group-prog">
+                            <label for="ed_horaInicio">Hora</label>
+                            <input type="time" id="ed_horaInicio" name="horaInicio">
+                        </div>
+                        <div class="form-group-prog">
+                            <label for="ed_duracion">Duración</label>
+                            <select id="ed_duracion" name="duracion">
+                                <option value="">—</option>
+                                <option value="30">30 minutos</option>
+                                <option value="45">45 minutos</option>
+                                <option value="60">60 minutos</option>
+                                <option value="90">90 minutos</option>
+                                <option value="120">120 minutos</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row-prog">
+                        <div class="form-group-prog">
+                            <label for="ed_modalidad">Modalidad</label>
+                            <select id="ed_modalidad" name="modalidad">
+                                <option value="">—</option>
+                                <option value="presencial">Presencial (en el colegio)</option>
+                                <option value="virtual">Virtual (videollamada)</option>
+                            </select>
+                        </div>
+                        <div class="form-group-prog">
+                            <label for="ed_materialesBasicos">¿Materiales básicos?</label>
+                            <select id="ed_materialesBasicos" name="materialesBasicos">
+                                <option value="">—</option>
+                                <option value="si">Sí</option>
+                                <option value="no">No</option>
+                                <option value="parcialmente">Parcialmente</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group-prog">
+                        <label for="ed_temaPrincipal">Tema principal</label>
+                        <input type="text" id="ed_temaPrincipal" name="temaPrincipal" placeholder="Tema de la clase">
+                    </div>
+
+                    <div class="form-group-prog">
+                        <label for="ed_objetivos">Objetivos</label>
+                        <textarea id="ed_objetivos" name="objetivos" rows="2"></textarea>
+                    </div>
+
+                    <div class="form-group-prog">
+                        <label for="ed_dificultades">Dificultades</label>
+                        <textarea id="ed_dificultades" name="dificultades" rows="2"></textarea>
+                    </div>
+
+                    <div class="form-group-prog">
+                        <label for="ed_recursosNecesarios">Recursos necesarios</label>
+                        <textarea id="ed_recursosNecesarios" name="recursosNecesarios" rows="2"></textarea>
+                    </div>
+
+                    <div id="modalEditarMsg" class="modal-prog-msg"></div>
+
+                    <div class="modal-prog-acciones">
+                        <button type="button" class="btn-prog-cancelar" id="modalCancelar">Cancelar</button>
+                        <button type="submit" class="btn-prog-guardar">Guardar cambios</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </main>
 
-
     <script th:src="@{/js/chatbot.js}"></script>
-    <script th:src="@{/js/filtrosprog.js}"></script>
-    <script th:src="@{/js/paginacionprog.js}"></script>
-    <script th:src="@{/js/perfilmodal.js}"></script>
-    
+    <script th:src="@{/js/programacion.js}"></script>
+
 </body>
 
 </html>

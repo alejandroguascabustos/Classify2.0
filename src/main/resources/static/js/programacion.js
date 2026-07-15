@@ -1,14 +1,11 @@
 /*
- * Módulo Programación (Python/Django) — lógica del cliente.
+ * Módulo Programación (Java/Spring Boot) — lógica del cliente.
  * Combina, en un solo archivo y sin dependencias externas:
  *   1. Filtros por materia / profesor / curso.
  *   2. Paginación (10 registros por página) sobre las filas filtradas.
- *   3. Edición de una agenda mediante modal (carga datos vía JSON y los
- *      guarda con POST a /programacion/editar/<id>).
- *   4. Eliminación con confirmación (POST a /programacion/eliminar/<id>).
- *
- * Las peticiones envían el header X-Requested-With: XMLHttpRequest para que
- * el backend responda en JSON (mismo contrato que el resto de la plataforma).
+ *   3. Edición de una agenda mediante modal (carga datos vía JSON de
+ *      GET /api/agendas/{id} y guarda con PUT /api/agendas/{id}).
+ *   4. Eliminación con confirmación (DELETE /api/agendas/{id}).
  */
 document.addEventListener('DOMContentLoaded', function () {
     const tabla = document.querySelector('#agendaTable tbody');
@@ -128,13 +125,14 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function cargarAgenda(id) {
-        fetch(`/programacion/agenda/${id}`, {
+        fetch(`/api/agendas/${id}`, {
             headers: { 'X-Requested-With': 'XMLHttpRequest' }
         })
-            .then(r => r.json())
-            .then(data => {
-                if (!data.success) { alert(data.message || 'No se pudo cargar la agenda.'); return; }
-                const a = data.agenda;
+            .then(r => {
+                if (!r.ok) throw new Error('No se pudo cargar la agenda.');
+                return r.json();
+            })
+            .then(a => {
                 setValor('ed_id', a.id);
                 setValor('ed_grado', a.grado);
                 setValor('ed_grupo', a.grupo);
@@ -159,21 +157,40 @@ document.addEventListener('DOMContentLoaded', function () {
         formEditar.addEventListener('submit', function (e) {
             e.preventDefault();
             const id = document.getElementById('ed_id').value;
-            const datos = new URLSearchParams(new FormData(formEditar));
-            fetch(`/programacion/editar/${id}`, {
-                method: 'POST',
+
+            // Construir el payload JSON que espera PUT /api/agendas/{id}
+            const gradoVal = getVal('ed_grado');
+            const duracionVal = getVal('ed_duracion');
+            const payload = {
+                grado:         gradoVal ? parseInt(gradoVal, 10) : null,
+                grupo:         getVal('ed_grupo'),
+                profesor:      getVal('ed_profesor'),
+                materia:       getVal('ed_materia'),
+                fecha:         getVal('ed_fecha'),
+                horaInicio:    getVal('ed_horaInicio'),
+                duracion:      duracionVal ? parseInt(duracionVal, 10) : null,
+                modalidad:     getVal('ed_modalidad'),
+                temaPrincipal: getVal('ed_temaPrincipal'),
+                objetivos:     getVal('ed_objetivos'),
+                dificultades:  getVal('ed_dificultades'),
+                materialesBasicos:   getVal('ed_materialesBasicos'),
+                recursosNecesarios:  getVal('ed_recursosNecesarios')
+            };
+
+            fetch(`/api/agendas/${id}`, {
+                method: 'PUT',
                 headers: {
                     'X-Requested-With': 'XMLHttpRequest',
-                    'Content-Type': 'application/x-www-form-urlencoded'
+                    'Content-Type': 'application/json'
                 },
-                body: datos.toString()
+                body: JSON.stringify(payload)
             })
-                .then(r => r.json())
-                .then(data => {
-                    if (data.success) {
-                        msgModal.textContent = data.message || '¡Guardado!';
+                .then(r => r.json().then(data => ({ ok: r.ok, data })))
+                .then(({ ok, data }) => {
+                    if (ok && data.success) {
+                        msgModal.textContent = '¡Guardado correctamente!';
                         msgModal.className = 'modal-prog-msg ok';
-                        setTimeout(() => window.location.reload(), 600);
+                        setTimeout(() => window.location.reload(), 700);
                     } else {
                         msgModal.textContent = data.message || 'No se pudo guardar.';
                         msgModal.className = 'modal-prog-msg error';
@@ -186,18 +203,23 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    function getVal(id) {
+        const el = document.getElementById(id);
+        return el ? el.value : '';
+    }
+
     // ── 4. Eliminación con confirmación ────────────────────────────
     function eliminar(id, info) {
         const detalle = info ? `\n\n${info}` : '';
         if (!confirm(`¿Eliminar esta agenda?${detalle}\n\nEsta acción no se puede deshacer.`)) return;
 
-        fetch(`/programacion/eliminar/${id}`, {
-            method: 'POST',
+        fetch(`/api/agendas/${id}`, {
+            method: 'DELETE',
             headers: { 'X-Requested-With': 'XMLHttpRequest' }
         })
-            .then(r => r.json())
-            .then(data => {
-                if (data.success) {
+            .then(r => r.json().then(data => ({ ok: r.ok, data })))
+            .then(({ ok, data }) => {
+                if (ok && data.success) {
                     const fila = tabla.querySelector(`tr[data-id="${id}"]`);
                     if (fila) {
                         const idx = todasLasFilas.indexOf(fila);
