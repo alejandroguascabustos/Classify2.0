@@ -82,7 +82,7 @@ public class GestionRegistrosController {
     /** Lista los usuarios autorizados pendientes de registro para mostrarlos en la tabla. */
     private List<Map<String, Object>> listarPendientes() {
         List<Map<String, Object>> lista = new ArrayList<>();
-        String sql = "SELECT id, nombre, apellido, correo, documento, nombre_usuario, tipo_usuario, curso, estado, origen, creado_en " +
+        String sql = "SELECT id, nombre, apellido, correo, documento, nombre_usuario, tipo_usuario, materia, grado, grupo, estado, origen, creado_en " +
                 "FROM usuarios_pendientes ORDER BY creado_en DESC, id DESC";
         try (Connection conn = databaseService.openConnection();
              Statement st = conn.createStatement();
@@ -95,7 +95,9 @@ public class GestionRegistrosController {
                 row.put("documento", rs.getString("documento"));
                 row.put("usuario", rs.getString("nombre_usuario"));
                 row.put("tipo", rs.getString("tipo_usuario"));
-                row.put("curso", rs.getString("curso"));
+                row.put("materia", rs.getString("materia"));
+                row.put("grado", rs.getString("grado"));
+                row.put("grupo", rs.getString("grupo"));
                 row.put("estado", rs.getString("estado"));
                 row.put("origen", rs.getString("origen"));
                 lista.add(row);

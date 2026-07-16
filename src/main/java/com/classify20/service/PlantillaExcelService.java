@@ -17,12 +17,17 @@ public class PlantillaExcelService {
     /** Columnas oficiales, en orden. Deben coincidir con {@link CargaExcelService}. */
     public static final String[] COLUMNAS = {
             "nombre", "apellido", "correo", "documento", "telefono",
-            "nombre_usuario", "tipo_usuario", "curso", "materia", "nombre_estudiante"
+            "nombre_usuario", "tipo_usuario", "materia", "grado", "grupo"
     };
 
-    private static final String[] EJEMPLO = {
-            "Jose", "Arteaga", "jose@colegio.com", "1234567890", "3222222222",
-            "jose123", "estudiante", "10A", "", ""
+    /** Índices de columna (para no usar números mágicos). */
+    public static final int COL_NOMBRE = 0, COL_APELLIDO = 1, COL_CORREO = 2, COL_DOCUMENTO = 3,
+            COL_TELEFONO = 4, COL_USUARIO = 5, COL_TIPO = 6, COL_MATERIA = 7, COL_GRADO = 8, COL_GRUPO = 9;
+
+    /** Dos filas de ejemplo: un docente (con materia) y un estudiante (con grado y grupo). */
+    private static final String[][] EJEMPLOS = {
+            {"Ana", "García", "ana@colegio.com", "1234567890", "3221112233", "ana123", "docente", "Matematicas", "", ""},
+            {"Jose", "Arteaga", "jose@colegio.com", "1098765432", "3229998877", "jose123", "estudiante", "", "10", "A"}
     };
 
     public byte[] generarPlantilla() throws IOException {
@@ -59,12 +64,14 @@ public class PlantillaExcelService {
                 cell.setCellStyle(headerStyle);
             }
 
-            // Fila 1: ejemplo (guía; el sistema la ignora si el correo es de ejemplo)
-            Row ejemploRow = sheet.createRow(1);
-            for (int i = 0; i < EJEMPLO.length; i++) {
-                Cell cell = ejemploRow.createCell(i);
-                cell.setCellValue(EJEMPLO[i]);
-                cell.setCellStyle(ejemploStyle);
+            // Filas de ejemplo (guía; el sistema las ignora al cargar)
+            for (int r = 0; r < EJEMPLOS.length; r++) {
+                Row ejemploRow = sheet.createRow(r + 1);
+                for (int i = 0; i < EJEMPLOS[r].length; i++) {
+                    Cell cell = ejemploRow.createCell(i);
+                    cell.setCellValue(EJEMPLOS[r][i]);
+                    cell.setCellStyle(ejemploStyle);
+                }
             }
 
             for (int i = 0; i < COLUMNAS.length; i++) {

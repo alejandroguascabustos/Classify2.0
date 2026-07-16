@@ -73,8 +73,9 @@ public class CargaExcelService {
                     v[c] = leerCelda(row.getCell(c));
                 }
 
-                // Ignora la fila de ejemplo de la plantilla
-                if ("jose@colegio.com".equalsIgnoreCase(v[2]) && "jose123".equalsIgnoreCase(v[5])) {
+                // Ignora las filas de ejemplo de la plantilla
+                if (("jose@colegio.com".equalsIgnoreCase(v[2]) && "jose123".equalsIgnoreCase(v[5]))
+                        || ("ana@colegio.com".equalsIgnoreCase(v[2]) && "ana123".equalsIgnoreCase(v[5]))) {
                     continue;
                 }
                 totalFilas++;
@@ -174,6 +175,15 @@ public class CargaExcelService {
             errores.add(new ErrorFila(fila, etiqueta, "tipo_usuario", v[6],
                     "Debe ser: estudiante, docente, acudiente o coordinador"));
         }
+
+        // Campos condicionales por rol
+        String materia = v[7], grado = v[8];
+        if ("docente".equals(tipo) && materia.isBlank()) {
+            errores.add(new ErrorFila(fila, etiqueta, "materia", materia, "Obligatoria para docente"));
+        }
+        if ("estudiante".equals(tipo) && grado.isBlank()) {
+            errores.add(new ErrorFila(fila, etiqueta, "grado", grado, "Obligatorio para estudiante"));
+        }
     }
 
     private int erroresDeFila(List<ErrorFila> errores, int fila) {
@@ -199,8 +209,8 @@ public class CargaExcelService {
 
     private int guardar(Connection conn, List<String[]> filas) throws SQLException {
         String sql = "INSERT INTO usuarios_pendientes " +
-                "(nombre, apellido, correo, documento, telefono, nombre_usuario, tipo_usuario, curso, materia, nombre_estudiante, estado, origen) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'autorizado', 'excel')";
+                "(nombre, apellido, correo, documento, telefono, nombre_usuario, tipo_usuario, materia, grado, grupo, curso, estado, origen) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'autorizado', 'excel')";
         boolean prev = conn.getAutoCommit();
         conn.setAutoCommit(false);
         int guardados = 0;
@@ -213,9 +223,10 @@ public class CargaExcelService {
                 ps.setString(5, blankToNull(v[4]));
                 ps.setString(6, v[5]);
                 ps.setString(7, v[6].toLowerCase());
-                ps.setString(8, blankToNull(v[7]));
-                ps.setString(9, blankToNull(v[8]));
-                ps.setString(10, blankToNull(v[9]));
+                ps.setString(8, blankToNull(v[7]));            // materia
+                ps.setString(9, blankToNull(v[8]));            // grado
+                ps.setString(10, blankToNull(v[9]));           // grupo
+                ps.setString(11, blankToNull((v[8] + v[9]).trim())); // curso = grado+grupo
                 ps.addBatch();
                 guardados++;
             }

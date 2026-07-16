@@ -87,15 +87,23 @@
     gap: 12px;
     align-items: center;
 }
-.gr-form-upload input[type="file"] {
-    flex: 1;
-    min-width: 180px;
-    font-size: 13.5px;
-    padding: 8px;
-    border: 1px dashed #9D9D9C;
-    border-radius: 8px;
-    background: #f8f9fa;
+/* Input nativo oculto; se dispara con el label */
+.gr-file-hidden {
+    position: absolute;
+    width: 1px; height: 1px;
+    opacity: 0; overflow: hidden;
+    clip: rect(0 0 0 0);
 }
+.gr-file-label { cursor: pointer; }
+.gr-file-name {
+    font-size: 13.5px;
+    color: #888;
+    font-style: italic;
+    flex: 1;
+    min-width: 140px;
+}
+.gr-file-name.elegido { color: #006100; font-style: normal; font-weight: 600; }
+.gr-btn:disabled { opacity: .5; cursor: not-allowed; }
 
 .gr-btn-invitar { background: #F38F02; color: #fff; border-color: #F38F02; }
 .gr-btn-invitar:hover { background: #d97e00; border-color: #d97e00; }

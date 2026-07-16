@@ -74,6 +74,8 @@ CREATE TABLE IF NOT EXISTS usuarios_pendientes (
     curso VARCHAR(50),
     materia VARCHAR(150),
     nombre_estudiante VARCHAR(150),
+    grado VARCHAR(20),
+    grupo VARCHAR(20),
     estado VARCHAR(20) NOT NULL DEFAULT 'autorizado',
     origen VARCHAR(20) NOT NULL DEFAULT 'excel',
     creado_en TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
