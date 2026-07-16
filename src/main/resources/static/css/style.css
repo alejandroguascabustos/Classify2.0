@@ -9009,10 +9009,7 @@ body.materiales-page .materiales-kicker,
 body.mismateriales-page .materiales-kicker {
     display: inline-flex;
     align-items: center;
-    padding: 8px 15px;
     border-radius: 999px;
-    border: 1px solid rgba(174, 201, 165, 0.9);
-    background: rgba(174, 201, 165, 0.35);
     color: #113911;
     font-size: 0.86rem;
     font-weight: 700;
@@ -9157,8 +9154,8 @@ body.materiales-page .materiales-card-badge {
 body.materiales-page .materiales-count-badge,
 body.mismateriales-page .materiales-count-badge {
     color: #fff;
-    background: linear-gradient(135deg, var(--green) 0%, var(--green-accent) 100%);
-    box-shadow: 0 12px 24px rgba(0, 128, 0, 0.14);
+    background-color: #c2c5c7;
+    border-radius: 15px;
 }
 
 body.materiales-page .subtitulocargamateriales {
@@ -9368,7 +9365,6 @@ body.mismateriales-page .programacion-tabla-materiales th {
     letter-spacing: 0.05em;
     text-transform: uppercase;
     color: #fff;
-    background: linear-gradient(135deg, var(--green) 0%, var(--green-accent) 100%);
 }
 
 body.materiales-page .programacion-tabla-materiales td,
@@ -9393,7 +9389,7 @@ body.mismateriales-page .programacion-tabla-materiales tbody tr:hover {
 body.materiales-page .estado-vacio,
 body.mismateriales-page .estado-vacio {
     text-align: center;
-    color: var(--gris);
+    color: #c2c5c7;
     font-style: italic;
     padding: 24px;
 }
