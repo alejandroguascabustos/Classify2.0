@@ -3,6 +3,7 @@ package com.classify20.controller;
 import com.classify20.model.CargaResultado;
 import com.classify20.service.CargaExcelService;
 import com.classify20.service.ClassifyDatabaseService;
+import com.classify20.service.InvitacionTokenService;
 import com.classify20.service.PlantillaExcelService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -36,13 +37,16 @@ public class GestionRegistrosController {
     private final PlantillaExcelService plantillaExcelService;
     private final CargaExcelService cargaExcelService;
     private final ClassifyDatabaseService databaseService;
+    private final InvitacionTokenService invitacionTokenService;
 
     public GestionRegistrosController(PlantillaExcelService plantillaExcelService,
                                       CargaExcelService cargaExcelService,
-                                      ClassifyDatabaseService databaseService) {
+                                      ClassifyDatabaseService databaseService,
+                                      InvitacionTokenService invitacionTokenService) {
         this.plantillaExcelService = plantillaExcelService;
         this.cargaExcelService = cargaExcelService;
         this.databaseService = databaseService;
+        this.invitacionTokenService = invitacionTokenService;
     }
 
     @GetMapping
@@ -64,6 +68,14 @@ public class GestionRegistrosController {
                          RedirectAttributes redirect) {
         CargaResultado resultado = cargaExcelService.procesar(archivo);
         redirect.addFlashAttribute("resultado", resultado);
+        return "redirect:/gestion-registros";
+    }
+
+    @PostMapping("/invitar")
+    public String invitar(@RequestParam("correo") String correo,
+                          RedirectAttributes redirect) {
+        InvitacionTokenService.Invitacion inv = invitacionTokenService.crearInvitacion(correo);
+        redirect.addFlashAttribute("invitacion", inv);
         return "redirect:/gestion-registros";
     }
 

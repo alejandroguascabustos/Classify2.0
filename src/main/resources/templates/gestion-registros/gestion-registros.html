@@ -108,12 +108,27 @@
             </div>
         </div>
 
-        <!-- Invitación individual (próxima etapa) -->
+        <!-- Invitación individual -->
         <div class="gr-card gr-invitacion">
             <div class="gr-card-ic">✉️</div>
             <h3>Enviar invitación individual</h3>
-            <p>Para una novedad: genera un enlace seguro de un solo uso (vence en 10 minutos) y envíalo al correo del usuario.</p>
-            <span class="gr-proximo">Disponible en la siguiente etapa</span>
+            <p>Para una novedad: genera un enlace seguro de un solo uso (vence en 10 minutos) y envíalo al correo del usuario autorizado.</p>
+            <form th:action="@{/gestion-registros/invitar}" method="post" class="gr-form-upload">
+                <input type="email" name="correo" placeholder="correo@colegio.com del usuario autorizado" required>
+                <button type="submit" class="gr-btn gr-btn-invitar">Enviar invitación</button>
+            </form>
+
+            <!-- Resultado de la invitación -->
+            <div th:if="${invitacion != null}" style="margin-top:14px;">
+                <div class="gr-alerta" th:classappend="${invitacion.exito} ? 'ok' : 'error'"
+                     th:text="${(invitacion.exito ? '✅ ' : '⚠️ ') + invitacion.mensaje}">msg</div>
+                <div th:if="${invitacion.exito and invitacion.enlace != null}" class="gr-enlace">
+                    <label>Enlace de invitación (válido 10 min, un solo uso):</label>
+                    <div class="gr-enlace-box">
+                        <input type="text" th:value="${invitacion.enlace}" readonly onclick="this.select()">
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- Usuarios autorizados pendientes -->

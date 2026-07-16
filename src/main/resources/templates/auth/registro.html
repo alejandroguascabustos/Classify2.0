@@ -105,7 +105,12 @@
                 <!-- Mensaje de error -->
                 <div class="alert alert-danger" th:if="${errorMessage}" th:text="${errorMessage}"></div>
 
-                <form th:action="@{/registro/procesarRegistro}" method="post" class="form-registro">
+                <!-- Enlace de invitación inválido / vencido / registro solo por invitación -->
+                <div class="alert alert-danger" th:if="${tokenValido == false}" th:text="${mensajeToken}"></div>
+
+                <form th:action="@{/registro/procesarRegistro}" method="post" class="form-registro"
+                      th:if="${tokenValido != false}">
+                    <input type="hidden" name="token" th:value="${token}">
                     <label class="labelregistro">Nombre</label>
                     <input type="text" name="nombre" placeholder="Jose" required pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$" title="Solo se permiten letras" oninput="this.value = this.value.replace(/[0-9]/g, '')">
 
@@ -113,7 +118,8 @@
                     <input type="text" name="apellido" placeholder="Arteaga" required pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$" title="Solo se permiten letras" oninput="this.value = this.value.replace(/[0-9]/g, '')">
 
                     <label class="labelregistro">Correo</label>
-                    <input type="email" name="correo" placeholder="Jose@colegio.com" required onblur="this.value = this.value.trim()">
+                    <input type="email" name="correo" placeholder="Jose@colegio.com" required onblur="this.value = this.value.trim()"
+                           th:value="${correoToken}" th:readonly="${correoToken != null}">
 
                     <label class="labelregistro">Número de Documento</label>
                     <input type="text" name="documento" placeholder="1234567890" required pattern="[0-9]{8,11}" title="Debe tener entre 8 y 11 dígitos" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 11)">

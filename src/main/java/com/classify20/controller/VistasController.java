@@ -7,9 +7,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import com.classify20.model.Agenda;
+import com.classify20.model.TokenValidacion;
 import com.classify20.service.NoticiaService;
 import com.classify20.service.AgendaService;
+import com.classify20.service.InvitacionTokenService;
 
+import org.springframework.web.bind.annotation.RequestParam;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -20,6 +23,12 @@ public class VistasController {
 
     @Autowired
     private AgendaService agendaService;
+
+    @Autowired
+    private InvitacionTokenService invitacionTokenService;
+
+    @Value("${classify.registro.solo-invitacion:false}")
+    private boolean soloInvitacion;
 
     @Value("${classify.webhooks.contacta.url}")
     private String webhookContactaUrl;
@@ -54,7 +63,24 @@ public class VistasController {
         return "auth/login";
     }
     @GetMapping("/registro")
-    public String mostrarRegisto(){
+    public String mostrarRegisto(@RequestParam(value = "token", required = false) String token, Model model){
+        if (token != null && !token.isBlank()) {
+            TokenValidacion tv = invitacionTokenService.validar(token);
+            if (tv.valido()) {
+                model.addAttribute("tokenValido", true);
+                model.addAttribute("token", token);
+                model.addAttribute("correoToken", tv.correo());
+            } else {
+                model.addAttribute("tokenValido", false);
+                model.addAttribute("mensajeToken", tv.motivo());
+            }
+        } else if (soloInvitacion) {
+            model.addAttribute("tokenValido", false);
+            model.addAttribute("mensajeToken",
+                    "El registro es solo por invitación. Solicite acceso al administrador.");
+        } else {
+            model.addAttribute("tokenValido", true);
+        }
         return "auth/registro";
     }
     @GetMapping("/califica")
