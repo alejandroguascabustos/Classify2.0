@@ -47,6 +47,9 @@
             <a th:href="@{/programacion}" class="inicioprincipal2">
                 <img th:src="@{/img/programacion.png}" width="25px" class="imgmenu">Programación
             </a>
+            <a th:href="@{/gestion-registros}" class="inicioprincipal2">
+                <img th:src="@{/img/upload.png}" width="25px" class="imgmenu">Gestión de Registros
+            </a>
             <a th:href="@{/aprende}" class="inicioprincipal2">
                 <img th:src="@{/img/aprende.png}" width="25px" class="imgmenu">Aprende
             </a>
@@ -67,6 +70,22 @@
             </a>
             <a th:href="@{/notas}" class="inicioprincipal2">
                 <img th:src="@{/img/notas.png}" width="25px" class="imgmenu">Notas
+            </a>
+        </th:block>
+
+        <!-- Perfil 2: Coordinador -->
+        <th:block th:if="${session.perfil == 2}">
+            <a th:href="@{/programacion}" class="inicioprincipal2">
+                <img th:src="@{/img/programacion.png}" width="25px" class="imgmenu">Programación
+            </a>
+            <a th:href="@{/gestion-registros}" class="inicioprincipal2">
+                <img th:src="@{/img/upload.png}" width="25px" class="imgmenu">Gestión de Registros
+            </a>
+            <a th:href="@{/aprende}" class="inicioprincipal2">
+                <img th:src="@{/img/aprende.png}" width="25px" class="imgmenu">Aprende
+            </a>
+            <a th:href="@{/mismateriales}" class="inicioprincipal2">
+                <img th:src="@{/img/descargamaterial.png}" width="25px" class="imgmenu">Mis Materiales
             </a>
         </th:block>
 

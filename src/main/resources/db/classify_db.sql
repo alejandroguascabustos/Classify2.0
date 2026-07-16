@@ -58,3 +58,38 @@ DO UPDATE SET
 -- SELECT 'CREATE DATABASE classify OWNER classify_app' WHERE NOT EXISTS (SELECT 1 FROM pg_database WHERE datname = 'classify')\gexec
 */
 
+
+-- ============================================================
+-- Módulo Gestión de Registros
+-- ============================================================
+CREATE TABLE IF NOT EXISTS usuarios_pendientes (
+    id BIGSERIAL PRIMARY KEY,
+    nombre VARCHAR(120) NOT NULL,
+    apellido VARCHAR(120) NOT NULL,
+    correo VARCHAR(180) NOT NULL UNIQUE,
+    documento VARCHAR(40) NOT NULL UNIQUE,
+    telefono VARCHAR(30),
+    nombre_usuario VARCHAR(100) NOT NULL UNIQUE,
+    tipo_usuario VARCHAR(20) NOT NULL,
+    curso VARCHAR(50),
+    materia VARCHAR(150),
+    nombre_estudiante VARCHAR(150),
+    estado VARCHAR(20) NOT NULL DEFAULT 'autorizado',
+    origen VARCHAR(20) NOT NULL DEFAULT 'excel',
+    creado_en TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+CREATE INDEX IF NOT EXISTS idx_usuarios_pendientes_estado ON usuarios_pendientes (estado);
+
+CREATE TABLE IF NOT EXISTS registro_tokens (
+    id BIGSERIAL PRIMARY KEY,
+    token_hash VARCHAR(255) NOT NULL UNIQUE,
+    correo VARCHAR(180) NOT NULL,
+    usuario_pendiente_id BIGINT REFERENCES usuarios_pendientes(id) ON DELETE SET NULL,
+    estado VARCHAR(20) NOT NULL DEFAULT 'pendiente',
+    intentos INT NOT NULL DEFAULT 0,
+    creado_en TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    expira_en TIMESTAMP NOT NULL,
+    usado_en TIMESTAMP
+);
+CREATE INDEX IF NOT EXISTS idx_registro_tokens_hash ON registro_tokens (token_hash);
+CREATE INDEX IF NOT EXISTS idx_registro_tokens_estado ON registro_tokens (estado);
