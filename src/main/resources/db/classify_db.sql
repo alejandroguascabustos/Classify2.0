@@ -95,3 +95,15 @@ CREATE TABLE IF NOT EXISTS registro_tokens (
 );
 CREATE INDEX IF NOT EXISTS idx_registro_tokens_hash ON registro_tokens (token_hash);
 CREATE INDEX IF NOT EXISTS idx_registro_tokens_estado ON registro_tokens (estado);
+
+-- Parámetros del colegio (una sola fila, id=1): rigen el formulario de registro
+-- y la validación de la carga por Excel.
+CREATE TABLE IF NOT EXISTS parametros_colegio (
+    id INT PRIMARY KEY,
+    num_grados INT NOT NULL DEFAULT 11,
+    num_grupos INT NOT NULL DEFAULT 4,
+    materias TEXT NOT NULL DEFAULT 'Matematicas,Español,Sociales,Historia,Ingles,Etica y valores,Educación fisica,Informatica',
+    actualizado_en TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    actualizado_por VARCHAR(100),
+    CONSTRAINT parametros_unica_fila CHECK (id = 1)
+);

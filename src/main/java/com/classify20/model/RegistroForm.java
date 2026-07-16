@@ -1,5 +1,7 @@
 package com.classify20.model;
 
+import java.util.List;
+
 public class RegistroForm {
 
     private String nombre;
@@ -14,6 +16,46 @@ public class RegistroForm {
     private String materia;
     private String nombre_estudiante;
     private String codigo_docente;
+
+    // Estudiante: grado y grupo por separado (curso = grado + grupo)
+    private String grado;
+    private String grupo;
+
+    // Docente: puede dictar varias materias a varios grados
+    private List<String> materias;
+    private List<String> grados;
+
+    public String getGrado() {
+        return grado;
+    }
+
+    public void setGrado(String grado) {
+        this.grado = grado;
+    }
+
+    public String getGrupo() {
+        return grupo;
+    }
+
+    public void setGrupo(String grupo) {
+        this.grupo = grupo;
+    }
+
+    public List<String> getMaterias() {
+        return materias;
+    }
+
+    public void setMaterias(List<String> materias) {
+        this.materias = materias;
+    }
+
+    public List<String> getGrados() {
+        return grados;
+    }
+
+    public void setGrados(List<String> grados) {
+        this.grados = grados;
+    }
 
     public String getNombre() {
         return nombre;

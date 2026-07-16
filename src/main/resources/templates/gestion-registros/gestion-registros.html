@@ -89,6 +89,39 @@
             </div>
         </div>
 
+        <!-- Parámetros del colegio -->
+        <div class="gr-card gr-parametros">
+            <div class="gr-card-ic">⚙️</div>
+            <h3>Parámetros del colegio</h3>
+            <p>Definen los valores válidos del formulario de registro <strong>y</strong> de la carga por Excel. Si cambias algo aquí, cambia en todo el sistema.</p>
+
+            <div th:if="${parametrosResultado != null}" class="gr-alerta"
+                 th:classappend="${parametrosResultado.exito} ? 'ok' : 'error'"
+                 th:text="${(parametrosResultado.exito ? '✅ ' : '⚠️ ') + parametrosResultado.mensaje}">msg</div>
+
+            <form th:action="@{/gestion-registros/parametros}" method="post" class="gr-form-parametros">
+                <div class="gr-param-row">
+                    <div class="gr-param-campo">
+                        <label for="numGrados">¿Cuántos grados tiene el colegio?</label>
+                        <input type="number" id="numGrados" name="numGrados" min="1" max="20" required
+                               th:value="${parametros.numGrados}">
+                        <span class="gr-param-hint" th:text="'Genera los grados 1° a ' + ${parametros.numGrados} + '°'">1° a 11°</span>
+                    </div>
+                    <div class="gr-param-campo">
+                        <label for="numGrupos">¿Cuántos grupos por grado?</label>
+                        <input type="number" id="numGrupos" name="numGrupos" min="1" max="26" required
+                               th:value="${parametros.numGrupos}">
+                        <span class="gr-param-hint" th:text="'Genera los grupos: ' + ${#strings.listJoin(parametros.grupos(), ', ')}">A, B, C, D</span>
+                    </div>
+                </div>
+                <div class="gr-param-campo">
+                    <label for="materias">Materias del colegio <span class="gr-param-hint">(separadas por coma)</span></label>
+                    <textarea id="materias" name="materias" rows="2" required th:text="${parametros.materiasCsv}"></textarea>
+                </div>
+                <button type="submit" class="gr-btn gr-btn-solid">Guardar parámetros</button>
+            </form>
+        </div>
+
         <!-- Acciones: descargar plantilla / cargar archivo -->
         <div class="gr-acciones">
             <div class="gr-card">
