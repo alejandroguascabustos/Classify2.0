@@ -97,6 +97,23 @@
     background: #f8f9fa;
 }
 
+.gr-btn-invitar { background: #F38F02; color: #fff; border-color: #F38F02; }
+.gr-btn-invitar:hover { background: #d97e00; border-color: #d97e00; }
+
+/* Enlace de invitación generado */
+.gr-enlace { margin-top: 12px; }
+.gr-enlace label { display: block; font-size: 13px; color: #555; font-weight: 600; margin-bottom: 6px; }
+.gr-enlace-box input {
+    width: 100%;
+    font-family: ui-monospace, Menlo, monospace;
+    font-size: 12.5px;
+    padding: 10px 12px;
+    border: 1px solid #c46f00;
+    border-radius: 8px;
+    background: #fffaf2;
+    color: #333;
+}
+
 /* Estado en la tabla */
 .gr-estado {
     display: inline-block;
