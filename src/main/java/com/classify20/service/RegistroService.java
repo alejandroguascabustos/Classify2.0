@@ -293,6 +293,7 @@ public class RegistroService {
     }
 
     private RegistroNormalizado normalizar(RegistroForm form) {
+        String tipo = limpiar(form.getTipo_usuario()).toLowerCase(Locale.ROOT);
         return new RegistroNormalizado(
                 limpiar(form.getNombre()),
                 limpiar(form.getApellido()),
@@ -301,12 +302,43 @@ public class RegistroService {
                 limpiar(form.getTelefono()),
                 limpiar(form.getNombre_usu()),
                 form.getPass_usuario() == null ? "" : form.getPass_usuario().trim(),
-                limpiar(form.getTipo_usuario()).toLowerCase(Locale.ROOT),
-                limpiar(form.getCurso()),
-                limpiar(form.getMateria()),
+                tipo,
+                construirCurso(form, tipo),
+                construirMateria(form),
                 limpiar(form.getNombre_estudiante()),
                 limpiar(form.getCodigo_docente()).toUpperCase(Locale.ROOT)
         );
+    }
+
+    /**
+     * Estudiante: curso = grado + grupo (ej. "10" + "A" = "10A").
+     * Docente: los grados a los que esta sujeto, separados por coma (ej. "6, 7, 8").
+     * Si no llegan los campos nuevos, usa el campo curso original (compatibilidad).
+     */
+    private String construirCurso(RegistroForm form, String tipo) {
+        if ("docente".equals(tipo) && form.getGrados() != null && !form.getGrados().isEmpty()) {
+            return form.getGrados().stream()
+                    .map(this::limpiar)
+                    .filter(s -> !s.isBlank())
+                    .collect(java.util.stream.Collectors.joining(", "));
+        }
+        String grado = limpiar(form.getGrado());
+        String grupo = limpiar(form.getGrupo());
+        if (!grado.isBlank() || !grupo.isBlank()) {
+            return (grado + grupo).trim();
+        }
+        return limpiar(form.getCurso());
+    }
+
+    /** Docente: puede dictar varias materias, separadas por coma. */
+    private String construirMateria(RegistroForm form) {
+        if (form.getMaterias() != null && !form.getMaterias().isEmpty()) {
+            return form.getMaterias().stream()
+                    .map(this::limpiar)
+                    .filter(s -> !s.isBlank())
+                    .collect(java.util.stream.Collectors.joining(", "));
+        }
+        return limpiar(form.getMateria());
     }
 
     private void validar(RegistroNormalizado registro) {
@@ -332,12 +364,15 @@ public class RegistroService {
         switch (registro.tipoUsuario()) {
             case "estudiante" -> {
                 if (registro.curso().isBlank()) {
-                    throw new RegistroException("El curso es obligatorio para estudiantes.");
+                    throw new RegistroException("Debes seleccionar el grado y el grupo.");
                 }
             }
             case "docente" -> {
                 if (registro.materia().isBlank()) {
-                    throw new RegistroException("La materia es obligatoria para docentes.");
+                    throw new RegistroException("Debes seleccionar al menos una materia que dictas.");
+                }
+                if (registro.curso().isBlank()) {
+                    throw new RegistroException("Debes seleccionar al menos un grado al que estas sujeto.");
                 }
             }
             case "acudiente" -> {

@@ -4,6 +4,7 @@ import com.classify20.model.CargaResultado;
 import com.classify20.service.CargaExcelService;
 import com.classify20.service.ClassifyDatabaseService;
 import com.classify20.service.InvitacionTokenService;
+import com.classify20.service.ParametrosColegioService;
 import com.classify20.service.PlantillaExcelService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -38,21 +39,39 @@ public class GestionRegistrosController {
     private final CargaExcelService cargaExcelService;
     private final ClassifyDatabaseService databaseService;
     private final InvitacionTokenService invitacionTokenService;
+    private final ParametrosColegioService parametrosService;
 
     public GestionRegistrosController(PlantillaExcelService plantillaExcelService,
                                       CargaExcelService cargaExcelService,
                                       ClassifyDatabaseService databaseService,
-                                      InvitacionTokenService invitacionTokenService) {
+                                      InvitacionTokenService invitacionTokenService,
+                                      ParametrosColegioService parametrosService) {
         this.plantillaExcelService = plantillaExcelService;
         this.cargaExcelService = cargaExcelService;
         this.databaseService = databaseService;
         this.invitacionTokenService = invitacionTokenService;
+        this.parametrosService = parametrosService;
     }
 
     @GetMapping
     public String vista(Model model, HttpSession session) {
         model.addAttribute("pendientes", listarPendientes());
+        model.addAttribute("parametros", parametrosService.obtener());
         return "gestion-registros/gestion-registros";
+    }
+
+    @PostMapping("/parametros")
+    public String guardarParametros(@RequestParam("numGrados") int numGrados,
+                                    @RequestParam("numGrupos") int numGrupos,
+                                    @RequestParam("materias") String materias,
+                                    HttpSession session,
+                                    RedirectAttributes redirect) {
+        Object usuario = session.getAttribute("usuario");
+        ParametrosColegioService.Resultado r =
+                parametrosService.guardar(numGrados, numGrupos, materias,
+                        usuario == null ? "desconocido" : usuario.toString());
+        redirect.addFlashAttribute("parametrosResultado", r);
+        return "redirect:/gestion-registros";
     }
 
     @GetMapping("/plantilla")

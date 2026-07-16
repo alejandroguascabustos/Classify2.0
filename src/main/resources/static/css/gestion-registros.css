@@ -122,6 +122,31 @@
     color: #333;
 }
 
+/* Parámetros del colegio */
+.gr-parametros { border-left-color: #2563a8; margin-bottom: 18px; }
+.gr-parametros h3 { color: #1e4f86; }
+.gr-form-parametros { display: flex; flex-direction: column; gap: 14px; }
+.gr-param-row { display: flex; flex-wrap: wrap; gap: 14px; }
+.gr-param-campo { flex: 1; min-width: 190px; display: flex; flex-direction: column; }
+.gr-param-campo label { font-size: 13.5px; font-weight: 600; color: #444; margin-bottom: 5px; }
+.gr-param-campo input,
+.gr-param-campo textarea {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 9px 11px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: inherit;
+    background: #fff;
+}
+.gr-param-campo input:focus,
+.gr-param-campo textarea:focus {
+    outline: none; border-color: #2563a8; box-shadow: 0 0 0 3px rgba(37, 99, 168, .12);
+}
+.gr-param-hint { font-size: 12px; color: #777; margin-top: 4px; font-weight: 400; }
+.gr-form-parametros .gr-btn { align-self: flex-start; }
+
 /* Estado en la tabla */
 .gr-estado {
     display: inline-block;

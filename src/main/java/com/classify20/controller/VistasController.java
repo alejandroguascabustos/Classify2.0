@@ -11,6 +11,7 @@ import com.classify20.model.TokenValidacion;
 import com.classify20.service.NoticiaService;
 import com.classify20.service.AgendaService;
 import com.classify20.service.InvitacionTokenService;
+import com.classify20.service.ParametrosColegioService;
 
 import org.springframework.web.bind.annotation.RequestParam;
 import jakarta.servlet.http.HttpSession;
@@ -26,6 +27,9 @@ public class VistasController {
 
     @Autowired
     private InvitacionTokenService invitacionTokenService;
+
+    @Autowired
+    private ParametrosColegioService parametrosService;
 
     @Value("${classify.registro.solo-invitacion:false}")
     private boolean soloInvitacion;
@@ -64,6 +68,9 @@ public class VistasController {
     }
     @GetMapping("/registro")
     public String mostrarRegisto(@RequestParam(value = "token", required = false) String token, Model model){
+        // Grados, grupos y materias válidos según los parámetros del colegio
+        model.addAttribute("parametros", parametrosService.obtener());
+
         if (token != null && !token.isBlank()) {
             TokenValidacion tv = invitacionTokenService.validar(token);
             if (tv.valido()) {

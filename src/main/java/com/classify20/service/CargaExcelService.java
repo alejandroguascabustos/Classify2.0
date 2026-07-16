@@ -2,6 +2,7 @@ package com.classify20.service;
 
 import com.classify20.model.CargaResultado;
 import com.classify20.model.ErrorFila;
+import com.classify20.model.ParametrosColegio;
 import org.apache.poi.ss.usermodel.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -29,9 +30,12 @@ public class CargaExcelService {
     private static final String TEL_REGEX = "\\d{7,10}";
 
     private final ClassifyDatabaseService databaseService;
+    private final ParametrosColegioService parametrosService;
 
-    public CargaExcelService(ClassifyDatabaseService databaseService) {
+    public CargaExcelService(ClassifyDatabaseService databaseService,
+                             ParametrosColegioService parametrosService) {
         this.databaseService = databaseService;
+        this.parametrosService = parametrosService;
     }
 
     public CargaResultado procesar(MultipartFile archivo) {
@@ -44,6 +48,9 @@ public class CargaExcelService {
             return new CargaResultado(false, 0, 0, List.of(),
                     "El archivo debe ser un Excel (.xlsx o .xls).");
         }
+
+        // Parámetros del colegio: definen los grados, grupos y materias válidos
+        ParametrosColegio params = parametrosService.obtener();
 
         List<ErrorFila> errores = new ArrayList<>();
         List<String[]> filasValidas = new ArrayList<>();
@@ -85,7 +92,7 @@ public class CargaExcelService {
                 if (etiqueta.isBlank()) etiqueta = "(sin nombre)";
 
                 validarFila(connection, v, numFila, etiqueta, errores,
-                        correosVistos, documentosVistos, usuariosVistos);
+                        correosVistos, documentosVistos, usuariosVistos, params);
 
                 if (errores.isEmpty() || erroresDeFila(errores, numFila) == 0) {
                     filasValidas.add(v);
@@ -130,7 +137,8 @@ public class CargaExcelService {
     }
 
     private void validarFila(Connection conn, String[] v, int fila, String etiqueta, List<ErrorFila> errores,
-                             Set<String> correosVistos, Set<String> documentosVistos, Set<String> usuariosVistos) {
+                             Set<String> correosVistos, Set<String> documentosVistos, Set<String> usuariosVistos,
+                             ParametrosColegio params) {
         String nombre = v[0], apellido = v[1], correo = v[2], documento = v[3],
                 telefono = v[4], usuario = v[5], tipo = v[6].toLowerCase();
 
@@ -176,14 +184,55 @@ public class CargaExcelService {
                     "Debe ser: estudiante, docente, acudiente o coordinador"));
         }
 
-        // Campos condicionales por rol
-        String materia = v[7], grado = v[8];
-        if ("docente".equals(tipo) && materia.isBlank()) {
-            errores.add(new ErrorFila(fila, etiqueta, "materia", materia, "Obligatoria para docente"));
+        // Campos condicionales por rol, validados contra los parámetros del colegio
+        String materia = v[7], grado = v[8], grupo = v[9];
+
+        if ("docente".equals(tipo)) {
+            // Un docente puede dictar varias materias a varios grados (separados por coma)
+            if (materia.isBlank()) {
+                errores.add(new ErrorFila(fila, etiqueta, "materia", materia,
+                        "Obligatoria para docente (puedes poner varias separadas por coma)"));
+            } else {
+                for (String m : materia.split(",")) {
+                    String mm = m.trim();
+                    if (!mm.isBlank() && !contieneIgnoreCase(params.materias(), mm)) {
+                        errores.add(new ErrorFila(fila, etiqueta, "materia", mm,
+                                "No es una materia del colegio. Válidas: " + String.join(", ", params.materias())));
+                    }
+                }
+            }
+            if (grado.isBlank()) {
+                errores.add(new ErrorFila(fila, etiqueta, "grado", grado,
+                        "Obligatorio para docente: los grados a los que está sujeto (separados por coma)"));
+            } else {
+                for (String g : grado.split(",")) {
+                    String gg = g.trim();
+                    if (!gg.isBlank() && !params.grados().contains(gg)) {
+                        errores.add(new ErrorFila(fila, etiqueta, "grado", gg,
+                                "Grado inválido. El colegio tiene grados 1 a " + params.numGrados()));
+                    }
+                }
+            }
         }
-        if ("estudiante".equals(tipo) && grado.isBlank()) {
-            errores.add(new ErrorFila(fila, etiqueta, "grado", grado, "Obligatorio para estudiante"));
+
+        if ("estudiante".equals(tipo)) {
+            if (grado.isBlank()) {
+                errores.add(new ErrorFila(fila, etiqueta, "grado", grado, "Obligatorio para estudiante"));
+            } else if (!params.grados().contains(grado.trim())) {
+                errores.add(new ErrorFila(fila, etiqueta, "grado", grado,
+                        "Grado inválido. El colegio tiene grados 1 a " + params.numGrados()));
+            }
+            if (grupo.isBlank()) {
+                errores.add(new ErrorFila(fila, etiqueta, "grupo", grupo, "Obligatorio para estudiante"));
+            } else if (!contieneIgnoreCase(params.grupos(), grupo.trim())) {
+                errores.add(new ErrorFila(fila, etiqueta, "grupo", grupo,
+                        "Grupo inválido. Válidos: " + String.join(", ", params.grupos())));
+            }
         }
+    }
+
+    private boolean contieneIgnoreCase(List<String> lista, String valor) {
+        return lista.stream().anyMatch(x -> x.equalsIgnoreCase(valor));
     }
 
     private int erroresDeFila(List<ErrorFila> errores, int fila) {
