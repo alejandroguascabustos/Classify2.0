@@ -12,7 +12,20 @@ public class AuthInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         HttpSession session = request.getSession(false);
-        if (session != null && session.getAttribute("usuarioId") != null) {
+        boolean autenticado = session != null && session.getAttribute("usuarioId") != null;
+
+        if (autenticado) {
+            // Restricción por perfil para el módulo Gestión de Registros:
+            // solo Administrador (perfil 1) y Coordinador (perfil 2).
+            String uri = request.getRequestURI();
+            if (uri != null && uri.contains("/gestion-registros")) {
+                Object perfilObj = session.getAttribute("perfil");
+                int perfil = (perfilObj instanceof Integer p) ? p : -1;
+                if (perfil != 1 && perfil != 2) {
+                    response.sendRedirect(request.getContextPath() + "/menu");
+                    return false;
+                }
+            }
             return true;
         }
 

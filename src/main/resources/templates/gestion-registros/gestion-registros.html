@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Classify - Gestión de Registros</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/gestion-registros.css}">
+    <link rel="shortcut icon" th:href="@{/img/favicon.ico}" type="image/x-icon">
+</head>
+
+<body>
+    <header class="brandinicio">
+        <div class="brand">
+            <a th:href="@{/inicio}"><img th:src="@{/img/logo.png}" alt="logo" class="logo"></a>
+            <a th:href="@{/inicio}">Classify</a>
+        </div>
+        <div class="brand2">
+            <a th:href="@{/inicio}" class="info-btn">Inicio</a>
+            <a th:href="@{/nosotros}" class="info-btn">Nosotros</a>
+            <a th:href="@{/contacto}" class="info-btn">Contacto</a>
+        </div>
+        <div class="header-tools">
+            <a th:href="@{/logout}" class="logout-btn" title="Cerrar sesión" aria-label="Cerrar sesión">
+                <img th:src="@{/img/salida.png}" alt="Cerrar sesión" class="logout-icon">
+            </a>
+        </div>
+    </header>
+
+    <div class="menu-toggle" id="menuToggle"><span></span><span></span><span></span></div>
+
+    <aside class="sidebar">
+        <a th:href="@{/menu}" class="inicioprincipal2">
+            <img th:src="@{/img/home.png}" width="25" class="imgmenu" alt="Inicio"> Inicio
+        </a>
+        <a th:href="@{/agenda}" class="inicioprincipal2">
+            <img th:src="@{/img/agenda.png}" width="25" class="imgmenu" alt="Agendar"> Agendar clase
+        </a>
+        <a th:href="@{/noticias}" class="inicioprincipal2">
+            <img th:src="@{/img/noticias.png}" width="25" class="imgmenu" alt="Noticias"> Noticias
+        </a>
+        <a th:href="@{/programacion}" class="inicioprincipal2">
+            <img th:src="@{/img/programacion.png}" width="25" class="imgmenu" alt="Programación"> Programación
+        </a>
+        <a th:href="@{/gestion-registros}" class="inicioprincipal">
+            <img th:src="@{/img/upload.png}" width="25" class="imgmenu" alt="Gestión de Registros"> Gestión de Registros
+        </a>
+        <a th:href="@{/aprende}" class="inicioprincipal2">
+            <img th:src="@{/img/aprende.png}" width="25" class="imgmenu" alt="Aprende"> Aprende
+        </a>
+        <a th:href="@{/mismateriales}" class="inicioprincipal2">
+            <img th:src="@{/img/descargamaterial.png}" width="25" class="imgmenu" alt="Mis Materiales"> Mis Materiales
+        </a>
+        <a th:href="@{/materiales}" class="inicioprincipal2">
+            <img th:src="@{/img/upload.png}" width="25" class="imgmenu" alt="Carga Materiales"> Carga Materiales
+        </a>
+    </aside>
+
+    <main class="programacion-main">
+        <h2 class="programacion-title">Gestión de Registros</h2>
+        <p class="gr-intro">Autoriza usuarios para que puedan crear su cuenta. Descarga la plantilla, llénala y cárgala; o envía una invitación individual con enlace seguro.</p>
+
+        <!-- Resultado de la carga -->
+        <div th:if="${resultado != null and resultado.success}" class="gr-alerta ok">
+            ✅ <span th:text="${resultado.mensaje}">Cargado</span>
+        </div>
+        <div th:if="${resultado != null and !resultado.success}" class="gr-alerta error">
+            ⚠️ <span th:text="${resultado.mensaje}">Error</span>
+        </div>
+
+        <!-- Reporte de errores por fila -->
+        <div th:if="${resultado != null and resultado.errores != null and !resultado.errores.isEmpty()}" class="gr-errores">
+            <h3>Detalle de errores — corrige y vuelve a cargar</h3>
+            <div class="tablaprog">
+                <table class="programacion-tabla">
+                    <thead>
+                        <tr><th>Fila</th><th>Usuario</th><th>Columna</th><th>Valor</th><th>Motivo</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="e : ${resultado.errores}">
+                            <td th:text="${e.fila}"></td>
+                            <td th:text="${e.usuario}"></td>
+                            <td><code th:text="${e.columna}"></code></td>
+                            <td th:text="${e.valor}"></td>
+                            <td th:text="${e.motivo}"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Acciones: descargar plantilla / cargar archivo -->
+        <div class="gr-acciones">
+            <div class="gr-card">
+                <div class="gr-card-ic">📥</div>
+                <h3>Descargar plantilla</h3>
+                <p>Excel con las columnas oficiales (las mismas del formulario de registro).</p>
+                <a th:href="@{/gestion-registros/plantilla}" class="gr-btn gr-btn-outline">Descargar plantilla</a>
+            </div>
+            <div class="gr-card">
+                <div class="gr-card-ic">📤</div>
+                <h3>Cargar archivo Excel</h3>
+                <p>Sube la plantilla llena. El sistema valida y autoriza a los usuarios.</p>
+                <form th:action="@{/gestion-registros/cargar}" method="post" enctype="multipart/form-data" class="gr-form-upload">
+                    <input type="file" name="archivo" accept=".xlsx,.xls" required id="archivoInput">
+                    <button type="submit" class="gr-btn gr-btn-solid">Cargar</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Invitación individual (próxima etapa) -->
+        <div class="gr-card gr-invitacion">
+            <div class="gr-card-ic">✉️</div>
+            <h3>Enviar invitación individual</h3>
+            <p>Para una novedad: genera un enlace seguro de un solo uso (vence en 10 minutos) y envíalo al correo del usuario.</p>
+            <span class="gr-proximo">Disponible en la siguiente etapa</span>
+        </div>
+
+        <!-- Usuarios autorizados pendientes -->
+        <h3 class="gr-subtitulo">Usuarios autorizados (pendientes de registro)</h3>
+        <div class="tablaprog">
+            <table class="programacion-tabla">
+                <thead>
+                    <tr><th>ID</th><th>Nombre</th><th>Correo</th><th>Documento</th><th>Usuario</th><th>Tipo</th><th>Curso</th><th>Estado</th><th>Origen</th></tr>
+                </thead>
+                <tbody>
+                    <tr th:each="p : ${pendientes}">
+                        <td th:text="${p.id}"></td>
+                        <td th:text="${p.nombre}"></td>
+                        <td th:text="${p.correo}"></td>
+                        <td th:text="${p.documento}"></td>
+                        <td th:text="${p.usuario}"></td>
+                        <td th:text="${p.tipo}"></td>
+                        <td th:text="${p.curso}"></td>
+                        <td><span class="gr-estado" th:classappend="${p.estado == 'registrado' ? 'reg' : 'aut'}" th:text="${p.estado}"></span></td>
+                        <td th:text="${p.origen}"></td>
+                    </tr>
+                </tbody>
+            </table>
+            <p class="agenda-py-vacio" th:if="${pendientes == null or pendientes.isEmpty()}">
+                Aún no hay usuarios autorizados. Carga un Excel para empezar.
+            </p>
+        </div>
+    </main>
+
+    <script th:src="@{/js/chatbot.js}"></script>
+</body>
+</html>
