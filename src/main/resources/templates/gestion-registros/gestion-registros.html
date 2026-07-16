@@ -101,9 +101,11 @@
                 <div class="gr-card-ic">📤</div>
                 <h3>Cargar archivo Excel</h3>
                 <p>Sube la plantilla llena. El sistema valida y autoriza a los usuarios.</p>
-                <form th:action="@{/gestion-registros/cargar}" method="post" enctype="multipart/form-data" class="gr-form-upload">
-                    <input type="file" name="archivo" accept=".xlsx,.xls" required id="archivoInput">
-                    <button type="submit" class="gr-btn gr-btn-solid">Cargar</button>
+                <form th:action="@{/gestion-registros/cargar}" method="post" enctype="multipart/form-data" class="gr-form-upload" id="formCarga">
+                    <input type="file" name="archivo" accept=".xlsx,.xls" required id="archivoInput" class="gr-file-hidden">
+                    <label for="archivoInput" class="gr-btn gr-btn-outline gr-file-label">📎 Seleccionar archivo</label>
+                    <span id="nombreArchivo" class="gr-file-name">Ningún archivo seleccionado</span>
+                    <button type="submit" class="gr-btn gr-btn-solid" id="btnCargar" disabled>Cargar</button>
                 </form>
             </div>
         </div>
@@ -136,7 +138,7 @@
         <div class="tablaprog">
             <table class="programacion-tabla">
                 <thead>
-                    <tr><th>ID</th><th>Nombre</th><th>Correo</th><th>Documento</th><th>Usuario</th><th>Tipo</th><th>Curso</th><th>Estado</th><th>Origen</th></tr>
+                    <tr><th>ID</th><th>Nombre</th><th>Correo</th><th>Documento</th><th>Usuario</th><th>Rol</th><th>Materia</th><th>Grado</th><th>Grupo</th><th>Estado</th><th>Origen</th></tr>
                 </thead>
                 <tbody>
                     <tr th:each="p : ${pendientes}">
@@ -146,7 +148,9 @@
                         <td th:text="${p.documento}"></td>
                         <td th:text="${p.usuario}"></td>
                         <td th:text="${p.tipo}"></td>
-                        <td th:text="${p.curso}"></td>
+                        <td th:text="${p.materia}"></td>
+                        <td th:text="${p.grado}"></td>
+                        <td th:text="${p.grupo}"></td>
                         <td><span class="gr-estado" th:classappend="${p.estado == 'registrado' ? 'reg' : 'aut'}" th:text="${p.estado}"></span></td>
                         <td th:text="${p.origen}"></td>
                     </tr>
@@ -159,5 +163,24 @@
     </main>
 
     <script th:src="@{/js/chatbot.js}"></script>
+    <script>
+        (function () {
+            var input = document.getElementById('archivoInput');
+            var nombre = document.getElementById('nombreArchivo');
+            var btn = document.getElementById('btnCargar');
+            if (!input) return;
+            input.addEventListener('change', function () {
+                if (input.files && input.files.length > 0) {
+                    nombre.textContent = input.files[0].name;
+                    nombre.classList.add('elegido');
+                    btn.disabled = false;
+                } else {
+                    nombre.textContent = 'Ningún archivo seleccionado';
+                    nombre.classList.remove('elegido');
+                    btn.disabled = true;
+                }
+            });
+        })();
+    </script>
 </body>
 </html>
