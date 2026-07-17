@@ -9025,7 +9025,7 @@ body.mismateriales-page .materialestitletablavistaunica {
 body.materiales-page .titulocargamateriales em,
 body.mismateriales-page .materialestitletablavistaunica em {
     font-style: normal;
-    background: linear-gradient(135deg, var(--green) 0%, var(--green-accent) 100%);
+    background: var(--green-accent);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
