@@ -9246,7 +9246,7 @@ body.materiales-page .labelmateriales {
     justify-content: center;
     align-items: center;
     padding: 12px 20px;
-    background: var(--green-accent);
+    background: var(--green);
     color: #fff;
     border-radius: 12px;
     cursor: pointer;
