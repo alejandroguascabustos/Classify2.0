@@ -8941,11 +8941,6 @@ body.mismateriales-page .sidebar a {
     border-radius: 10px;
 }
 
-body.materiales-page .sidebar a.inicioprincipal,
-body.mismateriales-page .sidebar a.inicioprincipal {
-    background: linear-gradient(135deg, var(--green) 0%, var(--green-accent) 100%) !important;
-    color: #fff;
-}
 
 body.materiales-page .sidebar a.inicioprincipal2.active,
 body.materiales-page .sidebar a.inicioprincipal2:hover,
