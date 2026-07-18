@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classify - Activar cuenta</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="shortcut icon" th:href="@{/img/favicon.ico}" type="image/x-icon">
+    <style>
+        .activar-wrap { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px; background: #f5f8f3; }
+        .activar-card { background: #fff; border-radius: 18px; box-shadow: 0 10px 40px rgba(0,0,0,.08); border: 1px solid #e5e7eb; max-width: 460px; width: 100%; padding: 40px 34px; text-align: center; }
+        .activar-card img.logo { width: 54px; margin-bottom: 8px; }
+        .activar-card h1 { font-size: 26px; color: #013501; margin: 0 0 4px; letter-spacing: -.5px; }
+        .activar-card .sub { color: #64748b; font-size: 14px; margin: 0 0 22px; }
+        .activar-card h2 { font-size: 20px; color: #111827; margin: 0 0 8px; }
+        .activar-card p.lead { color: #4b5563; font-size: 15px; margin: 0 0 22px; line-height: 1.6; }
+        .activar-form { display: flex; flex-direction: column; gap: 14px; text-align: left; }
+        .activar-form label { font-size: 13.5px; font-weight: 600; color: #444; margin-bottom: -6px; }
+        .activar-form input { padding: 12px 14px; border: 1px solid #ccc; border-radius: 10px; font-size: 15px; }
+        .activar-form input:focus { outline: none; border-color: #006100; box-shadow: 0 0 0 3px rgba(0,97,0,.12); }
+        .activar-btn { background: #006100; color: #fff; border: none; border-radius: 10px; padding: 13px; font-size: 15px; font-weight: 700; cursor: pointer; transition: background .2s; }
+        .activar-btn:hover { background: #0a7a0a; }
+        .activar-alert { border-radius: 10px; padding: 12px 16px; font-size: 14px; margin-bottom: 16px; }
+        .activar-alert.error { background: #fdecea; color: #c0392b; border: 1px solid #f5c6cb; }
+        .activar-alert.ok { background: #e7f2e3; color: #006100; border: 1px solid #a9d3a0; }
+        .activar-card a.login-link { display: inline-block; margin-top: 18px; color: #006100; font-weight: 700; text-decoration: none; }
+        .activar-icon { font-size: 48px; line-height: 1; margin-bottom: 8px; }
+    </style>
+</head>
+
+<body>
+    <div class="activar-wrap">
+        <div class="activar-card">
+            <a th:href="@{/inicio}"><img th:src="@{/img/logo.png}" alt="Classify" class="logo"></a>
+            <h1>Classify</h1>
+            <p class="sub">Activación de cuenta</p>
+
+            <!-- Éxito -->
+            <div th:if="${exito != null}">
+                <div class="activar-icon">✅</div>
+                <h2>¡Contraseña actualizada!</h2>
+                <p class="lead">Tu cuenta quedó activada. Ya puedes iniciar sesión con tu nueva contraseña.</p>
+                <a th:href="@{/login}" class="activar-btn" style="display:inline-block; text-decoration:none;">Iniciar sesión</a>
+            </div>
+
+            <!-- Enlace inválido / vencido / usado -->
+            <div th:if="${exito == null and tokenValido == false}">
+                <div class="activar-icon">🔒</div>
+                <h2>Enlace no válido</h2>
+                <div class="activar-alert error" th:text="${mensaje}">El enlace ya no es válido.</div>
+                <a th:href="@{/login}" class="login-link">Ir a iniciar sesión</a>
+            </div>
+
+            <!-- Formulario para fijar la contraseña -->
+            <div th:if="${exito == null and tokenValido == true}">
+                <div class="activar-icon">🔑</div>
+                <h2 th:text="'Hola, ' + ${nombre}">Hola</h2>
+                <p class="lead">Crea tu contraseña definitiva para terminar de activar tu cuenta.</p>
+
+                <div th:if="${error}" class="activar-alert error" th:text="${error}"></div>
+
+                <form th:action="@{/activar}" method="post" class="activar-form" onsubmit="return validar()">
+                    <input type="hidden" name="token" th:value="${token}">
+                    <label for="password">Nueva contraseña</label>
+                    <input type="password" name="password" id="password" required minlength="6"
+                           placeholder="Mínimo 6 caracteres">
+                    <label for="password2">Repite la contraseña</label>
+                    <input type="password" name="password2" id="password2" required minlength="6"
+                           placeholder="Vuelve a escribirla">
+                    <button type="submit" class="activar-btn">Guardar y activar cuenta</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function validar() {
+            var p1 = document.getElementById('password').value;
+            var p2 = document.getElementById('password2').value;
+            if (p1 !== p2) { alert('Las contraseñas no coinciden.'); return false; }
+            if (p1.length < 6) { alert('La contraseña debe tener mínimo 6 caracteres.'); return false; }
+            return true;
+        }
+    </script>
+</body>
+
+</html>

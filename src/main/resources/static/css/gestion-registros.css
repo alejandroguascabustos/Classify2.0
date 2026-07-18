@@ -147,6 +147,14 @@
 .gr-param-hint { font-size: 12px; color: #777; margin-top: 4px; font-weight: 400; }
 .gr-form-parametros .gr-btn { align-self: flex-start; }
 
+/* Bienvenida masiva */
+.gr-bienvenida { border-left-color: #7b2cbf; margin-bottom: 18px; }
+.gr-bienvenida h3 { color: #5a189a; }
+.gr-btn-bienvenida { background: #7b2cbf; color: #fff; border-color: #7b2cbf; }
+.gr-btn-bienvenida:hover { background: #6a1fb0; border-color: #6a1fb0; }
+.gr-detalles { margin: 6px 0 12px; padding-left: 20px; font-size: 13px; color: #666; }
+.gr-detalles li { margin: 2px 0; }
+
 /* Estado en la tabla */
 .gr-estado {
     display: inline-block;

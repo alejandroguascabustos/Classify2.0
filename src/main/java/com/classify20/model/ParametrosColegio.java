@@ -8,7 +8,7 @@ import java.util.List;
  * Parámetros del colegio configurados por el coordinador/administrador.
  * Definen los valores válidos del formulario de registro y de la carga por Excel.
  */
-public record ParametrosColegio(int numGrados, int numGrupos, String materiasCsv) {
+public record ParametrosColegio(int numGrados, int numGrupos, String materiasCsv, String nombreColegio) {
 
     /** Grados válidos: 1..numGrados (ej. 11 → "1".."11"). */
     public List<String> grados() {

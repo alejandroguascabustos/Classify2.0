@@ -10,8 +10,8 @@ CREATE TABLE IF NOT EXISTS registro_usuarios (
     nombre_usuario VARCHAR(100) NOT NULL UNIQUE,
     pass_hash VARCHAR(255) NOT NULL,
     tipo_usuario VARCHAR(20) NOT NULL,
-    curso VARCHAR(50),
-    materia VARCHAR(150),
+    curso VARCHAR(255),
+    materia VARCHAR(255),
     nombre_estudiante VARCHAR(150),
     codigo_docente_asignado VARCHAR(20) UNIQUE,
     codigo_docente_referencia VARCHAR(20),
@@ -71,8 +71,8 @@ CREATE TABLE IF NOT EXISTS usuarios_pendientes (
     telefono VARCHAR(30),
     nombre_usuario VARCHAR(100) NOT NULL UNIQUE,
     tipo_usuario VARCHAR(20) NOT NULL,
-    curso VARCHAR(50),
-    materia VARCHAR(150),
+    curso VARCHAR(255),
+    materia VARCHAR(255),
     nombre_estudiante VARCHAR(150),
     grado VARCHAR(20),
     grupo VARCHAR(20),
@@ -102,8 +102,31 @@ CREATE TABLE IF NOT EXISTS parametros_colegio (
     id INT PRIMARY KEY,
     num_grados INT NOT NULL DEFAULT 11,
     num_grupos INT NOT NULL DEFAULT 4,
-    materias TEXT NOT NULL DEFAULT 'Matematicas,Español,Sociales,Historia,Ingles,Etica y valores,Educación fisica,Informatica',
+    materias TEXT NOT NULL DEFAULT 'Matematicas,Español,Sociales,Historia,Ingles,Etica y valores,Educación fisica,Informatica,Ciencias Politicas,Religion',
     actualizado_en TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     actualizado_por VARCHAR(100),
     CONSTRAINT parametros_unica_fila CHECK (id = 1)
 );
+
+-- Flujo de bienvenida / activación de cuenta
+ALTER TABLE parametros_colegio ADD COLUMN IF NOT EXISTS nombre_colegio VARCHAR(150) NOT NULL DEFAULT 'Colegio Moralba Sur Oriental';
+ALTER TABLE registro_usuarios ADD COLUMN IF NOT EXISTS debe_cambiar_password BOOLEAN NOT NULL DEFAULT false;
+
+-- Un docente puede guardar varias materias y varios cursos (lista separada por comas):
+-- se amplía el ancho de estas columnas en bases ya existentes.
+ALTER TABLE usuarios_pendientes ALTER COLUMN curso TYPE VARCHAR(255);
+ALTER TABLE usuarios_pendientes ALTER COLUMN materia TYPE VARCHAR(255);
+ALTER TABLE registro_usuarios ALTER COLUMN curso TYPE VARCHAR(255);
+ALTER TABLE registro_usuarios ALTER COLUMN materia TYPE VARCHAR(255);
+CREATE TABLE IF NOT EXISTS activacion_tokens (
+    id BIGSERIAL PRIMARY KEY,
+    token_hash VARCHAR(255) NOT NULL UNIQUE,
+    usuario_id BIGINT NOT NULL REFERENCES registro_usuarios(id) ON DELETE CASCADE,
+    estado VARCHAR(20) NOT NULL DEFAULT 'pendiente',
+    intentos INT NOT NULL DEFAULT 0,
+    creado_en TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    expira_en TIMESTAMP NOT NULL,
+    usado_en TIMESTAMP
+);
+CREATE INDEX IF NOT EXISTS idx_activacion_tokens_hash ON activacion_tokens (token_hash);
+CREATE INDEX IF NOT EXISTS idx_activacion_tokens_usuario ON activacion_tokens (usuario_id);

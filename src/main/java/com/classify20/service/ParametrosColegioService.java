@@ -21,7 +21,8 @@ public class ParametrosColegioService {
 
     private static final ParametrosColegio POR_DEFECTO = new ParametrosColegio(
             11, 4,
-            "Matematicas,Español,Sociales,Historia,Ingles,Etica y valores,Educación fisica,Informatica");
+            "Matematicas,Español,Sociales,Historia,Ingles,Etica y valores,Educación fisica,Informatica,Ciencias Politicas,Religion",
+            "Colegio Moralba Sur Oriental");
 
     private final ClassifyDatabaseService databaseService;
 
@@ -30,7 +31,7 @@ public class ParametrosColegioService {
     }
 
     public ParametrosColegio obtener() {
-        String sql = "SELECT num_grados, num_grupos, materias FROM parametros_colegio WHERE id = 1";
+        String sql = "SELECT num_grados, num_grupos, materias, nombre_colegio FROM parametros_colegio WHERE id = 1";
         try (Connection conn = databaseService.openConnection();
              PreparedStatement ps = conn.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
@@ -38,7 +39,8 @@ public class ParametrosColegioService {
                 return new ParametrosColegio(
                         rs.getInt("num_grados"),
                         rs.getInt("num_grupos"),
-                        rs.getString("materias"));
+                        rs.getString("materias"),
+                        rs.getString("nombre_colegio"));
             }
         } catch (SQLException e) {
             logger.warn("No se pudieron leer los parámetros del colegio, se usan los valores por defecto: {}", e.getMessage());
@@ -49,7 +51,7 @@ public class ParametrosColegioService {
     /** Resultado de guardar los parámetros. */
     public record Resultado(boolean exito, String mensaje) {}
 
-    public Resultado guardar(int numGrados, int numGrupos, String materiasCsv, String actualizadoPor) {
+    public Resultado guardar(int numGrados, int numGrupos, String materiasCsv, String nombreColegio, String actualizadoPor) {
         if (numGrados < 1 || numGrados > 20) {
             return new Resultado(false, "El número de grados debe estar entre 1 y 20.");
         }
@@ -60,18 +62,22 @@ public class ParametrosColegioService {
         if (materias.isBlank()) {
             return new Resultado(false, "Debes indicar al menos una materia.");
         }
+        String colegio = nombreColegio == null || nombreColegio.isBlank()
+                ? "Colegio Moralba Sur Oriental" : nombreColegio.trim();
 
         // Upsert: crea la fila única (id=1) si aún no existe.
-        String sql = "INSERT INTO parametros_colegio (id, num_grados, num_grupos, materias, actualizado_en, actualizado_por) " +
-                "VALUES (1, ?, ?, ?, CURRENT_TIMESTAMP, ?) " +
+        String sql = "INSERT INTO parametros_colegio (id, num_grados, num_grupos, materias, nombre_colegio, actualizado_en, actualizado_por) " +
+                "VALUES (1, ?, ?, ?, ?, CURRENT_TIMESTAMP, ?) " +
                 "ON CONFLICT (id) DO UPDATE SET num_grados = EXCLUDED.num_grados, num_grupos = EXCLUDED.num_grupos, " +
-                "materias = EXCLUDED.materias, actualizado_en = CURRENT_TIMESTAMP, actualizado_por = EXCLUDED.actualizado_por";
+                "materias = EXCLUDED.materias, nombre_colegio = EXCLUDED.nombre_colegio, " +
+                "actualizado_en = CURRENT_TIMESTAMP, actualizado_por = EXCLUDED.actualizado_por";
         try (Connection conn = databaseService.openConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, numGrados);
             ps.setInt(2, numGrupos);
             ps.setString(3, materias);
-            ps.setString(4, actualizadoPor);
+            ps.setString(4, colegio);
+            ps.setString(5, actualizadoPor);
             ps.executeUpdate();
             return new Resultado(true, "Parámetros del colegio actualizados correctamente.");
         } catch (SQLException e) {

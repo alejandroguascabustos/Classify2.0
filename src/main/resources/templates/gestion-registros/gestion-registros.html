@@ -100,6 +100,12 @@
                  th:text="${(parametrosResultado.exito ? '✅ ' : '⚠️ ') + parametrosResultado.mensaje}">msg</div>
 
             <form th:action="@{/gestion-registros/parametros}" method="post" class="gr-form-parametros">
+                <div class="gr-param-campo">
+                    <label for="nombreColegio">Nombre del colegio</label>
+                    <input type="text" id="nombreColegio" name="nombreColegio" required
+                           th:value="${parametros.nombreColegio}" placeholder="Colegio Moralba Sur Oriental">
+                    <span class="gr-param-hint">Aparece en los correos de bienvenida.</span>
+                </div>
                 <div class="gr-param-row">
                     <div class="gr-param-campo">
                         <label for="numGrados">¿Cuántos grados tiene el colegio?</label>
@@ -127,7 +133,7 @@
             <div class="gr-card">
                 <div class="gr-card-ic">📥</div>
                 <h3>Descargar plantilla</h3>
-                <p>Excel con las columnas oficiales (las mismas del formulario de registro).</p>
+                <p>Excel con las columnas oficiales. Docentes: materia(s) y curso(s) separados por coma (ej. 5B, 6A). Estudiantes: grado y grupo. Incluye una hoja de instrucciones.</p>
                 <a th:href="@{/gestion-registros/plantilla}" class="gr-btn gr-btn-outline">Descargar plantilla</a>
             </div>
             <div class="gr-card">
@@ -164,6 +170,25 @@
                     </div>
                 </div>
             </div>
+        </div>
+
+        <!-- Bienvenida masiva: crea cuentas con contraseña temporal y envía el correo -->
+        <div class="gr-card gr-bienvenida">
+            <div class="gr-card-ic">🎓</div>
+            <h3>Enviar bienvenida y activar cuentas</h3>
+            <p>Crea la cuenta de cada usuario autorizado con una <strong>contraseña temporal</strong> y le envía el correo de bienvenida con un enlace de un solo uso para que fije su contraseña definitiva.</p>
+
+            <div th:if="${bienvenida != null}" class="gr-alerta"
+                 th:classappend="${bienvenida.enviados > 0} ? 'ok' : 'error'"
+                 th:text="|${bienvenida.enviados} cuenta(s) creada(s), ${bienvenida.correosOk} correo(s) enviado(s), ${bienvenida.fallidos} con error.|">res</div>
+            <ul th:if="${bienvenida != null and bienvenida.detalles != null and !bienvenida.detalles.isEmpty()}" class="gr-detalles">
+                <li th:each="d : ${bienvenida.detalles}" th:text="${d}"></li>
+            </ul>
+
+            <form th:action="@{/gestion-registros/enviar-bienvenida}" method="post"
+                  onsubmit="return confirm('Se crearán las cuentas de los usuarios autorizados y se les enviará el correo de bienvenida. ¿Continuar?');">
+                <button type="submit" class="gr-btn gr-btn-bienvenida">Enviar bienvenida a los autorizados</button>
+            </form>
         </div>
 
         <!-- Usuarios autorizados pendientes -->

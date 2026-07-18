@@ -28,6 +28,9 @@ public class CargaExcelService {
     private static final String EMAIL_REGEX = "^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$";
     private static final String DOC_REGEX = "\\d{8,11}";
     private static final String TEL_REGEX = "\\d{7,10}";
+    /** Curso escrito como grado (1-2 dígitos) + grupo (una letra), ej. "5B", "10C". */
+    private static final java.util.regex.Pattern CURSO_PATTERN =
+            java.util.regex.Pattern.compile("\\s*(\\d{1,2})\\s*([A-Za-z])\\s*");
 
     private final ClassifyDatabaseService databaseService;
     private final ParametrosColegioService parametrosService;
@@ -80,9 +83,9 @@ public class CargaExcelService {
                     v[c] = leerCelda(row.getCell(c));
                 }
 
-                // Ignora las filas de ejemplo de la plantilla
-                if (("jose@colegio.com".equalsIgnoreCase(v[2]) && "jose123".equalsIgnoreCase(v[5]))
-                        || ("ana@colegio.com".equalsIgnoreCase(v[2]) && "ana123".equalsIgnoreCase(v[5]))) {
+                // Ignora las filas de ejemplo de la plantilla (aunque el usuario no las borre)
+                String correoFila = v[PlantillaExcelService.COL_CORREO].toLowerCase();
+                if (PlantillaExcelService.CORREOS_EJEMPLO.contains(correoFila)) {
                     continue;
                 }
                 totalFilas++;
@@ -185,13 +188,17 @@ public class CargaExcelService {
         }
 
         // Campos condicionales por rol, validados contra los parámetros del colegio
-        String materia = v[7], grado = v[8], grupo = v[9];
+        String materia = v[PlantillaExcelService.COL_MATERIA];
+        String cursos = v[PlantillaExcelService.COL_CURSOS];
+        String grado = v[PlantillaExcelService.COL_GRADO];
+        String grupo = v[PlantillaExcelService.COL_GRUPO];
 
         if ("docente".equals(tipo)) {
-            // Un docente puede dictar varias materias a varios grados (separados por coma)
+            // Un docente dicta una o varias materias (separadas por coma) en uno o varios
+            // cursos (separados por coma, ej. "5B, 6A"). No lleva grado/grupo propios.
             if (materia.isBlank()) {
                 errores.add(new ErrorFila(fila, etiqueta, "materia", materia,
-                        "Obligatoria para docente (puedes poner varias separadas por coma)"));
+                        "Obligatoria para docente (una o varias separadas por coma)"));
             } else {
                 for (String m : materia.split(",")) {
                     String mm = m.trim();
@@ -201,15 +208,16 @@ public class CargaExcelService {
                     }
                 }
             }
-            if (grado.isBlank()) {
-                errores.add(new ErrorFila(fila, etiqueta, "grado", grado,
-                        "Obligatorio para docente: los grados a los que está sujeto (separados por coma)"));
+            if (cursos.isBlank()) {
+                errores.add(new ErrorFila(fila, etiqueta, "cursos", cursos,
+                        "Obligatorio para docente: los cursos donde dicta (ej. 5B, 6A)"));
             } else {
-                for (String g : grado.split(",")) {
-                    String gg = g.trim();
-                    if (!gg.isBlank() && !params.grados().contains(gg)) {
-                        errores.add(new ErrorFila(fila, etiqueta, "grado", gg,
-                                "Grado inválido. El colegio tiene grados 1 a " + params.numGrados()));
+                for (String c : cursos.split(",")) {
+                    String cc = c.trim();
+                    if (cc.isBlank()) continue;
+                    String motivo = validarCurso(cc, params);
+                    if (motivo != null) {
+                        errores.add(new ErrorFila(fila, etiqueta, "cursos", cc, motivo));
                     }
                 }
             }
@@ -229,6 +237,26 @@ public class CargaExcelService {
                         "Grupo inválido. Válidos: " + String.join(", ", params.grupos())));
             }
         }
+    }
+
+    /**
+     * Valida un curso escrito como grado+grupo pegados (ej. "5B", "10C").
+     * Devuelve el motivo del error, o null si el curso es válido.
+     */
+    private String validarCurso(String curso, ParametrosColegio params) {
+        java.util.regex.Matcher m = CURSO_PATTERN.matcher(curso);
+        if (!m.matches()) {
+            return "Curso inválido. Escríbelo como grado+grupo, ej. 5B";
+        }
+        String grado = m.group(1);
+        String grupo = m.group(2).toUpperCase();
+        if (!params.grados().contains(grado)) {
+            return "Grado " + grado + " inválido. El colegio tiene grados 1 a " + params.numGrados();
+        }
+        if (!contieneIgnoreCase(params.grupos(), grupo)) {
+            return "Grupo " + grupo + " inválido. Válidos: " + String.join(", ", params.grupos());
+        }
+        return null;
     }
 
     private boolean contieneIgnoreCase(List<String> lista, String valor) {
@@ -265,17 +293,33 @@ public class CargaExcelService {
         int guardados = 0;
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             for (String[] v : filas) {
+                String tipo = v[PlantillaExcelService.COL_TIPO].toLowerCase();
+                String materia = null, grado = null, grupo = null, curso = null;
+
+                if ("docente".equals(tipo)) {
+                    // El docente guarda sus materias y sus cursos (lista); no tiene grado/grupo propios.
+                    materia = normalizarLista(v[PlantillaExcelService.COL_MATERIA]);
+                    curso = normalizarLista(v[PlantillaExcelService.COL_CURSOS]);
+                } else if ("estudiante".equals(tipo)) {
+                    grado = blankToNull(v[PlantillaExcelService.COL_GRADO]);
+                    String grupoRaw = blankToNull(v[PlantillaExcelService.COL_GRUPO]);
+                    grupo = grupoRaw == null ? null : grupoRaw.toUpperCase();
+                    if (grado != null && grupo != null) {
+                        curso = (grado + grupo).trim(); // curso = grado+grupo, ej. 5B
+                    }
+                }
+
                 ps.setString(1, v[0]);
                 ps.setString(2, v[1]);
                 ps.setString(3, v[2]);
                 ps.setString(4, v[3]);
                 ps.setString(5, blankToNull(v[4]));
                 ps.setString(6, v[5]);
-                ps.setString(7, v[6].toLowerCase());
-                ps.setString(8, blankToNull(v[7]));            // materia
-                ps.setString(9, blankToNull(v[8]));            // grado
-                ps.setString(10, blankToNull(v[9]));           // grupo
-                ps.setString(11, blankToNull((v[8] + v[9]).trim())); // curso = grado+grupo
+                ps.setString(7, tipo);
+                ps.setString(8, materia);   // materia (docente)
+                ps.setString(9, grado);     // grado (estudiante)
+                ps.setString(10, grupo);    // grupo (estudiante)
+                ps.setString(11, curso);    // curso: cursos del docente o grado+grupo del estudiante
                 ps.addBatch();
                 guardados++;
             }
@@ -292,6 +336,16 @@ public class CargaExcelService {
 
     private static String blankToNull(String s) {
         return (s == null || s.isBlank()) ? null : s;
+    }
+
+    /** Limpia una lista separada por comas ("Sociales , Religion") → "Sociales, Religion". Null si queda vacía. */
+    private static String normalizarLista(String s) {
+        if (s == null || s.isBlank()) return null;
+        String limpia = Arrays.stream(s.split(","))
+                .map(String::trim)
+                .filter(x -> !x.isBlank())
+                .collect(java.util.stream.Collectors.joining(", "));
+        return limpia.isBlank() ? null : limpia;
     }
 
     private boolean esFilaVacia(Row row) {
