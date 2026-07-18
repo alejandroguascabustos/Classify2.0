@@ -5702,22 +5702,10 @@ body.aprende-page {
     overflow-x: hidden;
 }
 
-body.aprende-page .brand a,
-body.aprende-page .brand2 a,
-body.aprende-page .sidebar a,
-body.aprende-page .info-content h4,
-body.aprende-page .textoinfo {
-    font-family: "Nunito Sans", sans-serif !important;
-}
 
-body.aprende-page .brand a {
-    font-weight: 700;
-}
 
-body.aprende-page .brand2 a,
-body.aprende-page .sidebar a {
-    font-weight: 600;
-}
+
+
 
 body.aprende-page .contenidoinicio {
     height: auto !important;
