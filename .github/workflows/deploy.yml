@@ -1,0 +1,74 @@
+name: Deploy a producción
+
+# Se dispara en cada push a main. Compila el jar en la nube (la Raspberry no puede)
+# y lo despliega al servidor por Tailscale SSH, con respaldo y reinicio del servicio.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: {}   # permite lanzarlo manualmente desde la pestaña Actions
+
+# Evita despliegues solapados si llegan varios pushes seguidos.
+concurrency:
+  group: deploy-produccion
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configurar JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+
+      - name: Compilar el jar
+        run: ./mvnw -q clean package -DskipTests
+
+      - name: Conectar a Tailscale
+        uses: tailscale/github-action@v3
+        with:
+          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
+          tags: tag:ci
+
+      - name: Desplegar al servidor
+        env:
+          SERVER: cristobal@100.76.140.116
+          REMOTE_DIR: /media/Dexterno/classify20
+          SSH_OPTS: "-o StrictHostKeyChecking=no -o ConnectTimeout=25 -o ServerAliveInterval=15"
+        run: |
+          set -euo pipefail
+          JAR=target/classify20-0.0.1-SNAPSHOT.jar
+          LOCAL_SIZE=$(stat -c%s "$JAR")
+          TS=$(date +%Y%m%d-%H%M%S)
+          echo "Jar local: $LOCAL_SIZE bytes"
+
+          echo "== Respaldo del jar actual =="
+          ssh $SSH_OPTS "$SERVER" "cp -a $REMOTE_DIR/classify20.jar $REMOTE_DIR/classify20.jar.bak-$TS"
+
+          echo "== Subiendo jar nuevo =="
+          ssh $SSH_OPTS "$SERVER" "cat > $REMOTE_DIR/classify20.jar.new" < "$JAR"
+
+          echo "== Verificando tamaño y reemplazando =="
+          ssh $SSH_OPTS "$SERVER" "test \$(stat -c%s $REMOTE_DIR/classify20.jar.new) -eq $LOCAL_SIZE && mv $REMOTE_DIR/classify20.jar.new $REMOTE_DIR/classify20.jar"
+
+          echo "== Conservar solo los 5 respaldos más recientes =="
+          ssh $SSH_OPTS "$SERVER" "ls -1t $REMOTE_DIR/classify20.jar.bak-* 2>/dev/null | tail -n +6 | xargs -r rm -f" || true
+
+          echo "== Reiniciando servicio =="
+          ssh $SSH_OPTS "$SERVER" "sudo systemctl reset-failed classify20.service; sudo systemctl restart classify20.service"
+
+      - name: Verificar que producción responde
+        run: |
+          for i in $(seq 1 30); do
+            code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 20 https://www.classify.in.net/login || echo 000)
+            echo "intento $i: HTTP=$code"
+            [ "$code" = "200" ] && { echo "Producción OK"; exit 0; }
+            sleep 10
+          done
+          echo "La app no respondió 200 tras el deploy"; exit 1
