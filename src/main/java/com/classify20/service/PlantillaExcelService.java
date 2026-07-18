@@ -113,13 +113,19 @@ public class PlantillaExcelService {
                 cell.setCellStyle(headerStyle);
             }
 
-            // Filas de ejemplo (guía; el sistema las ignora al cargar)
+            // Filas de ejemplo (guía; el sistema las ignora al cargar).
+            // Las celdas que no aplican al rol se dejan en blanco (sin valor): escribir
+            // "" con POI las guarda como cadena compartida y algunos visores muestran
+            // el índice crudo (p. ej. "20") en vez de una celda vacía.
             for (int r = 0; r < EJEMPLOS.length; r++) {
                 Row ejemploRow = sheet.createRow(r + 1);
                 for (int i = 0; i < EJEMPLOS[r].length; i++) {
                     Cell cell = ejemploRow.createCell(i);
-                    cell.setCellValue(EJEMPLOS[r][i]);
                     cell.setCellStyle(ejemploStyle);
+                    String valor = EJEMPLOS[r][i];
+                    if (valor != null && !valor.isEmpty()) {
+                        cell.setCellValue(valor);
+                    }
                 }
             }
 

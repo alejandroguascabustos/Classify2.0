@@ -72,6 +72,9 @@ public class ActivacionService {
 
         int enviados = 0, fallidos = 0, correosOk = 0;
         List<String> detalles = new ArrayList<>();
+        // Cada usuario procesado se agrega a este lote; al final se manda UN solo
+        // webhook con todo el arreglo, y n8n recorre cada registro (ciclo) y envía.
+        List<Map<String, Object>> lote = new ArrayList<>();
 
         for (Map<String, Object> p : pendientes) {
             String correo = (String) p.get("correo");
@@ -95,9 +98,9 @@ public class ActivacionService {
                     conn.commit();
 
                     String enlace = baseUrl + "/activar?token=" + token;
-                    boolean correoEnviado = enviarWebhook(params.nombreColegio(), nombreCompleto,
-                            correo, gradoLegible(p), (String) p.get("tipo_usuario"), passwordTemporal, enlace);
-                    if (correoEnviado) correosOk++;
+                    lote.add(construirRegistro(params.nombreColegio(), nombreCompleto,
+                            (String) p.get("nombre_usuario"), correo,
+                            gradoLegible(p), (String) p.get("tipo_usuario"), passwordTemporal, enlace));
                     enviados++;
                 } catch (Exception e) {
                     conn.rollback();
@@ -108,6 +111,13 @@ public class ActivacionService {
                 fallidos++;
                 detalles.add("Error de BD con " + correo + ": " + e.getMessage());
             }
+        }
+
+        // Un solo webhook con TODO el lote → n8n hace el ciclo y envía cada correo.
+        boolean loteEnviado = enviarLote(lote);
+        correosOk = loteEnviado ? lote.size() : 0;
+        if (!loteEnviado && !lote.isEmpty()) {
+            detalles.add("Las cuentas se crearon, pero no se pudo enviar el lote de correos a n8n. Revisa el webhook.");
         }
 
         return new ResultadoMasivo(enviados, fallidos, correosOk, detalles);
@@ -289,27 +299,40 @@ public class ActivacionService {
 
     // ── Webhook y utilidades ─────────────────────────────────────────
 
-    private boolean enviarWebhook(String colegio, String nombre, String correo, String grado,
-                                  String rol, String passwordTemporal, String enlace) {
-        if (bienvenidaWebhookUrl == null || bienvenidaWebhookUrl.isBlank()) {
+    /** Construye el registro de un usuario para el lote que recibe n8n. */
+    private Map<String, Object> construirRegistro(String colegio, String nombre, String usuario, String correo,
+                                                  String grado, String rol, String passwordTemporal, String enlace) {
+        Map<String, Object> r = new LinkedHashMap<>();
+        r.put("colegio", colegio);
+        r.put("nombre", nombre);
+        r.put("usuario", usuario);
+        r.put("correo", correo);
+        r.put("grado", grado);
+        r.put("rol", rol);
+        r.put("passwordTemporal", passwordTemporal);
+        r.put("enlace", enlace);
+        r.put("asunto", "Bienvenido(a) a " + colegio + " en Classify");
+        return r;
+    }
+
+    /**
+     * Envía UN solo webhook a n8n con TODO el lote de usuarios (hasta miles).
+     * n8n recorre el arreglo (Split Out → Gmail) y envía a cada uno su correo.
+     */
+    private boolean enviarLote(List<Map<String, Object>> lote) {
+        if (bienvenidaWebhookUrl == null || bienvenidaWebhookUrl.isBlank() || lote.isEmpty()) {
             return false;
         }
         try {
             Map<String, Object> payload = new LinkedHashMap<>();
-            payload.put("colegio", colegio);
-            payload.put("nombre", nombre);
-            payload.put("correo", correo);
-            payload.put("grado", grado);
-            payload.put("rol", rol);
-            payload.put("passwordTemporal", passwordTemporal);
-            payload.put("enlace", enlace);
-            payload.put("asunto", "Bienvenido(a) a " + colegio + " en Classify");
+            payload.put("total", lote.size());
+            payload.put("usuarios", lote);
             restClient.post().uri(bienvenidaWebhookUrl)
                     .contentType(MediaType.APPLICATION_JSON)
                     .body(payload).retrieve().toBodilessEntity();
             return true;
         } catch (Exception e) {
-            logger.warn("No se pudo enviar el webhook de bienvenida a {}: {}", correo, e.getMessage());
+            logger.warn("No se pudo enviar el lote de bienvenida a n8n: {}", e.getMessage());
             return false;
         }
     }

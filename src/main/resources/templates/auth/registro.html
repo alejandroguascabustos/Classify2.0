@@ -280,13 +280,11 @@
             if (!esAcudiente) { inputNombreEstudiante.value = ''; }
         }
 
-        // Valida que el docente marque al menos una materia y un grado
+        // Valida que el docente marque al menos una materia (grado y grupo son opcionales)
         function validarDocente() {
             if (document.getElementById('tipo_usuario').value !== 'docente') return true;
             const materias = document.querySelectorAll('input[name="materias"]:checked').length;
-            const grados = document.querySelectorAll('input[name="grados"]:checked').length;
             if (materias === 0) { alert('Selecciona al menos una materia que dictas.'); return false; }
-            if (grados === 0) { alert('Selecciona al menos un grado al que estás sujeto.'); return false; }
             return true;
         }
 

@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  * Activación de cuenta: el usuario abre el enlace de un solo uso del correo de
@@ -38,7 +39,7 @@ public class ActivacionController {
     public String procesar(@RequestParam("token") String token,
                            @RequestParam("password") String password,
                            @RequestParam("password2") String password2,
-                           Model model) {
+                           Model model, RedirectAttributes redirect) {
         if (!password.equals(password2)) {
             reponerFormulario(token, model, "Las contraseñas no coinciden.");
             return "auth/activar";
@@ -48,8 +49,9 @@ public class ActivacionController {
             reponerFormulario(token, model, error);
             return "auth/activar";
         }
-        model.addAttribute("exito", true);
-        return "auth/activar";
+        // Contraseña creada → al login para que pruebe su nuevo acceso
+        redirect.addFlashAttribute("activado", true);
+        return "redirect:/login";
     }
 
     private void reponerFormulario(String token, Model model, String mensajeError) {

@@ -183,6 +183,10 @@ public class ClassifyDatabaseService {
     private List<String> cargarSentenciasSql(Resource resource) {
         try (InputStream inputStream = resource.getInputStream()) {
             String sql = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
+            // Elimina los comentarios de bloque /* ... */: si quedan pegados a la
+            // sentencia siguiente, el bloque empezaría con "/*" y sería descartado
+            // por esSentenciaDeEsquema, saltándose ese CREATE TABLE.
+            sql = sql.replaceAll("(?s)/\\*.*?\\*/", "");
             return Arrays.stream(sql.split(";"))
                     .map(this::limpiarBloqueSql)
                     .filter(statement -> !statement.isBlank())

@@ -371,9 +371,7 @@ public class RegistroService {
                 if (registro.materia().isBlank()) {
                     throw new RegistroException("Debes seleccionar al menos una materia que dictas.");
                 }
-                if (registro.curso().isBlank()) {
-                    throw new RegistroException("Debes seleccionar al menos un grado al que estas sujeto.");
-                }
+                // El docente puede dejar grado y grupo vacios: no se exige curso.
             }
             case "acudiente" -> {
                 if (registro.nombreEstudiante().isBlank()) {
