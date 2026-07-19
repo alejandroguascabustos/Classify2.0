@@ -4291,8 +4291,17 @@ textarea:focus {
 }
 
 
-.btnnoticias { background-color: var(--green-light2); border: none; border-radius: 9px; width: auto; }
-.btnnoticias:hover { background-color: var(--green); }
+
+.btnnoticias {
+    background-color: var(--green);
+    border: none;
+    border-radius: 9px;
+    width: auto;
+}
+
+.btnnoticias:hover {
+    background-color: var(--green);
+}
 
 .titlesnoticias {
     display: flex;
@@ -4310,11 +4319,27 @@ textarea:focus {
     margin-right: 5px;
 }
 
+.sinnoticias {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    min-height: 200px;
+    margin-top: 50px;
+}
+
+.librosinnoticias{
+    width: 250px;
+    align-items: center;
+    opacity: 45%;
+}
+
 .parrafonoticias {
+    margin-top: 10px;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 265px;
     color: var(--gris);
 }
 

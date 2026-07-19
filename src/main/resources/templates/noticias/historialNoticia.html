@@ -142,7 +142,10 @@
                     </th:block>
  
                     <th:block th:if="${noticias == null or noticias.isEmpty()}">
-                        <p class="parrafonoticias">No hay noticias disponibles.</p>
+                        <div class="sinnoticias">
+                            <img th:src="@{/img/sinnoticias.png}" width="25" class="librosinnoticias">
+                            <p class="parrafonoticias">No hay noticias disponibles.</p>
+                        </div>
                     </th:block>
  
                 </div>
