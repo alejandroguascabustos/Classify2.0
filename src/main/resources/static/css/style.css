@@ -3137,14 +3137,13 @@ body.aprende-page .aprende-button {
     padding: 14px 18px;
     border: none;
     border-radius: 16px;
-    background: linear-gradient(180deg, var(--green-light2) 0%, var(--green) 100%);
+    background: var(--green);
     color: #ffffff;
     font-weight: 800;
     font-size: 0.95rem;
     font-family: inherit;
     cursor: pointer;
-    box-shadow: 0 10px 24px rgba(0, 128, 0, 0.16);
-    transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+
 }
 
 body.aprende-page .aprende-button:hover {
@@ -3595,17 +3594,18 @@ body.aprende-page .aprende-spinner {
     margin: 0 auto;
     background: white;
     border-radius: 28px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
     padding: 2rem 2rem 2.5rem;
     transition: all 0.3s;
 }
 
 .agenda-form-container h2 {
-    color: var(--green);
+    color: var(--negro);
     text-align: left;
     margin-bottom: 0.5rem;
     font-size: 2rem;
     font-weight: 700;
+    border-left: green solid 5px;
+    padding-left: 14px;
 }
 
 .subtitulo {
@@ -4276,10 +4276,11 @@ textarea:focus {
 }
 
 .titleprincipalnoticias {
-    border-left: 3px solid;
+    border-left: 5px solid;
     border-color: var(--green);
     padding-left: 10px;
     text-align: left;
+    color: var(--negro);
 }
 
 .titlenoticias {
@@ -6040,7 +6041,7 @@ body.aprende-page .aprende-input-shell {
     padding: 6px;
     border: 1px solid rgba(157, 157, 156, 0.3);
     border-radius: calc(var(--aprende-radius) + 4px);
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.95) 0%, rgba(174, 201, 165, 0.06) 100%);
+    background-color: var(--green-light);
 }
 
 body.aprende-page .aprende-form-row input {
@@ -6070,13 +6071,10 @@ body.aprende-page .aprende-button {
     padding: 0 14px;
     border: none;
     border-radius: var(--aprende-radius);
-    background: linear-gradient(180deg, var(--green-accent) 0%, var(--green) 100%);
     color: var(--blanco);
     font-size: 0.88rem;
     font-weight: 700;
     cursor: pointer;
-    box-shadow: 0 8px 18px rgba(0, 128, 0, 0.16);
-    transition: filter 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 body.aprende-page .aprende-button:hover {
@@ -9145,9 +9143,9 @@ body.mismateriales-page .materiales-count-badge {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-height: 40px;
+    height: 18px;
     padding: 10px 14px;
-    border-radius: 999px;
+    border-radius: 15px;
     font-size: 0.86rem;
     font-weight: 800;
     white-space: nowrap;
@@ -9161,9 +9159,10 @@ body.materiales-page .materiales-card-badge {
 
 body.materiales-page .materiales-count-badge,
 body.mismateriales-page .materiales-count-badge {
-    color: #fff;
+    color: var(--negro);
     background-color: #c2c5c7;
     border-radius: 15px;
+    width: 65px;
 }
 
 body.materiales-page .subtitulocargamateriales {
@@ -9199,7 +9198,7 @@ body.materiales-page .materiales-dropzone {
     align-items: center;
     text-align: center;
     gap: 18px;
-    min-height: 100%;
+
 }
 
 body.materiales-page .materiales-dropzone-copy h3 {
@@ -9274,7 +9273,7 @@ body.materiales-page .labelmateriales:hover {
 }
 
 body.materiales-page #num-of-files {
-    width: 100%;
+    width: 90%;
     color: #48615a;
     font-size: 0.96rem;
     padding: 12px 14px;

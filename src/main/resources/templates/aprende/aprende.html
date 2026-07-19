@@ -5,11 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Classify - Aprende con IA</title>
+    <link rel="shortcut icon" th:href="@{/img/favicon.ico}" type="image/x-icon">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/style.css}">
-    <link rel="shortcut icon" th:href="@{/favicon.ico}" type="image/x-icon">
+
 </head>
 
 <body class="inicioimg aprende-page"
@@ -83,7 +84,7 @@
             </a>
             <a th:href="@{/gestion-registros}" class="inicioprincipal2"
                th:if="${session.perfil == 1 or session.perfil == 2}">
-                <img th:src="@{/img/gestioncuenta.png}" width="25" class="imgmenu" alt="Gestión de Registros"> Gestión de Registros
+                <img th:src="@{/img/gestioncuenta.png}" width="25" class="imgmenu" alt="Gestión de Registros"> Gestión de registros
             </a>
             <a th:href="@{/aprende}" class="inicioprincipal2">
                 <img th:src="@{/img/aprende.png}" width="25" class="imgmenu" alt="Aprende"> Aprende
