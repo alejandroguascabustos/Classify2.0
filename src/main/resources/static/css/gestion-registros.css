@@ -54,8 +54,8 @@
 .gr-card h3 { margin: 0 0 6px; color: #006100; font-size: 18px; }
 .gr-card p { margin: 0 0 16px; color: #555; font-size: 14px; }
 
-.gr-invitacion { border-left-color: #F38F02; margin-bottom: 18px; }
-.gr-invitacion h3 { color: #c46f00; }
+.gr-invitacion { border-left-color: #008000; margin-bottom: 18px; }
+.gr-invitacion h3 { color: #0f5c2c; }
 .gr-proximo {
     display: inline-block;
     background: #fbeccf; color: #c46f00;
@@ -122,8 +122,11 @@
     color: #333;
 }
 
-/* Parámetros del colegio */
-.gr-parametros { border-left-color: #2563a8; margin-bottom: 18px; }
+
+.gr-parametros {
+    border-left-color: #008000;
+    margin-bottom: 18px; }
+
 .gr-parametros h3 { color: #1e4f86; }
 .gr-form-parametros { display: flex; flex-direction: column; gap: 14px; }
 .gr-param-row { display: flex; flex-wrap: wrap; gap: 14px; }
