@@ -2747,7 +2747,7 @@ div.imagencontacto {
 }
 
 .card {
-    width: 450px;
+    width: 55%;
     margin: auto;
     margin-top: 103px;
     background: var(--blanco);
