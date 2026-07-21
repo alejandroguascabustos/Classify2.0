@@ -95,7 +95,6 @@
 
         <!-- Parámetros del colegio -->
         <div class="gr-card gr-parametros">
-            <div class="gr-card-ic">⚙️</div>
             <h3>Parámetros del colegio</h3>
             <p>Definen los valores válidos del formulario de registro <strong>y</strong> de la carga por Excel. Si cambias algo aquí, cambia en todo el sistema.</p>
 
@@ -135,13 +134,11 @@
         <!-- Acciones: descargar plantilla / cargar archivo -->
         <div class="gr-acciones">
             <div class="gr-card">
-                <div class="gr-card-ic">📥</div>
                 <h3>Descargar plantilla</h3>
                 <p>Excel con las columnas oficiales. Docentes: materia(s) y curso(s) separados por coma (ej. 5B, 6A). Estudiantes: grado y grupo. Incluye una hoja de instrucciones.</p>
                 <a th:href="@{/gestion-registros/plantilla}" class="gr-btn gr-btn-outline">Descargar plantilla</a>
             </div>
             <div class="gr-card">
-                <div class="gr-card-ic">📤</div>
                 <h3>Cargar archivo Excel</h3>
                 <p>Sube la plantilla llena. El sistema valida y autoriza a los usuarios.</p>
                 <form th:action="@{/gestion-registros/cargar}" method="post" enctype="multipart/form-data" class="gr-form-upload" id="formCarga">
@@ -155,7 +152,6 @@
 
         <!-- Invitación individual -->
         <div class="gr-card gr-invitacion">
-            <div class="gr-card-ic">✉️</div>
             <h3>Enviar invitación individual</h3>
             <p>Para una novedad: genera un enlace seguro de un solo uso (vence en 10 minutos) y envíalo al correo del usuario autorizado.</p>
             <form th:action="@{/gestion-registros/invitar}" method="post" class="gr-form-upload">
