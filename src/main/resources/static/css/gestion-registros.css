@@ -75,7 +75,7 @@
     transition: background .2s, color .2s;
     font-family: "Segoe UI", Tahoma, sans-serif;
 }
-.gr-btn-solid { background: #006100; color: #fff; }
+.gr-btn-solid { background: var(--green); color: #fff; }
 .gr-btn-solid:hover { background: #0a7a0a; }
 .gr-btn-outline { background: #fff; color: #006100; }
 .gr-btn-outline:hover { background: #e7f2e3; }
@@ -102,7 +102,7 @@
     min-width: 140px;
 }
 .gr-file-name.elegido { color: #006100; font-style: normal; font-weight: 600; }
-.gr-btn:disabled { opacity: .5; cursor: not-allowed; }
+.gr-btn:disabled { opacity: 1.5; cursor: not-allowed; }
 
 .gr-btn-invitar { background: var(--green); color: #fff; border-color: var(--green); }
 .gr-btn-invitar:hover { background: var(--green-dark); border-color: var(--green); }
@@ -126,7 +126,7 @@
     border-left-color: var(--negro);
     margin-bottom: 18px; }
 
-.gr-parametros h3 { color: #1e4f86; }
+.gr-parametros h3 { color: var(--negro); }
 .gr-form-parametros { display: flex; flex-direction: column; gap: 14px; }
 .gr-param-row { display: flex; flex-wrap: wrap; gap: 14px; }
 .gr-param-campo { flex: 1; min-width: 190px; display: flex; flex-direction: column; }
@@ -159,6 +159,7 @@
 .agenda-py-vacio{
     text-align: center;
     margin-top: 10px;
+    color: grey;
 }
 
 
