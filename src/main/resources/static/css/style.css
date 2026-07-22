@@ -9455,7 +9455,7 @@ body.materiales-page .btnmaterialesdelete:hover {
 body.materiales-page a.btn-editar,
 body.materiales-page a.btn-eliminar {
     display: inline-flex;
-    width: 100%;
+    width: auto;
     min-height: 42px;
     align-items: center;
     justify-content: center;
