@@ -130,8 +130,9 @@
                                 </tr>
                             </th:block>
                             <th:block th:if="${materiales == null or materiales.isEmpty()}">
+                                <img th:src="@{/img/vacio.png}" class="imgmaterialesvacio" alt="vacio">
                                 <tr>
-                                    <img th:src="@{/img/vacio.png}" class="imgmaterialesvacio" alt="vacio">
+
                                     <td colspan="3" class="estado-vacio">No hay materiales disponibles por el momento.</td>
                                 </tr>
                             </th:block>

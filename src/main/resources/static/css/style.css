@@ -9490,6 +9490,11 @@ body.mismateriales-page .btn-descargar {
     font-size: 0.9rem;
 }
 
+.imgmaterialesvacio {
+    display: block;
+    width: 150px;
+    margin: 0 auto;
+}
 body.mismateriales-page .imgdescargarmateriales {
     width: 16px;
     height: 16px;
