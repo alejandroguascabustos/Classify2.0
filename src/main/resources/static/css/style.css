@@ -9437,19 +9437,19 @@ body.materiales-page .btnmaterialesdelete {
 }
 
 body.materiales-page .btnmaterialesedit {
-    background: linear-gradient(135deg, #2ea44f 0%, #22c55e 100%);
+    background: var(--green);
 }
 
 body.materiales-page .btnmaterialesedit:hover {
-    background: linear-gradient(135deg, #1f8a40 0%, #169c48 100%);
+    background: var(--green-dark);
 }
 
 body.materiales-page .btnmaterialesdelete {
-    background: linear-gradient(135deg, #1f7a35 0%, #15803d 100%);
+    background: var(--green-dark);
 }
 
 body.materiales-page .btnmaterialesdelete:hover {
-    background: linear-gradient(135deg, #16602a 0%, #0f5c2c 100%);
+    background: var(--green);
 }
 
 body.materiales-page a.btn-editar,
