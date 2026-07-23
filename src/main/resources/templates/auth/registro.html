@@ -7,65 +7,6 @@
     <title>Classify - Registro</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <link rel="shortcut icon" th:href="@{img/favicon.ico}" type="image/x-icon">
-    <style>
-        /* Selección múltiple: materias y grados del docente */
-        .reg-hint { font-weight: 400; font-size: 12px; color: #888; }
-        .reg-check-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 8px;
-            margin-bottom: 14px;
-        }
-        .reg-check-grid-grados {
-            grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
-        }
-        .reg-check {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 10px;
-            border: 1px solid #d7e0d6;
-            border-radius: 8px;
-            background: #fff;
-            font-size: 14px;
-            cursor: pointer;
-            transition: background .15s, border-color .15s;
-        }
-        .reg-check:hover { background: #f3f8f3; border-color: #a9d3a0; }
-        .reg-check input { accent-color: #006100; cursor: pointer; margin: 0; }
-        .reg-check:has(input:checked) { background: #e7f2e3; border-color: #006100; font-weight: 600; }
-
-        /* Estilos de Validación Premium */
-        .form-registro input:focus:invalid {
-            border-color: #ff4d4d !important;
-            box-shadow: 0 0 8px rgba(255, 77, 77, 0.2);
-        }
-        
-        .form-registro input:focus:valid {
-            border-color: #2ecc71 !important;
-            box-shadow: 0 0 8px rgba(46, 204, 113, 0.2);
-        }
-
-        .form-registro input:invalid:not(:placeholder-shown) {
-            border-color: #ff4d4d;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23ff4d4d' viewBox='0 0 16 16'%3E%3Cpath d='M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z'/%3E%3Cpath d='M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 10px center;
-            background-size: 16px;
-        }
-
-        .form-registro input:valid:not(:placeholder-shown) {
-            border-color: #2ecc71;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%232ecc71' viewBox='0 0 16 16'%3E%3Cpath d='M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 10px center;
-            background-size: 16px;
-        }
-
-        .auth-dynamic-field {
-            transition: all 0.3s ease;
-        }
-    </style>
 </head>
 
 <body class="inicioimg">

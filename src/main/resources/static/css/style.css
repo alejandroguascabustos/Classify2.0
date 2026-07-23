@@ -10368,3 +10368,383 @@ body.gestion-registros-page .gr-estado {
 }
 body.gestion-registros-page .gr-estado.aut { background: #fbecc4; color: #8a6d1f; }
 body.gestion-registros-page .gr-estado.reg { background: #e7f2e3; color: #006100; }
+
+/* ═══════════════════════════════════════════════════════════════
+   CSS EXTRAÍDO DE PLANTILLAS (bloques <style> embebidos → externo)
+   Clases con nombres propios de cada página (sin colisión global).
+   NOTA: el <style> de noticias/noticiasPdf.html se mantiene inline a
+   propósito (lo renderiza Flying Saucer/iText para PDF y no resuelve
+   hojas de estilo externas).
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Agenda: alertas de horario y validación (agenda.html) ──────── */
+.alerta-horario {
+    display: none;
+    align-items: flex-start;
+    gap: 12px;
+    border-radius: 16px;
+    padding: 14px 18px;
+    margin-bottom: 20px;
+    animation: slideDown 0.3s cubic-bezier(0.25,1,0.5,1);
+}
+.alerta-horario.visible    { display: flex; }
+.alerta-horario.conflicto  { background:#fffbeb; border:1.5px solid #f59e0b; border-left:5px solid #f59e0b; }
+.alerta-horario.anticipacion { background:#fff5f5; border:1.5px solid #ef4444; border-left:5px solid #ef4444; }
+.alerta-horario .alerta-icono { font-size:1.5rem; flex-shrink:0; line-height:1; margin-top:2px; }
+.alerta-horario .alerta-body strong { display:block; font-size:.92rem; font-weight:700; margin-bottom:3px; }
+.alerta-horario.anticipacion .alerta-body strong { color:#7f1d1d; }
+.alerta-horario.conflicto   .alerta-body strong { color:#78350f; }
+.alerta-horario .alerta-body span { font-size:.85rem; color:#555; line-height:1.5; }
+.alerta-horario .alerta-detalle {
+    display:inline-block; margin-top:6px; padding:4px 10px;
+    border-radius:8px; font-size:.8rem; font-weight:600;
+    background:rgba(0,0,0,.06); color:#333;
+}
+.hora-hint { font-size:.78rem; color:var(--gris); margin-top:4px; display:none; }
+.hora-hint.visible { display:block; }
+.hora-hint.error   { color:#ef4444; font-weight:600; }
+.campo-invalido { border:2px solid #ef4444 !important; box-shadow:0 0 0 3px rgba(239,68,68,.15) !important; }
+@keyframes slideDown { from{opacity:0;transform:translateY(-8px)} to{opacity:1;transform:translateY(0)} }
+
+/* ── Activar cuenta (auth/activar.html) ─────────────────────────── */
+.activar-wrap { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px; background: #f5f8f3; }
+.activar-card { background: #fff; border-radius: 18px; box-shadow: 0 10px 40px rgba(0,0,0,.08); border: 1px solid #e5e7eb; max-width: 460px; width: 100%; padding: 40px 34px; text-align: center; }
+.activar-card img.logo { width: 54px; margin-bottom: 8px; }
+.activar-card h1 { font-size: 26px; color: #013501; margin: 0 0 4px; letter-spacing: -.5px; }
+.activar-card .sub { color: #64748b; font-size: 14px; margin: 0 0 22px; }
+.activar-card h2 { font-size: 20px; color: #111827; margin: 0 0 8px; }
+.activar-card p.lead { color: #4b5563; font-size: 15px; margin: 0 0 22px; line-height: 1.6; }
+.activar-form { display: flex; flex-direction: column; gap: 14px; text-align: left; }
+.activar-form label { font-size: 13.5px; font-weight: 600; color: #444; margin-bottom: -6px; }
+.activar-form input { padding: 12px 14px; border: 1px solid #ccc; border-radius: 10px; font-size: 15px; }
+.activar-form input:focus { outline: none; border-color: #006100; box-shadow: 0 0 0 3px rgba(0,97,0,.12); }
+.activar-btn { background: #006100; color: #fff; border: none; border-radius: 10px; padding: 13px; font-size: 15px; font-weight: 700; cursor: pointer; transition: background .2s; }
+.activar-btn:hover { background: #0a7a0a; }
+.activar-alert { border-radius: 10px; padding: 12px 16px; font-size: 14px; margin-bottom: 16px; }
+.activar-alert.error { background: #fdecea; color: #c0392b; border: 1px solid #f5c6cb; }
+.activar-alert.ok { background: #e7f2e3; color: #006100; border: 1px solid #a9d3a0; }
+.activar-card a.login-link { display: inline-block; margin-top: 18px; color: #006100; font-weight: 700; text-decoration: none; }
+.activar-icon { font-size: 48px; line-height: 1; margin-bottom: 8px; }
+
+/* ── Registro: selección múltiple y validación (auth/registro.html) ─ */
+.reg-hint { font-weight: 400; font-size: 12px; color: #888; }
+.reg-check-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 8px;
+    margin-bottom: 14px;
+}
+.reg-check-grid-grados {
+    grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+}
+.reg-check {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px;
+    border: 1px solid #d7e0d6;
+    border-radius: 8px;
+    background: #fff;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background .15s, border-color .15s;
+}
+.reg-check:hover { background: #f3f8f3; border-color: #a9d3a0; }
+.reg-check input { accent-color: #006100; cursor: pointer; margin: 0; }
+.reg-check:has(input:checked) { background: #e7f2e3; border-color: #006100; font-weight: 600; }
+
+/* Estilos de validación premium */
+.form-registro input:focus:invalid {
+    border-color: #ff4d4d !important;
+    box-shadow: 0 0 8px rgba(255, 77, 77, 0.2);
+}
+.form-registro input:focus:valid {
+    border-color: #2ecc71 !important;
+    box-shadow: 0 0 8px rgba(46, 204, 113, 0.2);
+}
+.form-registro input:invalid:not(:placeholder-shown) {
+    border-color: #ff4d4d;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23ff4d4d' viewBox='0 0 16 16'%3E%3Cpath d='M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z'/%3E%3Cpath d='M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 16px;
+}
+.form-registro input:valid:not(:placeholder-shown) {
+    border-color: #2ecc71;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%232ecc71' viewBox='0 0 16 16'%3E%3Cpath d='M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 16px;
+}
+.auth-dynamic-field {
+    transition: all 0.3s ease;
+}
+
+/* ── Noticias: recorte de texto y modal de nota completa (noticias.html) ─ */
+.titlecontentnoticia {
+    overflow-wrap: break-word;
+    word-break: break-word;
+}
+.noticia-contenido {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
+    line-clamp: 4;
+    overflow: hidden;
+    overflow-wrap: break-word;
+    word-break: break-word;
+}
+.noticia-ver-mas {
+    display: none;
+    margin: 6px 0 4px;
+    background: none;
+    border: none;
+    padding: 0;
+    color: #008000;
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+.noticia-ver-mas:hover {
+    text-decoration: underline;
+}
+.modal-noticia-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, .55);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 5000;
+    padding: 24px;
+}
+.modal-noticia-overlay.activo {
+    display: flex;
+}
+.modal-noticia-caja {
+    background: #fff;
+    border-radius: 14px;
+    max-width: 640px;
+    width: 100%;
+    max-height: 85vh;
+    overflow-y: auto;
+    padding: 28px 30px;
+    position: relative;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, .3);
+}
+.modal-noticia-cerrar {
+    position: absolute;
+    top: 10px;
+    right: 14px;
+    background: none;
+    border: none;
+    font-size: 28px;
+    line-height: 1;
+    cursor: pointer;
+    color: #666;
+}
+.modal-noticia-cerrar:hover {
+    color: #000;
+}
+.modal-noticia-titulo {
+    color: #013501;
+    font-size: 1.5rem;
+    margin: 0 0 10px;
+    padding-right: 28px;
+    overflow-wrap: break-word;
+    word-break: break-word;
+}
+.modal-noticia-img {
+    width: 100%;
+    max-height: 320px;
+    object-fit: contain;
+    background: #f8fafc;
+    border-radius: 8px;
+    margin-bottom: 14px;
+    display: none;
+}
+.modal-noticia-cuerpo {
+    color: #333;
+    line-height: 1.65;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    margin-top: 12px;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Módulo Gestión de Permisos (RBAC) — scopeado a body.gestion-permisos-page
+   ═══════════════════════════════════════════════════════════════ */
+body.gestion-permisos-page .gp-intro {
+    color: #555;
+    max-width: 80ch;
+    margin: 0 0 22px;
+    line-height: 1.6;
+    font-family: "Segoe UI", Tahoma, sans-serif;
+}
+
+body.gestion-permisos-page .gp-alerta {
+    padding: 14px 18px;
+    border-radius: 10px;
+    font-weight: 600;
+    margin-bottom: 18px;
+    font-family: "Segoe UI", Tahoma, sans-serif;
+}
+body.gestion-permisos-page .gp-alerta.ok { background: #e7f2e3; color: #006100; border: 1px solid #a9d3a0; }
+
+body.gestion-permisos-page .gp-card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 22px 24px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, .08);
+    margin-bottom: 22px;
+}
+body.gestion-permisos-page .gp-card-head { margin-bottom: 16px; }
+body.gestion-permisos-page .gp-card-head h3 {
+    margin: 0 0 4px;
+    color: #013501;
+    font-size: 19px;
+    border-left: 5px solid #006100;
+    padding-left: 12px;
+}
+body.gestion-permisos-page .gp-card-sub {
+    margin: 0 0 0 17px;
+    color: #666;
+    font-size: 13.5px;
+}
+
+/* Tabla / matriz de permisos */
+body.gestion-permisos-page .gp-tabla-wrap { width: 100%; overflow-x: auto; }
+body.gestion-permisos-page .gp-matriz {
+    width: 100%;
+    min-width: 620px;
+    border-collapse: separate;
+    border-spacing: 0;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #fff;
+}
+body.gestion-permisos-page .gp-matriz th {
+    background: linear-gradient(135deg, #006100 0%, #22cc22 100%);
+    color: #fff;
+    padding: 12px 14px;
+    font-size: .82rem;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    text-align: center;
+}
+body.gestion-permisos-page .gp-matriz th.gp-col-modulo { text-align: left; }
+body.gestion-permisos-page .gp-matriz td {
+    padding: 11px 14px;
+    border-bottom: 1px solid #eef3ee;
+    text-align: center;
+    color: #263646;
+}
+body.gestion-permisos-page .gp-matriz tbody tr:nth-child(even) td { background: #fcfffc; }
+body.gestion-permisos-page .gp-matriz tbody tr:hover td { background: #f2fbf2; }
+body.gestion-permisos-page .gp-col-modulo { text-align: left; white-space: nowrap; }
+body.gestion-permisos-page .gp-modulo-nombre { font-weight: 700; color: #1f2937; }
+body.gestion-permisos-page .gp-modulo-clave {
+    display: block;
+    font-size: 11.5px;
+    color: #94a3b8;
+    font-family: ui-monospace, Menlo, monospace;
+}
+body.gestion-permisos-page .gp-candado { margin-left: 6px; font-size: 12px; }
+
+/* Checkbox grande y verde */
+body.gestion-permisos-page .gp-check-cell input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    accent-color: #006100;
+    cursor: pointer;
+}
+body.gestion-permisos-page .gp-check-cell input[type="checkbox"]:disabled {
+    cursor: not-allowed;
+    opacity: .55;
+}
+
+/* Selector de estado por usuario */
+body.gestion-permisos-page .gp-estado-select {
+    padding: 8px 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: inherit;
+    background: #fff;
+    cursor: pointer;
+    min-width: 170px;
+}
+body.gestion-permisos-page .gp-estado-select:focus {
+    outline: none;
+    border-color: #006100;
+    box-shadow: 0 0 0 3px rgba(0, 97, 0, .12);
+}
+body.gestion-permisos-page .gp-estado-select.permitir { border-color: #a9d3a0; background: #f2fbf2; color: #006100; font-weight: 600; }
+body.gestion-permisos-page .gp-estado-select.bloquear { border-color: #f5c6cb; background: #fdf2f2; color: #c0392b; font-weight: 600; }
+
+/* Selector de usuario */
+body.gestion-permisos-page .gp-selector {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 6px;
+}
+body.gestion-permisos-page .gp-selector label { font-weight: 600; color: #444; font-size: 14px; }
+body.gestion-permisos-page .gp-selector select {
+    flex: 1;
+    min-width: 260px;
+    padding: 10px 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: inherit;
+    background: #fff;
+}
+body.gestion-permisos-page .gp-selector select:focus {
+    outline: none;
+    border-color: #006100;
+    box-shadow: 0 0 0 3px rgba(0, 97, 0, .12);
+}
+
+body.gestion-permisos-page .gp-usuario-panel {
+    margin-top: 18px;
+    padding-top: 18px;
+    border-top: 1px dashed #d7e0d6;
+}
+body.gestion-permisos-page .gp-usuario-info { margin: 0 0 14px; color: #333; font-size: 14.5px; }
+body.gestion-permisos-page .gp-badge {
+    display: inline-block;
+    background: #e7f2e3;
+    color: #006100;
+    padding: 3px 12px;
+    border-radius: 999px;
+    font-size: 12.5px;
+    font-weight: 700;
+    text-transform: capitalize;
+}
+
+/* Botones */
+body.gestion-permisos-page .gp-acciones { margin-top: 16px; display: flex; gap: 10px; flex-wrap: wrap; }
+body.gestion-permisos-page .gp-btn {
+    display: inline-block;
+    padding: 11px 22px;
+    border-radius: 9px;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    border: 2px solid #006100;
+    transition: background .2s, color .2s;
+    font-family: "Segoe UI", Tahoma, sans-serif;
+}
+body.gestion-permisos-page .gp-btn-solid { background: #006100; color: #fff; }
+body.gestion-permisos-page .gp-btn-solid:hover { background: #0a7a0a; }
+body.gestion-permisos-page .gp-btn-outline { background: #fff; color: #006100; }
+body.gestion-permisos-page .gp-btn-outline:hover { background: #e7f2e3; }
+
+@media (max-width: 720px) {
+    body.gestion-permisos-page .gp-card { padding: 18px 14px; }
+    body.gestion-permisos-page .gp-selector select { min-width: 100%; }
+}

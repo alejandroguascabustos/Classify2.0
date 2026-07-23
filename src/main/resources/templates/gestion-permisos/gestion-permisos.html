@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Classify - Gestión de permisos</title>
+    <link rel="shortcut icon" th:href="@{/img/favicon.ico}" type="image/x-icon">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body class="gestion-permisos-page">
+    <header class="brandinicio">
+        <div class="brand">
+            <a th:href="@{/inicio}"><img th:src="@{/img/logo.png}" alt="logo" class="logo"></a>
+            <a th:href="@{/inicio}">Classify</a>
+        </div>
+        <div class="brand2">
+            <a th:href="@{/inicio}" class="info-btn">Inicio</a>
+            <a th:href="@{/nosotros}" class="info-btn">Nosotros</a>
+            <a th:href="@{/contacto}" class="info-btn">Contacto</a>
+        </div>
+        <div class="header-tools">
+            <a th:href="@{/logout}" class="logout-btn" title="Cerrar sesión" aria-label="Cerrar sesión">
+                <img th:src="@{/img/salida.png}" alt="Cerrar sesión" class="logout-icon">
+            </a>
+        </div>
+    </header>
+
+    <div class="menu-toggle" id="menuToggle"><span></span><span></span><span></span></div>
+
+    <aside th:replace="~{layout/sidebar :: sidebar('gestion-permisos')}"></aside>
+
+    <main class="programacion-main">
+        <h2 class="programacion-title">Gestión de permisos</h2>
+        <p class="gp-intro">
+            Define qué módulos puede ver cada <strong>rol</strong> y aplica excepciones puntuales por
+            <strong>usuario</strong>. Los cambios se aplican de inmediato en el menú y en el acceso a cada módulo.
+        </p>
+
+        <div th:if="${mensajeOk}" class="gp-alerta ok">✅ <span th:text="${mensajeOk}">ok</span></div>
+
+        <!-- ══════════ Permisos por rol ══════════ -->
+        <section class="gp-card">
+            <div class="gp-card-head">
+                <h3>Permisos por rol</h3>
+                <p class="gp-card-sub">Base que hereda cada usuario según su rol. El administrador siempre tiene acceso completo.</p>
+            </div>
+
+            <form th:action="@{/gestion-permisos/roles}" method="post">
+                <div class="gp-tabla-wrap">
+                    <table class="gp-matriz">
+                        <thead>
+                            <tr>
+                                <th class="gp-col-modulo">Módulo</th>
+                                <th th:each="rol : ${roles}" th:text="${#strings.capitalize(rol)}">Rol</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="m : ${modulos}">
+                                <td class="gp-col-modulo">
+                                    <span class="gp-modulo-nombre" th:text="${m.nombre}">Módulo</span>
+                                    <span th:if="${m.protegido}" class="gp-candado" title="Módulo base: no editable">🔒</span>
+                                    <span class="gp-modulo-clave" th:text="${m.ruta}">/ruta</span>
+                                </td>
+                                <td th:each="rol : ${roles}" class="gp-check-cell">
+                                    <input type="checkbox" name="permisos"
+                                           th:value="${rol + '|' + m.id}"
+                                           th:checked="${marcados.contains(rol + '|' + m.id)}"
+                                           th:disabled="${m.protegido or rol == 'administrador'}">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="gp-acciones">
+                    <button type="submit" class="gp-btn gp-btn-solid">Guardar permisos por rol</button>
+                </div>
+            </form>
+        </section>
+
+        <!-- ══════════ Excepciones por usuario ══════════ -->
+        <section class="gp-card">
+            <div class="gp-card-head">
+                <h3>Excepciones por usuario</h3>
+                <p class="gp-card-sub">Concede o revoca módulos a una persona concreta. La excepción prevalece sobre el permiso de su rol.</p>
+            </div>
+
+            <form th:action="@{/gestion-permisos}" method="get" class="gp-selector">
+                <label for="usuarioId">Usuario</label>
+                <select id="usuarioId" name="usuarioId" onchange="this.form.submit()">
+                    <option value="">— Selecciona un usuario —</option>
+                    <option th:each="u : ${usuarios}"
+                            th:value="${u.id}"
+                            th:selected="${usuarioSel != null and usuarioSel.id == u.id}"
+                            th:text="${u.nombre + '  ·  ' + u.rol + '  ·  ' + u.correo}">Usuario</option>
+                </select>
+                <noscript><button type="submit" class="gp-btn gp-btn-outline">Ver</button></noscript>
+            </form>
+
+            <div th:if="${usuarioSel != null}" class="gp-usuario-panel">
+                <p class="gp-usuario-info">
+                    Editando a <strong th:text="${usuarioSel.nombre}">Nombre</strong>
+                    — rol base: <span class="gp-badge" th:text="${usuarioSel.rol}">rol</span>
+                </p>
+                <form th:action="@{/gestion-permisos/usuario}" method="post">
+                    <input type="hidden" name="usuarioId" th:value="${usuarioSel.id}">
+                    <div class="gp-tabla-wrap">
+                        <table class="gp-matriz gp-matriz-usuario">
+                            <thead>
+                                <tr><th class="gp-col-modulo">Módulo</th><th>Acceso</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="m : ${modulos}" th:unless="${m.protegido}">
+                                    <td class="gp-col-modulo">
+                                        <span class="gp-modulo-nombre" th:text="${m.nombre}">Módulo</span>
+                                    </td>
+                                    <td>
+                                        <select th:name="'estado_' + ${m.id}" class="gp-estado-select"
+                                                th:classappend="${estadosUsuario.get(m.id)}">
+                                            <option value="heredar"
+                                                    th:selected="${estadosUsuario.get(m.id) == 'heredar'}">Heredar del rol</option>
+                                            <option value="permitir"
+                                                    th:selected="${estadosUsuario.get(m.id) == 'permitir'}">✔ Permitir</option>
+                                            <option value="bloquear"
+                                                    th:selected="${estadosUsuario.get(m.id) == 'bloquear'}">✕ Bloquear</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="gp-acciones">
+                        <button type="submit" class="gp-btn gp-btn-solid">Guardar excepciones</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <script th:src="@{/js/chatbot.js}"></script>
+</body>
+</html>

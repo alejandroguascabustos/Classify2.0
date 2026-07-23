@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<!--
+    Menú lateral único de la aplicación.
+    - `activo`: clave del módulo actual, para resaltar su enlace.
+    - Cada enlace se muestra solo si el usuario tiene permiso sobre el módulo
+      (variable `modulosPermitidos`, aportada por PermisosModelAdvice).
+      El acceso real siempre lo valida AuthInterceptor en el servidor.
+    Uso:  <div th:replace="~{layout/sidebar :: sidebar('agenda')}"></div>
+-->
+<aside class="sidebar" th:fragment="sidebar(activo)">
+    <a th:href="@{/menu}" class="inicioprincipal"
+       th:classappend="${activo == 'menu'} ? ' active' : ''">
+        <img th:src="@{/img/home.png}" width="25" class="imgmenu" alt="Inicio"> Inicio
+    </a>
+    <a th:href="@{/agenda}" class="inicioprincipal2"
+       th:classappend="${activo == 'agenda'} ? ' active' : ''"
+       th:if="${modulosPermitidos == null or modulosPermitidos.contains('agenda')}">
+        <img th:src="@{/img/agenda.png}" width="25" class="imgmenu" alt="Agendar"> Agendar clase
+    </a>
+    <a th:href="@{/noticias}" class="inicioprincipal2"
+       th:classappend="${activo == 'noticias'} ? ' active' : ''"
+       th:if="${modulosPermitidos == null or modulosPermitidos.contains('noticias')}">
+        <img th:src="@{/img/noticias.png}" width="25" class="imgmenu" alt="Noticias"> Noticias
+    </a>
+    <a th:href="@{/programacion}" class="inicioprincipal2"
+       th:classappend="${activo == 'programacion'} ? ' active' : ''"
+       th:if="${modulosPermitidos == null or modulosPermitidos.contains('programacion')}">
+        <img th:src="@{/img/programacion.png}" width="25" class="imgmenu" alt="Programación"> Programación
+    </a>
+    <a th:href="@{/gestion-registros}" class="inicioprincipal2"
+       th:classappend="${activo == 'gestion-registros'} ? ' active' : ''"
+       th:if="${modulosPermitidos == null or modulosPermitidos.contains('gestion-registros')}">
+        <img th:src="@{/img/gestioncuenta.png}" width="25" class="imgmenu" alt="Gestión de Registros"> Gestión de registros
+    </a>
+    <a th:href="@{/gestion-permisos}" class="inicioprincipal2"
+       th:classappend="${activo == 'gestion-permisos'} ? ' active' : ''"
+       th:if="${modulosPermitidos == null or modulosPermitidos.contains('gestion-permisos')}">
+        <img th:src="@{/img/gestioncuenta.png}" width="25" class="imgmenu" alt="Gestión de Permisos"> Gestión de permisos
+    </a>
+    <a th:href="@{/aprende}" class="inicioprincipal2"
+       th:classappend="${activo == 'aprende'} ? ' active' : ''"
+       th:if="${modulosPermitidos == null or modulosPermitidos.contains('aprende')}">
+        <img th:src="@{/img/aprende.png}" width="25" class="imgmenu" alt="Aprende"> Aprende
+    </a>
+    <a th:href="@{/contacta}" class="inicioprincipal2"
+       th:classappend="${activo == 'contacta'} ? ' active' : ''"
+       th:if="${modulosPermitidos == null or modulosPermitidos.contains('contacta')}">
+        <img th:src="@{/img/gmail.png}" width="25" class="imgmenu" alt="Contacto"> Contacta a un profe
+    </a>
+    <a th:href="@{/mismateriales}" class="inicioprincipal2"
+       th:classappend="${activo == 'mismateriales'} ? ' active' : ''"
+       th:if="${modulosPermitidos == null or modulosPermitidos.contains('mismateriales')}">
+        <img th:src="@{/img/descargamaterial.png}" width="25" class="imgmenu" alt="Mis Materiales"> Mis Materiales
+    </a>
+    <a th:href="@{/materiales}" class="inicioprincipal2"
+       th:classappend="${activo == 'materiales'} ? ' active' : ''"
+       th:if="${modulosPermitidos == null or modulosPermitidos.contains('materiales')}">
+        <img th:src="@{/img/upload.png}" width="25" class="imgmenu" alt="Carga Materiales"> Carga Materiales
+    </a>
+</aside>
+</body>
+</html>

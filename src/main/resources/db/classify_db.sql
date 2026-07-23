@@ -130,3 +130,46 @@ CREATE TABLE IF NOT EXISTS activacion_tokens (
 );
 CREATE INDEX IF NOT EXISTS idx_activacion_tokens_hash ON activacion_tokens (token_hash);
 CREATE INDEX IF NOT EXISTS idx_activacion_tokens_usuario ON activacion_tokens (usuario_id);
+
+-- ============================================================
+-- Módulo Gestión de Permisos (control de acceso por rol y usuario)
+-- Modelo RBAC: catálogo de módulos + permisos por rol + overrides por usuario.
+-- El seed de datos (catálogo y permisos por defecto) se hace en Java
+-- (PermisosSeedService), porque el cargador de esquema solo ejecuta
+-- sentencias CREATE/ALTER e ignora los INSERT.
+-- ============================================================
+
+-- Catálogo de módulos administrables de la aplicación.
+CREATE TABLE IF NOT EXISTS modulos (
+    id BIGSERIAL PRIMARY KEY,
+    clave VARCHAR(50) NOT NULL UNIQUE,
+    nombre VARCHAR(100) NOT NULL,
+    ruta VARCHAR(100) NOT NULL,
+    icono VARCHAR(100),
+    orden INT NOT NULL DEFAULT 0,
+    en_menu BOOLEAN NOT NULL DEFAULT true,
+    protegido BOOLEAN NOT NULL DEFAULT false,
+    creado_en TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+CREATE INDEX IF NOT EXISTS idx_modulos_orden ON modulos (orden);
+
+-- Permiso por rol (tipo_usuario) sobre cada módulo. Base heredable por los usuarios.
+CREATE TABLE IF NOT EXISTS rol_permiso (
+    id BIGSERIAL PRIMARY KEY,
+    rol VARCHAR(30) NOT NULL,
+    modulo_id BIGINT NOT NULL REFERENCES modulos(id) ON DELETE CASCADE,
+    permitido BOOLEAN NOT NULL DEFAULT false,
+    CONSTRAINT uq_rol_permiso UNIQUE (rol, modulo_id)
+);
+CREATE INDEX IF NOT EXISTS idx_rol_permiso_rol ON rol_permiso (rol);
+
+-- Override explícito por usuario: si existe fila, prevalece sobre el permiso del rol
+-- (permitido concede el acceso, no permitido lo revoca). Ausencia de fila hereda del rol.
+CREATE TABLE IF NOT EXISTS usuario_permiso (
+    id BIGSERIAL PRIMARY KEY,
+    usuario_id BIGINT NOT NULL REFERENCES registro_usuarios(id) ON DELETE CASCADE,
+    modulo_id BIGINT NOT NULL REFERENCES modulos(id) ON DELETE CASCADE,
+    permitido BOOLEAN NOT NULL,
+    CONSTRAINT uq_usuario_permiso UNIQUE (usuario_id, modulo_id)
+);
+CREATE INDEX IF NOT EXISTS idx_usuario_permiso_usuario ON usuario_permiso (usuario_id);

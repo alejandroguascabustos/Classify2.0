@@ -6,37 +6,6 @@
     <title>Classify - Agendar clase</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <link rel="shortcut icon" th:href="@{/img/favicon.ico}" type="image/x-icon">
-
-    <style>
-        /* ── Alerta dinámica ──────────────────────────────────────────── */
-        .alerta-horario {
-            display: none;
-            align-items: flex-start;
-            gap: 12px;
-            border-radius: 16px;
-            padding: 14px 18px;
-            margin-bottom: 20px;
-            animation: slideDown 0.3s cubic-bezier(0.25,1,0.5,1);
-        }
-        .alerta-horario.visible    { display: flex; }
-        .alerta-horario.conflicto  { background:#fffbeb; border:1.5px solid #f59e0b; border-left:5px solid #f59e0b; }
-        .alerta-horario.anticipacion { background:#fff5f5; border:1.5px solid #ef4444; border-left:5px solid #ef4444; }
-        .alerta-horario .alerta-icono { font-size:1.5rem; flex-shrink:0; line-height:1; margin-top:2px; }
-        .alerta-horario .alerta-body strong { display:block; font-size:.92rem; font-weight:700; margin-bottom:3px; }
-        .alerta-horario.anticipacion .alerta-body strong { color:#7f1d1d; }
-        .alerta-horario.conflicto   .alerta-body strong { color:#78350f; }
-        .alerta-horario .alerta-body span { font-size:.85rem; color:#555; line-height:1.5; }
-        .alerta-horario .alerta-detalle {
-            display:inline-block; margin-top:6px; padding:4px 10px;
-            border-radius:8px; font-size:.8rem; font-weight:600;
-            background:rgba(0,0,0,.06); color:#333;
-        }
-        .hora-hint { font-size:.78rem; color:var(--gris); margin-top:4px; display:none; }
-        .hora-hint.visible { display:block; }
-        .hora-hint.error   { color:#ef4444; font-weight:600; }
-        .campo-invalido { border:2px solid #ef4444 !important; box-shadow:0 0 0 3px rgba(239,68,68,.15) !important; }
-        @keyframes slideDown { from{opacity:0;transform:translateY(-8px)} to{opacity:1;transform:translateY(0)} }
-    </style>
 </head>
 
 <body>
@@ -75,36 +44,7 @@
 
     <div class="menu-toggle" id="menuToggle"><span></span><span></span><span></span></div>
 
-    <aside class="sidebar">
-        <a th:href="@{/menu}" class="inicioprincipal">
-            <img th:src="@{/img/home.png}" width="25" class="imgmenu" alt="Inicio"> Inicio
-        </a>
-        <a th:href="@{/agenda}" class="inicioprincipal2">
-            <img th:src="@{/img/agenda.png}" width="25" class="imgmenu" alt="Agendar"> Agendar clase
-        </a>
-        <a th:href="@{/noticias}" class="inicioprincipal2">
-            <img th:src="@{/img/noticias.png}" width="25" class="imgmenu" alt="Noticias"> Noticias
-        </a>
-        <a th:href="@{/programacion}" class="inicioprincipal2">
-            <img th:src="@{/img/programacion.png}" width="25" class="imgmenu" alt="Programación"> Programación
-        </a>
-        <a th:href="@{/gestion-registros}" class="inicioprincipal2"
-           th:if="${session.perfil == 1 or session.perfil == 2}">
-            <img th:src="@{/img/gestioncuenta.png}" width="25" class="imgmenu" alt="Gestión de Registros"> Gestión de registros
-        </a>
-        <a th:href="@{/aprende}" class="inicioprincipal2">
-            <img th:src="@{/img/aprende.png}" width="25" class="imgmenu" alt="Aprende"> Aprende
-        </a>
-        <a th:href="@{/contacta}" class="inicioprincipal2">
-            <img th:src="@{/img/gmail.png}" width="25" class="imgmenu" alt="Contacto"> Contacta a un profe
-        </a>
-        <a th:href="@{/mismateriales}" class="inicioprincipal2">
-            <img th:src="@{/img/descargamaterial.png}" width="25" class="imgmenu" alt="Mis Materiales"> Mis Materiales
-        </a>
-        <a th:href="@{/materiales}" class="inicioprincipal2">
-            <img th:src="@{/img/upload.png}" width="25" class="imgmenu" alt="Carga Materiales"> Carga Materiales
-        </a>
-    </aside>
+    <aside th:replace="~{layout/sidebar :: sidebar('agenda')}"></aside>
 
     <main class="contentagenda">
         <div class="agenda-form-container">

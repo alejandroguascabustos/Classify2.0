@@ -31,6 +31,7 @@ public class WebConfig implements WebMvcConfigurer {
                         "/noticias", "/noticias/**",
                         "/programacion", "/programacion/**",
                         "/gestion-registros", "/gestion-registros/**",
+                        "/gestion-permisos", "/gestion-permisos/**",
                         "/izada", "/izada/**"
                 );
     }
