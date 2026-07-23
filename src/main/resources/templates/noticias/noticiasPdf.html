@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<!--
+    Plantilla usada SOLO por NoticiaController#generarPdf (Flying Saucer / ITextRenderer).
+    Va en: src/main/resources/templates/noticias/noticiasPdf.html
+
+    Notas importantes:
+    - Flying Saucer exige XHTML bien formado (todas las etiquetas cerradas).
+    - No carga JS ni hojas de estilo externas de forma fiable: el CSS va en línea, aquí mismo.
+    - Las imágenes deben referenciarse con una URI file:/// absoluta (ver
+      NoticiaController#resolverImagenParaPdf); una ruta relativa tipo
+      "/uploads/noticias/xxx.png" NO se puede resolver porque esa ruta solo
+      existe como endpoint HTTP servido por Spring, no como recurso de disco.
+    - Se evitan emojis (✍ 📅) porque las fuentes base de iText no siempre los soportan;
+      se usan etiquetas de texto en su lugar ("Autor:", "Fecha:").
+    - Si los acentos (á, é, ñ...) no se ven bien en el PDF final, hay que registrar una
+      fuente TTF (ver comentario en NoticiaController#generarPdf).
+-->
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Cartelera Informativa - Classify</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 20mm 16mm;
+        }
+
+        body {
+            font-family: Helvetica, Arial, sans-serif;
+            color: #1e293b;
+            font-size: 11px;
+        }
+
+        .encabezado {
+            border-left: 5px solid #008000;
+            padding-left: 12px;
+            margin-bottom: 4px;
+        }
+
+        .encabezado h1 {
+            font-size: 20px;
+            color: #111827;
+            margin: 0;
+        }
+
+        .meta-generacion {
+            color: #64748b;
+            font-size: 9px;
+            margin: 4px 0 4px 12px;
+        }
+
+        .filtros-aplicados {
+            color: #35b50b;
+            font-size: 9px;
+            margin: 0 0 16px 12px;
+            font-weight: bold;
+        }
+
+        .noticia {
+            border: 1px solid #e5e7eb;
+            border-left: 4px solid #008000;
+            border-radius: 4px;
+            padding: 10px 14px;
+            margin-bottom: 12px;
+            page-break-inside: avoid;
+        }
+
+        .noticia h2 {
+            font-size: 14px;
+            color: #013501;
+            margin: 0 0 6px 0;
+        }
+
+        .noticia-meta {
+            font-size: 9px;
+            color: #64748b;
+            margin-bottom: 8px;
+        }
+
+        .noticia-meta .badge {
+            display: inline-block;
+            background: #f38f02;
+            color: #ffffff;
+            border-radius: 8px;
+            padding: 1px 8px;
+            margin-left: 6px;
+        }
+
+        .noticia-imagen {
+            display: block;
+            /* Flying Saucer no reescala imágenes con max-width en % cuando el
+               archivo original es grande: hay que usar un ancho FIJO en px
+               (longitud definida) para que el motor de layout la reescale de
+               forma determinística. height:auto conserva la proporción. */
+            width: 460px;
+            height: auto;
+            margin: 10px auto;
+            border: 1px solid #e5e7eb;
+            border-radius: 4px;
+        }
+
+        .noticia-contenido {
+            font-size: 10.5px;
+            line-height: 1.5;
+            color: #111827;
+        }
+
+        .sin-resultados {
+            text-align: center;
+            color: #64748b;
+            padding: 40px 0;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="encabezado">
+        <h1>Cartelera Informativa - Classify</h1>
+    </div>
+    <p class="meta-generacion" th:text="'Generado el ' + ${#temporals.format(fechaGeneracion, 'dd/MM/yyyy HH:mm')}"></p>
+
+    <p class="filtros-aplicados"
+       th:if="${filtroTipo != null or filtroDesde != null or filtroHasta != null}"
+       th:text="'Filtros aplicados — ' +
+                (${filtroTipo} != null ? ('Tipo: ' + ${filtroTipo} + '. ') : '') +
+                (${filtroDesde} != null ? ('Desde: ' + ${#temporals.format(filtroDesde, 'dd/MM/yyyy')} + '. ') : '') +
+                (${filtroHasta} != null ? ('Hasta: ' + ${#temporals.format(filtroHasta, 'dd/MM/yyyy')}) : '')">
+    </p>
+
+    <th:block th:if="${noticias != null and !noticias.isEmpty()}">
+        <div class="noticia" th:each="noticia : ${noticias}">
+            <h2 th:text="${noticia.tituloNoticia}"></h2>
+            <div class="noticia-meta">
+                <span th:text="'Autor: ' + ${noticia.autorNoticia}"></span>
+                &#160;|&#160;
+                <span th:text="'Fecha: ' + ${#temporals.format(noticia.fechaNoticia, 'dd/MM/yyyy HH:mm')}"></span>
+                <span class="badge"
+                      th:if="${noticia.tipoNoticia != null and !#strings.isEmpty(noticia.tipoNoticia)}"
+                      th:text="${noticia.tipoNoticia}"></span>
+            </div>
+
+            <!-- Imagen: solo se muestra si el archivo existe en disco (imagenUrl != null) -->
+            <img th:if="${noticia.imagenUrl != null and !#strings.isEmpty(noticia.imagenUrl)}"
+                 th:src="${noticia.imagenUrl}"
+                 class="noticia-imagen"
+                 alt="Imagen de la noticia"/>
+
+            <p class="noticia-contenido" th:text="${noticia.contenidoNoticia}"></p>
+        </div>
+    </th:block>
+
+    <div class="sin-resultados" th:if="${noticias == null or noticias.isEmpty()}">
+        <p>No hay noticias que coincidan con los filtros seleccionados.</p>
+    </div>
+
+</body>
+</html>

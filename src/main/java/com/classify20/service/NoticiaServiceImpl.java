@@ -5,6 +5,9 @@ import com.classify20.domain.Noticia;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -61,5 +64,18 @@ public class NoticiaServiceImpl implements NoticiaService {
     @Override
     public Optional<Noticia> buscarMasReciente() {
         return noticiaDao.findMasReciente();
+    }
+
+    @Override
+    public List<Noticia> filtrar(String tipo, LocalDate desde, LocalDate hasta) {
+        String tipoFiltro = (tipo != null && !tipo.isBlank()) ? tipo : null;
+        LocalDateTime desdeDT = (desde != null) ? desde.atStartOfDay() : null;
+        LocalDateTime hastaDT = (hasta != null) ? LocalDateTime.of(hasta, LocalTime.of(23, 59, 59)) : null;
+        return noticiaDao.filtrar(tipoFiltro, desdeDT, hastaDT);
+    }
+
+    @Override
+    public List<String> listarTipos() {
+        return noticiaDao.findTiposDistintos();
     }
 }

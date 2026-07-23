@@ -5,6 +5,111 @@
     <title>Classify - Noticias</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <link rel="shortcut icon" th:href="@{img/favicon.ico}" type="image/x-icon">
+    <style>
+        /* ── Título: evita que texto sin espacios se desborde de la tarjeta ── */
+        .titlecontentnoticia {
+            overflow-wrap: break-word;
+            word-break: break-word;
+        }
+
+        /* ── Cuerpo: recorte visual a 4 líneas ── */
+        .noticia-contenido {
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 4;
+            overflow: hidden;
+            overflow-wrap: break-word;
+            word-break: break-word;
+        }
+
+        .noticia-ver-mas {
+            display: none;
+            margin: 6px 0 4px;
+            background: none;
+            border: none;
+            padding: 0;
+            color: #008000;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+
+        .noticia-ver-mas:hover {
+            text-decoration: underline;
+        }
+
+        /* ── Modal de noticia completa ── */
+        .modal-noticia-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, .55);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 5000;
+            padding: 24px;
+        }
+
+        .modal-noticia-overlay.activo {
+            display: flex;
+        }
+
+        .modal-noticia-caja {
+            background: #fff;
+            border-radius: 14px;
+            max-width: 640px;
+            width: 100%;
+            max-height: 85vh;
+            overflow-y: auto;
+            padding: 28px 30px;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, .3);
+        }
+
+        .modal-noticia-cerrar {
+            position: absolute;
+            top: 10px;
+            right: 14px;
+            background: none;
+            border: none;
+            font-size: 28px;
+            line-height: 1;
+            cursor: pointer;
+            color: #666;
+        }
+
+        .modal-noticia-cerrar:hover {
+            color: #000;
+        }
+
+        .modal-noticia-titulo {
+            color: #013501;
+            font-size: 1.5rem;
+            margin: 0 0 10px;
+            padding-right: 28px;
+            overflow-wrap: break-word;
+            word-break: break-word;
+        }
+
+        .modal-noticia-img {
+            width: 100%;
+            max-height: 320px;
+            object-fit: contain;
+            background: #f8fafc;
+            border-radius: 8px;
+            margin-bottom: 14px;
+            display: none;
+        }
+
+        .modal-noticia-cuerpo {
+            color: #333;
+            line-height: 1.65;
+            white-space: pre-wrap;
+            overflow-wrap: break-word;
+            word-break: break-word;
+            margin-top: 12px;
+        }
+    </style>
 </head>
 <body>
     <header class="brandinicio">
@@ -72,8 +177,6 @@
         </a>
     </aside>
 
-</aside>
-
 
     <main class="contentnoticias">
         <div class="content-noticias">
@@ -102,21 +205,55 @@
                     </li>
                 </ul>
                 <br>
- 
-                <div class="listanoticicas">
- 
-                    <!-- Noticias ordenadas de más reciente a más antigua -->
-                    <th:block th:if="${noticias != null and !noticias.isEmpty()}">
+
+                <form method="get" th:action="@{/noticias}" class="noticias-filtros" id="formFiltrosNoticias">
+                    <div class="filtro-item">
+                        <label for="filtroTipoNoticia">Tipo</label>
+                        <select name="tipo" id="filtroTipoNoticia">
+                            <option value="">Todos</option>
+                            <option th:each="t : ${tiposDisponibles}"
+                                    th:value="${t}"
+                                    th:text="${t}"
+                                    th:selected="${t == filtroTipo}"></option>
+                        </select>
+                    </div>
+                    <div class="filtro-item">
+                        <label for="filtroFechaDesde">Desde</label>
+                        <input type="date" name="desde" id="filtroFechaDesde" th:value="${filtroDesde}">
+                    </div>
+                    <div class="filtro-item">
+                        <label for="filtroFechaHasta">Hasta</label>
+                        <input type="date" name="hasta" id="filtroFechaHasta" th:value="${filtroHasta}">
+                    </div>
+
+                    <a th:href="@{/noticias}" class="btn-limpiar-filtros-noticias">Limpiar filtros</a>
+
+                    <button type="submit" class="btn-filtrar-noticias">Filtrar</button>
+
+                    <button type="submit" th:formaction="@{/noticias/pdf}" class="btn-descargar-pdf-noticias">
+                        <img th:src="@{/img/descargamaterial.png}" width="18" class="imgdescargar"> Descargar PDF
+                    </button>
+                </form>
+
+                <div class="noticias-carousel-wrapper" th:if="${noticias != null and !noticias.isEmpty()}">
+
+                    <button type="button" class="carousel-nav-btn carousel-nav-prev" id="btnNoticiaPrev" aria-label="Noticia anterior">
+                        &#10094;
+                    </button>
+
+                    <div class="listanoticicas" id="noticiasScroll">
+
+                        <!-- Noticias ordenadas de más reciente a más antigua -->
                         <div class="noticia-card" th:each="noticia : ${noticias}">
- 
+
                             <img th:if="${noticia.imagenNoticia != null and !#strings.isEmpty(noticia.imagenNoticia)}"
                                  th:src="${noticia.imagenNoticia}"
                                  alt="Imagen noticia"
                                  class="noticia-card-img"/>
- 
+
                             <div class="noticia-card-body">
                                 <h3 class="titlecontentnoticia" th:text="${noticia.tituloNoticia}"></h3>
- 
+
                                 <div class="noticia-meta">
                                     <span th:text="'✍ ' + ${noticia.autorNoticia}"></span>
                                     <!-- Formato dd/MM/yyyy HH:mm para datetime -->
@@ -126,24 +263,51 @@
                                           th:text="${noticia.tipoNoticia}">
                                     </span>
                                 </div>
- 
-                                <p class="noticia-contenido" th:text="${noticia.contenidoNoticia}" style="overflow-wrap: break-word; word-break: break-all;" ></p>
+
+                                <p class="noticia-contenido" th:text="${noticia.contenidoNoticia}"></p>
+
+                                <button type="button" class="noticia-ver-mas" data-accion="ver-mas">Ver más...</button>
+
+                                <!-- ── Descarga en PDF de esta noticia individual ── -->
+                                <a th:href="@{/noticias/pdf/{id}(id=${noticia.idNoticia})}"
+                                   class="btn-descargar-pdf-noticias btn-descargar-pdf-individual"
+                                   title="Descargar esta noticia en PDF">
+                                    <img th:src="@{/img/descargamaterial.png}" width="16" class="imgdescargar"> Descargar PDF
+                                </a>
                             </div>
-                            <hr class="separadornoticias">
                         </div>
-                    </th:block>
- 
-                    <th:block th:if="${noticias == null or noticias.isEmpty()}">
-                        <div class="sinnoticias">
-                            <img th:src="@{/img/sinnoticias.png}" width="25" class="librosinnoticias">
-                            <p class="parrafonoticias">No hay noticias disponibles.</p>
-                        </div>
-                    </th:block>
- 
+
+                    </div>
+
+                    <button type="button" class="carousel-nav-btn carousel-nav-next" id="btnNoticiaNext" aria-label="Siguiente noticia">
+                        &#10095;
+                    </button>
+
+                </div>
+
+                <div class="listanoticicas" th:if="${noticias == null or noticias.isEmpty()}">
+                    <div class="sinnoticias">
+                        <img th:src="@{/img/sinnoticias.png}" width="25" class="librosinnoticias">
+                        <p class="parrafonoticias"
+                           th:text="${filtroTipo != null or filtroDesde != null or filtroHasta != null}
+                                     ? 'No hay noticias que coincidan con los filtros seleccionados.'
+                                     : 'No hay noticias disponibles.'">No hay noticias disponibles.</p>
+                    </div>
                 </div>
             </div>
         </div>
     </main>
+
+    <!-- ── Modal: noticia completa ── -->
+    <div class="modal-noticia-overlay" id="modalNoticiaOverlay">
+        <div class="modal-noticia-caja">
+            <button type="button" class="modal-noticia-cerrar" id="modalNoticiaCerrar" aria-label="Cerrar">&times;</button>
+            <img id="modalNoticiaImg" class="modal-noticia-img" alt="Imagen de la noticia">
+            <h2 class="modal-noticia-titulo" id="modalNoticiaTitulo"></h2>
+            <div class="noticia-meta" id="modalNoticiaMeta"></div>
+            <div class="modal-noticia-cuerpo" id="modalNoticiaCuerpo"></div>
+        </div>
+    </div>
 
     <!-- Modal configuración -->
     <div id="modalConfig" class="modal-config">
@@ -160,5 +324,6 @@
 
     <script th:src="@{/js/chatbot.js}"></script>
     <script th:src="@{/js/config.js}"></script>
+    <script th:src="@{/js/noticia.js}"></script>
 </body>
 </html>
