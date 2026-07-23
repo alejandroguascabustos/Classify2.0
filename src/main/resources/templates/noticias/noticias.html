@@ -5,6 +5,111 @@
     <title>Classify - Noticias</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <link rel="shortcut icon" th:href="@{img/favicon.ico}" type="image/x-icon">
+    <style>
+        /* ── Título: evita que texto sin espacios se desborde de la tarjeta ── */
+        .titlecontentnoticia {
+            overflow-wrap: break-word;
+            word-break: break-word;
+        }
+
+        /* ── Cuerpo: recorte visual a 4 líneas ── */
+        .noticia-contenido {
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 4;
+            overflow: hidden;
+            overflow-wrap: break-word;
+            word-break: break-word;
+        }
+
+        .noticia-ver-mas {
+            display: none;
+            margin: 6px 0 4px;
+            background: none;
+            border: none;
+            padding: 0;
+            color: #008000;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+
+        .noticia-ver-mas:hover {
+            text-decoration: underline;
+        }
+
+        /* ── Modal de noticia completa ── */
+        .modal-noticia-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, .55);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 5000;
+            padding: 24px;
+        }
+
+        .modal-noticia-overlay.activo {
+            display: flex;
+        }
+
+        .modal-noticia-caja {
+            background: #fff;
+            border-radius: 14px;
+            max-width: 640px;
+            width: 100%;
+            max-height: 85vh;
+            overflow-y: auto;
+            padding: 28px 30px;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, .3);
+        }
+
+        .modal-noticia-cerrar {
+            position: absolute;
+            top: 10px;
+            right: 14px;
+            background: none;
+            border: none;
+            font-size: 28px;
+            line-height: 1;
+            cursor: pointer;
+            color: #666;
+        }
+
+        .modal-noticia-cerrar:hover {
+            color: #000;
+        }
+
+        .modal-noticia-titulo {
+            color: #013501;
+            font-size: 1.5rem;
+            margin: 0 0 10px;
+            padding-right: 28px;
+            overflow-wrap: break-word;
+            word-break: break-word;
+        }
+
+        .modal-noticia-img {
+            width: 100%;
+            max-height: 320px;
+            object-fit: contain;
+            background: #f8fafc;
+            border-radius: 8px;
+            margin-bottom: 14px;
+            display: none;
+        }
+
+        .modal-noticia-cuerpo {
+            color: #333;
+            line-height: 1.65;
+            white-space: pre-wrap;
+            overflow-wrap: break-word;
+            word-break: break-word;
+            margin-top: 12px;
+        }
+    </style>
 </head>
 <body>
     <header class="brandinicio">
@@ -41,7 +146,36 @@
         <span></span><span></span><span></span>
     </div>
 
-<aside th:replace="~{layout/sidebar :: sidebar('noticias')}"></aside>
+<aside class="sidebar">
+        <a th:href="@{/menu}" class="inicioprincipal">
+            <img th:src="@{/img/home.png}" width="25" class="imgmenu" alt="Inicio"> Inicio
+        </a>
+        <a th:href="@{/agenda}" class="inicioprincipal2">
+            <img th:src="@{/img/agenda.png}" width="25" class="imgmenu" alt="Agendar"> Agendar clase
+        </a>
+        <a th:href="@{/noticias}" class="inicioprincipal2">
+            <img th:src="@{/img/noticias.png}" width="25" class="imgmenu" alt="Noticias"> Noticias
+        </a>
+        <a th:href="@{/programacion}" class="inicioprincipal2">
+            <img th:src="@{/img/programacion.png}" width="25" class="imgmenu" alt="Programación"> Programación
+        </a>
+        <a th:href="@{/gestion-registros}" class="inicioprincipal2"
+           th:if="${session.perfil == 1 or session.perfil == 2}">
+            <img th:src="@{/img/gestioncuenta.png}" width="25" class="imgmenu" alt="Gestión de Registros"> Gestión de registros
+        </a>
+        <a th:href="@{/aprende}" class="inicioprincipal2">
+            <img th:src="@{/img/aprende.png}" width="25" class="imgmenu" alt="Aprende"> Aprende
+        </a>
+        <a th:href="@{/contacta}" class="inicioprincipal2">
+            <img th:src="@{/img/gmail.png}" width="25" class="imgmenu" alt="Contacto"> Contacta a un profe
+        </a>
+        <a th:href="@{/mismateriales}" class="inicioprincipal2">
+            <img th:src="@{/img/descargamaterial.png}" width="25" class="imgmenu" alt="Mis Materiales"> Mis Materiales
+        </a>
+        <a th:href="@{/materiales}" class="inicioprincipal2">
+            <img th:src="@{/img/upload.png}" width="25" class="imgmenu" alt="Carga Materiales"> Carga Materiales
+        </a>
+    </aside>
 
 
     <main class="contentnoticias">
@@ -59,12 +193,13 @@
                             <img th:src="@{/img/periodico.png}" width="25" class="imgtitlenoticias">Noticias
                         </a>
                     </li>
-                    <li class="btnnoticias">
+                    <!-- Crear e Historial: exclusivos de coordinador (2) y administrador (1) -->
+                    <li class="btnnoticias" th:if="${puedeGestionar}">
                         <a th:href="@{/noticias/form}" class="titlesnoticias">
                             <img th:src="@{/img/agregar.png}" width="25" class="imgtitlenoticias">Crear Noticia
                         </a>
                     </li>
-                    <li class="btnnoticias">
+                    <li class="btnnoticias" th:if="${puedeGestionar}">
                         <a th:href="@{/noticias/historial}" class="titlesnoticias">
                             <img th:src="@{/img/historial.png}" width="25" class="imgtitlenoticias">Historial
                         </a>

@@ -5,6 +5,13 @@
     <title>Classify - Menu</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <link rel="shortcut icon" th:href="@{img/favicon.ico}" type="image/x-icon">
+    <style>
+        /* Evita que un título de noticia sin espacios desborde la tarjeta anclada */
+        .noticia-reciente-titulo {
+            overflow-wrap: break-word;
+            word-break: break-word;
+        }
+    </style>
 </head>
 <body>
     <header class="brandinicio">

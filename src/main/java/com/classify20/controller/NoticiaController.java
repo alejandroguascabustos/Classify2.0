@@ -1,11 +1,11 @@
 package com.classify20.controller;
 
+import com.classify20.config.UploadStorageResolver;
 import com.classify20.domain.Noticia;
 import com.classify20.service.NoticiaService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,7 +17,9 @@ import org.thymeleaf.spring6.SpringTemplateEngine;
 import org.xhtmlrenderer.pdf.ITextRenderer;
 
 import java.io.IOException;
-import java.nio.file.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -34,11 +36,16 @@ public class NoticiaController {
     @Autowired
     private SpringTemplateEngine templateEngine;
 
-    @Value("${classify.upload.path:/Users/macbookair/Classify2/Classify2.0/src/main/resources/static/uploads}")
-    private String uploadPath;
+    @Autowired
+    private UploadStorageResolver uploadStorageResolver;
 
     // Prefijo con el que se guardan las rutas en BD, ej: "/uploads/noticias/uuid.png"
     private static final String PREFIJO_UPLOADS = "/uploads/";
+
+    // Perfiles con permiso para crear/editar/eliminar noticias y ver el historial.
+    // 1 = administrador, 2 = coordinador (ver AuthService#mapearPerfil).
+    private static final int PERFIL_ADMINISTRADOR = 1;
+    private static final int PERFIL_COORDINADOR = 2;
 
     // ─── GET /noticias → vista pública (con filtros opcionales) ──
     @GetMapping
@@ -62,6 +69,7 @@ public class NoticiaController {
         model.addAttribute("filtroTipo", tipo);
         model.addAttribute("filtroDesde", desde);
         model.addAttribute("filtroHasta", hasta);
+        model.addAttribute("puedeGestionar", esCoordinadorOAdmin(session));
         return "noticias/noticias";
     }
 
@@ -165,8 +173,10 @@ public class NoticiaController {
     }
 
     // Convierte "/uploads/noticias/uuid.png" (ruta guardada en BD) en una
-    // URI file:/// absoluta apuntando al archivo real en disco, usando la
-    // misma base (uploadPath) con la que se guardó en guardarNoticia().
+    // URI file:/// absoluta apuntando al archivo real en disco. Usa
+    // UploadStorageResolver — el MISMO resolutor de raíz que usa el resto
+    // de la app (MaterialController, WebConfig) — para garantizar que la
+    // ruta coincida exactamente con la usada al guardar la imagen.
     // Devuelve null si la noticia no tiene imagen o el archivo no existe.
     private String resolverImagenParaPdf(String rutaGuardada) {
         if (rutaGuardada == null || rutaGuardada.isBlank()) {
@@ -177,7 +187,7 @@ public class NoticiaController {
                 ? rutaGuardada.substring(PREFIJO_UPLOADS.length())
                 : rutaGuardada;
 
-        Path absoluto = Paths.get(uploadPath).resolve(relativo).normalize();
+        Path absoluto = uploadStorageResolver.resolveRootPath().resolve(relativo).normalize();
 
         if (!Files.exists(absoluto)) {
             return null;
@@ -197,18 +207,20 @@ public class NoticiaController {
             String imagenUrl) {
     }
 
-    // ─── GET /noticias/historial ──────────────────────────────
+    // ─── GET /noticias/historial → SOLO administrador/coordinador ────
     @GetMapping("/historial")
     public String verHistorial(Model model, HttpSession session) {
         if (session.getAttribute("nombre") == null) return "redirect:/login";
+        if (!esCoordinadorOAdmin(session)) return "redirect:/menu?denegado=1";
         model.addAttribute("noticias", noticiaService.listarTodas());
         return "noticias/historialNoticia";
     }
 
-    // ─── GET /noticias/form → CREAR ───────────────────────────
+    // ─── GET /noticias/form → CREAR (SOLO administrador/coordinador) ─
     @GetMapping("/form")
     public String mostrarFormulario(HttpSession session, Model model) {
         if (session.getAttribute("nombre") == null) return "redirect:/login";
+        if (!esCoordinadorOAdmin(session)) return "redirect:/menu?denegado=1";
         Noticia nueva = new Noticia();
         // Auto-rellenar autor con nombre + apellido de sesión
         String nombre   = session.getAttribute("nombre")   != null ? session.getAttribute("nombre").toString()   : "";
@@ -220,18 +232,19 @@ public class NoticiaController {
         return "noticias/formularioNoticia";
     }
 
-    // ─── GET /noticias/form/{id} → EDITAR ────────────────────
+    // ─── GET /noticias/form/{id} → EDITAR (SOLO administrador/coordinador) ─
     @GetMapping("/form/{id}")
     public String mostrarFormularioEditar(@PathVariable Long id,
                                           HttpSession session, Model model) {
         if (session.getAttribute("nombre") == null) return "redirect:/login";
+        if (!esCoordinadorOAdmin(session)) return "redirect:/menu?denegado=1";
         Optional<Noticia> opt = noticiaService.buscarPorId(id);
         if (opt.isEmpty()) return "redirect:/noticias/historial";
         model.addAttribute("noticia", opt.get());
         return "noticias/formularioNoticia";
     }
 
-    // ─── POST /noticias/guardar → crear o actualizar ──────────
+    // ─── POST /noticias/guardar → crear o actualizar (SOLO admin/coordinador) ─
     @PostMapping("/guardar")
     public String guardarNoticia(
             @RequestParam(value = "idNoticia", required = false) Long idNoticia,
@@ -247,13 +260,13 @@ public class NoticiaController {
             RedirectAttributes redirectAttrs) {
 
         if (session.getAttribute("nombre") == null) return "redirect:/login";
+        if (!esCoordinadorOAdmin(session)) return "redirect:/menu?denegado=1";
 
         try {
             // ── Imagen ────────────────────────────────────────
             String rutaImagen = null;
             if (imagen != null && !imagen.isEmpty()) {
-                Path dirPath = Paths.get(uploadPath, "noticias");
-                Files.createDirectories(dirPath);
+                Path dirPath = uploadStorageResolver.resolveSubdirectory("noticias");
                 String originalName = imagen.getOriginalFilename();
                 String ext = (originalName != null && originalName.contains("."))
                         ? originalName.substring(originalName.lastIndexOf(".")) : "";
@@ -291,13 +304,24 @@ public class NoticiaController {
         }
     }
 
-    // ─── GET /noticias/eliminar/{id} ──────────────────────────
+    // ─── GET /noticias/eliminar/{id} → SOLO administrador/coordinador ─
     @GetMapping("/eliminar/{id}")
     public String eliminarNoticia(@PathVariable Long id, HttpSession session,
                                   RedirectAttributes redirectAttrs) {
         if (session.getAttribute("nombre") == null) return "redirect:/login";
+        if (!esCoordinadorOAdmin(session)) return "redirect:/menu?denegado=1";
         noticiaService.eliminar(id);
         redirectAttrs.addFlashAttribute("mensajeExito", "Noticia eliminada correctamente.");
         return "redirect:/noticias/historial";
+    }
+
+    // Administrador (perfil 1) o coordinador (perfil 2) — únicos con permiso
+    // para crear, editar, eliminar noticias y ver el historial completo.
+    private boolean esCoordinadorOAdmin(HttpSession session) {
+        Object perfilObj = session.getAttribute("perfil");
+        if (!(perfilObj instanceof Integer perfil)) {
+            return false;
+        }
+        return perfil == PERFIL_ADMINISTRADOR || perfil == PERFIL_COORDINADOR;
     }
 }
