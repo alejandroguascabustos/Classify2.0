@@ -9875,8 +9875,496 @@ body.aprende-page .contentaprende {
     background-image: none !important;
 }
 
-body.aprende-page .contenidoinicio::before, 
+body.aprende-page .contenidoinicio::before,
 body.aprende-page .contenidoinicio::after {
     display: none !important;
     content: none !important;
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   CSS UNIFICADO — keyframes globales (movidos desde inicio.css)
+   Usados por inicio, contacta y nosotros (fondo punteado + glow)
+   ═══════════════════════════════════════════════════════════════ */
+@keyframes moveDotted {
+    from { background-position: 0 0; }
+    to { background-position: 1000px 0; }
+}
+
+@keyframes floatGlow {
+    0% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(50px, 50px) scale(1.1); }
+    100% { transform: translate(-30px, 80px) scale(0.9); }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Módulo Programación — unificado desde programacion.css
+   Scopeado a body.programacion-page para no filtrar a otras páginas
+   ═══════════════════════════════════════════════════════════════ */
+body.programacion-page main.contentprincipal {
+    padding-left: 30px;
+}
+
+/* Tarjeta principal del módulo */
+body.programacion-page .agenda-py-card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 1.5rem 2rem 2rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, .08);
+    border-left: 5px solid #006100;
+}
+
+/* Barra superior: título + botón de descarga */
+body.programacion-page .agenda-py-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: .5rem;
+}
+
+body.programacion-page .agenda-py-toolbar h2 {
+    margin: 0;
+    color: #006100;
+}
+
+/* Tabla de agendas */
+body.programacion-page .agenda-py-tabla {
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
+    margin-top: 1rem;
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, .10);
+}
+
+body.programacion-page .agenda-py-tabla th {
+    background: #006100;
+    color: #fff;
+    padding: 10px 14px;
+    text-align: left;
+}
+
+body.programacion-page .agenda-py-tabla td {
+    padding: 10px 14px;
+    border-bottom: 1px solid #e8e8e8;
+}
+
+body.programacion-page .agenda-py-tabla tr:last-child td {
+    border-bottom: none;
+}
+
+body.programacion-page .agenda-py-tabla tr:nth-child(even) td {
+    background: #f3f8f3;
+}
+
+body.programacion-page .agenda-py-tabla tr:hover td {
+    background: #e6f1e6;
+}
+
+/* Botón verde de descarga */
+body.programacion-page .agenda-py-btn {
+    display: inline-block;
+    padding: 10px 18px;
+    background: #006100;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: background .2s;
+}
+
+body.programacion-page .agenda-py-btn:hover {
+    background: #0a7a0a;
+}
+
+/* Estados especiales */
+body.programacion-page .agenda-py-error {
+    background: #fdecea;
+    border: 1px solid #f5c6cb;
+    padding: 1rem;
+    border-radius: 8px;
+}
+
+body.programacion-page .agenda-py-vacio {
+    color: #666;
+    padding: 1rem 0;
+}
+
+/* Acciones por fila (editar / eliminar) — íconos lápiz y papelera */
+body.programacion-page .acciones-cell {
+    white-space: nowrap;
+}
+
+body.programacion-page .btn-accion {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    margin: 0 2px;
+    border-radius: 6px;
+    line-height: 0;
+    transition: background .2s, transform .15s;
+}
+
+body.programacion-page .btn-accion img {
+    display: block;
+    width: 22px;
+    height: 22px;
+    object-fit: contain;
+}
+
+body.programacion-page .btn-accion:hover {
+    background: #e6f1e6;
+    transform: scale(1.08);
+}
+
+body.programacion-page .btn-eliminar:hover {
+    background: #fdecea;
+}
+
+/* Modal de edición */
+body.programacion-page .modal-prog {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background: rgba(0, 0, 0, .45);
+    justify-content: center;
+    align-items: flex-start;
+    padding: 40px 16px;
+    overflow-y: auto;
+}
+
+body.programacion-page .modal-prog.abierto {
+    display: flex;
+}
+
+body.programacion-page .modal-prog-contenido {
+    background: #fff;
+    width: 100%;
+    max-width: 640px;
+    box-sizing: border-box;
+    overflow: hidden;
+    border-radius: 14px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, .25);
+    border-top: 6px solid #006100;
+    animation: modalProgIn .18s ease-out;
+}
+
+@keyframes modalProgIn {
+    from { opacity: 0; transform: translateY(-12px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+body.programacion-page .modal-prog-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 22px;
+    border-bottom: 1px solid #eee;
+}
+
+body.programacion-page .modal-prog-header h3 {
+    margin: 0;
+    color: #006100;
+    font-size: 19px;
+}
+
+body.programacion-page .modal-prog-cerrar {
+    background: transparent;
+    border: none;
+    font-size: 26px;
+    line-height: 1;
+    color: #888;
+    cursor: pointer;
+    padding: 0 6px;
+    border-radius: 6px;
+}
+
+body.programacion-page .modal-prog-cerrar:hover {
+    color: #222;
+    background: #f0f0f0;
+}
+
+body.programacion-page .form-editar-prog {
+    padding: 18px 22px 22px;
+}
+
+body.programacion-page .form-row-prog {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+}
+
+body.programacion-page .form-group-prog {
+    flex: 1;
+    min-width: 160px;
+    margin-bottom: 14px;
+    display: flex;
+    flex-direction: column;
+}
+
+body.programacion-page .form-group-prog label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #444;
+    margin-bottom: 5px;
+}
+
+body.programacion-page .form-group-prog input,
+body.programacion-page .form-group-prog select,
+body.programacion-page .form-group-prog textarea {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 9px 11px;
+    border: 1px solid #ccc;
+    border-radius: 7px;
+    font-size: 14px;
+    font-family: inherit;
+    background: #fff;
+    transition: border-color .2s, box-shadow .2s;
+}
+
+body.programacion-page .form-group-prog input:focus,
+body.programacion-page .form-group-prog select:focus,
+body.programacion-page .form-group-prog textarea:focus {
+    outline: none;
+    border-color: #006100;
+    box-shadow: 0 0 0 3px rgba(0, 97, 0, .12);
+}
+
+body.programacion-page .form-group-prog textarea {
+    resize: vertical;
+}
+
+body.programacion-page .modal-prog-acciones {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 8px;
+}
+
+body.programacion-page .btn-prog-guardar,
+body.programacion-page .btn-prog-cancelar {
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    border: none;
+    transition: background .2s;
+}
+
+body.programacion-page .btn-prog-guardar {
+    background: #006100;
+    color: #fff;
+}
+
+body.programacion-page .btn-prog-guardar:hover {
+    background: #0a7a0a;
+}
+
+body.programacion-page .btn-prog-cancelar {
+    background: #ececec;
+    color: #333;
+}
+
+body.programacion-page .btn-prog-cancelar:hover {
+    background: #dcdcdc;
+}
+
+body.programacion-page .modal-prog-msg {
+    min-height: 20px;
+    font-size: 14px;
+    margin: 4px 0 10px;
+}
+
+body.programacion-page .modal-prog-msg.ok {
+    color: #006100;
+    font-weight: 600;
+}
+
+body.programacion-page .modal-prog-msg.error {
+    color: #c0392b;
+    font-weight: 600;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Módulo Gestión de Registros — unificado desde gestion-registros.css
+   Scopeado a body.gestion-registros-page
+   ═══════════════════════════════════════════════════════════════ */
+body.gestion-registros-page .gr-intro {
+    color: #555;
+    max-width: 70ch;
+    margin: 0 0 22px;
+    font-family: "Segoe UI", Tahoma, sans-serif;
+}
+
+body.gestion-registros-page .gr-subtitulo {
+    margin: 34px 0 12px;
+    font-size: 18px;
+    color: #222;
+    border-left: 5px solid #006100;
+    padding-left: 12px;
+}
+
+/* Alertas de resultado */
+body.gestion-registros-page .gr-alerta {
+    padding: 14px 18px;
+    border-radius: 10px;
+    font-weight: 600;
+    margin-bottom: 18px;
+    font-family: "Segoe UI", Tahoma, sans-serif;
+}
+body.gestion-registros-page .gr-alerta.ok { background: #e7f2e3; color: #006100; border: 1px solid #a9d3a0; }
+body.gestion-registros-page .gr-alerta.error { background: #fdecea; color: #c0392b; border: 1px solid #f5c6cb; }
+
+/* Reporte de errores */
+body.gestion-registros-page .gr-errores { margin-bottom: 24px; }
+body.gestion-registros-page .gr-errores h3 { color: #c0392b; font-size: 16px; margin: 0 0 10px; }
+body.gestion-registros-page .gr-errores code {
+    font-family: ui-monospace, Menlo, monospace;
+    background: #fdecea; color: #c0392b; padding: 1px 6px; border-radius: 5px; font-size: 12.5px;
+}
+
+/* Tarjetas de acción */
+body.gestion-registros-page .gr-acciones {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    margin-bottom: 18px;
+}
+@media (max-width: 720px) { body.gestion-registros-page .gr-acciones { grid-template-columns: 1fr; } }
+
+body.gestion-registros-page .gr-card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 22px 24px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .08);
+}
+body.gestion-registros-page .gr-card-ic { font-size: 30px; line-height: 1; margin-bottom: 8px; }
+body.gestion-registros-page .gr-card h3 { margin: 0 0 6px; color: var(--negro); font-size: 18px; }
+body.gestion-registros-page .gr-card p { margin: 0 0 16px; color: #555; font-size: 14px; }
+
+body.gestion-registros-page .gr-invitacion { border-left-color: #008000; margin-bottom: 18px; }
+body.gestion-registros-page .gr-invitacion h3 { color: var(--negro) }
+body.gestion-registros-page .gr-proximo {
+    display: inline-block;
+    background: #fbeccf; color: var(--green);
+    padding: 5px 12px; border-radius: 999px; font-size: 12.5px; font-weight: 700;
+    font-family: ui-monospace, Menlo, monospace;
+}
+
+/* Botones */
+body.gestion-registros-page .gr-btn {
+    display: inline-block;
+    padding: 11px 20px;
+    border-radius: 9px;
+    font-weight: 700;
+    font-size: 14px;
+    text-decoration: none;
+    cursor: pointer;
+    border: 2px solid #006100;
+    transition: background .2s, color .2s;
+    font-family: "Segoe UI", Tahoma, sans-serif;
+}
+body.gestion-registros-page .gr-btn-solid { background: var(--green); color: #fff; }
+body.gestion-registros-page .gr-btn-solid:hover { background: #0a7a0a; }
+body.gestion-registros-page .gr-btn-outline { background: #fff; color: #006100; }
+body.gestion-registros-page .gr-btn-outline:hover { background: #e7f2e3; }
+
+body.gestion-registros-page .gr-form-upload {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+}
+/* Input nativo oculto; se dispara con el label */
+body.gestion-registros-page .gr-file-hidden {
+    position: absolute;
+    width: 1px; height: 1px;
+    opacity: 0; overflow: hidden;
+    clip: rect(0 0 0 0);
+}
+body.gestion-registros-page .gr-file-label { cursor: pointer; }
+body.gestion-registros-page .gr-file-name {
+    font-size: 13.5px;
+    color: #888;
+    font-style: italic;
+    flex: 1;
+    min-width: 140px;
+}
+body.gestion-registros-page .gr-file-name.elegido { color: #006100; font-style: normal; font-weight: 600; }
+body.gestion-registros-page .gr-btn:disabled { opacity: 1.5; cursor: not-allowed; }
+
+body.gestion-registros-page .gr-btn-invitar { background: var(--green); color: #fff; border-color: var(--green); }
+body.gestion-registros-page .gr-btn-invitar:hover { background: var(--green-dark); border-color: var(--green); }
+
+/* Enlace de invitación generado */
+body.gestion-registros-page .gr-enlace { margin-top: 12px; }
+body.gestion-registros-page .gr-enlace label { display: block; font-size: 13px; color: #555; font-weight: 600; margin-bottom: 6px; }
+body.gestion-registros-page .gr-enlace-box input {
+    width: 100%;
+    font-family: ui-monospace, Menlo, monospace;
+    font-size: 12.5px;
+    padding: 10px 12px;
+    border: 1px solid var(--green-dark);
+    border-radius: 8px;
+    background: #fffaf2;
+    color: #333;
+}
+
+body.gestion-registros-page .gr-parametros {
+    border-left-color: var(--negro);
+    margin-bottom: 18px; }
+
+body.gestion-registros-page .gr-parametros h3 { color: var(--negro); }
+body.gestion-registros-page .gr-form-parametros { display: flex; flex-direction: column; gap: 14px; }
+body.gestion-registros-page .gr-param-row { display: flex; flex-wrap: wrap; gap: 14px; }
+body.gestion-registros-page .gr-param-campo { flex: 1; min-width: 190px; display: flex; flex-direction: column; }
+body.gestion-registros-page .gr-param-campo label { font-size: 13.5px; font-weight: 600; color: #444; margin-bottom: 5px; }
+body.gestion-registros-page .gr-param-campo input,
+body.gestion-registros-page .gr-param-campo textarea {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 9px 11px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: inherit;
+    background: #fff;
+}
+body.gestion-registros-page .gr-param-campo input:focus,
+body.gestion-registros-page .gr-param-campo textarea:focus {
+    outline: none; border-color: #2563a8; box-shadow: 0 0 0 3px rgba(37, 99, 168, .12);
+}
+body.gestion-registros-page .gr-param-hint { font-size: 12px; color: #777; margin-top: 4px; font-weight: 400; }
+body.gestion-registros-page .gr-form-parametros .gr-btn { align-self: flex-start; }
+
+/* Bienvenida masiva */
+body.gestion-registros-page .gr-bienvenida { border-left-color: var(--negro); margin-bottom: 18px; }
+body.gestion-registros-page .gr-bienvenida h3 { color: var(--negro); }
+body.gestion-registros-page .gr-btn-bienvenida { background: var(--green); color: #fff; border-color: var(--green); }
+body.gestion-registros-page .gr-btn-bienvenida:hover { background: var(--green-dark); border-color: var(--blanco); }
+body.gestion-registros-page .gr-detalles { margin: 6px 0 12px; padding-left: 20px; font-size: 13px; color: #666; }
+body.gestion-registros-page .gr-detalles li { margin: 2px 0; }
+body.gestion-registros-page .agenda-py-vacio{
+    text-align: center;
+    margin-top: 10px;
+    color: grey;
+}
+
+/* Estado en la tabla */
+body.gestion-registros-page .gr-estado {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+    font-family: ui-monospace, Menlo, monospace;
+}
+body.gestion-registros-page .gr-estado.aut { background: #fbecc4; color: #8a6d1f; }
+body.gestion-registros-page .gr-estado.reg { background: #e7f2e3; color: #006100; }
