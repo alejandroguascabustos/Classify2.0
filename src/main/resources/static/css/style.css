@@ -10626,7 +10626,7 @@ body.gestion-permisos-page .gp-matriz {
     background: #fff;
 }
 body.gestion-permisos-page .gp-matriz th {
-    background: linear-gradient(135deg, #006100 0%, #22cc22 100%);
+    background: var(--green);
     color: #fff;
     padding: 12px 14px;
     font-size: .82rem;
