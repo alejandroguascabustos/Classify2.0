@@ -1155,7 +1155,7 @@ img.socialmedia:hover {
 }
 
 .chat-header {
-    background: var(--green-dark);
+    background: var(--green);
     padding: 25px 20px;
     color: white;
     display: flex;
