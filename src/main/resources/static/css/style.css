@@ -9998,6 +9998,7 @@ body.programacion-page .agenda-py-error {
 body.programacion-page .agenda-py-vacio {
     color: #666;
     padding: 1rem 0;
+    text-align: center;
 }
 
 /* Acciones por fila (editar / eliminar) — íconos lápiz y papelera */
@@ -10585,7 +10586,7 @@ body.gestion-registros-page .gr-estado.reg { background: #e7f2e3; color: #006100
 body.gestion-permisos-page .gp-intro {
     color: #555;
     max-width: 80ch;
-    margin: 0 0 22px;
+    margin: 0 5px 22px;
     line-height: 1.6;
     font-family: "Segoe UI", Tahoma, sans-serif;
 }
