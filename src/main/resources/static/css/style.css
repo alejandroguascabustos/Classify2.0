@@ -4630,6 +4630,8 @@ textarea:focus {
 
 .titlecontentnoticia {
     color: var(--gris);
+    overflow-wrap: break-word;
+    word-break: break-word;
 }
 
 .btneditarnoticia {
@@ -8968,6 +8970,12 @@ ul.noticiasmenu{
     line-height: 1.6;
     margin-bottom: 10px;
     word-break: break-all;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
+    overflow: hidden;
+    overflow-wrap: break-word;
+    word-break: break-word;
 }
 
 .badge-tipo,
