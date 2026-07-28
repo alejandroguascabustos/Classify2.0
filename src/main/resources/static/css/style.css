@@ -4255,9 +4255,8 @@ textarea:focus {
     justify-content: center;
     align-items: center;
     min-height: calc(100vh - 250px);
-    margin-top: 80px;
     margin-bottom: 50px;
-    margin-left: 215px;
+    margin-left: 166px;
     position: relative;
     z-index: 1;
 }
