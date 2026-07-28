@@ -162,7 +162,15 @@ public class MaterialController {
         Material material = opt.get();
         // rutaArchivo tiene forma "/uploads/materiales/uuid.ext"
         String relativePath = material.getRutaArchivo().replace("/uploads/", "");
-        Path filePath = uploadStorageResolver.resolveRootPath().resolve(relativePath).normalize();
+        Path raiz = uploadStorageResolver.resolveRootPath().normalize();
+        Path filePath = raiz.resolve(relativePath).normalize();
+
+        // La ruta procede de base de datos, pero no debe poder apuntar fuera del
+        // directorio de subidas bajo ninguna circunstancia.
+        if (!filePath.startsWith(raiz)) {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND, "Material no encontrado.");
+            return;
+        }
 
         if (!Files.exists(filePath)) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND, "Archivo no encontrado en el servidor.");
@@ -171,8 +179,13 @@ public class MaterialController {
 
         String contentType = Files.probeContentType(filePath);
         response.setContentType(contentType != null ? contentType : "application/octet-stream");
+        // El nombre lo eligio quien subio el archivo: se depuran comillas y saltos
+        // de linea para que no pueda alterar la cabecera.
+        String nombreDescarga = material.getNombreArchivo() == null
+                ? "material"
+                : material.getNombreArchivo().replaceAll("[\\r\\n\"\\\\]", "_");
         response.setHeader("Content-Disposition",
-                "attachment; filename=\"" + material.getNombreArchivo() + "\"");
+                "attachment; filename=\"" + nombreDescarga + "\"");
         response.setContentLengthLong(Files.size(filePath));
 
         try (OutputStream out = response.getOutputStream()) {

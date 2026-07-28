@@ -32,7 +32,11 @@ public class WebConfig implements WebMvcConfigurer {
                         "/programacion", "/programacion/**",
                         "/gestion-registros", "/gestion-registros/**",
                         "/gestion-permisos", "/gestion-permisos/**",
-                        "/izada", "/izada/**"
+                        "/izada", "/izada/**",
+                        // Cuelga de la raiz, no de /agenda, por lo que los patrones
+                        // anteriores no lo cubrian: hasta ahora aceptaba escrituras
+                        // sin sesion iniciada.
+                        "/guardar-agenda"
                 );
     }
 

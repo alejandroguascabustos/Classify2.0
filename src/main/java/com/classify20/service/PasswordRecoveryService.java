@@ -84,6 +84,14 @@ public class PasswordRecoveryService {
             """;
 
     private static final String TOKEN_ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+
+    /**
+     * Respuesta unica del formulario de recuperacion, se corresponda o no con una
+     * cuenta existente. Un mensaje distinto por caso permitiria enumerar usuarios.
+     */
+    private static final String RESPUESTA_NEUTRA =
+            "Si los datos corresponden a una cuenta registrada, enviamos un token temporal "
+                    + "al correo asociado. Revisa tu bandeja de entrada.";
     private static final int TOKEN_SIZE = 8;
 
     private final ClassifyDatabaseService databaseService;
@@ -126,7 +134,10 @@ public class PasswordRecoveryService {
                 UsuarioRecuperacion usuarioRecuperacion = buscarUsuario(connection, documento, correo, usuario);
                 if (usuarioRecuperacion == null) {
                     connection.rollback();
-                    return new RecuperacionPasswordResultado(false, "No encontramos un usuario con esos datos.");
+                    // Misma respuesta que cuando la cuenta si existe: de lo contrario
+                    // el formulario permitiria averiguar que usuarios estan registrados.
+                    logger.info("Recuperacion solicitada para unos datos que no corresponden a ningun usuario.");
+                    return new RecuperacionPasswordResultado(true, RESPUESTA_NEUTRA);
                 }
 
                 String token = generarToken();
@@ -136,25 +147,27 @@ public class PasswordRecoveryService {
                 guardarToken(connection, usuarioRecuperacion.id(), token, expiracion);
                 connection.commit();
 
-                if (enviarTokenRecuperacion(usuarioRecuperacion, token, expiracion)) {
-                    return new RecuperacionPasswordResultado(
-                            true,
-                            "Verificamos tu identidad y enviamos un token temporal al correo registrado.");
+                if (!enviarTokenRecuperacion(usuarioRecuperacion, token, expiracion)) {
+                    // El token viaja unicamente por correo. Si el envio falla se registra
+                    // el incidente, pero nunca se devuelve al navegador: quien conociera
+                    // los datos de identificacion de un usuario podria apoderarse de su
+                    // cuenta aprovechando una caida del servicio de correo.
+                    logger.error("No se pudo entregar el token de recuperacion del usuario {}; "
+                            + "el token queda vigente en base de datos pero no se ha comunicado.",
+                            usuarioRecuperacion.id());
                 }
 
-                return new RecuperacionPasswordResultado(
-                        true,
-                        "Verificamos tu identidad. Usa este token temporal valido por " + tokenDurationMinutes
-                                + " minutos para cambiar tu contrasena: " + token);
+                return new RecuperacionPasswordResultado(true, RESPUESTA_NEUTRA);
             } catch (Exception exception) {
                 connection.rollback();
                 throw exception;
             }
         } catch (SQLException exception) {
             logger.error("No fue posible generar el token de recuperacion.", exception);
+            // El detalle de la excepcion queda en el log, no en la respuesta.
             return new RecuperacionPasswordResultado(
                     false,
-                    "No fue posible procesar la recuperacion de contrasena: " + exception.getMessage());
+                    "No fue posible procesar la solicitud. Intenta de nuevo mas tarde.");
         }
     }
 
