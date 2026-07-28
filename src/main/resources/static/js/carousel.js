@@ -9,6 +9,13 @@ document.addEventListener('DOMContentLoaded', function() {
     let currentSlide = 0;
     let autoplayInterval;
 
+    // El script se carga tambien donde no hay carrusel. Sin slides, nextSlide
+    // calcula un indice NaN y goToSlide falla en cada ciclo del autoplay,
+    // llenando la consola de errores.
+    if (slides.length === 0) {
+        return;
+    }
+
     // Función para cambiar de slide
     function goToSlide(index) {
         // Remover clase active de todos los slides e indicadores
