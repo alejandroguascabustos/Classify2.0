@@ -9206,7 +9206,7 @@ body.materiales-page .sidebar a.inicioprincipal2:hover,
 body.mismateriales-page .sidebar a.inicioprincipal2.active,
 body.mismateriales-page .sidebar a.inicioprincipal2:hover {
     background: rgba(174, 201, 165, 0.45) !important;
-    color: #063d08;
+    color: var(--negro);
 }
 
 body.materiales-page .contentmateriales,
