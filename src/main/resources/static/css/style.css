@@ -939,17 +939,9 @@ img.socialmedia:hover {
     margin-bottom: 20px;
 }
 
-.f4-icon {
+.f4-icon div {
     width: 40px;
-    height: 40px;
-    background: linear-gradient(135deg, var(--green), var(--green-accent));
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 900;
-    font-size: 16px;
-    color: #fff;
+
 }
 
 .f4-logo-name {
@@ -1908,7 +1900,7 @@ h2.recupera-title {
 }
 
 .btn-recuperar:hover {
-    background: var(--green-dark);
+    background: var(--green-accent);
 }
 
 .btn-recuperar--success {
