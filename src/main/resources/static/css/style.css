@@ -9415,7 +9415,7 @@ body.mismateriales-page .materiales-count-badge {
 
 body.materiales-page .subtitulocargamateriales {
     margin: 0 0 8px;
-    color: #0f4111;
+    color: var(--green);
     font-size: 1.45rem;
     text-align: left;
 }
