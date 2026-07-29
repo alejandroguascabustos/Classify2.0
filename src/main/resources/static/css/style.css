@@ -1894,7 +1894,7 @@ h2.recupera-title {
 .btn-recuperar {
     width: 99%;
     padding: 6px;
-    background: green;
+    background: var(--green);
     border-width: medium;
     border-style: none;
     border-color: currentcolor;
@@ -1908,7 +1908,7 @@ h2.recupera-title {
 }
 
 .btn-recuperar:hover {
-    background: var(--green);
+    background: var(--green-dark);
 }
 
 .btn-recuperar--success {
