@@ -16,6 +16,8 @@ import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 import org.xhtmlrenderer.pdf.ITextRenderer;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -41,6 +43,13 @@ public class NoticiaController {
 
     // Prefijo con el que se guardan las rutas en BD, ej: "/uploads/noticias/uuid.png"
     private static final String PREFIJO_UPLOADS = "/uploads/";
+
+    // Caja máxima (px) dentro de la cual se escala la imagen del PDF, para que
+    // SIEMPRE quepa en la primera página junto al título y los metadatos,
+    // sin importar la relación de aspecto original (imágenes muy alargadas
+    // ya no fuerzan un salto de página).
+    private static final int PDF_IMG_MAX_WIDTH = 460;
+    private static final int PDF_IMG_MAX_HEIGHT = 480;
 
     // Perfiles con permiso para crear/editar/eliminar noticias y ver el historial.
     // 1 = administrador, 2 = coordinador (ver AuthService#mapearPerfil).
@@ -126,19 +135,36 @@ public class NoticiaController {
                             LocalDate filtroDesde,
                             LocalDate filtroHasta) throws IOException {
 
-        // Convertimos cada noticia a una vista liviana con la ruta de imagen
-        // resuelta a una URI file:/// absoluta, porque Flying Saucer no puede
-        // resolver rutas relativas tipo "/uploads/noticias/xxx.png" (esas solo
-        // existen como endpoint HTTP servido por Spring, no como recurso de disco).
+        // Convertimos cada noticia a una vista liviana con la imagen resuelta
+        // a una URI file:/// absoluta (Flying Saucer no puede resolver rutas
+        // relativas tipo "/uploads/noticias/xxx.png") y con su ancho/alto YA
+        // escalados para que quepan dentro de PDF_IMG_MAX_WIDTH x
+        // PDF_IMG_MAX_HEIGHT, sin importar la proporción original del archivo.
         List<NoticiaPdfView> vistas = noticias.stream()
-                .map(n -> new NoticiaPdfView(
-                        n.getTituloNoticia(),
-                        n.getAutorNoticia(),
-                        n.getFechaNoticia(),
-                        n.getContenidoNoticia(),
-                        n.getTipoNoticia(),
-                        resolverImagenParaPdf(n.getImagenNoticia())
-                ))
+                .map(n -> {
+                    Path archivoImagen = resolverArchivoImagen(n.getImagenNoticia());
+                    String imagenUrl = null;
+                    Integer ancho = null;
+                    Integer alto = null;
+
+                    if (archivoImagen != null) {
+                        imagenUrl = archivoImagen.toUri().toString();
+                        int[] dimensiones = calcularDimensionesImagen(archivoImagen);
+                        ancho = dimensiones[0];
+                        alto = dimensiones[1];
+                    }
+
+                    return new NoticiaPdfView(
+                            n.getTituloNoticia(),
+                            n.getAutorNoticia(),
+                            n.getFechaNoticia(),
+                            n.getContenidoNoticia(),
+                            n.getTipoNoticia(),
+                            imagenUrl,
+                            ancho,
+                            alto
+                    );
+                })
                 .toList();
 
         Context contexto = new Context();
@@ -172,13 +198,12 @@ public class NoticiaController {
         }
     }
 
-    // Convierte "/uploads/noticias/uuid.png" (ruta guardada en BD) en una
-    // URI file:/// absoluta apuntando al archivo real en disco. Usa
-    // UploadStorageResolver — el MISMO resolutor de raíz que usa el resto
-    // de la app (MaterialController, WebConfig) — para garantizar que la
-    // ruta coincida exactamente con la usada al guardar la imagen.
-    // Devuelve null si la noticia no tiene imagen o el archivo no existe.
-    private String resolverImagenParaPdf(String rutaGuardada) {
+    // Convierte "/uploads/noticias/uuid.png" (ruta guardada en BD) en la ruta
+    // absoluta real en disco, usando UploadStorageResolver — el MISMO
+    // resolutor de raíz que usa el resto de la app (MaterialController,
+    // WebConfig) — para garantizar que coincide con la usada al guardar la
+    // imagen. Devuelve null si la noticia no tiene imagen o el archivo no existe.
+    private Path resolverArchivoImagen(String rutaGuardada) {
         if (rutaGuardada == null || rutaGuardada.isBlank()) {
             return null;
         }
@@ -189,11 +214,37 @@ public class NoticiaController {
 
         Path absoluto = uploadStorageResolver.resolveRootPath().resolve(relativo).normalize();
 
-        if (!Files.exists(absoluto)) {
-            return null;
-        }
+        return Files.exists(absoluto) ? absoluto : null;
+    }
 
-        return absoluto.toUri().toString();
+    // Lee las dimensiones reales del archivo y calcula un ancho/alto escalado
+    // que quepa dentro de PDF_IMG_MAX_WIDTH x PDF_IMG_MAX_HEIGHT preservando
+    // la proporción (equivalente a "object-fit: contain", que Flying Saucer
+    // no soporta de forma nativa). Nunca agranda una imagen más pequeña que
+    // la caja máxima. Si no se puede leer el archivo, cae a un ancho fijo
+    // razonable para no romper el layout.
+    private int[] calcularDimensionesImagen(Path archivoImagen) {
+        try {
+            BufferedImage imagen = ImageIO.read(archivoImagen.toFile());
+            if (imagen == null || imagen.getWidth() <= 0 || imagen.getHeight() <= 0) {
+                return new int[]{PDF_IMG_MAX_WIDTH, 0};
+            }
+
+            int anchoOriginal = imagen.getWidth();
+            int altoOriginal = imagen.getHeight();
+
+            double escala = Math.min(
+                    (double) PDF_IMG_MAX_WIDTH / anchoOriginal,
+                    (double) PDF_IMG_MAX_HEIGHT / altoOriginal);
+            escala = Math.min(escala, 1.0); // nunca agrandar una imagen pequeña
+
+            int ancho = Math.max(1, (int) Math.round(anchoOriginal * escala));
+            int alto = Math.max(1, (int) Math.round(altoOriginal * escala));
+
+            return new int[]{ancho, alto};
+        } catch (IOException e) {
+            return new int[]{PDF_IMG_MAX_WIDTH, 0};
+        }
     }
 
     // Vista liviana usada solo para renderizar la plantilla del PDF
@@ -204,7 +255,9 @@ public class NoticiaController {
             LocalDateTime fechaNoticia,
             String contenidoNoticia,
             String tipoNoticia,
-            String imagenUrl) {
+            String imagenUrl,
+            Integer imagenAncho,
+            Integer imagenAlto) {
     }
 
     // ─── GET /noticias/historial → SOLO administrador/coordinador ────

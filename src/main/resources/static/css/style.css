@@ -9436,9 +9436,8 @@ body.materiales-page .materiales-upload-grid {
 
 body.materiales-page .materiales-dropzone {
     border-radius: 16px;
-    border: 1px dashed rgba(34, 204, 34, 0.38);
-    background:
-        linear-gradient(180deg, rgba(246, 252, 244, 0.96) 0%, rgba(255, 255, 255, 0.98) 100%);
+    border: 4px dotted rgba(34, 204, 34, 0.38);
+    background: linear-gradient(180deg, rgba(246, 252, 244, 0.96) 0%, rgba(255, 255, 255, 0.98) 100%);
     padding: 24px;
     display: flex;
     flex-direction: column;
@@ -9704,7 +9703,7 @@ body.materiales-page a.btn-editar,
 body.materiales-page a.btn-eliminar {
     display: inline-flex;
     width: auto;
-    min-height: 42px;
+    min-height: 20px;
     align-items: center;
     justify-content: center;
     padding: 10px 14px;
