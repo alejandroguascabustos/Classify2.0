@@ -1894,8 +1894,11 @@ h2.recupera-title {
 .btn-recuperar {
     width: 99%;
     padding: 6px;
-    background: var(--green-dark);
-    border: none;
+    background: green;
+    border-width: medium;
+    border-style: none;
+    border-color: currentcolor;
+    border-image: none;
     border-radius: 6px;
     color: white;
     font-size: 1rem;
