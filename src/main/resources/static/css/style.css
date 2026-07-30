@@ -944,6 +944,10 @@ img.socialmedia:hover {
 
 }
 
+img.f4-icon{
+    width: 40px;
+}
+
 .f4-logo-name {
     font-weight: 900;
     font-size: 22px;
