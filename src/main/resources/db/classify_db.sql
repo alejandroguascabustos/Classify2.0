@@ -173,3 +173,27 @@ CREATE TABLE IF NOT EXISTS usuario_permiso (
     CONSTRAINT uq_usuario_permiso UNIQUE (usuario_id, modulo_id)
 );
 CREATE INDEX IF NOT EXISTS idx_usuario_permiso_usuario ON usuario_permiso (usuario_id);
+
+-- ============================================================
+-- Módulo de Recuperación de Contraseña
+-- Usado por PasswordRecoveryService (formularios recuperar_password.html
+-- y restablecer_password.html). Es una tabla independiente de
+-- registro_tokens/activacion_tokens porque aquí el token es corto
+-- (8 caracteres), se envía en texto plano por correo (no como enlace
+-- de un solo clic) y el usuario ya existe en registro_usuarios.
+-- ============================================================
+CREATE TABLE IF NOT EXISTS olvido_contrasenia_tokens (
+    id BIGSERIAL PRIMARY KEY,
+    id_usuario BIGINT NOT NULL REFERENCES registro_usuarios(id) ON DELETE CASCADE,
+    token VARCHAR(20) NOT NULL UNIQUE,
+    expira_en TIMESTAMP NOT NULL,
+    usado BOOLEAN NOT NULL DEFAULT FALSE,
+    creado_en TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    usado_en TIMESTAMP
+);
+CREATE INDEX IF NOT EXISTS idx_olvido_contrasenia_tokens_usuario ON olvido_contrasenia_tokens (id_usuario);
+CREATE INDEX IF NOT EXISTS idx_olvido_contrasenia_tokens_token ON olvido_contrasenia_tokens (token);
+
+ALTER TABLE registro_usuarios ADD COLUMN IF NOT EXISTS password_temporal VARCHAR(8) NOT NULL;
+
+
