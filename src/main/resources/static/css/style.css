@@ -7120,25 +7120,25 @@ body.contacto-page .contacto-mail-link {
 }
 
 @media (max-width: 968px) {
-    .c-wrapper {
+    body.contacto-page .c-wrapper {
         grid-template-columns: 1fr;
         padding: 60px 24px;
         text-align: center;
     }
 
-    .c-desc {
+    body.contacto-page .c-desc {
         margin: 0 auto 48px;
     }
 
-    .c-item {
+    body.contacto-page .c-item {
         justify-content: center;
     }
 
-    .c-form-card {
+    body.contacto-page .c-form-card {
         padding: 40px 20px;
     }
 
-    .form-row {
+    body.contacto-page .form-row {
         grid-template-columns: 1fr;
     }
 }
@@ -8099,75 +8099,75 @@ body.nosotros-page .reveal.on {
 }
 
 @media (max-width: 992px) {
-    .n-hero {
+    body.nosotros-page .n-hero {
         grid-template-columns: 1fr;
         padding: 120px 24px 60px;
         text-align: center;
     }
 
-    .n-hero-text {
+    body.nosotros-page .n-hero-text {
         margin: 0 auto;
     }
 
-    .n-cta-row {
+    body.nosotros-page .n-cta-row {
         justify-content: center;
     }
 
-    .n-hero-visual {
+    body.nosotros-page .n-hero-visual {
         display: none;
     }
 
-    .n-stats {
+    body.nosotros-page .n-stats {
         grid-template-columns: 1fr 1fr;
         border-top: none;
     }
 
-    .n-stat {
+    body.nosotros-page .n-stat {
         border-bottom: 1px solid var(--border-strong);
     }
 
-    .n-stat:nth-child(even) {
+    body.nosotros-page .n-stat:nth-child(even) {
         border-right: none;
     }
 
-    .n-split {
+    body.nosotros-page .n-split {
         grid-template-columns: 1fr;
         margin: 60px auto;
     }
 
-    .n-grid {
+    body.nosotros-page .n-grid {
         grid-template-columns: repeat(2, 1fr);
     }
 
-    .n-tl {
+    body.nosotros-page .n-tl {
         grid-template-columns: 1fr;
     }
 
-    .n-equipo-grid {
+    body.nosotros-page .n-equipo-grid {
         grid-template-columns: repeat(2, 1fr);
     }
 
-    .n-cta {
+    body.nosotros-page .n-cta {
         grid-template-columns: 1fr;
         text-align: center;
         padding: 50px 30px;
     }
 
-    .n-cta h2 {
+    body.nosotros-page .n-cta h2 {
         margin: 0 auto;
     }
 
-    .n-cta-btns {
+    body.nosotros-page .n-cta-btns {
         justify-content: center;
     }
 
-    .n-section-head {
+    body.nosotros-page .n-section-head {
         flex-direction: column;
         align-items: flex-start;
         gap: 20px;
     }
 
-    .n-section-head p {
+    body.nosotros-page .n-section-head p {
         text-align: left;
         border-right: none;
         border-left: 3px solid var(--green-accent);
@@ -8176,27 +8176,27 @@ body.nosotros-page .reveal.on {
 }
 
 @media (max-width: 576px) {
-    .n-hero h1 {
+    body.nosotros-page .n-hero h1 {
         font-size: 2.5rem;
     }
 
-    .n-stats {
+    body.nosotros-page .n-stats {
         grid-template-columns: 1fr;
     }
 
-    .n-stat {
+    body.nosotros-page .n-stat {
         border-right: none;
     }
 
-    .n-grid {
+    body.nosotros-page .n-grid {
         grid-template-columns: 1fr;
     }
 
-    .n-equipo-grid {
+    body.nosotros-page .n-equipo-grid {
         grid-template-columns: 1fr;
     }
 
-    .n-split-panel {
+    body.nosotros-page .n-split-panel {
         padding: 40px 24px;
     }
 }
@@ -10698,6 +10698,34 @@ body.gestion-permisos-page .gp-btn-outline:hover { background: #e7f2e3; }
     .contenidoinicio::before,
     body.inicioimg:has(.contentinicio) .contentinicio .contenidoinicio::before {
         opacity: 0.3;
+    }
+}
+
+/* ── Contacto ── */
+@media (max-width: 576px) {
+    /* El grid no debe crecer más allá de la pantalla por contenido ancho */
+    body.contacto-page .c-wrapper > * {
+        min-width: 0;
+    }
+
+    body.contacto-page .c-title {
+        font-size: 2.1rem;
+    }
+
+    body.contacto-page .contacto-mail-link {
+        overflow-wrap: anywhere;
+    }
+
+    body.contacto-page .c-form-card {
+        padding: 40px 20px;
+    }
+}
+
+/* ── Términos ── */
+@media (max-width: 576px) {
+    .terminos-main {
+        box-sizing: border-box;
+        padding: 20px 16px;
     }
 }
 
