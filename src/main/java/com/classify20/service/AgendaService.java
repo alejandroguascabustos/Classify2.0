@@ -6,7 +6,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalTime;
+import java.util.Comparator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -117,5 +120,95 @@ public class AgendaService {
         if (!agendaRepository.existsById(id)) return false;
         agendaRepository.deleteById(id);
         return true;
+    }
+
+    // ── Vista de clases agendadas (CLS-122) ─────────────────────────────
+
+    /** Opción del desplegable de curso: valor "grado|grupo" y etiqueta "3° A". */
+    public record CursoOption(String valor, String etiqueta) {}
+
+    /** Grupo normalizado para comparar/agrupar ("a " y "A" son el mismo curso). */
+    private static String normalizarGrupo(String grupo) {
+        return grupo == null ? "" : grupo.trim().toUpperCase();
+    }
+
+    /**
+     * Clases agendadas que cumplen los filtros seleccionados, ordenadas
+     * cronológicamente. Cualquier filtro vacío o nulo se ignora.
+     *
+     * @param curso    formato "grado|grupo" (grupo puede ser vacío), tal como
+     *                 lo produce {@link #listarCursos()}
+     * @param profesor nombre exacto del profesor
+     * @param materia  nombre exacto de la materia
+     */
+    public List<Agenda> filtrarClases(String curso, String profesor, String materia) {
+        Integer grado = null;
+        String grupo = null;
+        if (curso != null && !curso.isBlank()) {
+            String[] partes = curso.split("\\|", -1);
+            try {
+                grado = Integer.valueOf(partes[0].trim());
+            } catch (NumberFormatException e) {
+                // curso mal formado → se ignora el filtro
+            }
+            grupo = partes.length > 1 ? normalizarGrupo(partes[1]) : "";
+        }
+        final Integer fGrado = grado;
+        final String fGrupo = grupo;
+
+        return agendaRepository.findAll().stream()
+                .filter(a -> fGrado == null
+                        || (Objects.equals(a.getGrado(), fGrado) && normalizarGrupo(a.getGrupo()).equals(fGrupo)))
+                .filter(a -> profesor == null || profesor.isBlank()
+                        || (a.getProfesor() != null && profesor.trim().equalsIgnoreCase(a.getProfesor().trim())))
+                .filter(a -> materia == null || materia.isBlank()
+                        || (a.getMateria() != null && materia.trim().equalsIgnoreCase(a.getMateria().trim())))
+                .sorted(Comparator.comparing(Agenda::getFecha, Comparator.nullsLast(Comparator.naturalOrder()))
+                        .thenComparing(Agenda::getHoraInicio, Comparator.nullsLast(Comparator.naturalOrder())))
+                .toList();
+    }
+
+    /** Cursos (grado + grupo) con al menos una clase agendada, sin duplicados. */
+    public List<CursoOption> listarCursos() {
+        Map<String, CursoOption> unicos = new LinkedHashMap<>();
+        agendaRepository.findAll().stream()
+                .filter(a -> a.getGrado() != null)
+                .sorted(Comparator.comparing(Agenda::getGrado)
+                        .thenComparing(a -> normalizarGrupo(a.getGrupo())))
+                .forEach(a -> {
+                    String grupo = normalizarGrupo(a.getGrupo());
+                    String valor = a.getGrado() + "|" + grupo;
+                    String etiqueta = a.getGrado() + "°" + (grupo.isEmpty() ? "" : " " + grupo);
+                    unicos.putIfAbsent(valor, new CursoOption(valor, etiqueta));
+                });
+        return List.copyOf(unicos.values());
+    }
+
+    /** Profesores con clases agendadas, sin duplicados y en orden alfabético. */
+    public List<String> listarProfesores() {
+        return listarDistintos(Agenda::getProfesor);
+    }
+
+    /** Materias con clases agendadas, sin duplicados y en orden alfabético. */
+    public List<String> listarMaterias() {
+        return listarDistintos(Agenda::getMateria);
+    }
+
+    /** Etiqueta legible de un filtro de curso "grado|grupo" (ej. "3° A"), o null si no hay filtro. */
+    public String etiquetaCurso(String curso) {
+        if (curso == null || curso.isBlank()) return null;
+        String[] partes = curso.split("\\|", -1);
+        String grupo = partes.length > 1 ? normalizarGrupo(partes[1]) : "";
+        return partes[0].trim() + "°" + (grupo.isEmpty() ? "" : " " + grupo);
+    }
+
+    private List<String> listarDistintos(java.util.function.Function<Agenda, String> campo) {
+        return agendaRepository.findAll().stream()
+                .map(campo)
+                .filter(v -> v != null && !v.isBlank())
+                .map(String::trim)
+                .distinct()
+                .sorted(String.CASE_INSENSITIVE_ORDER)
+                .toList();
     }
 }

@@ -51,6 +51,7 @@ public class PermisosService {
             new Modulo(0, "agenda", "Agendar clase", "/agenda", "agenda.png", 2, true, false),
             new Modulo(0, "noticias", "Noticias", "/noticias", "noticias.png", 3, true, false),
             new Modulo(0, "programacion", "Programación", "/programacion", "programacion.png", 4, true, false),
+            new Modulo(0, "clases-agendadas", "Clases agendadas", "/clases-agendadas", "programacion.png", 11, true, false),
             new Modulo(0, "gestion-registros", "Gestión de registros", "/gestion-registros", "gestioncuenta.png", 5, true, false),
             new Modulo(0, "aprende", "Aprende", "/aprende", "aprende.png", 6, true, false),
             new Modulo(0, "contacta", "Contacta a un profe", "/contacta", "gmail.png", 7, true, false),
