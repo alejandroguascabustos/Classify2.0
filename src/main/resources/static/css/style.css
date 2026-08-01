@@ -3954,8 +3954,9 @@ textarea:focus {
 
 @media (max-width: 850px) {
     .contentagenda {
-        margin-left: 0;
-        padding: 1rem;
+        /* deja libre el sidebar colapsado de 61px */
+        margin-left: 68px;
+        padding: 1rem 0.8rem;
     }
     .agenda-form-container {
         padding: 1.2rem;
@@ -5497,26 +5498,28 @@ a.botoninicio {
 
     .contentindex { min-height: auto; padding: 30px 15px; margin-bottom: 0; flex-direction: column; }
 
+    /* El !important compensa el width: 180px !important de la regla base */
     .sidebar a {
         font-size: 0;
+        width: 45px !important;
+        justify-content: center;
+        padding: 7px 4px;
+        box-sizing: border-box;
     }
 
     a.inicioprincipal {
         display: flex;
         justify-content: center;
-        width: 35px;
     }
 
     a.inicioprincipal2 {
         display: flex;
         justify-content: center;
-        width: 35px;
     }
 
     a.inicioprincipal3 {
         display: flex;
         justify-content: center;
-        width: 35px;
         transition: 0.5s;
     }
 
@@ -9722,6 +9725,15 @@ body.mismateriales-page .modaleditar-botones button[type="button"] {
     body.mismateriales-page .contentmateriales {
         margin-left: 72px;
         padding: 20px 14px 44px;
+        /* anula el calc(100% - 280px) de escritorio */
+        width: auto;
+    }
+
+    /* minmax(0,1fr): la tabla (min-width 620px) no debe estirar el track;
+       queda con scroll propio dentro de .table-wrap */
+    body.materiales-page .materiales-shell,
+    body.mismateriales-page .materiales-shell {
+        grid-template-columns: minmax(0, 1fr);
     }
 
     body.materiales-page .materiales-hero,
@@ -10701,6 +10713,22 @@ body.gestion-permisos-page .gp-btn-outline:hover { background: #e7f2e3; }
     }
 }
 
+/* ── Aprende ── */
+@media (max-width: 640px) {
+    body.aprende-page .aprende-card {
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+
+    body.aprende-page .aprende-form input,
+    body.aprende-page .aprende-form textarea,
+    body.aprende-page .aprende-form select {
+        width: 100%;
+        min-width: 0;
+        box-sizing: border-box;
+    }
+}
+
 /* ── Contacto ── */
 @media (max-width: 576px) {
     /* El grid no debe crecer más allá de la pantalla por contenido ancho */
@@ -10726,6 +10754,53 @@ body.gestion-permisos-page .gp-btn-outline:hover { background: #e7f2e3; }
     .terminos-main {
         box-sizing: border-box;
         padding: 20px 16px;
+    }
+}
+
+/* ── Área autenticada: el contenido convive con el sidebar colapsado (61px) ── */
+@media (max-width: 920px) {
+    /* Menú principal: no dejar el hueco de 220/240px del sidebar ancho */
+    .contentprincipal {
+        margin-left: 70px;
+        padding: 20px 14px;
+    }
+
+    /* Programación, gestión de registros, gestión de permisos y clases agendadas */
+    .programacion-main {
+        padding-left: 74px;
+        padding-right: 12px;
+        padding-bottom: 60px;
+    }
+
+    /* Noticias (menú, historial y formulario) */
+    .content-noticias {
+        margin-left: 64px;
+        margin-right: 6px;
+    }
+
+    .noticias-container {
+        width: auto;
+        max-width: 100%;
+        box-sizing: border-box;
+        padding: 16px 12px;
+    }
+
+    /* Las pestañas y la cabecera de noticias envuelven en vez de forzar el ancho */
+    ul.noticiasmenu {
+        flex-wrap: wrap;
+        gap: 10px;
+        padding-left: 0;
+    }
+
+    .titlenoticias {
+        flex-wrap: wrap;
+    }
+
+    /* Tablas de datos: scroll horizontal propio en vez de romper la página */
+    .tablaprog,
+    .gp-tabla-wrap {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
     }
 }
 
