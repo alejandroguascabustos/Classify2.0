@@ -137,33 +137,13 @@ class ClassifyChat {
     }
 
     showWelcomeMessage() {
-        const chatBody = document.getElementById('chatBody');
-
         setTimeout(() => {
-            this.addBotMessage('¡Bienvenido a Classify! 👋 Estoy aquí para ayudarte.');
+            this.addBotMessage('¡Hola! 👋 Soy el asistente de Classify. Pregúntame lo que necesites sobre la plataforma o el colegio y te lo explico.');
         }, 500);
 
         setTimeout(() => {
-            this.showMainMenu();
-        }, 1500);
-    }
-
-    showMainMenu() {
-        this.addBotMessage('¿En qué puedo ayudarte hoy? Escríbeme tu pregunta (por ejemplo, "¿qué clases tiene 5°B mañana?") o selecciona una opción:');
-
-        const options = [
-            { text: '📚 ¿Cómo crear una clase?', action: 'crear_clase' },
-            { text: '🎌 Información sobre la izada de bandera', action: 'izada_bandera' },
-            { text: '📤 ¿Cómo cargar materiales?', action: 'cargar_materiales' },
-            { text: '⭐ ¿Cómo calificar a un profesor?', action: 'calificar_profesor' },
-            { text: '🎓 ¿Cómo aprender en la plataforma?', action: 'aprender_plataforma' },
-            { text: '📅 ¿Cómo agendar una clase?', action: 'agendar_clase' },
-            { text: '👤 Gestión de perfil', action: 'gestion_perfil' },
-            { text: '💬 Contactar con Soporte', action: 'contactar_soporte' },
-            { text: '❓ Otras preguntas', action: 'otras_preguntas' }
-        ];
-
-        this.addOptions(options);
+            this.addBotMessage('Por ejemplo: <em>"¿qué clases tiene 5°B mañana?"</em>, <em>"¿cómo recupero mi contraseña?"</em> o <em>"¿cómo cargo materiales?"</em>');
+        }, 1300);
     }
 
     addBotMessage(message) {
@@ -191,157 +171,6 @@ class ClassifyChat {
         `;
         chatBody.insertAdjacentHTML('beforeend', messageHTML);
         this.scrollToBottom();
-    }
-
-    addOptions(options) {
-        const chatBody = document.getElementById('chatBody');
-        const optionsHTML = `
-            <div class="chat-message">
-                <div class="chat-options">
-                    ${options.map(opt => `
-                        <button class="chat-option-btn" data-action="${opt.action}">
-                            ${opt.text}
-                        </button>
-                    `).join('')}
-                </div>
-            </div>
-        `;
-        chatBody.insertAdjacentHTML('beforeend', optionsHTML);
-        this.scrollToBottom();
-
-        // Attach click events only to the newly added buttons
-        const optionsContainer = chatBody.lastElementChild;
-        const optionButtons = optionsContainer.querySelectorAll('.chat-option-btn');
-
-        optionButtons.forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                // Prevent multiple clicks on the same set of options
-                if (optionsContainer.getAttribute('data-used')) return;
-                optionsContainer.setAttribute('data-used', 'true');
-
-                // Disable other buttons in this set
-                optionButtons.forEach(b => {
-                    b.classList.add('used');
-                    b.style.pointerEvents = 'none';
-                });
-
-                const action = btn.getAttribute('data-action');
-                this.handleOption(action, btn.textContent.trim());
-            });
-        });
-    }
-
-    handleOption(action, buttonText) {
-        this.addUserMessage(buttonText);
-
-        setTimeout(() => {
-            this.showTypingIndicator();
-
-            setTimeout(() => {
-                this.removeTypingIndicator();
-
-                switch (action) {
-                    case 'crear_clase':
-                        this.explainCrearClase();
-                        break;
-                    case 'izada_bandera':
-                        this.explainIzadaBandera();
-                        break;
-                    case 'cargar_materiales':
-                        this.explainCargarMateriales();
-                        break;
-                    case 'calificar_profesor':
-                        this.explainCalificarProfesor();
-                        break;
-                    case 'aprender_plataforma':
-                        this.explainAprenderPlataforma();
-                        break;
-                    case 'agendar_clase':
-                        this.explainAgendarClase();
-                        break;
-                    case 'gestion_perfil':
-                        this.explainGestionPerfil();
-                        break;
-                    case 'contactar_soporte':
-                        this.showContactForm();
-                        break;
-                    case 'otras_preguntas':
-                        this.explainOtrasPreguntas();
-                        break;
-                    case 'menu_principal':
-                        this.showMainMenu();
-                        break;
-                    case 'finalizar':
-                        this.addBotMessage('¡Fue un placer ayudarte! 😊 Si necesitas algo más, no dudes en escribirme.');
-                        break;
-                    default:
-                        this.showMainMenu();
-                }
-            }, 1500);
-        }, 500);
-    }
-
-    explainCrearClase() {
-        this.addBotMessage('Para crear una clase en Classify, sigue estos pasos:');
-        this.addBotMessage('1. Inicia sesión como docente o coordinador<br>2. Ve al menú "Programación"<br>3. Haz clic en "Nueva Clase"<br>4. Completa los datos: materia, hora, curso y observaciones<br>5. Guarda la información');
-        this.askForMore();
-    }
-
-    explainIzadaBandera() {
-        this.addBotMessage('La Izada de Bandera es un evento importante en nuestra institución:');
-        this.addBotMessage('📍 Puedes ver la información y programación en la sección "Izada" del menú principal.<br>🎌 Allí encontrarás fechas, horarios y responsables de cada ceremonia.<br>📝 Los estudiantes pueden ver su participación y detalles del evento.');
-        this.askForMore();
-    }
-
-    explainCargarMateriales() {
-        this.addBotMessage('Para cargar materiales educativos:');
-        this.addBotMessage('1. Accede al menú "Materiales"<br>2. Haz clic en "Subir Material"<br>3. Selecciona el archivo desde tu computador (PDF, PPTX, DOCX, etc.)<br>4. Agrega un título descriptivo<br>5. Confirma la carga');
-        this.addBotMessage('Los materiales quedaran disponibles para que los estudiantes los descarguen.');
-        this.askForMore();
-    }
-
-    explainCalificarProfesor() {
-        this.addBotMessage('Para calificar a un profesor:');
-        this.addBotMessage('1. Ve a la sección "Califica"<br>2. Selecciona el profesor que deseas evaluar<br>3. Completa los criterios de evaluación<br>4. Agrega comentarios opcionales<br>5. Envía tu calificación');
-        this.addBotMessage('Tu opinión es valiosa y ayuda a mejorar la calidad educativa. 📝⭐');
-        this.askForMore();
-    }
-
-    explainAprenderPlataforma() {
-        this.addBotMessage('En la sección "Aprende" encontrarás:');
-        this.addBotMessage('📚 Materiales de estudio organizados por materia<br>🎥 Videos educativos<br>📝 Recursos complementarios<br>💡 Guías y tutoriales<br>📖 Material de consulta');
-        this.addBotMessage('Explora todo el contenido disponible para complementar tu aprendizaje.');
-        this.askForMore();
-    }
-
-    explainAgendarClase() {
-        this.addBotMessage('Para agendar una clase o consulta:');
-        this.addBotMessage('1. Dirígete a la sección "Agendar"<br>2. Selecciona la fecha y hora disponible<br>3. Elige el profesor o materia<br>4. Describe el motivo de la cita<br>5. Confirma tu agendamiento');
-        this.addBotMessage('Recibirás una confirmación y recordatorio de tu cita. 📅✅');
-        this.askForMore();
-    }
-
-    explainGestionPerfil() {
-        this.addBotMessage('Para gestionar tu perfil:');
-        this.addBotMessage('1. Haz clic en "Perfil" en el menú<br>2. Podrás actualizar tu información personal<br>3. Cambiar tu contraseña<br>4. Ver tu historial de actividades<br>5. Configurar preferencias');
-        this.askForMore();
-    }
-
-    explainOtrasPreguntas() {
-        this.addBotMessage('Para otras consultas, puedes:');
-        this.addBotMessage('📧 Contactar al soporte técnico en la sección "Soporte"<br>📞 Comunicarte con el colegio en "Contacto"<br>📋 Revisar las políticas y términos en el pie de página');
-        this.askForMore();
-    }
-
-    askForMore() {
-        setTimeout(() => {
-            this.addBotMessage('¿Hay algo más en lo que pueda ayudarte?');
-            const options = [
-                { text: '🏠 Volver al menú principal', action: 'menu_principal' },
-                { text: '✅ No, gracias', action: 'finalizar' }
-            ];
-            this.addOptions(options);
-        }, 1000);
     }
 
     // Convierte texto plano (posiblemente del modelo) en HTML seguro:
@@ -382,27 +211,60 @@ class ClassifyChat {
             this.removeTypingIndicator();
 
             if (response.ok && data.success && data.respuesta) {
-                this.addBotMessage(this.escapeHtml(data.respuesta));
+                // [SOPORTE] es una marca interna del asistente: significa que la
+                // duda necesita ayuda humana. Se quita del texto y se ofrece el
+                // formulario de contacto solo en ese caso.
+                const necesitaSoporte = data.respuesta.includes('[SOPORTE]');
+                const texto = data.respuesta.replace(/\[SOPORTE\]/g, '').trim();
+
+                if (texto) this.addBotMessage(this.escapeHtml(texto));
+                if (necesitaSoporte) this.offerSupport();
+
                 this.historial.push({ rol: 'usuario', texto: message });
-                this.historial.push({ rol: 'asistente', texto: data.respuesta });
+                this.historial.push({ rol: 'asistente', texto: texto });
                 // Solo se conservan los últimos turnos: el servidor también recorta
                 if (this.historial.length > 12) {
                     this.historial = this.historial.slice(-12);
                 }
             } else if (response.status === 503) {
-                // Asistente sin configurar: se degrada al menú estático de siempre
-                this.addBotMessage('Por ahora no puedo responder preguntas libres, pero puedo ayudarte con estas opciones:');
-                this.showMainMenu();
+                // Asistente sin configurar: se ofrece el canal humano directamente
+                this.addBotMessage('En este momento no puedo responderte en línea, pero puedes dejarnos tu consulta y te contestamos por correo:');
+                this.offerSupport();
             } else {
                 this.addBotMessage(this.escapeHtml(
                     (data && data.message) || 'No pude procesar tu mensaje. Inténtalo de nuevo en un momento.'));
             }
         } catch (error) {
             this.removeTypingIndicator();
-            this.addBotMessage('No pude conectarme con el asistente. Revisa tu conexión e inténtalo de nuevo.');
+            this.addBotMessage('No pude conectarme con el asistente. Revisa tu conexión e inténtalo de nuevo, o déjanos tu consulta:');
+            this.offerSupport();
         } finally {
             this.esperandoRespuesta = false;
         }
+    }
+
+    // Botón único de "Contactar con soporte": solo aparece cuando el asistente
+    // no pudo resolver la duda (marca [SOPORTE]), cuando no está disponible,
+    // o cuando falla la conexión.
+    offerSupport() {
+        const chatBody = document.getElementById('chatBody');
+        const html = `
+            <div class="chat-message">
+                <div class="chat-options">
+                    <button class="chat-option-btn">💬 Contactar con soporte</button>
+                </div>
+            </div>
+        `;
+        chatBody.insertAdjacentHTML('beforeend', html);
+
+        const boton = chatBody.lastElementChild.querySelector('button');
+        boton.addEventListener('click', () => {
+            boton.classList.add('used');
+            boton.style.pointerEvents = 'none';
+            this.showContactForm();
+        }, { once: true });
+
+        this.scrollToBottom();
     }
 
     showTypingIndicator() {
@@ -512,9 +374,8 @@ class ClassifyChat {
             });
 
             if (response.ok) {
-                this.addBotMessage('✅ ¡Tu consulta ha sido enviada exitosamente! Recibirás una respuesta en tu correo electrónico pronto.');
+                this.addBotMessage('✅ ¡Tu consulta ha sido enviada exitosamente! Recibirás una respuesta en tu correo electrónico pronto. ¿Hay algo más en lo que pueda ayudarte?');
                 document.getElementById('supportContactForm').remove();
-                this.askForMore();
             } else {
                 throw new Error('Error al enviar');
             }
