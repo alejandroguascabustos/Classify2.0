@@ -162,27 +162,9 @@ public class ChatbotService {
                 "la página me da error al guardar" → frase breve + [SOPORTE].
                 - Nunca menciones ni expliques la marca: es una señal interna.
 
-                GUÍA DE LA PLATAFORMA (menú lateral):
-                - Agendar clase (/agenda): los docentes registran una clase con curso, materia, fecha, \
-                hora, duración y modalidad. El sistema avisa si hay conflicto de salón o de profesor.
-                - Noticias (/noticias): cartelera informativa del colegio; se puede descargar en PDF.
-                - Programación (/programacion): tabla de clases con edición y descarga en Excel.
-                - Clases agendadas (/clases-agendadas): consulta con filtros por curso, profesor y \
-                materia, dashboard con gráficos, y descarga en Excel o PDF con la marca del colegio.
-                - Gestión de registros (/gestion-registros): administración de usuarios, incluida la \
-                carga masiva por plantilla de Excel (estudiantes, docentes, acudientes, coordinadores).
-                - Aprende (/aprende): materiales de estudio y recursos.
-                - Contacta a un profe (/contacta): mensajes directos a los docentes.
-                - Mis Materiales y Carga Materiales: descarga y subida de material educativo.
-                - Gestión de permisos (/gestion-permisos): solo administradores; controla qué módulo ve cada rol.
-
-                PREGUNTAS FRECUENTES:
-                - Recuperar contraseña: en la pantalla de inicio de sesión, clic en "¿Olvidaste tu \
-                contraseña?"; llega un correo con una contraseña temporal que se debe cambiar al entrar.
-                - Registro: los docentes se registran con un código de referencia institucional; los \
-                estudiantes y acudientes desde el formulario de registro.
-                - Los roles disponibles son: estudiante, docente, acudiente, coordinador y administrador.
                 """);
+
+        sb.append("\nBASE DE CONOCIMIENTO DE LA PLATAFORMA:\n").append(guiaPlataforma());
 
         sb.append("\nFECHA ACTUAL: ").append(hoy.format(FECHA_CORTA))
                 .append(" (").append(hoy.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.of("es"))).append(")");
@@ -218,6 +200,31 @@ public class ChatbotService {
         }
         return sb.toString();
     }
+
+    /**
+     * Base de conocimiento del asistente: el Markdown editable en
+     * src/main/resources/chatbot/guia-plataforma.md. Se lee del classpath una
+     * sola vez y se cachea; tras editarlo hay que desplegar o reiniciar.
+     */
+    private String guiaPlataforma() {
+        String cache = guiaCache;
+        if (cache != null) return cache;
+        try (java.io.InputStream in = getClass().getResourceAsStream("/chatbot/guia-plataforma.md")) {
+            if (in != null) {
+                guiaCache = new String(in.readAllBytes(), java.nio.charset.StandardCharsets.UTF_8);
+                return guiaCache;
+            }
+        } catch (java.io.IOException e) {
+            // cae al mínimo de abajo
+        }
+        guiaCache = """
+                (Guía no disponible. Responde solo con la agenda inyectada y las reglas, \
+                y ofrece el canal de soporte para el resto de dudas con la marca [SOPORTE].)
+                """;
+        return guiaCache;
+    }
+
+    private volatile String guiaCache;
 
     private static String recortar(String texto, int max) {
         if (texto == null) return "";
