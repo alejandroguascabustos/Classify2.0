@@ -1824,7 +1824,7 @@ div.textoregistro a:hover {
 }
 
 .contentrecupera {
-    background: url("#") no-repeat center center;
+    background-image: url('/img/backgroundrecuperarpass.png') !important;
     background-size: cover;
     display: flex;
     justify-content: center;
@@ -2565,7 +2565,7 @@ a.inicioprincipal3 {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background: linear-gradient(135deg, #e0f7fa, #f1f8e9);
+    background-image: url('/img/backgroundrecuperarpass.png') !important;
     padding: 20px;
     font-family: "Poppins", sans-serif;
 }
@@ -5063,7 +5063,7 @@ div.imagenpoliticas {
 
 .politica-container {
     max-width: 1500px;
-    background: #fff;
+    background-image: url('/img/backgroundrecuperarpass.png') !important;
     padding: 30px;
     border-radius: 12px;
     box-shadow: 0 8px 12px rgba(104, 104, 104, 0.5);
@@ -5112,7 +5112,7 @@ div.imagenpoliticas {
 }
 
 .terminos-wrapper {
-    background-color: #f4f6f8;
+    background-image: url('/img/backgroundrecuperarpass.png') !important;
     flex-direction: column;
     align-items: center;
 }
