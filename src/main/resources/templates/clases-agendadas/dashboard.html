@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Classify - Dashboard de clases</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="shortcut icon" th:href="@{/img/favicon.ico}" type="image/x-icon">
+    <link rel="stylesheet" th:href="@{/css/clases-agendadas.css}">
+</head>
+
+<body class="programacion-page">
+    <header class="brandinicio">
+        <div class="brand">
+            <a th:href="@{/inicio}"><img th:src="@{/img/logo.png}" alt="logo" class="logo"></a>
+            <a th:href="@{/inicio}">Classify</a>
+        </div>
+
+        <div class="brand2">
+            <a th:href="@{/inicio}" class="info-btn" alt="Información">Inicio</a>
+            <a th:href="@{/nosotros}" class="info-btn" alt="Información">Nosotros</a>
+            <a th:href="@{/contacto}" class="info-btn" alt="Información">Contacto</a>
+        </div>
+
+        <div class="header-tools">
+            <a href="#info" class="info-btn">
+                <img th:src="@{/img/informacion.png}" alt="Información" class="info-icon">
+            </a>
+            <a th:href="@{/logout}" class="logout-btn" title="Cerrar sesión" aria-label="Cerrar sesión">
+                <img th:src="@{/img/salida.png}" alt="Cerrar sesión" class="logout-icon">
+            </a>
+            <div id="info" class="info-panel">
+                <div class="info-content">
+                    <a href="#" class="close">&times;</a>
+                    <img th:src="@{/img/programacion.png}" width="80px">
+                    <h4>Dashboard de clases</h4>
+                    <p class="textoinfo">Visualiza de un vistazo cómo se distribuyen las clases agendadas del colegio
+                        Moralba Sur Oriental. <br><br>Filtra por curso, profesor o materia, elige cómo agrupar los
+                        datos, y los gráficos de barras y de torta se actualizan con tu selección. Para el detalle
+                        clase por clase, usa el botón "Ver listado".</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="menu-toggle" id="menuToggle">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+
+    <aside th:replace="~{layout/sidebar :: sidebar('clases-agendadas')}"></aside>
+
+    <main class="programacion-main">
+        <div class="clases-toolbar">
+            <h2 class="programacion-title">Dashboard de clases</h2>
+
+            <div class="clases-export">
+                <a class="btn-export btn-export-neutro"
+                   th:href="@{/clases-agendadas(curso=${filtroCurso},profesor=${filtroProfesor},materia=${filtroMateria})}">
+                    Ver listado
+                </a>
+            </div>
+        </div>
+
+        <div class="filtros-card">
+            <form method="get" th:action="@{/clases-agendadas/dashboard}" class="filtros-clases">
+                <div class="filtro-campo">
+                    <label for="filtroCursoSelect">Curso</label>
+                    <select id="filtroCursoSelect" name="curso">
+                        <option value="">Todos los cursos</option>
+                        <option th:each="c : ${cursos}" th:value="${c.valor}" th:text="${c.etiqueta}"
+                                th:selected="${c.valor == filtroCurso}"></option>
+                    </select>
+                </div>
+
+                <div class="filtro-campo">
+                    <label for="filtroProfesorSelect">Profesor</label>
+                    <select id="filtroProfesorSelect" name="profesor">
+                        <option value="">Todos los profesores</option>
+                        <option th:each="p : ${profesores}" th:value="${p}" th:text="${p}"
+                                th:selected="${p == filtroProfesor}"></option>
+                    </select>
+                </div>
+
+                <div class="filtro-campo">
+                    <label for="filtroMateriaSelect">Materia</label>
+                    <select id="filtroMateriaSelect" name="materia">
+                        <option value="">Todas las materias</option>
+                        <option th:each="m : ${materias}" th:value="${m}" th:text="${m}"
+                                th:selected="${m == filtroMateria}"></option>
+                    </select>
+                </div>
+
+                <div class="filtro-campo">
+                    <label for="agruparSelect">Agrupar por</label>
+                    <select id="agruparSelect" name="agrupar">
+                        <option value="curso" th:selected="${agrupar == 'curso'}">Curso</option>
+                        <option value="profesor" th:selected="${agrupar == 'profesor'}">Profesor</option>
+                        <option value="materia" th:selected="${agrupar == 'materia'}">Materia</option>
+                    </select>
+                </div>
+
+                <div class="filtro-acciones">
+                    <button type="submit" class="btn-filtrar-clases">Aplicar</button>
+                    <a th:href="@{/clases-agendadas/dashboard}" class="btn-limpiar-clases">Limpiar</a>
+                </div>
+            </form>
+        </div>
+
+        <div class="kpi-grid">
+            <div class="kpi-card">
+                <div class="kpi-valor" th:text="${totalClases}"></div>
+                <div class="kpi-nombre">Clases agendadas</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-valor" th:text="${totalCursos}"></div>
+                <div class="kpi-nombre">Cursos</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-valor" th:text="${totalProfesores}"></div>
+                <div class="kpi-nombre">Profesores</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-valor" th:text="${totalMaterias}"></div>
+                <div class="kpi-nombre">Materias</div>
+            </div>
+        </div>
+
+        <div class="graficos-grid" th:if="${totalClases > 0}">
+            <div class="grafico-card">
+                <h3 th:text="'Clases por ' + ${agrupar}"></h3>
+                <div class="grafico-lienzo">
+                    <canvas id="graficoBarras" role="img"
+                            th:attr="aria-label='Gráfico de barras de clases por ' + ${agrupar}"></canvas>
+                </div>
+            </div>
+            <div class="grafico-card">
+                <h3 th:text="'Distribución por ' + ${agrupar}"></h3>
+                <div class="grafico-lienzo">
+                    <canvas id="graficoTorta" role="img"
+                            th:attr="aria-label='Gráfico de torta de distribución por ' + ${agrupar}"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="dashboard-vacio" th:if="${totalClases == 0}">
+            No hay clases agendadas que coincidan con el filtro seleccionado.
+        </div>
+    </main>
+
+    <script th:src="@{/js/chart.umd.min.js}"></script>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        (function () {
+            const barraLabels = /*[[${barraLabels}]]*/ [];
+            const barraValores = /*[[${barraValores}]]*/ [];
+            const tortaLabels = /*[[${tortaLabels}]]*/ [];
+            const tortaValores = /*[[${tortaValores}]]*/ [];
+
+            if (!barraLabels.length || typeof Chart === 'undefined') return;
+
+            // Paleta categórica de marca, validada para visión de color
+            // (verde Classify primero; "Otros" siempre en gris neutro).
+            const PALETA = ['#008000', '#3E68B2', '#D97C02', '#7A5EA6', '#A97B00'];
+            const GRIS_OTROS = '#64748B';
+            const TINTA = '#111827';
+            const TINTA_SUAVE = '#64748b';
+            const REJILLA = '#e5e7eb';
+
+            Chart.defaults.font.family = getComputedStyle(document.body).fontFamily;
+            Chart.defaults.color = TINTA_SUAVE;
+
+            // ── Barras horizontales: magnitud en un solo verde de marca ──
+            new Chart(document.getElementById('graficoBarras'), {
+                type: 'bar',
+                data: {
+                    labels: barraLabels,
+                    datasets: [{
+                        data: barraValores,
+                        backgroundColor: '#008000',
+                        borderRadius: 4,
+                        maxBarThickness: 26
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: (ctx) => ' ' + ctx.parsed.x + (ctx.parsed.x === 1 ? ' clase' : ' clases')
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            ticks: { precision: 0 },
+                            grid: { color: REJILLA },
+                            border: { display: false }
+                        },
+                        y: {
+                            ticks: { color: TINTA },
+                            grid: { display: false },
+                            border: { display: false }
+                        }
+                    }
+                }
+            });
+
+            // ── Torta: participación de cada grupo (top 5 + "Otros") ──
+            const coloresTorta = tortaLabels.map((etiqueta, i) =>
+                etiqueta === 'Otros' ? GRIS_OTROS : PALETA[i % PALETA.length]);
+
+            new Chart(document.getElementById('graficoTorta'), {
+                type: 'pie',
+                data: {
+                    labels: tortaLabels,
+                    datasets: [{
+                        data: tortaValores,
+                        backgroundColor: coloresTorta,
+                        borderColor: '#ffffff',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: { color: TINTA, boxWidth: 14, boxHeight: 14, padding: 12 }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: (ctx) => {
+                                    const total = tortaValores.reduce((a, b) => a + b, 0);
+                                    const pct = total > 0 ? Math.round(ctx.parsed * 100 / total) : 0;
+                                    return ' ' + ctx.parsed + (ctx.parsed === 1 ? ' clase' : ' clases')
+                                        + ' (' + pct + '%)';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        })();
+        /*]]>*/
+    </script>
+    <script th:src="@{/js/chatbot.js}"></script>
+</body>
+
+</html>

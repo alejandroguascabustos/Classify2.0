@@ -38,6 +38,7 @@ import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Vista de consulta de clases agendadas (CLS-122): filtro por curso, profesor
@@ -77,6 +78,65 @@ public class ClasesAgendadasController {
         model.addAttribute("filtroProfesor", profesor == null ? "" : profesor);
         model.addAttribute("filtroMateria", materia == null ? "" : materia);
         return "clases-agendadas/clases-agendadas";
+    }
+
+    // ── GET /clases-agendadas/dashboard → gráficos de barras y torta ─────
+    @GetMapping("/dashboard")
+    public String dashboard(@RequestParam(required = false) String curso,
+                            @RequestParam(required = false) String profesor,
+                            @RequestParam(required = false) String materia,
+                            @RequestParam(defaultValue = "curso") String agrupar,
+                            Model model) {
+        if (!List.of("curso", "profesor", "materia").contains(agrupar)) {
+            agrupar = "curso";
+        }
+        List<Agenda> clases = agendaService.filtrarClases(curso, profesor, materia);
+        Map<String, Long> conteo = agendaService.contarPorDimension(clases, agrupar);
+
+        // La torta pierde legibilidad con muchas porciones: top 5 + "Otros"
+        List<String> tortaLabels = new java.util.ArrayList<>();
+        List<Long> tortaValores = new java.util.ArrayList<>();
+        long otros = 0;
+        for (Map.Entry<String, Long> e : conteo.entrySet()) {
+            if (tortaLabels.size() < 5) {
+                tortaLabels.add(e.getKey());
+                tortaValores.add(e.getValue());
+            } else {
+                otros += e.getValue();
+            }
+        }
+        if (otros > 0) {
+            tortaLabels.add("Otros");
+            tortaValores.add(otros);
+        }
+
+        model.addAttribute("cursos", agendaService.listarCursos());
+        model.addAttribute("profesores", agendaService.listarProfesores());
+        model.addAttribute("materias", agendaService.listarMaterias());
+        model.addAttribute("filtroCurso", curso == null ? "" : curso);
+        model.addAttribute("filtroProfesor", profesor == null ? "" : profesor);
+        model.addAttribute("filtroMateria", materia == null ? "" : materia);
+        model.addAttribute("agrupar", agrupar);
+        model.addAttribute("barraLabels", new java.util.ArrayList<>(conteo.keySet()));
+        model.addAttribute("barraValores", new java.util.ArrayList<>(conteo.values()));
+        model.addAttribute("tortaLabels", tortaLabels);
+        model.addAttribute("tortaValores", tortaValores);
+        model.addAttribute("totalClases", clases.size());
+        model.addAttribute("totalProfesores", contarDistintos(clases, Agenda::getProfesor));
+        model.addAttribute("totalMaterias", contarDistintos(clases, Agenda::getMateria));
+        model.addAttribute("totalCursos", clases.stream()
+                .map(AgendaService::etiquetaCursoDe)
+                .filter(c -> !c.isEmpty())
+                .distinct().count());
+        return "clases-agendadas/dashboard";
+    }
+
+    private static long contarDistintos(List<Agenda> clases, java.util.function.Function<Agenda, String> campo) {
+        return clases.stream()
+                .map(campo)
+                .filter(v -> v != null && !v.isBlank())
+                .map(v -> v.trim().toLowerCase())
+                .distinct().count();
     }
 
     // ── GET /clases-agendadas/exportar-excel → .xlsx con marca ───────────

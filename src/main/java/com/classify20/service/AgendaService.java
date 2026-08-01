@@ -194,6 +194,39 @@ public class AgendaService {
         return listarDistintos(Agenda::getMateria);
     }
 
+    /** Etiqueta de curso de una agenda (ej. "3° A"), o cadena vacía si no tiene grado. */
+    public static String etiquetaCursoDe(Agenda a) {
+        if (a.getGrado() == null) return "";
+        String grupo = normalizarGrupo(a.getGrupo());
+        return a.getGrado() + "°" + (grupo.isEmpty() ? "" : " " + grupo);
+    }
+
+    /**
+     * Cuenta las clases por la dimensión indicada ("curso", "profesor" o
+     * "materia"), en orden descendente por cantidad. Las clases sin valor en la
+     * dimensión se agrupan como "Sin dato".
+     */
+    public Map<String, Long> contarPorDimension(List<Agenda> clases, String dimension) {
+        java.util.function.Function<Agenda, String> etiqueta = switch (dimension) {
+            case "profesor" -> a -> a.getProfesor() != null && !a.getProfesor().isBlank()
+                    ? a.getProfesor().trim() : "Sin dato";
+            case "materia" -> a -> a.getMateria() != null && !a.getMateria().isBlank()
+                    ? a.getMateria().trim() : "Sin dato";
+            default -> a -> {
+                String c = etiquetaCursoDe(a);
+                return c.isEmpty() ? "Sin dato" : c;
+            };
+        };
+        Map<String, Long> conteo = new LinkedHashMap<>();
+        clases.stream()
+                .collect(java.util.stream.Collectors.groupingBy(etiqueta, java.util.stream.Collectors.counting()))
+                .entrySet().stream()
+                .sorted(Map.Entry.<String, Long>comparingByValue(Comparator.reverseOrder())
+                        .thenComparing(Map.Entry.comparingByKey()))
+                .forEach(e -> conteo.put(e.getKey(), e.getValue()));
+        return conteo;
+    }
+
     /** Etiqueta legible de un filtro de curso "grado|grupo" (ej. "3° A"), o null si no hay filtro. */
     public String etiquetaCurso(String curso) {
         if (curso == null || curso.isBlank()) return null;

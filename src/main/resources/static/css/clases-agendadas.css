@@ -1,0 +1,270 @@
+/*
+ * Estilos de la vista de clases agendadas y su dashboard (CLS-122).
+ * Archivo aparte de style.css a propósito: es nuevo, así que no arrastra
+ * la caché vieja del sub_filter de nginx.
+ */
+
+/* ── Barra superior: título + acciones ── */
+.clases-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    margin-bottom: 18px;
+}
+
+.clases-toolbar .programacion-title {
+    margin: 0;
+}
+
+.clases-export {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.btn-export {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    border-radius: 999px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--blanco, #fff);
+    text-decoration: none;
+    box-shadow: 0 3px 10px rgba(17, 24, 39, 0.15);
+    transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+}
+
+.btn-export:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(17, 24, 39, 0.22);
+    filter: brightness(1.05);
+}
+
+.btn-export img {
+    width: 20px;
+    height: 20px;
+}
+
+.btn-export-excel {
+    background: linear-gradient(135deg, var(--green, #008000), var(--green-dark, #013501));
+}
+
+.btn-export-pdf {
+    background: linear-gradient(135deg, var(--orangered, #F38F02), #c9291b);
+}
+
+.btn-export-neutro {
+    background: linear-gradient(135deg, #46648F, #2d4368);
+}
+
+/* ── Tarjeta de filtros ── */
+.filtros-card {
+    background: var(--blanco, #fff);
+    border: 1px solid var(--border, #e5e7eb);
+    border-top: 4px solid var(--green, #008000);
+    border-radius: 12px;
+    padding: 18px 20px;
+    margin-bottom: 16px;
+    box-shadow: 0 8px 24px rgba(17, 24, 39, 0.07);
+}
+
+.filtros-clases {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    align-items: flex-end;
+}
+
+.filtro-campo {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex: 1 1 180px;
+    min-width: 170px;
+}
+
+.filtro-campo label {
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--green-dark, #013501);
+}
+
+.filtros-clases select {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 100%;
+    padding: 10px 38px 10px 12px;
+    border: 1px solid var(--border-strong, #9D9D9C);
+    border-radius: var(--border-radius, 8px);
+    font-family: inherit;
+    font-size: 14px;
+    color: var(--ink, #111827);
+    background-color: var(--blanco, #fff);
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23008000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    cursor: pointer;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.filtros-clases select:hover {
+    border-color: var(--green, #008000);
+}
+
+.filtros-clases select:focus {
+    outline: none;
+    border-color: var(--green, #008000);
+    box-shadow: 0 0 0 3px rgba(0, 128, 0, 0.15);
+}
+
+.filtro-acciones {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-filtrar-clases,
+.btn-limpiar-clases {
+    padding: 10px 22px;
+    border-radius: var(--border-radius, 8px);
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: background-color 0.15s ease, color 0.15s ease, transform 0.15s ease;
+}
+
+.btn-filtrar-clases {
+    background-color: var(--green, #008000);
+    color: var(--blanco, #fff);
+    border: none;
+}
+
+.btn-filtrar-clases:hover {
+    background-color: var(--green-dark, #013501);
+    transform: translateY(-1px);
+}
+
+.btn-limpiar-clases {
+    background-color: transparent;
+    color: var(--green-dark, #013501);
+    border: 1px solid var(--green, #008000);
+}
+
+.btn-limpiar-clases:hover {
+    background-color: rgba(0, 128, 0, 0.08);
+}
+
+.clases-resumen {
+    margin: 12px 0 6px;
+    color: var(--gris, #64748b);
+    font-size: 14px;
+}
+
+/* ── Dashboard: indicadores ── */
+.kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 14px;
+    margin-bottom: 16px;
+}
+
+.kpi-card {
+    background: var(--blanco, #fff);
+    border: 1px solid var(--border, #e5e7eb);
+    border-radius: 12px;
+    padding: 14px 18px;
+    box-shadow: 0 4px 14px rgba(17, 24, 39, 0.05);
+}
+
+.kpi-card .kpi-valor {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--green-dark, #013501);
+    line-height: 1.1;
+}
+
+.kpi-card .kpi-nombre {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--gris, #64748b);
+    margin-top: 4px;
+}
+
+/* ── Dashboard: tarjetas de gráficos ── */
+.graficos-grid {
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+    gap: 16px;
+}
+
+.grafico-card {
+    background: var(--blanco, #fff);
+    border: 1px solid var(--border, #e5e7eb);
+    border-radius: 12px;
+    padding: 18px 20px;
+    box-shadow: 0 8px 24px rgba(17, 24, 39, 0.07);
+    min-width: 0;
+}
+
+.grafico-card h3 {
+    margin: 0 0 12px;
+    font-size: 15px;
+    color: var(--ink, #111827);
+}
+
+.grafico-lienzo {
+    position: relative;
+    height: 340px;
+}
+
+.dashboard-vacio {
+    background: var(--blanco, #fff);
+    border: 1px dashed var(--border-strong, #9D9D9C);
+    border-radius: 12px;
+    padding: 40px 20px;
+    text-align: center;
+    color: var(--gris, #64748b);
+}
+
+@media (max-width: 900px) {
+    .graficos-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 640px) {
+    .clases-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .clases-export {
+        justify-content: stretch;
+    }
+
+    .btn-export {
+        flex: 1;
+        justify-content: center;
+    }
+
+    .filtro-acciones {
+        width: 100%;
+    }
+
+    .btn-filtrar-clases,
+    .btn-limpiar-clases {
+        flex: 1;
+        text-align: center;
+    }
+}
