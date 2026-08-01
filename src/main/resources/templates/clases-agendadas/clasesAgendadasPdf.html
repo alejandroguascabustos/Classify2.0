@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<!--
+    Plantilla usada SOLO por ClasesAgendadasController#exportarPdf (Flying Saucer / ITextRenderer).
+    Va en: src/main/resources/templates/clases-agendadas/clasesAgendadasPdf.html
+
+    Mismas reglas que noticiasPdf.html:
+    - Flying Saucer exige XHTML bien formado (todas las etiquetas cerradas).
+    - El CSS va en línea; no se cargan hojas externas.
+    - El logo llega como URI file:/// absoluta (logoUri), extraído del jar por el
+      controlador; una ruta tipo "/img/logo.png" no se puede resolver aquí.
+    - "-fs-table-paginate: paginate;" repite el encabezado de la tabla en cada
+      página cuando el listado no cabe en una sola.
+    - Sin emojis: las fuentes base de iText no los soportan.
+-->
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Clases agendadas - Classify</title>
+    <style>
+        @page {
+            size: A4 landscape;
+            margin: 16mm 14mm;
+        }
+
+        body {
+            font-family: Helvetica, Arial, sans-serif;
+            color: #111827;
+            font-size: 10px;
+        }
+
+        /* ── Cabecera de marca ─────────────────────────────── */
+        table.cabecera {
+            width: 100%;
+            border-collapse: collapse;
+            border-bottom: 3px solid #008000;
+            margin-bottom: 6px;
+        }
+
+        .cabecera td {
+            vertical-align: middle;
+            padding-bottom: 8px;
+        }
+
+        .celda-logo {
+            width: 120px;
+        }
+
+        .titulo {
+            font-size: 20px;
+            font-weight: bold;
+            color: #013501;
+            margin: 0;
+        }
+
+        .subtitulo {
+            font-size: 10px;
+            color: #64748b;
+            margin: 2px 0 0 0;
+        }
+
+        .filtros-aplicados {
+            color: #008000;
+            font-size: 9px;
+            font-weight: bold;
+            margin: 6px 0 12px 0;
+        }
+
+        /* ── Tabla de clases ───────────────────────────────── */
+        table.clases {
+            width: 100%;
+            border-collapse: collapse;
+            -fs-table-paginate: paginate;
+        }
+
+        table.clases th {
+            background-color: #013501;
+            color: #ffffff;
+            font-size: 9.5px;
+            padding: 6px 5px;
+            text-align: left;
+            border: 1px solid #013501;
+        }
+
+        table.clases td {
+            padding: 5px;
+            border: 1px solid #e5e7eb;
+            font-size: 9.5px;
+        }
+
+        table.clases tr.alterna td {
+            background-color: #ebf3e8;
+        }
+
+        .vacio {
+            margin-top: 18px;
+            color: #64748b;
+            font-style: italic;
+        }
+
+        .pie {
+            margin-top: 14px;
+            color: #94a3b8;
+            font-size: 8px;
+            border-top: 1px solid #e5e7eb;
+            padding-top: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <table class="cabecera">
+        <tr>
+            <td class="celda-logo">
+                <img th:if="${logoUri != null}" th:src="${logoUri}"
+                     style="width: 110px; height: 54px;" alt="Classify"/>
+            </td>
+            <td>
+                <p class="titulo">Clases agendadas</p>
+                <p class="subtitulo">Classify - Colegio Moralba Sur Oriental</p>
+            </td>
+        </tr>
+    </table>
+
+    <p class="filtros-aplicados" th:text="${resumenFiltros}"></p>
+
+    <table class="clases" th:if="${!clases.isEmpty()}">
+        <thead>
+            <tr>
+                <th style="width: 4%;">N&#176;</th>
+                <th style="width: 14%;">Materia</th>
+                <th style="width: 16%;">Profesor</th>
+                <th style="width: 10%;">Fecha</th>
+                <th style="width: 8%;">Hora</th>
+                <th style="width: 8%;">Duraci&#243;n</th>
+                <th style="width: 8%;">Curso</th>
+                <th style="width: 10%;">Modalidad</th>
+                <th style="width: 22%;">Tema principal</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="clase, it : ${clases}" th:class="${it.even} ? 'alterna'">
+                <td th:text="${it.count}"></td>
+                <td th:text="${clase.materia}"></td>
+                <td th:text="${clase.profesor}"></td>
+                <td th:text="${clase.fecha != null ? clase.fecha : ''}"></td>
+                <td th:text="${clase.horaInicio != null ? clase.horaInicio : ''}"></td>
+                <td th:text="${clase.duracion != null ? clase.duracion + ' min' : ''}"></td>
+                <td th:text="${(clase.grado != null ? clase.grado + '&#176;' : '')} + ${(clase.grupo != null and !clase.grupo.isBlank()) ? ' ' + clase.grupo.trim().toUpperCase() : ''}"></td>
+                <td th:text="${clase.modalidad}"></td>
+                <td th:text="${clase.temaPrincipal}"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p class="vacio" th:if="${clases.isEmpty()}">
+        No hay clases agendadas que coincidan con el filtro seleccionado.
+    </p>
+
+    <p class="pie" th:text="'Generado por Classify el ' + ${fechaGeneracion} + '. Documento de uso interno del Colegio Moralba Sur Oriental.'"></p>
+
+</body>
+</html>

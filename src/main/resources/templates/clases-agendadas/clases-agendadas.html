@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Classify - Clases agendadas</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="shortcut icon" th:href="@{/img/favicon.ico}" type="image/x-icon">
+    <style>
+        /* Estilos propios de la vista (no se toca style.css para no invalidar la caché) */
+
+        /* ── Barra superior: título + botones de exportación ── */
+        .clases-toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            margin-bottom: 18px;
+        }
+
+        .clases-toolbar .programacion-title {
+            margin: 0;
+        }
+
+        .clases-export {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn-export {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 18px;
+            border-radius: 999px;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--blanco, #fff);
+            text-decoration: none;
+            box-shadow: 0 3px 10px rgba(17, 24, 39, 0.15);
+            transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+        }
+
+        .btn-export:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(17, 24, 39, 0.22);
+            filter: brightness(1.05);
+        }
+
+        .btn-export img {
+            width: 20px;
+            height: 20px;
+        }
+
+        .btn-export-excel {
+            background: linear-gradient(135deg, var(--green, #008000), var(--green-dark, #013501));
+        }
+
+        .btn-export-pdf {
+            background: linear-gradient(135deg, var(--orangered, #F38F02), #c9291b);
+        }
+
+        /* ── Tarjeta de filtros ── */
+        .filtros-card {
+            background: var(--blanco, #fff);
+            border: 1px solid var(--border, #e5e7eb);
+            border-top: 4px solid var(--green, #008000);
+            border-radius: 12px;
+            padding: 18px 20px;
+            margin-bottom: 16px;
+            box-shadow: 0 8px 24px rgba(17, 24, 39, 0.07);
+        }
+
+        .filtros-clases {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            align-items: flex-end;
+        }
+
+        .filtro-campo {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            flex: 1 1 180px;
+            min-width: 170px;
+        }
+
+        .filtro-campo label {
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--green-dark, #013501);
+        }
+
+        .filtros-clases select {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 100%;
+            padding: 10px 38px 10px 12px;
+            border: 1px solid var(--border-strong, #9D9D9C);
+            border-radius: var(--border-radius, 8px);
+            font-family: inherit;
+            font-size: 14px;
+            color: var(--ink, #111827);
+            background-color: var(--blanco, #fff);
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23008000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+            cursor: pointer;
+            transition: border-color 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        .filtros-clases select:hover {
+            border-color: var(--green, #008000);
+        }
+
+        .filtros-clases select:focus {
+            outline: none;
+            border-color: var(--green, #008000);
+            box-shadow: 0 0 0 3px rgba(0, 128, 0, 0.15);
+        }
+
+        .filtro-acciones {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-filtrar-clases,
+        .btn-limpiar-clases {
+            padding: 10px 22px;
+            border-radius: var(--border-radius, 8px);
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: background-color 0.15s ease, color 0.15s ease, transform 0.15s ease;
+        }
+
+        .btn-filtrar-clases {
+            background-color: var(--green, #008000);
+            color: var(--blanco, #fff);
+            border: none;
+        }
+
+        .btn-filtrar-clases:hover {
+            background-color: var(--green-dark, #013501);
+            transform: translateY(-1px);
+        }
+
+        .btn-limpiar-clases {
+            background-color: transparent;
+            color: var(--green-dark, #013501);
+            border: 1px solid var(--green, #008000);
+        }
+
+        .btn-limpiar-clases:hover {
+            background-color: rgba(0, 128, 0, 0.08);
+        }
+
+        .clases-resumen {
+            margin: 12px 0 6px;
+            color: var(--gris, #64748b);
+            font-size: 14px;
+        }
+
+        @media (max-width: 640px) {
+            .clases-toolbar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .clases-export {
+                justify-content: stretch;
+            }
+
+            .btn-export {
+                flex: 1;
+                justify-content: center;
+            }
+
+            .filtro-acciones {
+                width: 100%;
+            }
+
+            .btn-filtrar-clases,
+            .btn-limpiar-clases {
+                flex: 1;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body class="programacion-page">
+    <header class="brandinicio">
+        <div class="brand">
+            <a th:href="@{/inicio}"><img th:src="@{/img/logo.png}" alt="logo" class="logo"></a>
+            <a th:href="@{/inicio}">Classify</a>
+        </div>
+
+        <div class="brand2">
+            <a th:href="@{/inicio}" class="info-btn" alt="Información">Inicio</a>
+            <a th:href="@{/nosotros}" class="info-btn" alt="Información">Nosotros</a>
+            <a th:href="@{/contacto}" class="info-btn" alt="Información">Contacto</a>
+        </div>
+
+        <div class="header-tools">
+            <a href="#info" class="info-btn">
+                <img th:src="@{/img/informacion.png}" alt="Información" class="info-icon">
+            </a>
+            <a th:href="@{/logout}" class="logout-btn" title="Cerrar sesión" aria-label="Cerrar sesión">
+                <img th:src="@{/img/salida.png}" alt="Cerrar sesión" class="logout-icon">
+            </a>
+            <div id="info" class="info-panel">
+                <div class="info-content">
+                    <a href="#" class="close">&times;</a>
+                    <img th:src="@{/img/programacion.png}" width="80px">
+                    <h4>Consulta las clases agendadas</h4>
+                    <p class="textoinfo">Esta vista te permite consultar de forma simple todas las clases agendadas
+                        del colegio Moralba Sur Oriental, filtrándolas por curso, profesor o materia. <br><br>
+                        Una vez aplicado el filtro, puedes descargar el resultado en formato Excel (.xlsx) o PDF con
+                        la identidad visual de Classify, listo para compartir o imprimir.</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="menu-toggle" id="menuToggle">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+
+    <aside th:replace="~{layout/sidebar :: sidebar('clases-agendadas')}"></aside>
+
+    <main class="programacion-main">
+        <div class="clases-toolbar">
+            <h2 class="programacion-title">Clases agendadas</h2>
+
+            <div class="clases-export">
+                <a class="btn-export btn-export-excel"
+                   th:href="@{/clases-agendadas/exportar-excel(curso=${filtroCurso},profesor=${filtroProfesor},materia=${filtroMateria})}">
+                    <img th:src="@{/img/descargas.png}" alt="">
+                    Excel (.xlsx)
+                </a>
+                <a class="btn-export btn-export-pdf"
+                   th:href="@{/clases-agendadas/exportar-pdf(curso=${filtroCurso},profesor=${filtroProfesor},materia=${filtroMateria})}">
+                    <img th:src="@{/img/descargas.png}" alt="">
+                    PDF
+                </a>
+            </div>
+        </div>
+
+        <div class="filtros-card">
+            <form method="get" th:action="@{/clases-agendadas}" class="filtros-clases">
+                <div class="filtro-campo">
+                    <label for="filtroCursoSelect">Curso</label>
+                    <select id="filtroCursoSelect" name="curso">
+                        <option value="">Todos los cursos</option>
+                        <option th:each="c : ${cursos}" th:value="${c.valor}" th:text="${c.etiqueta}"
+                                th:selected="${c.valor == filtroCurso}"></option>
+                    </select>
+                </div>
+
+                <div class="filtro-campo">
+                    <label for="filtroProfesorSelect">Profesor</label>
+                    <select id="filtroProfesorSelect" name="profesor">
+                        <option value="">Todos los profesores</option>
+                        <option th:each="p : ${profesores}" th:value="${p}" th:text="${p}"
+                                th:selected="${p == filtroProfesor}"></option>
+                    </select>
+                </div>
+
+                <div class="filtro-campo">
+                    <label for="filtroMateriaSelect">Materia</label>
+                    <select id="filtroMateriaSelect" name="materia">
+                        <option value="">Todas las materias</option>
+                        <option th:each="m : ${materias}" th:value="${m}" th:text="${m}"
+                                th:selected="${m == filtroMateria}"></option>
+                    </select>
+                </div>
+
+                <div class="filtro-acciones">
+                    <button type="submit" class="btn-filtrar-clases">Filtrar</button>
+                    <a th:href="@{/clases-agendadas}" class="btn-limpiar-clases">Limpiar</a>
+                </div>
+            </form>
+        </div>
+
+        <p class="clases-resumen"
+           th:text="${clases.size()} + (${clases.size() == 1} ? ' clase encontrada' : ' clases encontradas')"></p>
+
+        <div class="tablaprog">
+            <table class="programacion-tabla">
+                <thead>
+                    <tr>
+                        <th>Materia</th>
+                        <th>Profesor</th>
+                        <th>Fecha</th>
+                        <th>Hora</th>
+                        <th>Duración</th>
+                        <th>Curso</th>
+                        <th>Modalidad</th>
+                        <th>Tema principal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="clase : ${clases}">
+                        <td th:text="${clase.materia}"></td>
+                        <td th:text="${clase.profesor}"></td>
+                        <td th:text="${clase.fecha != null ? clase.fecha : ''}"></td>
+                        <td th:text="${clase.horaInicio != null ? clase.horaInicio : ''}"></td>
+                        <td th:text="${clase.duracion != null ? clase.duracion + ' min' : ''}"></td>
+                        <td th:text="${(clase.grado != null ? clase.grado + '°' : '')} + ${(clase.grupo != null and !clase.grupo.isBlank()) ? ' ' + clase.grupo.trim().toUpperCase() : ''}"></td>
+                        <td th:text="${clase.modalidad}"></td>
+                        <td th:text="${clase.temaPrincipal}"></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p class="agenda-py-vacio" th:if="${clases == null or clases.isEmpty()}">
+                No hay clases agendadas que coincidan con el filtro seleccionado.
+            </p>
+        </div>
+
+    </main>
+
+    <script th:src="@{/js/chatbot.js}"></script>
+</body>
+
+</html>
