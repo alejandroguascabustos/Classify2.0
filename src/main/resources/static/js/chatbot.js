@@ -4,6 +4,9 @@ class ClassifyChat {
         this.chatOpen = false;
         this.conversationStarted = false;
         this.currentStep = 'welcome';
+        // Historial que se envía al asistente inteligente (pares rol/texto)
+        this.historial = [];
+        this.esperandoRespuesta = false;
         this.init();
     }
 
@@ -146,7 +149,7 @@ class ClassifyChat {
     }
 
     showMainMenu() {
-        this.addBotMessage('¿En qué puedo ayudarte hoy? Selecciona una opción:');
+        this.addBotMessage('¿En qué puedo ayudarte hoy? Escríbeme tu pregunta (por ejemplo, "¿qué clases tiene 5°B mañana?") o selecciona una opción:');
 
         const options = [
             { text: '📚 ¿Cómo crear una clase?', action: 'crear_clase' },
@@ -341,24 +344,65 @@ class ClassifyChat {
         }, 1000);
     }
 
+    // Convierte texto plano (posiblemente del modelo) en HTML seguro:
+    // escapa etiquetas y conserva los saltos de línea.
+    escapeHtml(texto) {
+        const div = document.createElement('div');
+        div.textContent = texto;
+        return div.innerHTML.replace(/\n/g, '<br>');
+    }
+
     sendMessage() {
         const chatInput = document.getElementById('chatInput');
         const message = chatInput.value.trim();
 
-        if (message === '') return;
+        if (message === '' || this.esperandoRespuesta) return;
 
-        this.addUserMessage(message);
+        this.addUserMessage(this.escapeHtml(message));
         chatInput.value = '';
+        this.askAssistant(message);
+    }
 
-        setTimeout(() => {
-            this.showTypingIndicator();
+    async askAssistant(message) {
+        this.esperandoRespuesta = true;
+        this.showTypingIndicator();
 
-            setTimeout(() => {
-                this.removeTypingIndicator();
-                this.addBotMessage('Gracias por tu mensaje. Para brindarte una mejor ayuda, por favor selecciona una opción del menú:');
+        try {
+            // El filtro CSRF de la app parchea fetch() y añade X-CSRF-TOKEN solo.
+            const response = await fetch(`${this.getBaseUrl()}api/chatbot`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    mensaje: message,
+                    historial: this.historial
+                })
+            });
+
+            const data = await response.json().catch(() => ({}));
+            this.removeTypingIndicator();
+
+            if (response.ok && data.success && data.respuesta) {
+                this.addBotMessage(this.escapeHtml(data.respuesta));
+                this.historial.push({ rol: 'usuario', texto: message });
+                this.historial.push({ rol: 'asistente', texto: data.respuesta });
+                // Solo se conservan los últimos turnos: el servidor también recorta
+                if (this.historial.length > 12) {
+                    this.historial = this.historial.slice(-12);
+                }
+            } else if (response.status === 503) {
+                // Asistente sin configurar: se degrada al menú estático de siempre
+                this.addBotMessage('Por ahora no puedo responder preguntas libres, pero puedo ayudarte con estas opciones:');
                 this.showMainMenu();
-            }, 1500);
-        }, 500);
+            } else {
+                this.addBotMessage(this.escapeHtml(
+                    (data && data.message) || 'No pude procesar tu mensaje. Inténtalo de nuevo en un momento.'));
+            }
+        } catch (error) {
+            this.removeTypingIndicator();
+            this.addBotMessage('No pude conectarme con el asistente. Revisa tu conexión e inténtalo de nuevo.');
+        } finally {
+            this.esperandoRespuesta = false;
+        }
     }
 
     showTypingIndicator() {

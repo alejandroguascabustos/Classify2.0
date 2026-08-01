@@ -15,4 +15,7 @@ public interface AgendaRepository extends JpaRepository<Agenda, Long> {
 
     /** Todas las agendas de un profesor en una fecha (para detectar conflictos de profesor) */
     List<Agenda> findByFechaAndProfesor(LocalDate fecha, String profesor);
+
+    /** Agendas dentro de un rango de fechas, en orden cronológico (contexto del chatbot) */
+    List<Agenda> findByFechaBetweenOrderByFechaAscHoraInicioAsc(LocalDate desde, LocalDate hasta);
 }

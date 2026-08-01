@@ -194,6 +194,11 @@ public class AgendaService {
         return listarDistintos(Agenda::getMateria);
     }
 
+    /** Clases dentro de un rango de fechas, en orden cronológico. */
+    public List<Agenda> clasesEntre(java.time.LocalDate desde, java.time.LocalDate hasta) {
+        return agendaRepository.findByFechaBetweenOrderByFechaAscHoraInicioAsc(desde, hasta);
+    }
+
     /** Etiqueta de curso de una agenda (ej. "3° A"), o cadena vacía si no tiene grado. */
     public static String etiquetaCursoDe(Agenda a) {
         if (a.getGrado() == null) return "";
