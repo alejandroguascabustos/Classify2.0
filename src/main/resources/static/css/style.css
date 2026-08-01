@@ -5494,97 +5494,8 @@ a.botoninicio {
 
     a.botoninicio { font-size: 30px !important; }
     div.auth { display: flex; }
-    a.info-btnini { margin-left: 150%; }
 
     .contentindex { min-height: auto; padding: 30px 15px; margin-bottom: 0; flex-direction: column; }
-    .contentindex form { width: 0%; padding: 0px; }
-    .contentindex input { width: 300px; display: flex; justify-content: center; }
-    .login-form button { width: 322px; }
-    div .textoregistro { width: 322px; }
-
-    main.contentprincipal { 
-        display: none; 
-    }
-
-    .hero-container {
-        grid-template-columns: 1fr;
-        gap: 40px;
-    }
-
-    .hero-title {
-        font-size: 36px;
-    }
-
-    .hero-description {
-        font-size: 18px;
-    }
-
-    .carousel-wrapper {
-        height: 350px;
-    }
-
-    .ecosistema-title {
-        font-size: 32px;
-    }
-
-    .ecosistema-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .cta-container {
-        grid-template-columns: 1fr;
-        gap: 40px;
-    }
-
-    .cta-title {
-        font-size: 32px;
-    }
-
-    .cta-image {
-        max-width: 400px;
-    }
-
-    a.botoninicio {
-        font-size: 30px !important;
-    }
-
-    div.auth {
-        display: flex;
-    }
-
-    a.info-btnini {
-        margin-left: 150%;
-    }
-
-    .contentindex {
-        min-height: auto;
-        padding: 30px 15px;
-        margin-bottom: 0;
-        flex-direction: column;
-    }
-
-    .contentindex form {
-        width: 0%;
-        padding: 0px;
-    }
-
-    .contentindex input {
-        width: 300px;
-        display: flex;
-        justify-content: center;
-    }
-
-    .login-form button {
-        width: 322px;
-    }
-
-    div .textoregistro {
-        width: 322px;
-    }
-
-    main.contentprincipal {
-        display: none;
-    }
 
     .sidebar a {
         font-size: 0;
@@ -5636,18 +5547,6 @@ a.botoninicio {
         align-items: center;
         height: calc(100vh - 60px);
         margin-top: 60px;
-        margin-left: -56%;
-    }
-
-    main.programacion-main {
-        margin-left: -20%;
-    }
-
-    table td:nth-child(3),
-    table th:nth-child(5),
-    table td:nth-child(7),
-    table th:nth-child(7) {
-        display: none;
     }
 
     .contentaprende {
@@ -5660,16 +5559,10 @@ a.botoninicio {
         align-items: center;
         height: calc(100vh - 60px);
         margin-top: 60px;
-        margin-left: -56%;
     }
 
     main.contentcontacta {
         background-image: none;
-    }
-
-    div.card {
-        width: 50%;
-        margin-left: 21%;
     }
 }
 
@@ -10753,4 +10646,112 @@ body.gestion-permisos-page .gp-btn-outline:hover { background: #e7f2e3; }
 @media (max-width: 720px) {
     body.gestion-permisos-page .gp-card { padding: 18px 14px; }
     body.gestion-permisos-page .gp-selector select { min-width: 100%; }
+}
+
+/* ============================================================
+   AJUSTES RESPONSIVE POR MÓDULO
+   Overrides que solo aplican en pantallas pequeñas: el diseño
+   de escritorio no cambia. Mantener agrupado por módulo.
+   ============================================================ */
+
+/* ── Salvaguardas generales en pantallas pequeñas ── */
+@media (max-width: 920px) {
+    /* Los decorados absolutos (ambient-glow) no deben crear scroll lateral */
+    html,
+    body {
+        overflow-x: hidden;
+    }
+
+    /* Ninguna imagen desborda la pantalla */
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+}
+
+/* ── Inicio (landing pública) ── */
+@media (max-width: 920px) {
+    .contenidoinicio {
+        gap: 20px;
+    }
+
+    .registro {
+        width: auto;
+        flex: 1;
+        min-width: 0;
+        padding: 0 20px;
+    }
+
+    .titulo {
+        font-size: 36px;
+        padding-top: 30px;
+        margin-top: 20px;
+    }
+
+    .tituloiniciocontenido input[type="email"] {
+        margin-top: 30px;
+    }
+}
+
+@media (max-width: 600px) {
+    /* Las hojas del fondo se atenúan para que el texto del hero sea legible */
+    .contenidoinicio::before,
+    body.inicioimg:has(.contentinicio) .contentinicio .contenidoinicio::before {
+        opacity: 0.3;
+    }
+}
+
+/* ── Auth: login, registro, recuperar/restablecer contraseña ── */
+@media (max-width: 560px) {
+    .login-wrapper {
+        padding: 0 14px;
+        box-sizing: border-box;
+        width: 100%;
+    }
+
+    .login-container {
+        width: 100%;
+        max-width: 385px;
+        padding: 20px 16px;
+        box-sizing: border-box;
+    }
+
+    form .login-form,
+    .login-form {
+        width: 100%;
+    }
+
+    .labellogin,
+    .login-form button {
+        width: 100%;
+    }
+
+    .login-form input,
+    .login-form textarea {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .registro-form-container,
+    .recupera-container {
+        width: 100%;
+        max-width: 500px;
+        padding: 20px 16px;
+        box-sizing: border-box;
+    }
+
+    .labelregistro {
+        width: 100%;
+    }
+
+    .form-registro input,
+    .form-registro textarea {
+        width: 100%;
+        margin: 2px 0;
+        box-sizing: border-box;
+    }
+
+    .contentregistro {
+        background-size: cover;
+    }
 }
