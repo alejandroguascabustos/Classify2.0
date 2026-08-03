@@ -1,8 +1,48 @@
-/*
- * Estilos de la vista de clases agendadas y su dashboard (CLS-122).
- * Archivo aparte de style.css a propósito: es nuevo, así que no arrastra
- * la caché vieja del sub_filter de nginx.
- */
+@import url('https://fonts.googleapis.com/css2?family=ABeeZee:ital@0;1&family=Lalezar&display=swap');
+
+:root {
+    --green: #008000;
+    --green-dark: #013501;
+    --green-light2: #35b50b;
+    --green-light: #aec9a5;
+    --green-accent: #22CC22;
+    --orangered: #F38F02;
+    --amarillodorado: #F5B027;
+    --rojointenso: #f80000;
+    --rojosuave: #f8c3c3;
+    --gris: #64748b;
+    --gris-light: #94a3b8;
+    --border: #e5e7eb;
+    --border-strong: #9D9D9C;
+    --blanco: #ffffff;
+    --negro: #000000;
+    --ink: #111827;
+    --max: 1200px;
+    --transition-smooth: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+    --border-radius: 8px;
+    --font-family: 'Nunito Sans', sans-serif;
+
+    --aprende-radius: 8px;
+    --aprende-border: rgba(157, 157, 156, 0.45);
+    --aprende-soft-bg: rgba(174, 201, 165, 0.14);
+    --aprende-shadow: 0 10px 28px rgba(17, 24, 39, 0.06);
+
+    --chat-bubble-bottom: 30px;
+    --chat-bubble-right: 30px;
+    --chat-bubble-size: 90px;
+    --chat-bubble-border: 4px;
+    --chat-bubble-image-size: 105px;
+    --chat-bubble-image-offset-y: -5px;
+    --chat-panel-bottom: 120px;
+    --chat-panel-right: 30px;
+    --chat-panel-width: 380px;
+    --chat-panel-max-height: 580px;
+    --chat-layer-bubble: 1000;
+    --chat-layer-panel: 999;
+
+    --mat-border: #d7e0d6;
+}
+
 
 /* ── Barra superior: título + acciones ── */
 .clases-toolbar {
@@ -51,26 +91,28 @@
 }
 
 .btn-export-excel {
-    background: linear-gradient(135deg, var(--green, #008000), var(--green-dark, #013501));
+    background: var(--green);
+    border-radius: 7px;
 }
 
 .btn-export-pdf {
-    background: linear-gradient(135deg, var(--orangered, #F38F02), #c9291b);
+    background: var(--green);
+    border-radius: 7px;
 }
 
 .btn-export-neutro {
-    background: linear-gradient(135deg, #46648F, #2d4368);
+    background: var(--green-dark);
+    border-radius: 7px;
 }
 
 /* ── Tarjeta de filtros ── */
 .filtros-card {
     background: var(--blanco, #fff);
     border: 1px solid var(--border, #e5e7eb);
-    border-top: 4px solid var(--green, #008000);
     border-radius: 12px;
     padding: 18px 20px;
     margin-bottom: 16px;
-    box-shadow: 0 8px 24px rgba(17, 24, 39, 0.07);
+    box-shadow: 0 15px 24px rgba(17, 24, 89, 0.07);
 }
 
 .filtros-clases {
@@ -164,7 +206,7 @@
 }
 
 .clases-resumen {
-    margin: 12px 0 6px;
+    margin: 12px 4px 6px;
     color: var(--gris, #64748b);
     font-size: 14px;
 }

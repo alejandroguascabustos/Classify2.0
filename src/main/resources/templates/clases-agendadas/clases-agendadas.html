@@ -58,16 +58,17 @@
             <div class="clases-export">
                 <a class="btn-export btn-export-neutro"
                    th:href="@{/clases-agendadas/dashboard(curso=${filtroCurso},profesor=${filtroProfesor},materia=${filtroMateria})}">
+                    <img th:src="@{/img/dash.png}" alt="">
                     Dashboard
                 </a>
                 <a class="btn-export btn-export-excel"
                    th:href="@{/clases-agendadas/exportar-excel(curso=${filtroCurso},profesor=${filtroProfesor},materia=${filtroMateria})}">
-                    <img th:src="@{/img/descargas.png}" alt="">
+                    <img th:src="@{/img/xls.png}" alt="">
                     Excel (.xlsx)
                 </a>
                 <a class="btn-export btn-export-pdf"
                    th:href="@{/clases-agendadas/exportar-pdf(curso=${filtroCurso},profesor=${filtroProfesor},materia=${filtroMateria})}">
-                    <img th:src="@{/img/descargas.png}" alt="">
+                    <img th:src="@{/img/pdf.png}" alt="">
                     PDF
                 </a>
             </div>

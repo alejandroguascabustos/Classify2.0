@@ -4538,7 +4538,7 @@ textarea:focus {
     overflow-x: auto;
     scroll-behavior: smooth;
     scroll-snap-type: x mandatory;
-    margin-top: 0;
+    margin-top: 34px;
     padding: 4px 4px 12px;
     flex: 1;
     min-width: 0;
@@ -10207,8 +10207,7 @@ body.programacion-page .modal-prog-msg.error {
    ═══════════════════════════════════════════════════════════════ */
 body.gestion-registros-page .gr-intro {
     color: #555;
-    max-width: 70ch;
-    margin: 0 0 22px;
+    margin: 0px 4px 22px;
     font-family: "Segoe UI", Tahoma, sans-serif;
 }
 
