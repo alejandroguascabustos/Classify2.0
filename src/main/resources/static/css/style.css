@@ -990,7 +990,7 @@ img.f4-icon{
 .f4-divider {
     width: 60px;
     height: 3px;
-    background: linear-gradient(90deg, var(--green), var(--orangered));
+    background: var(--green);
     border-radius: 2px;
     margin: 0 auto 20px;
 }
@@ -4157,7 +4157,7 @@ textarea:focus {
 }
 
 .info-paginacion {
-    margin-top: 10px;
+    margin-top: 25px;
     color: #666;
     font-size: 14px;
 }
