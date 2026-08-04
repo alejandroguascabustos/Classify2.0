@@ -17,9 +17,11 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * API del asistente conversacional (chatbot.js). Requiere sesión iniciada:
- * la ruta /api/chatbot está en los patrones de AuthInterceptor, y el POST
- * pasa por CsrfProtectionFilter como cualquier otra escritura.
+ * API del asistente conversacional (chatbot.js). Atiende también a visitantes
+ * sin sesión (el chatbot vive en login, inicio y demás páginas públicas), pero
+ * en ese caso el servicio no inyecta la agenda al contexto. El POST pasa por
+ * CsrfProtectionFilter como cualquier otra escritura, y el límite de consultas
+ * por sesión aplica igual para anónimos.
  */
 @RestController
 @RequestMapping("/api/chatbot")
@@ -64,8 +66,9 @@ public class ChatbotController {
 
         String nombre = atributo(session, "nombre");
         String rol = atributo(session, "rol");
+        boolean autenticado = session.getAttribute("usuarioId") != null;
         try {
-            String respuesta = chatbotService.responder(mensaje, peticion.historial(), nombre, rol);
+            String respuesta = chatbotService.responder(mensaje, peticion.historial(), nombre, rol, autenticado);
             return ResponseEntity.ok(Map.of("success", true, "respuesta", respuesta));
         } catch (ChatbotException e) {
             return ResponseEntity.status(502).body(Map.of("success", false, "message", e.getMessage()));

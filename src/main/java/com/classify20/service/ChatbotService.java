@@ -43,6 +43,19 @@ public class ChatbotService {
 
     private static final DateTimeFormatter FECHA_CORTA = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
+    /**
+     * Cierre del prompt de sistema. Va al final porque el modelo pondera más lo
+     * último que lee: sin esto tendía a colgar [SOPORTE] tras respuestas ya resueltas.
+     */
+    private static final String CONTROL_FINAL = """
+
+
+            CONTROL FINAL antes de responder: si tu respuesta ya resolvió la duda o solo \
+            saluda, despide o invita a iniciar sesión, NO añadas [SOPORTE]. Añádela \
+            únicamente si el usuario necesita a una persona (fallo de la plataforma, \
+            problema de cuenta ya intentado, queja formal, cambio de datos, o algo que \
+            este contexto no cubre).""";
+
     private final AgendaService agendaService;
     private final JsonMapper mapper = JsonMapper.builder().build();
     private final HttpClient http = HttpClient.newBuilder()
@@ -73,7 +86,7 @@ public class ChatbotService {
      * @throws ChatbotException si Groq no está configurado o la llamada falla.
      */
     public String responder(String mensaje, List<TurnoChat> historial,
-                            String nombreUsuario, String rolUsuario) {
+                            String nombreUsuario, String rolUsuario, boolean autenticado) {
         if (!estaConfigurado()) {
             throw new ChatbotException("El asistente inteligente no está configurado en este servidor.");
         }
@@ -86,7 +99,7 @@ public class ChatbotService {
         ArrayNode mensajes = cuerpo.putArray("messages");
         mensajes.addObject()
                 .put("role", "system")
-                .put("content", promptSistema(nombreUsuario, rolUsuario));
+                .put("content", promptSistema(nombreUsuario, rolUsuario, autenticado));
 
         if (historial != null) {
             int desde = Math.max(0, historial.size() - MAX_HISTORIAL);
@@ -132,7 +145,7 @@ public class ChatbotService {
 
     // ── Contexto ─────────────────────────────────────────────────────────
 
-    private String promptSistema(String nombreUsuario, String rolUsuario) {
+    private String promptSistema(String nombreUsuario, String rolUsuario, boolean autenticado) {
         LocalDate hoy = LocalDate.now();
         StringBuilder sb = new StringBuilder();
 
@@ -160,6 +173,10 @@ public class ChatbotService {
                 "¿qué clases hay mañana?" → respondes con la agenda, SIN marca. \
                 "no me llega el correo de activación y ya intenté todo" → frase breve + [SOPORTE]. \
                 "la página me da error al guardar" → frase breve + [SOPORTE].
+                - Saludos, agradecimientos, preguntas que la guía o la agenda responden, e \
+                invitaciones a iniciar sesión o registrarse NUNCA llevan la marca.
+                - Cerrar con una frase de cortesía ("¿necesitas algo más?") NO es motivo \
+                para añadir la marca.
                 - Nunca menciones ni expliques la marca: es una señal interna.
 
                 """);
@@ -173,6 +190,18 @@ public class ChatbotService {
             if (rolUsuario != null && !rolUsuario.isBlank()) {
                 sb.append(" (rol: ").append(rolUsuario).append(")");
             }
+        }
+
+        // La agenda (con nombres de profesores) solo se comparte con sesión
+        // iniciada; al visitante anónimo se le invita a entrar a la plataforma.
+        if (!autenticado) {
+            sb.append("""
+
+
+                    El usuario actual NO ha iniciado sesión. No tienes acceso a la agenda de clases: \
+                    si pregunta por horarios, clases o profesores, dile amablemente que inicie sesión \
+                    en Classify para consultar la agenda, y ofrécele ayuda con el registro o el acceso.""");
+            return sb.append(CONTROL_FINAL).toString();
         }
 
         sb.append("\n\nAGENDA DE CLASES desde hoy hasta dentro de ").append(DIAS_AGENDA)
@@ -198,7 +227,7 @@ public class ChatbotService {
                 mostradas++;
             }
         }
-        return sb.toString();
+        return sb.append(CONTROL_FINAL).toString();
     }
 
     /**

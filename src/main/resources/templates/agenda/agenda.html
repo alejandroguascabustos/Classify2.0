@@ -6,6 +6,7 @@
     <title>Classify - Agendar clase</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <link rel="shortcut icon" th:href="@{/img/favicon.ico}" type="image/x-icon">
+    <link rel="stylesheet" th:href="@{/css/cargue-masivo.css}">
 </head>
 
 <body>
@@ -50,6 +51,24 @@
         <div class="agenda-form-container">
             <h2>Agenda tu Clase</h2>
             <p class="subtitulo">Completa todos los datos para programar una clase</p>
+
+            <!-- Cargue masivo (CLS-133) -->
+            <div class="cargue-masivo-card">
+                <h3>Cargue masivo de clases</h3>
+                <p class="cargue-nota">Descarga la plantilla, diligénciala en Excel y súbela para agendar
+                    varias clases de una sola vez. Las filas con conflicto de horario se reportan sin
+                    afectar las demás.</p>
+                <div class="cargue-masivo-botones">
+                    <a class="btn-cargue btn-cargue-plantilla" th:href="@{/agenda/cargue-masivo/plantilla}">
+                        ⬇️ Descargar plantilla (.xlsx)
+                    </a>
+                    <button type="button" class="btn-cargue btn-cargue-subir" id="btnCargueMasivo">
+                        ⬆️ Cargar archivo diligenciado
+                    </button>
+                    <input type="file" id="archivoCargueMasivo" accept=".xlsx" style="display:none;">
+                </div>
+                <div id="cargueResultado" class="cargue-resultado" role="status" aria-live="polite"></div>
+            </div>
 
             <div th:if="${mensaje}" class="alert-success">
                 <p th:text="${mensaje}"></p>
@@ -282,6 +301,7 @@
     </main>
 
     <script th:src="@{/js/modalagenda.js}"></script>
+    <script th:src="@{/js/cargue-masivo.js}"></script>
     <script th:src="@{/js/chatbot.js}"></script>
     <!-- Validaciones de horario + relación profesor↔materia -->
     <script th:src="@{/js/agenda.js}"></script>
