@@ -111,7 +111,8 @@
         </div>
 
         <p class="clases-resumen"
-           th:text="${clases.size()} + (${clases.size() == 1} ? ' clase encontrada' : ' clases encontradas')"></p>
+           th:text="${totalClases} + (${totalClases == 1} ? ' clase encontrada' : ' clases encontradas')
+                    + (${totalPaginas > 1} ? ' · mostrando ' + ${desde} + '–' + ${hasta} : '')"></p>
 
         <div class="tablaprog">
             <table class="programacion-tabla">
@@ -145,6 +146,20 @@
                 No hay clases agendadas que coincidan con el filtro seleccionado.
             </p>
         </div>
+
+        <nav class="paginacion" th:if="${totalPaginas > 1}" aria-label="Paginación de clases">
+            <a class="pag-btn" th:if="${paginaActual > 1}"
+               th:href="@{/clases-agendadas(curso=${filtroCurso},profesor=${filtroProfesor},materia=${filtroMateria},pagina=${paginaActual - 1})}">&laquo; Anterior</a>
+            <span class="pag-btn pag-deshabilitado" th:unless="${paginaActual > 1}">&laquo; Anterior</span>
+
+            <a th:each="p : ${paginas}" class="pag-num"
+               th:classappend="${p == paginaActual} ? 'pag-actual'" th:text="${p}"
+               th:href="@{/clases-agendadas(curso=${filtroCurso},profesor=${filtroProfesor},materia=${filtroMateria},pagina=${p})}"></a>
+
+            <a class="pag-btn" th:if="${paginaActual < totalPaginas}"
+               th:href="@{/clases-agendadas(curso=${filtroCurso},profesor=${filtroProfesor},materia=${filtroMateria},pagina=${paginaActual + 1})}">Siguiente &raquo;</a>
+            <span class="pag-btn pag-deshabilitado" th:unless="${paginaActual < totalPaginas}">Siguiente &raquo;</span>
+        </nav>
 
     </main>
 

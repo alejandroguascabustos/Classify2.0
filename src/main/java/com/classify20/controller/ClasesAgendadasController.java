@@ -58,6 +58,9 @@ public class ClasesAgendadasController {
 
     private static final DateTimeFormatter FORMATO_GENERACION = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
+    /** Tamaño de página de la tabla (CLS-132); los exports y el dashboard siguen usando el resultado completo. */
+    private static final int CLASES_POR_PAGINA = 10;
+
     private final AgendaService agendaService;
     private final SpringTemplateEngine templateEngine;
 
@@ -69,8 +72,23 @@ public class ClasesAgendadasController {
     public String vista(@RequestParam(required = false) String curso,
                         @RequestParam(required = false) String profesor,
                         @RequestParam(required = false) String materia,
+                        @RequestParam(defaultValue = "1") int pagina,
                         Model model) {
-        model.addAttribute("clases", agendaService.filtrarClases(curso, profesor, materia));
+        List<Agenda> filtradas = agendaService.filtrarClases(curso, profesor, materia);
+
+        int totalPaginas = Math.max(1, (int) Math.ceil(filtradas.size() / (double) CLASES_POR_PAGINA));
+        if (pagina < 1) pagina = 1;
+        if (pagina > totalPaginas) pagina = totalPaginas;
+        int desde = (pagina - 1) * CLASES_POR_PAGINA;
+        int hasta = Math.min(desde + CLASES_POR_PAGINA, filtradas.size());
+
+        model.addAttribute("clases", filtradas.subList(desde, hasta));
+        model.addAttribute("totalClases", filtradas.size());
+        model.addAttribute("paginaActual", pagina);
+        model.addAttribute("totalPaginas", totalPaginas);
+        model.addAttribute("desde", filtradas.isEmpty() ? 0 : desde + 1);
+        model.addAttribute("hasta", hasta);
+        model.addAttribute("paginas", numerosDePagina(pagina, totalPaginas));
         model.addAttribute("cursos", agendaService.listarCursos());
         model.addAttribute("profesores", agendaService.listarProfesores());
         model.addAttribute("materias", agendaService.listarMaterias());
@@ -129,6 +147,18 @@ public class ClasesAgendadasController {
                 .filter(c -> !c.isEmpty())
                 .distinct().count());
         return "clases-agendadas/dashboard";
+    }
+
+    /** Ventana de hasta 5 números de página centrada en la actual (1 … total). */
+    private static List<Integer> numerosDePagina(int actual, int total) {
+        int desde = Math.max(1, actual - 2);
+        int hasta = Math.min(total, desde + 4);
+        desde = Math.max(1, hasta - 4);
+        List<Integer> numeros = new java.util.ArrayList<>();
+        for (int i = desde; i <= hasta; i++) {
+            numeros.add(i);
+        }
+        return numeros;
     }
 
     private static long contarDistintos(List<Agenda> clases, java.util.function.Function<Agenda, String> campo) {

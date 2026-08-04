@@ -279,6 +279,51 @@
     color: var(--gris, #64748b);
 }
 
+/* ── Paginación de la tabla (CLS-132) ── */
+.paginacion {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 18px 0 8px;
+}
+
+.paginacion .pag-btn,
+.paginacion .pag-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 34px;
+    padding: 7px 12px;
+    border: 1px solid var(--border, #e5e7eb);
+    border-radius: var(--border-radius, 8px);
+    background: var(--blanco, #fff);
+    color: var(--ink, #111827);
+    font-size: 14px;
+    text-decoration: none;
+    transition: background 0.15s, border-color 0.15s;
+}
+
+.paginacion a.pag-btn:hover,
+.paginacion a.pag-num:hover {
+    background: var(--aprende-soft-bg, rgba(174, 201, 165, 0.14));
+    border-color: var(--green, #008000);
+}
+
+.paginacion .pag-actual {
+    background: var(--green-dark, #013501);
+    border-color: var(--green-dark, #013501);
+    color: var(--blanco, #fff);
+    font-weight: 700;
+    pointer-events: none;
+}
+
+.paginacion .pag-deshabilitado {
+    color: var(--gris, #64748b);
+    opacity: 0.5;
+}
+
 @media (max-width: 900px) {
     .graficos-grid {
         grid-template-columns: 1fr;
