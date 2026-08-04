@@ -53,7 +53,7 @@ public class AuthService {
 
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (!resultSet.next()) {
-                    return new LoginResultado(false, "El usuario no existe en la base de datos.", null);
+                    return new LoginResultado(false, "Usuario no registrado.", null);
                 }
 
                 String passwordHash = resultSet.getString("pass_hash");
