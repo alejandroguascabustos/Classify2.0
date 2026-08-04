@@ -10,10 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 @Controller
 @RequiredArgsConstructor
@@ -62,132 +58,10 @@ public class AgendaController {
         }
     }
 
+    /** Listado que consume agenda.js para validar conflictos en el navegador. */
     @GetMapping("/api/agendas")
     @ResponseBody
     public ResponseEntity<List<Agenda>> listarAgendasJson() {
         return ResponseEntity.ok(agendaService.listarAgendas());
-    }
-
-    @GetMapping("/api/agendas/{id}")
-    @ResponseBody
-    public ResponseEntity<Object> obtenerAgenda(@PathVariable Long id) {
-        return agendaService.buscarPorId(id)
-                .<ResponseEntity<Object>>map(ResponseEntity::ok)
-                .orElseGet(() -> {
-                    Map<String, Object> err = new HashMap<>();
-                    err.put("success", false);
-                    err.put("message", "Agenda no encontrada con ID: " + id);
-                    return ResponseEntity.status(404).body(err);
-                });
-    }
-
-    @PutMapping("/api/agendas/{id}")
-    @ResponseBody
-    public ResponseEntity<Object> actualizarAgenda(
-            @PathVariable Long id,
-            @RequestBody Agenda agendaActualizada) {
-        try {
-            Agenda actualizada = agendaService.actualizarAgenda(id, agendaActualizada);
-            if (actualizada == null) {
-                Map<String, Object> err = new HashMap<>();
-                err.put("success", false);
-                err.put("message", "Agenda no encontrada con ID: " + id);
-                return ResponseEntity.status(404).body(err);
-            }
-            Map<String, Object> resp = new HashMap<>();
-            resp.put("success", true);
-            resp.put("data", actualizada);
-            return ResponseEntity.ok(resp);
-        } catch (IllegalStateException e) {
-            Map<String, Object> err = new HashMap<>();
-            err.put("success", false);
-            err.put("conflicto", true);
-            err.put("message", e.getMessage());
-            return ResponseEntity.status(409).body(err);
-        } catch (Exception e) {
-            Map<String, Object> err = new HashMap<>();
-            err.put("success", false);
-            err.put("message", "Error: " + e.getMessage());
-            return ResponseEntity.status(500).body(err);
-        }
-    }
-
-    @DeleteMapping("/api/agendas/{id}")
-    @ResponseBody
-    public ResponseEntity<Object> eliminarAgenda(@PathVariable Long id) {
-        try {
-            boolean ok = agendaService.eliminarAgenda(id);
-            if (!ok) {
-                Map<String, Object> err = new HashMap<>();
-                err.put("success", false);
-                err.put("message", "No encontrada: " + id);
-                return ResponseEntity.status(404).body(err);
-            }
-            Map<String, Object> resp = new HashMap<>();
-            resp.put("success", true);
-            return ResponseEntity.ok(resp);
-        } catch (Exception e) {
-            Map<String, Object> err = new HashMap<>();
-            err.put("success", false);
-            err.put("message", "Error: " + e.getMessage());
-            return ResponseEntity.status(500).body(err);
-        }
-    }
-
-    @GetMapping("/programacion/exportarExcel")
-    public void exportarExcel(HttpServletResponse response) throws IOException {
-        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-        response.setHeader("Content-Disposition", "attachment; filename=programacion.xlsx");
-        List<Agenda> agendas = agendaService.listarAgendas();
-        try (Workbook workbook = new XSSFWorkbook()) {
-            Sheet sheet = workbook.createSheet("Programación");
-
-            // Estilos
-            CellStyle headerStyle = workbook.createCellStyle();
-            headerStyle.setFillForegroundColor(IndexedColors.DARK_GREEN.getIndex());
-            headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-            Font headerFont = workbook.createFont();
-            headerFont.setColor(IndexedColors.WHITE.getIndex());
-            headerFont.setBold(true);
-            headerStyle.setFont(headerFont);
-            headerStyle.setAlignment(HorizontalAlignment.CENTER);
-            headerStyle.setBorderBottom(BorderStyle.THIN);
-            headerStyle.setBorderTop(BorderStyle.THIN);
-            headerStyle.setBorderLeft(BorderStyle.THIN);
-            headerStyle.setBorderRight(BorderStyle.THIN);
-
-            CellStyle dataStyle = workbook.createCellStyle();
-            dataStyle.setBorderBottom(BorderStyle.THIN);
-            dataStyle.setBorderTop(BorderStyle.THIN);
-            dataStyle.setBorderLeft(BorderStyle.THIN);
-            dataStyle.setBorderRight(BorderStyle.THIN);
-
-            Row headerRow = sheet.createRow(0);
-            String[] headers = {"ID", "Materia", "Profesor", "Fecha", "Hora Inicio", "Curso", "Modalidad", "Tema", "Duracion"};
-            for (int i = 0; i < headers.length; i++) {
-                Cell cell = headerRow.createCell(i);
-                cell.setCellValue(headers[i]);
-                cell.setCellStyle(headerStyle);
-            }
-
-            int rowIdx = 1;
-            for (Agenda a : agendas) {
-                Row row = sheet.createRow(rowIdx++);
-                Cell c0 = row.createCell(0); c0.setCellValue(a.getId() != null ? a.getId() : 0); c0.setCellStyle(dataStyle);
-                Cell c1 = row.createCell(1); c1.setCellValue(a.getMateria() != null ? a.getMateria() : ""); c1.setCellStyle(dataStyle);
-                Cell c2 = row.createCell(2); c2.setCellValue(a.getProfesor() != null ? a.getProfesor() : ""); c2.setCellStyle(dataStyle);
-                Cell c3 = row.createCell(3); c3.setCellValue(a.getFecha() != null ? a.getFecha().toString() : ""); c3.setCellStyle(dataStyle);
-                Cell c4 = row.createCell(4); c4.setCellValue(a.getHoraInicio() != null ? a.getHoraInicio().toString() : ""); c4.setCellStyle(dataStyle);
-                String curso = (a.getGrado() != null ? a.getGrado() : "") + " " + (a.getGrupo() != null ? a.getGrupo() : "");
-                Cell c5 = row.createCell(5); c5.setCellValue(curso.trim()); c5.setCellStyle(dataStyle);
-                Cell c6 = row.createCell(6); c6.setCellValue(a.getModalidad() != null ? a.getModalidad() : ""); c6.setCellStyle(dataStyle);
-                Cell c7 = row.createCell(7); c7.setCellValue(a.getTemaPrincipal() != null ? a.getTemaPrincipal() : ""); c7.setCellStyle(dataStyle);
-                Cell c8 = row.createCell(8); c8.setCellValue(a.getDuracion() != null ? a.getDuracion().toString() + " min" : ""); c8.setCellStyle(dataStyle);
-            }
-            for (int i = 0; i < headers.length; i++) {
-                sheet.autoSizeColumn(i);
-            }
-            workbook.write(response.getOutputStream());
-        }
     }
 }

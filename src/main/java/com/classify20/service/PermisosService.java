@@ -50,7 +50,8 @@ public class PermisosService {
             new Modulo(0, CLAVE_MENU, "Inicio", "/menu", "home.png", 1, true, true),
             new Modulo(0, "agenda", "Agendar clase", "/agenda", "agenda.png", 2, true, false),
             new Modulo(0, "noticias", "Noticias", "/noticias", "noticias.png", 3, true, false),
-            new Modulo(0, "programacion", "Programación", "/programacion", "programacion.png", 4, true, false),
+            // "programacion" salió del catálogo: la vista fue reemplazada por
+            // /clases-agendadas y su fila en `modulos` se elimina por SQL al desplegar.
             new Modulo(0, "clases-agendadas", "Clases agendadas", "/clases-agendadas", "programacion.png", 11, true, false),
             new Modulo(0, "gestion-registros", "Gestión de registros", "/gestion-registros", "gestioncuenta.png", 5, true, false),
             new Modulo(0, "aprende", "Aprende", "/aprende", "aprende.png", 6, true, false),

@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import com.classify20.model.Agenda;
 import com.classify20.model.TokenValidacion;
 import com.classify20.service.NoticiaService;
-import com.classify20.service.AgendaService;
 import com.classify20.service.InvitacionTokenService;
 import com.classify20.service.ParametrosColegioService;
 
@@ -21,9 +20,6 @@ public class VistasController {
 
     @Autowired
     private NoticiaService noticiaService;
-
-    @Autowired
-    private AgendaService agendaService;
 
     @Autowired
     private InvitacionTokenService invitacionTokenService;
@@ -90,10 +86,6 @@ public class VistasController {
         }
         return "auth/registro";
     }
-    @GetMapping("/califica")
-    public String mostrarCalifica(){
-        return "califica/califica";
-    }
     @GetMapping("/conoce")
     public String mostrarConoce(){
         return "conoce/conoce";
@@ -116,19 +108,15 @@ public class VistasController {
     public String mostrarNosotros(){
         return "nosotros/nosotros";
     }
-    @GetMapping("/notas")
-    public String mostrarNotas(){
-        return "notas/notas";
-    }
-
     @GetMapping("/politicas")
     public String mostrarPoliticas(){
         return "politicas/politicas";
     }
+    /** La vista de programación fue reemplazada por /clases-agendadas (CLS-122);
+     *  la ruta se conserva solo como redirección para enlaces antiguos. */
     @GetMapping("/programacion")
-    public String mostrarProgramacion(Model model){
-        model.addAttribute("clases", agendaService.listarAgendas());
-        return "programacion/programacion";
+    public String mostrarProgramacion(){
+        return "redirect:/clases-agendadas";
     }
     @GetMapping("/soporte")
     public String mostrarSoporte(){
