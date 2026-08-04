@@ -841,7 +841,7 @@ img.f4-icon{
 .skeleton {
     width: 100%;
     height: 100vh;
-    background: #ffffff url('../img/icons/loader.gif') no-repeat center center;
+    background: #ffffff url('../img/loader.gif') no-repeat center center;
     background-size: 150px 150px;
     position: fixed;
     top: 0;
