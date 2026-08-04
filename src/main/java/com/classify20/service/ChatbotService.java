@@ -73,7 +73,7 @@ public class ChatbotService {
      * @throws ChatbotException si Groq no está configurado o la llamada falla.
      */
     public String responder(String mensaje, List<TurnoChat> historial,
-                            String nombreUsuario, String rolUsuario) {
+                            String nombreUsuario, String rolUsuario, boolean autenticado) {
         if (!estaConfigurado()) {
             throw new ChatbotException("El asistente inteligente no está configurado en este servidor.");
         }
@@ -86,7 +86,7 @@ public class ChatbotService {
         ArrayNode mensajes = cuerpo.putArray("messages");
         mensajes.addObject()
                 .put("role", "system")
-                .put("content", promptSistema(nombreUsuario, rolUsuario));
+                .put("content", promptSistema(nombreUsuario, rolUsuario, autenticado));
 
         if (historial != null) {
             int desde = Math.max(0, historial.size() - MAX_HISTORIAL);
@@ -132,7 +132,7 @@ public class ChatbotService {
 
     // ── Contexto ─────────────────────────────────────────────────────────
 
-    private String promptSistema(String nombreUsuario, String rolUsuario) {
+    private String promptSistema(String nombreUsuario, String rolUsuario, boolean autenticado) {
         LocalDate hoy = LocalDate.now();
         StringBuilder sb = new StringBuilder();
 
@@ -173,6 +173,18 @@ public class ChatbotService {
             if (rolUsuario != null && !rolUsuario.isBlank()) {
                 sb.append(" (rol: ").append(rolUsuario).append(")");
             }
+        }
+
+        // La agenda (con nombres de profesores) solo se comparte con sesión
+        // iniciada; al visitante anónimo se le invita a entrar a la plataforma.
+        if (!autenticado) {
+            sb.append("""
+
+
+                    El usuario actual NO ha iniciado sesión. No tienes acceso a la agenda de clases: \
+                    si pregunta por horarios, clases o profesores, dile amablemente que inicie sesión \
+                    en Classify para consultar la agenda, y ofrécele ayuda con el registro o el acceso.""");
+            return sb.toString();
         }
 
         sb.append("\n\nAGENDA DE CLASES desde hoy hasta dentro de ").append(DIAS_AGENDA)

@@ -22,7 +22,9 @@ public class WebConfig implements WebMvcConfigurer {
                 .addPathPatterns(
                         "/agenda", "/agenda/**",
                         "/api/agendas", "/api/agendas/**",
-                        "/api/chatbot", "/api/chatbot/**",
+                        // /api/chatbot NO va aquí: el chatbot vive también en las
+                        // páginas públicas (login, inicio, nosotros...). Sin sesión
+                        // el ChatbotService responde solo con la guía, sin agenda.
                         "/aprende", "/aprende/**",
                         "/clases-agendadas", "/clases-agendadas/**",
                         "/califica", "/califica/**",
