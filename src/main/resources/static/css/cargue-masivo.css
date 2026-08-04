@@ -1,0 +1,94 @@
+/* ── Cargue masivo de clases (CLS-133) ── */
+/* Archivo propio a propósito: no arrastra la caché de style.css en nginx. */
+
+.cargue-masivo-card {
+    background: var(--blanco, #fff);
+    border: 1px solid var(--border, #e5e7eb);
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 18px;
+    box-shadow: 0 8px 24px rgba(17, 24, 39, 0.07);
+}
+
+.cargue-masivo-card h3 {
+    margin: 0 0 4px;
+    font-size: 16px;
+    color: var(--green-dark, #013501);
+}
+
+.cargue-masivo-card .cargue-nota {
+    margin: 0 0 12px;
+    font-size: 13px;
+    color: var(--gris, #64748b);
+}
+
+.cargue-masivo-botones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.btn-cargue {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 9px 16px;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: filter 0.15s, background 0.15s;
+}
+
+.btn-cargue-plantilla {
+    background: var(--blanco, #fff);
+    border-color: var(--green, #008000);
+    color: var(--green-dark, #013501);
+}
+
+.btn-cargue-plantilla:hover {
+    background: rgba(174, 201, 165, 0.18);
+}
+
+.btn-cargue-subir {
+    background: var(--green-dark, #013501);
+    color: var(--blanco, #fff);
+}
+
+.btn-cargue-subir:hover {
+    filter: brightness(1.25);
+}
+
+.btn-cargue:disabled {
+    opacity: 0.6;
+    cursor: wait;
+}
+
+.cargue-resultado {
+    margin-top: 12px;
+    font-size: 14px;
+    display: none;
+}
+
+.cargue-resultado.visible {
+    display: block;
+}
+
+.cargue-resultado .cargue-ok {
+    color: var(--green-dark, #013501);
+    font-weight: 600;
+}
+
+.cargue-resultado .cargue-error {
+    color: var(--rojointenso, #f80000);
+    font-weight: 600;
+}
+
+.cargue-resultado ul {
+    margin: 6px 0 0;
+    padding-left: 18px;
+    color: var(--gris, #64748b);
+}
