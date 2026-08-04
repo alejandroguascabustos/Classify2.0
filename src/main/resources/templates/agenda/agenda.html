@@ -60,13 +60,16 @@
                     afectar las demás.</p>
                 <div class="cargue-masivo-botones">
                     <a class="btn-cargue btn-cargue-plantilla" th:href="@{/agenda/cargue-masivo/plantilla}">
-                        ⬇️ Descargar plantilla (.xlsx)
+                        <img th:src="@{/img/xls.png}" width="20px" alt="">
+                         Descargar plantilla (.xlsx)
                     </a>
                     <button type="button" class="btn-cargue btn-cargue-subir" id="btnCargueMasivo">
-                        ⬆️ Cargar archivo diligenciado
+                        <img th:src="@{/img/subir.png}" width="20px" alt="">
+                         Cargar archivo diligenciado
                     </button>
                     <input type="file" id="archivoCargueMasivo" accept=".xlsx" style="display:none;">
                 </div>
+
                 <div id="cargueResultado" class="cargue-resultado" role="status" aria-live="polite"></div>
             </div>
 

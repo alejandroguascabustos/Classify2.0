@@ -26,6 +26,7 @@
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
+    justify-content: space-between;
 }
 
 .btn-cargue {
@@ -44,22 +45,22 @@
 }
 
 .btn-cargue-plantilla {
-    background: var(--blanco, #fff);
-    border-color: var(--green, #008000);
-    color: var(--green-dark, #013501);
+    background: var(--green);
+    color: var(--blanco);
 }
 
 .btn-cargue-plantilla:hover {
-    background: rgba(174, 201, 165, 0.18);
+    background: var(--green-light2);
 }
 
 .btn-cargue-subir {
     background: var(--green-dark, #013501);
-    color: var(--blanco, #fff);
+    color: var(--blanco);
 }
 
 .btn-cargue-subir:hover {
-    filter: brightness(1.25);
+    background: var(--green);
+
 }
 
 .btn-cargue:disabled {
