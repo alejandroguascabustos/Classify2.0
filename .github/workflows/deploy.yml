@@ -13,6 +13,28 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  # Actualiza el espejo del repo en el servidor apenas entra el push, sin
+  # esperar la compilación. El timer classify20-repo-sync.timer (15 min)
+  # queda como respaldo por si este job no puede conectar.
+  sync-repo:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Conectar a Tailscale
+        uses: tailscale/github-action@v3
+        with:
+          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
+          tags: tag:ci
+
+      - name: Sincronizar el espejo del repo
+        env:
+          SERVER: cristobal@100.76.140.116
+          SSH_OPTS: "-o StrictHostKeyChecking=no -o ConnectTimeout=25 -o ServerAliveInterval=15"
+        run: |
+          ssh $SSH_OPTS "$SERVER" "/usr/local/bin/classify20-repo-sync.sh" \
+            && echo "Espejo sincronizado." \
+            || echo "El espejo no se pudo sincronizar (¿disco desmontado?); el timer de 15 min lo reintentará."
+
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
