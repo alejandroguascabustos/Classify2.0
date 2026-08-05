@@ -54,16 +54,20 @@ deja guardar si el salón (grado + grupo) ya tiene una clase en ese horario, o s
 el profesor ya tiene clase en otro salón a la misma hora; en ese caso muestra con
 quién y a qué hora choca.
 
-### Programación (/programacion)
-Tabla con todas las clases registradas. Permite buscarlas con filtros de texto,
-editarlas o eliminarlas (según permisos) y descargar el listado en Excel.
-
 ### Clases agendadas (/clases-agendadas)
-Vista de consulta con filtros por curso, profesor y materia (listas desplegables).
-El resultado filtrado se puede descargar en **Excel (.xlsx)** o **PDF**, ambos con
-el logo y los colores del colegio. Incluye además un **dashboard**
+Vista de consulta de todas las clases registradas, con filtros por curso,
+profesor y materia (listas desplegables) y tabla paginada. El resultado filtrado
+se puede descargar en **Excel (.xlsx)** o **PDF**, ambos con el logo y los
+colores del colegio. Incluye además un **dashboard**
 (/clases-agendadas/dashboard) con gráficos de barras y de torta, agrupables por
 curso, profesor o materia, e indicadores de totales.
+(El antiguo módulo "Programación" ya no existe: fue reemplazado por esta vista.
+Si alguien pregunta por él, indícale que ahora todo está en Clases agendadas.)
+
+En "Agendar clase" (/agenda) también hay **cargue masivo**: se descarga una
+plantilla de Excel, se diligencia (una clase por fila) y se sube; las filas con
+conflicto de horario se reportan sin afectar las demás. Máximo 200 clases por
+archivo.
 
 ### Noticias (/noticias)
 Cartelera informativa del colegio. Las noticias tienen título, autor, fecha, tipo
