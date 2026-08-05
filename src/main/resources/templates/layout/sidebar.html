@@ -9,7 +9,8 @@
       El acceso real siempre lo valida AuthInterceptor en el servidor.
     Uso:  <div th:replace="~{layout/sidebar :: sidebar('agenda')}"></div>
 -->
-<aside class="sidebar" th:fragment="sidebar(activo)">
+<th:block th:fragment="sidebar(activo)">
+<aside class="sidebar">
     <a th:href="@{/menu}" class="inicioprincipal"
        th:classappend="${activo == 'menu'} ? ' active' : ''">
         <img th:src="@{/img/home.png}" width="25" class="imgmenu" alt="Inicio"> Inicio
@@ -60,5 +61,7 @@
         <img th:src="@{/img/upload.png}" width="25" class="imgmenu" alt="Carga Materiales"> Carga Materiales
     </a>
 </aside>
+<script th:src="@{/js/sidebar-toggle.js}"></script>
+</th:block>
 </body>
 </html>

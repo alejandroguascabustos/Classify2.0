@@ -52,6 +52,11 @@ html,
 body {
     margin: 0;
     padding: 0;
+    /* Red de seguridad: los elementos decorativos (.ambient-glow, blobs con
+       bleed intencional fuera del borde) no deben generar scroll horizontal
+       en ningún dispositivo. */
+    overflow-x: hidden;
+    max-width: 100%;
 }
 
 body {
@@ -4474,83 +4479,7 @@ div.imagenpoliticas {
     div.auth { display: flex; }
 
     .contentindex { min-height: auto; padding: 30px 15px; margin-bottom: 0; flex-direction: column; }
-    .contentindex form { width: 0%; padding: 0px; }
-    .contentindex input { width: 300px; display: flex; justify-content: center; }
-    .login-form button { width: 322px; }
-    div .textoregistro { width: 322px; }
-
-    main.contentprincipal { 
-        display: none; 
-    }
-
-    .carousel-wrapper {
-        height: 350px;
-    }
-
-    .cta-container {
-        grid-template-columns: 1fr;
-        gap: 40px;
-    }
-
-    div.auth {
-        display: flex;
-    }
-
-    .contentindex {
-        min-height: auto;
-        padding: 30px 15px;
-        margin-bottom: 0;
-        flex-direction: column;
-    }
-
-    .contentindex form {
-        width: 0%;
-        padding: 0px;
-    }
-
-    .contentindex input {
-        width: 300px;
-        display: flex;
-        justify-content: center;
-    }
-
-    .login-form button {
-        width: 322px;
-    }
-
-    div .textoregistro {
-        width: 322px;
-    }
-
-    main.contentprincipal {
-        display: none;
-    }
-
-    .sidebar a {
-        font-size: 0;
-    }
-
-    a.inicioprincipal {
-        display: flex;
-        justify-content: center;
-        width: 35px;
-    }
-
-    a.inicioprincipal2 {
-        display: flex;
-        justify-content: center;
-        width: 35px;
-    }
-
-    aside.sidebar {
-        width: 61px;
-    }
-
-    .imgmenu {
-        all: unset;
-        display: block;
-        width: 30px;
-    }
+    .contentindex form { width: 100%; max-width: 320px; padding: 0px; }
 
     main.contentagenda {
         background-image: none;
@@ -4560,20 +4489,9 @@ div.imagenpoliticas {
         display: flex;
         justify-content: center;
         align-items: center;
-        height: calc(100vh - 60px);
-        margin-top: 60px;
-        margin-left: -56%;
-    }
-
-    main.programacion-main {
-        margin-left: -20%;
-    }
-
-    table td:nth-child(3),
-    table th:nth-child(5),
-    table td:nth-child(7),
-    table th:nth-child(7) {
-        display: none;
+        height: auto;
+        min-height: calc(100vh - 60px);
+        margin-top: 20px;
     }
 
     .contentaprende {
@@ -4585,8 +4503,9 @@ div.imagenpoliticas {
     }
 
     div.card {
-        width: 50%;
-        margin-left: 21%;
+        width: 92%;
+        max-width: 420px;
+        margin: 24px auto;
     }
 }
 
@@ -5749,6 +5668,10 @@ body.contacto-page .glow-2 {
 }
 
 body.contacto-page .c-wrapper {
+    /* .contentcontacta es flex + align-items:center: sin width:100% este
+       hijo se dimensiona a su max-content (se ve "cortado" en móvil) en
+       vez de llenar el ancho disponible del contenedor flex padre. */
+    width: 100%;
     max-width: 1200px;
     margin: 0 auto;
     padding: 60px 40px;
@@ -5757,6 +5680,7 @@ body.contacto-page .c-wrapper {
     gap: 100px;
     align-items: start;
     min-height: calc(100vh - 100px);
+    box-sizing: border-box;
 }
 
 body.contacto-page .c-info-side {
@@ -6070,26 +5994,41 @@ body.contacto-page .contacto-mail-link {
 }
 
 @media (max-width: 968px) {
-    .c-wrapper {
-        grid-template-columns: 1fr;
+    /* Especificidad: la regla base es body.contacto-page .c-wrapper (0-2-0);
+       sin el mismo prefijo de body, este override nunca gana la cascada. */
+    body.contacto-page .c-wrapper {
+        grid-template-columns: minmax(0, 1fr);
         padding: 60px 24px;
         text-align: center;
+        box-sizing: border-box;
     }
 
-    .c-desc {
+    body.contacto-page .c-desc {
         margin: 0 auto 48px;
     }
 
-    .c-item {
+    body.contacto-page .c-item {
         justify-content: center;
     }
 
-    .c-form-card {
+    body.contacto-page .c-form-card {
         padding: 40px 20px;
     }
 
-    .form-row {
-        grid-template-columns: 1fr;
+    /* Ítems de grid con min-width:0 para que puedan encogerse por debajo
+       del ancho de su contenido (correo largo, dirección, etc.) en vez de
+       forzar la columna de 1fr a ensancharse más allá del viewport. */
+    body.contacto-page .c-info-side,
+    body.contacto-page .c-form-card,
+    body.contacto-page .c-item-text a,
+    body.contacto-page .c-item-text p {
+        min-width: 0;
+        overflow-wrap: break-word;
+        word-break: break-word;
+    }
+
+    body.contacto-page .form-row {
+        grid-template-columns: minmax(0, 1fr);
     }
 }
 
@@ -7048,7 +6987,7 @@ body.nosotros-page .reveal.on {
         justify-content: center;
     }
 
-    .n-hero-visual {
+    body.nosotros-page .n-hero-visual {
         display: none;
     }
 
@@ -7078,7 +7017,7 @@ body.nosotros-page .reveal.on {
         grid-template-columns: 1fr;
     }
 
-    .n-equipo-grid {
+    body.nosotros-page .n-equipo-grid {
         grid-template-columns: repeat(2, 1fr);
     }
 
@@ -7127,7 +7066,7 @@ body.nosotros-page .reveal.on {
         grid-template-columns: 1fr;
     }
 
-    .n-equipo-grid {
+    body.nosotros-page .n-equipo-grid {
         grid-template-columns: 1fr;
     }
 
@@ -7595,8 +7534,18 @@ body.error-debug-page .error-table-full {
 
 ul.noticiasmenu{
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
-    gap: 25px;
+    gap: 12px 25px;
+}
+
+/* Envoltorio de tablas anchas (gestión de registros, clases agendadas):
+   en vez de recortar columnas u obligar overflow del documento entero,
+   el scroll horizontal queda contenido dentro de la propia tabla. */
+.tablaprog {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 .listanoticicas {
@@ -7889,6 +7838,10 @@ body.mismateriales-page .materiales-shell {
     max-width: 1080px;
     margin: 0 auto;
     display: grid;
+    /* Columna explícita: sin esto la única columna implícita se dimensiona
+       al max-content de su hijo más ancho en vez de al ancho disponible,
+       y en viewports angostos el grid entero se desborda del contenedor. */
+    grid-template-columns: minmax(0, 1fr);
     gap: 24px;
 }
 
@@ -9498,5 +9451,201 @@ body.gestion-permisos-page .gp-btn-outline:hover { background: #e7f2e3; }
     .btn-limpiar-clases {
         flex: 1;
         text-align: center;
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   RESPONSIVE · Navegación lateral móvil (panel off-canvas)
+   ═══════════════════════════════════════════════════════════════
+   El sidebar fijo de 196px (layout/sidebar.html) es compartido por los
+   10 módulos autenticados. Por debajo de 900px se convierte en un panel
+   off-canvas: oculto fuera de pantalla, se abre con el botón hamburguesa
+   (#menuToggle, ya presente en cada plantilla) sobre un overlay oscuro,
+   y el contenido pasa a ocupar el ancho completo. Overlay creado por
+   sidebar-toggle.js si el HTML no lo trae.
+   ═══════════════════════════════════════════════════════════════ */
+
+#overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, .45);
+    z-index: 1999;
+}
+
+#overlay.active { display: block; }
+
+/* Botón hamburguesa: 3 barras -> X cuando .active. Oculto en escritorio. */
+.menu-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.menu-toggle span {
+    display: block;
+    width: 24px;
+    height: 3px;
+    background: var(--green-dark);
+    border-radius: 2px;
+    transition: transform .25s ease, opacity .2s ease;
+}
+
+.menu-toggle.active span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+.menu-toggle.active span:nth-child(2) { opacity: 0; }
+.menu-toggle.active span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+@media (max-width: 900px) {
+    .menu-toggle { display: flex; }
+
+    /* El sidebar pasa a panel off-canvas: oculto a la izquierda, se
+       desliza sobre el contenido (no lo empuja) cuando está .active. */
+    .sidebar,
+    aside.sidebar {
+        left: -240px;
+        width: 220px !important;
+        top: 0;
+        padding-top: 78px;
+        height: 100vh;
+        z-index: 2000;
+        box-shadow: 4px 0 24px rgba(0, 0, 0, .18);
+        transition: left .3s ease;
+        overflow-y: auto;
+    }
+
+    .sidebar.active,
+    aside.sidebar.active {
+        left: 0;
+    }
+
+    /* Los enlaces recuperan su ancho natural y su texto (el intento
+       previo de "rail de iconos" quedó a medias y ya no aplica aquí). */
+    .sidebar a,
+    a.inicioprincipal,
+    a.inicioprincipal2 {
+        width: auto !important;
+        font-size: 14px !important;
+    }
+
+    .imgmenu { width: 22px; }
+
+    /* Ningún módulo reserva ya margen fijo para un sidebar que, en
+       móvil, no empuja el contenido — flota encima como overlay. */
+    .contentprincipal,
+    .contentagenda,
+    .contentaprende,
+    .contentmateriales,
+    .content-noticias,
+    .contentcontacta,
+    main.programacion-main,
+    body.materiales-page .contentmateriales,
+    body.mismateriales-page .contentmateriales,
+    body.programacion-page main.contentprincipal {
+        margin-left: 0 !important;
+        width: 100% !important;
+        padding-left: 16px !important;
+        padding-right: 16px !important;
+        box-sizing: border-box !important;
+    }
+
+    main.programacion-main,
+    body.gestion-registros-page .programacion-main,
+    body.gestion-permisos-page .programacion-main {
+        padding-left: 16px !important;
+    }
+}
+
+@media (min-width: 901px) {
+    /* En escritorio el sidebar siempre está visible: el botón y el
+       overlay no tienen función y no deben poder activarse. */
+    .menu-toggle { display: none !important; }
+    #overlay { display: none !important; }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   RESPONSIVE · Ajustes puntuales detectados en la auditoría móvil
+   ═══════════════════════════════════════════════════════════════ */
+
+@media (max-width: 480px) {
+    /* Login: el contenedor y sus campos tenían anchos fijos/porcentajes
+       mayores al 100% (385px, 122%, 130%) que desbordaban el viewport. */
+    .login-container {
+        width: 100%;
+        max-width: 385px;
+        box-sizing: border-box;
+    }
+    .login-form input,
+    .login-form textarea,
+    .login-form button {
+        width: 100% !important;
+    }
+
+    /* Registro: mismo problema (contenedor fijo en 500px + label al 130%
+       + input/textarea/botón mayores al 100%), agravado por vivir dentro
+       de un flex que lo centra sin encogerlo (x negativo, texto cortado
+       por la izquierda). */
+    .registro-form-container {
+        width: 100%;
+        max-width: 500px;
+        box-sizing: border-box;
+    }
+    .labelregistro {
+        width: 100%;
+    }
+    .form-registro input,
+    .form-registro textarea,
+    .form-registro select,
+    .buttonregistro,
+    .containerbutton {
+        width: 100% !important;
+        box-sizing: border-box;
+    }
+}
+
+@media (max-width: 640px) {
+    /* Aprende: el compositor de mensajes se pasaba ~20-30px del viewport. */
+    body.aprende-page .aprende-composer,
+    body.aprende-page .aprende-composer-top {
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+}
+
+@media (max-width: 900px) {
+    /* Materiales/Mis materiales: .materiales-hero es un grid anidado dentro
+       de .materiales-shell (otro grid). Un ítem de grid no se encoge por
+       debajo del ancho mínimo de su contenido a menos que se indique
+       min-width:0 — sin esto, aunque grid-template-columns colapse a 1fr,
+       el contenedor entero se queda tan ancho como su hijo más exigente
+       (el stat-grid) y todo el texto se ve "cortado" contra el viewport. */
+    body.materiales-page .materiales-shell,
+    body.mismateriales-page .materiales-shell,
+    body.materiales-page .materiales-hero,
+    body.mismateriales-page .materiales-hero,
+    body.materiales-page .materiales-hero-copy,
+    body.mismateriales-page .materiales-hero-copy,
+    body.materiales-page .materiales-hero-panel,
+    body.mismateriales-page .materiales-hero-panel,
+    body.materiales-page .materiales-stat-grid,
+    body.mismateriales-page .materiales-stat-grid,
+    body.materiales-page .materiales-stat-card,
+    body.mismateriales-page .materiales-stat-card,
+    body.materiales-page .materiales-card,
+    body.mismateriales-page .materiales-card,
+    body.materiales-page .materiales-upload-grid,
+    body.materiales-page .materiales-dropzone {
+        min-width: 0;
+    }
+
+    body.materiales-page .materiales-stat-grid,
+    body.mismateriales-page .materiales-stat-grid {
+        grid-template-columns: 1fr 1fr;
     }
 }
