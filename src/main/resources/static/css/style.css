@@ -8366,7 +8366,8 @@ body.materiales-page .btnmaterialesdelete:hover {
 }
 
 body.materiales-page a.btn-editar,
-body.materiales-page a.btn-eliminar {
+body.materiales-page a.btn-eliminar,
+body.materiales-page button.btn-eliminar {
     display: inline-flex;
     width: auto;
     min-height: 20px;
@@ -8377,6 +8378,15 @@ body.materiales-page a.btn-eliminar {
     text-decoration: none;
     font-weight: 700;
     font-size: 0.9rem;
+}
+
+/* btn-eliminar paso de <a> a <button> dentro de un <form> (fix CSRF por
+   GET). El reset evita que hereden el estilo nativo del navegador. */
+body.materiales-page button.btn-eliminar {
+    background: none;
+    border: none;
+    font: inherit;
+    cursor: pointer;
 }
 
 body.mismateriales-page .contentdescargar {

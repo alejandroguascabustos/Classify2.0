@@ -69,6 +69,74 @@ public class AuthController {
         HttpSession session = request.getSession(true);
         guardarSesion(session, resultado.usuario());
 
+        // Si la cuenta sigue con la clave temporal que envio n8n, no se
+        // entra a la aplicacion hasta definir una propia. El
+        // AuthInterceptor impide ademas saltarse esta pantalla escribiendo
+        // /menu directamente en la barra de direcciones.
+        if (resultado.usuario().debeCambiarPassword()) {
+            return "redirect:/cambiar-password-obligatorio";
+        }
+
+        return "redirect:/menu";
+    }
+
+    // ── Cambio de contrasena obligatorio ────────────────────────────
+
+    @GetMapping("/cambiar-password-obligatorio")
+    public String mostrarCambioObligatorio(HttpSession session) {
+        if (session.getAttribute("usuarioId") == null) {
+            return "redirect:/login";
+        }
+        // Si la bandera ya esta en false, esta pantalla no aplica.
+        if (!Boolean.TRUE.equals(session.getAttribute("debeCambiarPassword"))) {
+            return "redirect:/menu";
+        }
+        return "auth/cambiar_password_obligatorio";
+    }
+
+    @PostMapping("/cambiar-password-obligatorio/cambiar")
+    public String procesarCambioObligatorio(@RequestParam("password_actual") String passwordActual,
+                                            @RequestParam("password_nueva") String passwordNueva,
+                                            @RequestParam("password_confirmar") String passwordConfirmar,
+                                            HttpSession session,
+                                            RedirectAttributes redirectAttributes) {
+
+        Object idSesion = session.getAttribute("usuarioId");
+        if (idSesion == null) {
+            return "redirect:/login";
+        }
+        long usuarioId = ((Number) idSesion).longValue();
+
+        if (passwordNueva == null || passwordNueva.trim().length() < 6) {
+            redirectAttributes.addFlashAttribute("errorMessage",
+                    "La nueva contrasena debe tener al menos 6 caracteres.");
+            return "redirect:/cambiar-password-obligatorio";
+        }
+
+        if (!passwordNueva.equals(passwordConfirmar)) {
+            redirectAttributes.addFlashAttribute("errorMessage",
+                    "Las contrasenas no coinciden.");
+            return "redirect:/cambiar-password-obligatorio";
+        }
+
+        if (passwordNueva.equals(passwordActual)) {
+            redirectAttributes.addFlashAttribute("errorMessage",
+                    "La nueva contrasena debe ser distinta de la temporal.");
+            return "redirect:/cambiar-password-obligatorio";
+        }
+
+        boolean cambiada = authService.cambiarPassword(usuarioId, passwordActual, passwordNueva);
+        if (!cambiada) {
+            redirectAttributes.addFlashAttribute("errorMessage",
+                    "La contrasena actual no es correcta.");
+            return "redirect:/cambiar-password-obligatorio";
+        }
+
+        // La bandera baja tambien en la sesion viva, para que el
+        // interceptor deje pasar de inmediato sin exigir un nuevo login.
+        session.setAttribute("debeCambiarPassword", false);
+        redirectAttributes.addFlashAttribute("successMessage",
+                "Contrasena actualizada correctamente.");
         return "redirect:/menu";
     }
 
@@ -122,5 +190,7 @@ public class AuthController {
         session.setAttribute("perfil", usuario.perfil());
         session.setAttribute("materia", usuario.materia());
         session.setAttribute("autenticado", true);
+        // El interceptor consulta este atributo en cada peticion.
+        session.setAttribute("debeCambiarPassword", usuario.debeCambiarPassword());
     }
 }

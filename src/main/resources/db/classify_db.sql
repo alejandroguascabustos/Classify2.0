@@ -194,6 +194,15 @@ CREATE TABLE IF NOT EXISTS olvido_contrasenia_tokens (
 CREATE INDEX IF NOT EXISTS idx_olvido_contrasenia_tokens_usuario ON olvido_contrasenia_tokens (id_usuario);
 CREATE INDEX IF NOT EXISTS idx_olvido_contrasenia_tokens_token ON olvido_contrasenia_tokens (token);
 
-ALTER TABLE registro_usuarios ADD COLUMN IF NOT EXISTS password_temporal VARCHAR(8) NOT NULL;
+-- CRITICO: esta columna es booleana ("la cuenta usa todavia la clave
+-- temporal"), no la clave en si. Con VARCHAR(8) NOT NULL sin DEFAULT,
+-- PasswordRecoveryService.actualizarPassword() (que le asigna FALSE)
+-- rompia con "column is of type character varying but expression is of
+-- type boolean", y los 3 INSERT a registro_usuarios (RegistroService,
+-- ActivacionService, ClassifyDatabaseService) fallaban por NOT NULL sin
+-- valor. Se corrige el tipo; DROP+ADD es seguro porque ningun INSERT
+-- llegaba a escribir esta columna.
+ALTER TABLE registro_usuarios DROP COLUMN IF EXISTS password_temporal;
+ALTER TABLE registro_usuarios ADD COLUMN IF NOT EXISTS password_temporal BOOLEAN NOT NULL DEFAULT FALSE;
 
 

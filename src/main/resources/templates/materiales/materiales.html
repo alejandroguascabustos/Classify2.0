@@ -156,9 +156,18 @@
                                                    onclick="abrirModalEditar(this.dataset.id, this.dataset.nombre)">Editar</a>
                                             </div>
                                             <div class="btnmaterialesdelete">
-                                                <a th:href="@{/materiales/eliminar/{id}(id=${mat.idMaterial})}"
-                                                   class="btn-eliminar"
-                                                   onclick="return confirm('Seguro que deseas eliminar este archivo?');">Eliminar</a>
+                                                <!-- El borrado pasa de GET a POST. Con GET, el filtro CSRF no
+                                                     valida (los metodos seguros estan exentos por definicion) y
+                                                     bastaba un <img src=".../materiales/eliminar/42"> en cualquier
+                                                     pagina para borrar el material de la victima.
+                                                     El CsrfProtectionFilter inyecta el campo _csrf automaticamente
+                                                     en todo formulario POST, por eso no hay que escribirlo aqui. -->
+                                                <form th:action="@{/materiales/eliminar/{id}(id=${mat.idMaterial})}"
+                                                      method="post"
+                                                      style="display:inline;"
+                                                      onsubmit="return confirm('Seguro que deseas eliminar este archivo?');">
+                                                    <button type="submit" class="btn-eliminar">Eliminar</button>
+                                                </form>
                                             </div>
                                         </div>
                                     </td>

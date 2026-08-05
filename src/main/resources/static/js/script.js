@@ -108,27 +108,54 @@ document.addEventListener('DOMContentLoaded', () => {
       const end = start + window.pageSize;
 
       tabla.innerHTML = '';
+      // Se construyen los nodos con createElement y textContent en lugar de
+      // concatenar HTML. Asi el contenido de la base nunca se interpreta
+      // como marcado, aunque contenga etiquetas (XSS almacenado via
+      // observaciones/materia/etc).
       filtered.slice(start, end).forEach(a => {
-        const row = `
-          <tr>
-            <td>${a.id || ''}</td>
-            <td>${a.materia || ''}</td>
-            <td>${a.profesor || ''}</td>
-            <td>${a.horario || ''}</td>
-            <td>${a.curso || ''}</td>
-            <td>${a.observaciones || ''}</td>
-            <td>${a.fecha_creacion ? a.fecha_creacion.replace('T', ' ').substring(0, 19) : ''}</td>
-          </tr>
-        `;
-        tabla.innerHTML += row;
+        const tr = document.createElement('tr');
+
+        const fechaLegible = a.fecha_creacion
+          ? String(a.fecha_creacion).replace('T', ' ').substring(0, 19)
+          : '';
+
+        [
+          a.id,
+          a.materia,
+          a.profesor,
+          a.horario,
+          a.curso,
+          a.observaciones,
+          fechaLegible
+        ].forEach(valor => {
+          const td = document.createElement('td');
+          td.textContent = (valor === null || valor === undefined) ? '' : String(valor);
+          tr.appendChild(td);
+        });
+
+        tabla.appendChild(tr);
       });
 
       const pagDOM = document.getElementById('paginacion');
       if (pagDOM) {
-        pagDOM.innerHTML =
-          `<button ${window.currentPage===1?'disabled':''} onclick='window.cambiarPagina(-1)'>Anterior</button> `+
-          `Página ${window.currentPage} de ${totalPages} `+
-          `<button ${window.currentPage===totalPages?'disabled':''} onclick='window.cambiarPagina(1)'>Siguiente</button>`;
+        pagDOM.innerHTML = '';
+
+        const anterior = document.createElement('button');
+        anterior.textContent = 'Anterior';
+        anterior.disabled = window.currentPage === 1;
+        anterior.addEventListener('click', () => window.cambiarPagina(-1));
+
+        const info = document.createElement('span');
+        info.textContent = ` Página ${window.currentPage} de ${totalPages} `;
+
+        const siguiente = document.createElement('button');
+        siguiente.textContent = 'Siguiente';
+        siguiente.disabled = window.currentPage === totalPages;
+        siguiente.addEventListener('click', () => window.cambiarPagina(1));
+
+        pagDOM.appendChild(anterior);
+        pagDOM.appendChild(info);
+        pagDOM.appendChild(siguiente);
       }
     }
 

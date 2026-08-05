@@ -38,7 +38,13 @@ public class WebConfig implements WebMvcConfigurer {
                         // Cuelga de la raiz, no de /agenda, por lo que los patrones
                         // anteriores no lo cubrian: hasta ahora aceptaba escrituras
                         // sin sesion iniciada.
-                        "/guardar-agenda"
+                        "/guardar-agenda",
+                        // La pantalla de cambio obligatorio necesita pasar por el
+                        // interceptor para exigir sesion. El propio interceptor la
+                        // deja pasar aunque la bandera este activa (ver
+                        // RUTAS_PERMITIDAS_SIN_CAMBIAR).
+                        "/cambiar-password-obligatorio",
+                        "/cambiar-password-obligatorio/**"
                 );
     }
 
