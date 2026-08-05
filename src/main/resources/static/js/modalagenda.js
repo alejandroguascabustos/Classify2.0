@@ -54,7 +54,7 @@ class AgendaModal {
                 this.show();
                 form.reset();
                 setTimeout(() => {
-                    const redirectUrl = (typeof baseUrl !== 'undefined' ? baseUrl : '') + '/programacion';
+                    const redirectUrl = (typeof baseUrl !== 'undefined' ? baseUrl : '') + '/clases-agendadas';
                     window.location.href = redirectUrl;
                 }, 1500);
             } else if (status === 409 && data.conflicto) {
