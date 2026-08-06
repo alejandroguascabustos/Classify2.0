@@ -9537,11 +9537,10 @@ body.gestion-permisos-page .gp-btn-outline:hover { background: #e7f2e3; }
 .menu-toggle.active span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
 
 @media (max-width: 900px) {
-    .menu-toggle { 
+    .menu-toggle {
         display: flex;
         margin-top: 15px;
         margin-left: 5px;
-    }
     }
 
     /* El sidebar pasa a panel off-canvas: oculto a la izquierda, se
@@ -9599,6 +9598,7 @@ body.gestion-permisos-page .gp-btn-outline:hover { background: #e7f2e3; }
     body.gestion-permisos-page .programacion-main {
         padding-left: 16px !important;
     }
+}
 
 @media (min-width: 901px) {
     /* En escritorio el sidebar siempre está visible: el botón y el
