@@ -9599,7 +9599,6 @@ body.gestion-permisos-page .gp-btn-outline:hover { background: #e7f2e3; }
     body.gestion-permisos-page .programacion-main {
         padding-left: 16px !important;
     }
-}
 
 @media (min-width: 901px) {
     /* En escritorio el sidebar siempre está visible: el botón y el
@@ -9659,12 +9658,7 @@ body.gestion-permisos-page .gp-btn-outline:hover { background: #e7f2e3; }
 }
 
 @media (max-width: 900px) {
-    /* Materiales/Mis materiales: .materiales-hero es un grid anidado dentro
-       de .materiales-shell (otro grid). Un ítem de grid no se encoge por
-       debajo del ancho mínimo de su contenido a menos que se indique
-       min-width:0 — sin esto, aunque grid-template-columns colapse a 1fr,
-       el contenedor entero se queda tan ancho como su hijo más exigente
-       (el stat-grid) y todo el texto se ve "cortado" contra el viewport. */
+
     body.materiales-page .materiales-shell,
     body.mismateriales-page .materiales-shell,
     body.materiales-page .materiales-hero,
@@ -9708,6 +9702,13 @@ body.gestion-permisos-page .gp-btn-outline:hover { background: #e7f2e3; }
 
 @media (max-width: 900px) {
 
+    /* ── Header ──────────────────────────────────────────────────
+       La nav (Inicio/Nosotros/Contacto) y el botón de info son
+       <a class="info-btn">, y a 950px una regla los apagaba a todos
+       para esconder solo el icono: en móvil el sitio se quedaba sin
+       navegación. Se devuelven ambos, ya compactados.
+       En las vistas autenticadas sigue mandando el sidebar, cuya
+       regla (body:has(.sidebar) …) tiene más especificidad. */
     header.brandinicio .brand2 a.info-btn,
     header.brandinicio a.info-btn:has(.info-icon) {
         display: flex;
