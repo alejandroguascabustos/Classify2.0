@@ -9537,7 +9537,12 @@ body.gestion-permisos-page .gp-btn-outline:hover { background: #e7f2e3; }
 .menu-toggle.active span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
 
 @media (max-width: 900px) {
-    .menu-toggle { display: flex; }
+    .menu-toggle { 
+        display: flex;
+        margin-top: 15px;
+        margin-left: 5px;
+    }
+    }
 
     /* El sidebar pasa a panel off-canvas: oculto a la izquierda, se
        desliza sobre el contenido (no lo empuja) cuando está .active. */
@@ -9703,20 +9708,13 @@ body.gestion-permisos-page .gp-btn-outline:hover { background: #e7f2e3; }
 
 @media (max-width: 900px) {
 
-    /* ── Header ──────────────────────────────────────────────────
-       La nav (Inicio/Nosotros/Contacto) y el botón de info son
-       <a class="info-btn">, y a 950px una regla los apagaba a todos
-       para esconder solo el icono: en móvil el sitio se quedaba sin
-       navegación. Se devuelven ambos, ya compactados.
-       En las vistas autenticadas sigue mandando el sidebar, cuya
-       regla (body:has(.sidebar) …) tiene más especificidad. */
     header.brandinicio .brand2 a.info-btn,
     header.brandinicio a.info-btn:has(.info-icon) {
         display: flex;
     }
 
     header.brandinicio {
-        padding: 10px 16px;
+        padding: 0px 17px;
         gap: 10px;
     }
 
