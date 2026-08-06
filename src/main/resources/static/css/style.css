@@ -9649,3 +9649,220 @@ body.gestion-permisos-page .gp-btn-outline:hover { background: #e7f2e3; }
         grid-template-columns: 1fr 1fr;
     }
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   RESPONSIVE · Módulo de inicio (landing pública)
+   ═══════════════════════════════════════════════════════════════
+   La landing se diseñó a dos columnas fijas —.registro al 39% y el
+   riel social vertical pegado al borde— y en móvil eso dejaba el
+   texto en una columna de ~130px, la ilustración ampliada por encima
+   del contenido, 257px de scroll horizontal y la navegación
+   invisible. Aquí se apila en una sola columna conservando la
+   identidad de escritorio: ilustración vegetal de fondo, píldora
+   social verde, tarjeta del check y botón de sesión.
+
+   Todo va acotado a .contentinicio (sección que solo existe en
+   inicio.html) porque .contenidoinicio lo reutiliza aprende-page.
+   Por encima de 900px no cambia absolutamente nada.
+   ═══════════════════════════════════════════════════════════════ */
+
+@media (max-width: 900px) {
+
+    /* ── Header ──────────────────────────────────────────────────
+       La nav (Inicio/Nosotros/Contacto) y el botón de info son
+       <a class="info-btn">, y a 950px una regla los apagaba a todos
+       para esconder solo el icono: en móvil el sitio se quedaba sin
+       navegación. Se devuelven ambos, ya compactados.
+       En las vistas autenticadas sigue mandando el sidebar, cuya
+       regla (body:has(.sidebar) …) tiene más especificidad. */
+    header.brandinicio .brand2 a.info-btn,
+    header.brandinicio a.info-btn:has(.info-icon) {
+        display: flex;
+    }
+
+    header.brandinicio {
+        padding: 10px 16px;
+        gap: 10px;
+    }
+
+    /* Marca a la izquierda, info y sesión a la derecha, y la nav en
+       una segunda fila a lo ancho: el mismo reparto del escritorio,
+       plegado en dos alturas. */
+    header.brandinicio .brand {
+        order: 1;
+    }
+
+    header.brandinicio > div:last-child {
+        order: 2;
+        margin-left: auto;
+    }
+
+    header.brandinicio .auth {
+        order: 3;
+        gap: 12px;
+        margin-left: 0;
+    }
+
+    /* flex:1 (regla base) impone flex-basis:0 y deja el width:100% sin
+       efecto: la nav se quedaba en la misma fila. Con 0 0 100% ocupa
+       la fila completa y salta debajo de la marca. */
+    header.brandinicio .brand2 {
+        display: flex;
+        order: 4;
+        flex: 0 0 100%;
+        width: 100%;
+        justify-content: center;
+        gap: 4px;
+        padding-top: 8px;
+        border-top: 1px solid var(--border);
+    }
+
+    /* ── Fondo y luces ambientales ───────────────────────────────
+       Los glow miden 600px y se anclan fuera del borde
+       (right:-200px); en un viewport de 390px son ~257px de scroll
+       horizontal. Se encogen y se meten dentro del viewport. */
+    body.inicioimg:has(.contentinicio) .ambient-glow {
+        width: 320px;
+        height: 320px;
+        filter: blur(40px);
+    }
+
+    body.inicioimg:has(.contentinicio) .glow-1 {
+        top: -60px;
+        left: -60px;
+    }
+
+    body.inicioimg:has(.contentinicio) .glow-2 {
+        right: -60px;
+        bottom: 14%;
+    }
+
+    /* ── Hero en una columna ─────────────────────────────────────
+       El padding-right de 15px sobre un width:100% sin box-sizing
+       era el otro origen del desborde (405px en 390 de viewport). */
+    .contentinicio {
+        align-items: stretch;
+    }
+
+    .contentinicio .contenidoinicio {
+        flex-direction: column;
+        align-items: center;
+        gap: 26px;
+        min-height: 0;
+        padding: 20px 0 40px;
+        box-sizing: border-box;
+    }
+
+    /* La ilustración se ancla abajo a la derecha con `cover`: en un
+       contenedor alto y angosto se amplía tanto que el muñeco queda
+       encima del texto y cortado contra el footer. En móvil se
+       dimensiona por altura (52% del hero) para que la planta y el
+       muñeco entren completos bajo el formulario, atenuados. */
+    .contentinicio .contenidoinicio::before {
+        background-size: auto 52%;
+        background-position: right -30px bottom 50px;
+        opacity: 0.62;
+    }
+
+    .contentinicio .registro {
+        order: 1;
+        width: 100%;
+        max-width: 540px;
+        padding: 0 20px;
+        box-sizing: border-box;
+        overflow: visible;
+    }
+
+    /* El riel social vertical pegado al borde izquierdo pasa a ser
+       una píldora horizontal centrada bajo el formulario. */
+    .contentinicio div.socialmedia {
+        order: 2;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 4px;
+        width: auto;
+        height: auto;
+        margin: 0 auto;
+        padding: 4px 10px;
+        border-radius: 999px;
+    }
+
+    .contentinicio div.socialmedia a {
+        display: flex;
+    }
+
+    .contentinicio img.socialmediainicial,
+    .contentinicio img.socialmedia {
+        width: 24px;
+        height: 24px;
+        padding: 10px;
+        box-sizing: content-box;
+    }
+
+    /* ── Tipografía y formulario ─────────────────────────────────
+       El título fijo en 50px se partía en cuatro líneas y el párrafo
+       arrastraba sangrías pensadas para la columna de escritorio. */
+    .contentinicio .titulo {
+        font-size: clamp(30px, 8.5vw, 46px);
+        padding-top: 6px;
+        margin-top: 0;
+        letter-spacing: -0.5px;
+    }
+
+    .contentinicio .parrafotitulo {
+        padding-top: 14px;
+        padding-left: 0;
+        margin-left: 0;
+        text-align: center;
+        font-size: 15px;
+    }
+
+    .contentinicio .tituloiniciocontenido input[type="email"] {
+        margin-top: 26px;
+    }
+
+    .contentinicio .tituloiniciocontenido input[type="email"]::placeholder {
+        font-size: 15px;
+    }
+
+    .contentinicio .tituloiniciocontenido input[type="submit"] {
+        font-size: 18px;
+    }
+
+    .contentinicio .tituloiniciocontenido > div {
+        align-items: center;
+        margin-top: 24px;
+    }
+
+    /* El panel de información ocupaba 600px fijos dentro del overlay. */
+    .info-panel .info-content {
+        max-width: min(600px, calc(100vw - 32px));
+        padding: 22px 18px;
+        max-height: 82vh;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 600px) {
+
+    header.brandinicio .brand2 a.info-btn {
+        font-size: 13px;
+        padding: 6px 10px;
+    }
+
+    /* Footer: 40px de padding lateral y separadores de 18px dejaban
+       los enlaces apretados contra el borde en pantallas de 360px. */
+    .f4 {
+        padding: 36px 20px 26px;
+    }
+
+    .f4-desc {
+        font-size: 13.5px;
+    }
+
+    .f4-links a {
+        font-size: 13px;
+        padding: 0 12px;
+    }
+}
