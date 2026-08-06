@@ -9901,3 +9901,61 @@ body.gestion-permisos-page .gp-btn-outline:hover { background: #e7f2e3; }
         padding: 0 12px;
     }
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   RESPONSIVE · Términos y condiciones
+   ═══════════════════════════════════════════════════════════════
+   .terminos-main combinaba width:100% con padding:28px y en este
+   archivo no hay reset global de box-sizing (el `*` de arriba solo
+   toca margin y font-family). La caja medía entonces 390+56=446px en
+   un móvil de 390: el texto arrancaba 28px corrido y perdía los
+   últimos 28px contra el borde —frases cortadas a media palabra en
+   los diez apartados—. El borde de la caja se arregla en todos los
+   anchos; el resto son ajustes de lectura solo en móvil.
+   ═══════════════════════════════════════════════════════════════ */
+
+.terminos-main {
+    box-sizing: border-box;
+}
+
+@media (max-width: 640px) {
+    /* width:auto en vez del 100% heredado: con 100% el margen lateral
+       se suma al ancho del padre y la tarjeta vuelve a sobresalir. */
+    .terminos-main {
+        width: auto;
+        margin: 16px 12px;
+        padding: 22px 18px;
+    }
+
+    .terminos-titulo {
+        font-size: clamp(1.4rem, 6.4vw, 2rem);
+        line-height: 1.2;
+    }
+
+    .terminos-subtitulo {
+        font-size: 0.95rem;
+    }
+
+    /* El justificado abre ríos enormes en una columna estrecha con
+       palabras largas ("Agendamiento", "notificaciones"). */
+    .terminos-main p {
+        text-align: left;
+        font-size: 0.95rem;
+    }
+
+    .terminos-h {
+        font-size: 1rem;
+    }
+
+    .terminos-list {
+        margin: 12px 0 18px 20px;
+        padding-left: 0;
+    }
+
+    /* La imagen lleva width="150px" en el HTML; se limita por si el
+       recuadro se estrecha aún más (360px y menos). */
+    .imagenterminos img {
+        max-width: 100%;
+        height: auto;
+    }
+}
