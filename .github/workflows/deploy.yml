@@ -2,6 +2,9 @@ name: Deploy a producción
 
 # Se dispara en cada push a main. Compila el jar en la nube (la Raspberry no puede)
 # y lo despliega al servidor por Tailscale SSH, con respaldo y reinicio del servicio.
+#
+# El destino es /home/cristobal/classify20 (SD), no el disco externo: el
+# despliegue no debe depender de que /media/Dexterno esté montado.
 on:
   push:
     branches: [main]
@@ -58,10 +61,15 @@ jobs:
           oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
           tags: tag:ci
 
+      # El jar se sube directamente al directorio desde el que arranca
+      # systemd, en la SD. Antes se dejaba en /media/Dexterno (disco
+      # externo) y un ExecStartPre lo copiaba a la SD, pero el disco se
+      # desmontó y el paso llevaba tres despliegues fallando en seco:
+      # la ruta simplemente no existía y nada llegaba a producción.
       - name: Desplegar al servidor
         env:
           SERVER: cristobal@100.76.140.116
-          REMOTE_DIR: /media/Dexterno/classify20
+          REMOTE_DIR: /home/cristobal/classify20
           SSH_OPTS: "-o StrictHostKeyChecking=no -o ConnectTimeout=25 -o ServerAliveInterval=15"
         run: |
           set -euo pipefail
@@ -71,7 +79,8 @@ jobs:
           echo "Jar local: $LOCAL_SIZE bytes"
 
           echo "== Respaldo del jar actual =="
-          ssh $SSH_OPTS "$SERVER" "cp -a $REMOTE_DIR/classify20.jar $REMOTE_DIR/classify20.jar.bak-$TS"
+          ssh $SSH_OPTS "$SERVER" "cp -a $REMOTE_DIR/classify20.jar $REMOTE_DIR/classify20.jar.bak-$TS" \
+            || echo "No había jar previo que respaldar."
 
           echo "== Subiendo jar nuevo =="
           ssh $SSH_OPTS "$SERVER" "cat > $REMOTE_DIR/classify20.jar.new" < "$JAR"
