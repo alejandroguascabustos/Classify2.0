@@ -9,13 +9,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const numOfFiles = document.getElementById('num-of-files');   // El div que muestra la cantidad de archivos
     const filesList = document.getElementById('files-list');      // La lista ul donde se mostrarán los archivos
 
-    // DEBUG: Verificar en consola que los elementos se encontraron correctamente
-    // !!fileInput convierte el elemento a booleano (true si existe, false si no)
-    console.log('JavaScript cargado - elementos encontrados:', {
-        fileInput: !!fileInput,      // true si encontró el input file
-        numOfFiles: !!numOfFiles,    // true si encontró el contador
-        filesList: !!filesList       // true si encontró la lista
-    });
+    // Este mismo archivo se carga en materiales.html y en mismateriales.html,
+    // pero el selector de archivos solo existe en el de carga: en "Mis
+    // materiales" fileInput es null y el addEventListener de abajo lanzaba
+    // "Cannot read properties of null" en cada visita, cortando el resto.
+    if (!fileInput) return;
 
     // Configurar el event listener para el input file
     // --------------------------------------------------
