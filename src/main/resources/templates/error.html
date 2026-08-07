@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<!--
+  Respaldo para cualquier código de error que no tenga su propia plantilla
+  (403, 400, 503...). Spring busca primero error/<código>.html y cae aquí si
+  no lo encuentra. Solo se muestra el número de estado: `message` y `path`
+  se omiten a propósito para no filtrar rutas internas ni trazas al usuario.
+-->
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classify - Error</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="shortcut icon" th:href="@{/img/favicon.ico}" type="image/x-icon">
+</head>
+
+<body class="error-page">
+    <header class="brandinicio">
+        <div class="brand">
+            <a th:href="@{/inicio}"><img th:src="@{/img/logo.png}" alt="logo" class="logo"></a>
+            <a th:href="@{/inicio}">Classify</a>
+        </div>
+        <div class="auth">
+            <a th:href="@{/login}" class="info-btnini2"><img th:src="@{/img/perfilinicio.png}" alt="" class="perfilinicio">Inicio Sesión</a>
+        </div>
+    </header>
+
+    <main class="error-main">
+        <div class="error-card">
+            <p class="error-codigo" th:text="${status} ?: 'Error'">Error</p>
+            <h1 class="error-titulo">No pudimos mostrar esta página</h1>
+            <p class="error-texto">
+                La solicitud no se pudo completar. Vuelve al inicio para seguir navegando
+                y, si el problema continúa, cuéntanos qué pasó desde soporte.
+            </p>
+            <div class="error-acciones">
+                <a th:href="@{/inicio}" class="error-btn error-btn-solido">Volver al inicio</a>
+                <a th:href="@{/soporte}" class="error-btn error-btn-linea">Ir a soporte</a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="f4">
+        <div class="f4-logo">
+            <div class="f4-icon"><a th:href="@{/inicio}"><img th:src="@{/img/logo.png}" alt="logo" class="f4-icon"></a></div>
+            <span class="f4-logo-name">Classify</span>
+        </div>
+        <nav class="f4-links">
+            <a th:href="@{/inicio}">Inicio</a>
+            <a th:href="@{/nosotros}">Nosotros</a>
+            <a th:href="@{/soporte}">Soporte</a>
+            <a th:href="@{/contacto}">Contacto</a>
+            <a th:href="@{/politicas}">Privacidad</a>
+            <a th:href="@{/terminos}">Términos</a>
+        </nav>
+        <div class="f4-divider"></div>
+        <p class="f4-copy">© 2026 Classify — Todos los derechos reservados · Bogotá, Colombia</p>
+    </footer>
+</body>
+
+</html>

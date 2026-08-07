@@ -10048,3 +10048,133 @@ body.gestion-permisos-page .gp-btn-outline:hover { background: #e7f2e3; }
         height: auto;
     }
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   Páginas de error (404, 500 y el respaldo genérico) — CLS-136
+   ═══════════════════════════════════════════════════════════════
+   Sin plantillas propias, Spring devolvía su "Whitelabel Error Page",
+   que además del aspecto roto anuncia detalles internos ("this
+   application has no explicit mapping for /error"). Estas reglas
+   visten templates/error/404.html, 500.html y error.html con la
+   identidad del sitio, reutilizando su header y su footer.
+
+   No se tocan los bloques error-simple-page / error-debug-page de
+   más arriba: son estilos huérfanos de otro proyecto (naranja
+   #dd4814, Helvetica) que ninguna plantilla usa.
+   ═══════════════════════════════════════════════════════════════ */
+
+body.error-page {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    font-family: var(--font-family);
+    color: var(--ink);
+    background-color: var(--blanco);
+}
+
+body.error-page .error-main {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 20px;
+    /* Trama de puntos del inicio, para que el error no se sienta
+       una página de otro sitio. */
+    background-image: radial-gradient(var(--border-strong) 1.5px, transparent 1.5px);
+    background-size: 30px 30px;
+}
+
+body.error-page .error-card {
+    width: 100%;
+    max-width: 560px;
+    box-sizing: border-box;
+    padding: 44px 36px;
+    text-align: center;
+    background: var(--blanco);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    box-shadow: 0 10px 40px rgba(17, 24, 39, 0.06);
+}
+
+body.error-page .error-codigo {
+    margin: 0;
+    font-family: "Lalezar", sans-serif;
+    font-size: clamp(56px, 14vw, 84px);
+    line-height: 1;
+    color: var(--green);
+    letter-spacing: -2px;
+}
+
+body.error-page .error-titulo {
+    margin: 12px 0 0;
+    font-size: clamp(20px, 5.2vw, 26px);
+    color: var(--negro);
+}
+
+body.error-page .error-texto {
+    margin: 16px 0 0;
+    color: var(--gris);
+    font-size: 15px;
+    line-height: 1.7;
+}
+
+body.error-page .error-acciones {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 32px;
+}
+
+body.error-page .error-btn {
+    padding: 12px 26px;
+    border-radius: 50px;
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+body.error-page .error-btn-solido {
+    background: var(--green);
+    color: var(--blanco);
+    border: 2px solid var(--green);
+}
+
+body.error-page .error-btn-solido:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+    box-shadow: 0 8px 24px rgba(0, 128, 0, 0.3);
+}
+
+body.error-page .error-btn-linea {
+    background: transparent;
+    color: var(--green);
+    border: 2px solid var(--green);
+}
+
+body.error-page .error-btn-linea:hover {
+    background: var(--green);
+    color: var(--blanco);
+}
+
+@media (max-width: 480px) {
+    body.error-page .error-main {
+        padding: 28px 14px;
+    }
+
+    body.error-page .error-card {
+        padding: 32px 22px;
+    }
+
+    /* A un ancho de móvil los dos botones juntos quedan estrechos y
+       con el texto partido; apilados mantienen el área de toque. */
+    body.error-page .error-acciones {
+        flex-direction: column;
+    }
+
+    body.error-page .error-btn {
+        width: 100%;
+        box-sizing: border-box;
+    }
+}
