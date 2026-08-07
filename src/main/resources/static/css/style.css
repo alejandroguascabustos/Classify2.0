@@ -9771,6 +9771,96 @@ body.gestion-permisos-page .gp-btn-outline:hover { background: #e7f2e3; }
         bottom: 14%;
     }
 
+    /* Login: sus glows son hijos directos del body y se anclan en
+       -180px/-200px, así que el overflow-x:hidden de html/body no los
+       contiene y dejaban 142px de deslizamiento lateral. En fixed el
+       contenedor de bloque pasa a ser el viewport y ya no aportan
+       scroll al documento; el halo se conserva igual. */
+    body.auth-login-page .ambient-glow {
+        position: fixed;
+        width: 320px;
+        height: 320px;
+        filter: blur(40px);
+    }
+
+    body.auth-login-page .glow-1 {
+        top: -60px;
+        left: -60px;
+    }
+
+    body.auth-login-page .glow-2 {
+        right: -60px;
+        bottom: 8%;
+    }
+
+    /* Contacto: mismo caso que el login — glows de 600px anclados en
+       -200px que dejaban 176px de deslizamiento lateral. */
+    body.contacto-page .ambient-glow {
+        position: fixed;
+        width: 320px;
+        height: 320px;
+        filter: blur(40px);
+    }
+
+    body.contacto-page .glow-1 {
+        top: -60px;
+        left: -60px;
+    }
+
+    body.contacto-page .glow-2 {
+        right: -60px;
+        bottom: 10%;
+    }
+
+    /* ── Recuperar contraseña ────────────────────────────────────
+       .recupera-container medía 500px fijos + 24px de padding en
+       content-box: 548px reales dentro de un viewport de 390. Al ir
+       centrado se salía 79px por cada lado y, como html lleva
+       overflow-x:hidden, el texto cortado no era ni alcanzable
+       ("o de Documento", "mbre de usuario").
+       Un max-width:100% NO basta: se resuelve contra un padre que a su
+       vez se estira por este mismo hijo (el wrapper es flex y toma el
+       min-content de 500px), así que la restricción es circular. Hay
+       que anclar el tope al viewport con calc(100vw - 32px), que no
+       depende del padre. En escritorio y tablet nada cambia: los 500px
+       siguen mandando mientras quepan. */
+    .recuperar-wrapper {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .recupera-container {
+        width: 100%;
+        max-width: calc(100vw - 32px);
+        padding: 18px;
+        box-sizing: border-box;
+    }
+
+    div.imagenrecupera,
+    .form-recupera {
+        max-width: 100%;
+        min-width: 0;
+        box-sizing: border-box;
+    }
+
+    .form-recupera input,
+    .form-recupera textarea {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .btn-recuperar {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    /* Justificado en columnas estrechas abre ríos de espacio entre
+       palabras; alineado a la izquierda se lee mucho mejor. */
+    .texto-recuperar,
+    .parraforecuperar {
+        text-align: left;
+    }
+
     /* ── Hero en una columna ─────────────────────────────────────
        El padding-right de 15px sobre un width:100% sin box-sizing
        era el otro origen del desborde (405px en 390 de viewport). */
