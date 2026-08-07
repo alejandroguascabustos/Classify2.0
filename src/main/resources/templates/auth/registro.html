@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Classify - Registro</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
-    <link rel="shortcut icon" th:href="@{img/favicon.ico}" type="image/x-icon">
+    <link rel="shortcut icon" th:href="@{/img/favicon.ico}" type="image/x-icon">
 </head>
 
 <body class="inicioimg">
@@ -233,7 +233,13 @@
         document.addEventListener("DOMContentLoaded", () => {
             const form = document.querySelector(".form-registro");
             const btn = document.getElementById("btnRegistrar");
-            
+
+            // Con el registro por invitación (classify.registro.solo-invitacion)
+            // y sin token válido, la vista solo muestra el aviso: no hay
+            // formulario que inicializar y mostrarCampos() reventaba contra un
+            // getElementById nulo, dejando un TypeError en cada carga.
+            if (!form) return;
+
             // Inicializar campos
             mostrarCampos();
 
